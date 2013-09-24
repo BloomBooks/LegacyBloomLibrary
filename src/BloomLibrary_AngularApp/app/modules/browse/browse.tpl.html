@@ -1,0 +1,44 @@
+<div>
+    <h1>Books</h1>
+    <div class="container">
+        <div class="row">
+            <div class="search">
+                Search
+                <input placeholder="title, topic, or tag" ng-model="searchText" data-ng-change="updateFilter()" />
+                <button class='btn add-on'>
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="results">
+            <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
+            <div class="result"
+                ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage "
+                context="bookContextMenu" >
+<!--                ng-click="viewBook(book)"    >-->
+                <div class="imageContainer">
+                    <a ui-sref="browse.detail({bookId: book.Id})">
+                        <img ng-src="{{book.Thumbnail}}" />
+                     </a>
+                </div>
+                <div class="data">
+                    <h3 class="firstRowAboutBook">
+                        {{book.Title}}
+                        <div class="author">{{book.Author}}</div>
+                    </h3>
+                    <div class="secondRowAboutBook">
+                        <div class="pages">{{book.Pages}} pages</div>
+                    </div>
+                </div>
+                        <div class="unfloat"></div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <!-- may not be up to bootstrap 3 yet. see: http://stackoverflow.com/a/18004893/723299       -->
+            <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small"></pagination>
+        </div>
+    </div>
+</div>

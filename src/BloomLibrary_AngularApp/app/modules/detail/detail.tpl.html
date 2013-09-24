@@ -1,0 +1,24 @@
+<lazy-style href="modules/detail/detail.css"></lazy-style>
+
+<div class="">
+    <div class="modal-header">
+        {{book.Title}}
+       
+        <!--<a href="#" class="close" ng-click="close()>x</a>-->
+        <div class="close" ng-click="close()">x</div>
+    </div>
+    <div class="modal-body">
+        <img ng-src="{{book.Thumbnail}}" />
+        <div class="title">{{book.Title}}</div>
+        <div class="author">{{book.Author}}</div>
+        <div class="summary">{{book.Summary}}</div>
+
+
+        <bootstrap-tagsinput tagClass="label btn-info" readOnly="true" ng-model="book.Tags"></bootstrap-tagsinput>
+
+        <a ng-href="{{book.PreviewPDF}}" pdfoverlay><button>Preview</button></a>
+        <button ng-click="download()">Download and open in Bloom Desktop</button>
+
+
+    </div>
+</div>

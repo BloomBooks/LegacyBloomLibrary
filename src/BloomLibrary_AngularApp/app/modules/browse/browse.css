@@ -1,0 +1,112 @@
+/*Will be compiled down to a single stylesheet with your sass files*/
+.modal .bootstrap-tagsinput SPAN
+{
+	/*[empty]display:;*/
+}
+.modal .tags
+{
+	margin-top: 11px;
+}
+.modal .summary
+{
+	margin-top: 11px;
+}
+UL
+{
+	margin-left: 0px;
+	padding-left: 0px;
+	padding-top: 16px;
+}
+LI
+{
+	list-style-type: none;
+	margin-bottom: 15px;
+	padding-left: 0px !important;
+	font: 1em Arial;
+}
+.search BUTTON.add-on
+{
+	height: 26px;
+	/*[empty]padding-left:;*/
+	margin-left: -4px;
+}
+.search INPUT
+{
+	/*[disabled]height:inherit;*/
+}
+.search
+{
+	/*[disabled]height:46px;*/
+}
+.modal IMG
+{
+	width: 128px;
+	height: 163px;
+	/*+placement:float-left 0px 0px;*/
+	float: left;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin-right: 16px;
+}
+.modal .title
+{
+	font-weight: bold;
+}
+BODY
+{
+	font-size: small !important;
+}
+H3.firstRowAboutBook
+{
+	font-size: 103%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	line-height: normal;
+}
+.secondRowAboutBook
+{
+	clear: both;
+	float: left;
+}
+.title
+{
+	font-size: 103%;
+	color: rgb(0, 75, 145);
+}
+.data
+{
+	display: table;
+}
+.pages
+{
+	float: left;
+}
+.topic
+{
+	float: left;
+	margin-right: 7px;
+}
+IMG
+{
+	text-align: center;
+	width: 101px;
+}
+.unfloat
+{
+	clear: both;
+}
+.imageContainer
+{
+	text-align: center;
+	position: relative;
+	float: left;
+	margin-right: 10px;
+}
+.result
+{
+	margin-bottom: 15px;
+	margin-top: 18px;
+}
