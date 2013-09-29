@@ -1,16 +1,4 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
-.modal .bootstrap-tagsinput SPAN
-{
-	/*[empty]display:;*/
-}
-.modal .tags
-{
-	margin-top: 11px;
-}
-.modal .summary
-{
-	margin-top: 11px;
-}
 UL
 {
 	margin-left: 0px;
@@ -38,24 +26,13 @@ LI
 {
 	/*[disabled]height:46px;*/
 }
-.modal IMG
-{
-	width: 128px;
-	height: 163px;
-	/*+placement:float-left 0px 0px;*/
-	float: left;
-	position: relative;
-	left: 0px;
-	top: 0px;
-	margin-right: 16px;
-}
-.modal .title
-{
-	font-weight: bold;
-}
 BODY
 {
 	font-size: small !important;
+}
+.search
+{
+	margin-left: 20px;
 }
 H3.firstRowAboutBook
 {
@@ -66,15 +43,14 @@ H3.firstRowAboutBook
 	padding-bottom: 6px;
 	line-height: normal;
 }
+.author
+{
+	font-weight: 300;
+}
 .secondRowAboutBook
 {
 	clear: both;
 	float: left;
-}
-.title
-{
-	font-size: 103%;
-	color: rgb(0, 75, 145);
 }
 .data
 {

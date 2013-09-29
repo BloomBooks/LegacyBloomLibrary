@@ -1,15 +1,84 @@
 .modal-body
 {
-	height: 366px;
+	height: 235px;
 	padding-top: 0px;
+	margin-top: 17px;
+	margin-left: 15px;
+	margin-right: 17px;
+}
+.modal IMG
+{
+	width: 128px;
+	height: 163px;
+	/*+placement:float-left 0px 0px;*/
+	float: left;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin-right: 16px;
+}
+.modal .title
+{
+	color: #000000;
+	font-size: 24pt;
+	margin-top: -6px;
+	line-height: 1;
+}
+.col2
+{
+	margin-top: 1px;
+	margin-left: 143px;
+}
+LABEL
+{
+	/*+placement:float-left 0px 0px;*/
+	float: left;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin-right: 18px;
+}
+.detail #OK
+{
+	/*+placement:float-right 0px 0px;*/
+	float: right;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 93px;
+}
+.detail BUTTON
+{
+	/*[empty]margin-right:;*/
+}
+.modal .tags
+{
+	margin-top: 11px;
+}
+.modal .summary
+{
+	margin-top: 11px;
+}
+.detail .author
+{
+	margin-top: 6px;
 }
 .modal-header
 {
 	font-size: 18pt;
 	font-weight: bold;
+	border-bottom: 1px solid transparent;
 }
 .modal-header .close
 {
 	font-weight: bold;
 	font-size: 18pt;
+}
+.detail .actions
+{
+	/*+placement:float-left 0px 0px;*/
+	float: left;
+	position: relative;
+	left: 0px;
+	top: 0px;
 }

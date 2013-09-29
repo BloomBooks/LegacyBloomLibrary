@@ -68,11 +68,12 @@ namespace BloomLibrary_TestBackend
 		private static void MakeUpSomeBooks()
 		{
 			var names =
-				"Hours after Bay Area drivers made their way across the Bay Bridge's new eastern span for the first time, dozens of people pedaled and walked on the span's newly opened bike and pedestrian path Tuesday morning Oakland city leaders and transit officials were on hand to dedicate the path to late Oakland city planner and longtime bicycle advocate Alexander Zuckermann, for whom the bike path is named A green-and-white sign bearing his name was unveiled "
+				"Lorem ipsum dolor sit amet consectetur adipiscing elit Nunc fringilla velit mattis purus ornare congue Duis pretium ligula vel turpis commodo faucibus Aliquam ut lectus scelerisque rhoncus leo id facilisis tortor In urna quam euismod sit amet lectus vel convallis varius arcu Praesent a risus risus Vivamus quis quam congue vehicula diam id dictum mi Nullam nec metus lacinia pharetra tortor eget convallis dolor Maecenas nec purus nec turpis varius sodales tempor a orci Vestibulum iaculis pulvinar justo eget molestie massa elementum at Pellentesque cursus et mi sit amet rhoncus Nullam odio mauris porta a consectetur a mattis nec dui Nunc ornare neque non magna laoreet congue"
 					.Split(new[] {' '});
-			for (int i = 0; i < 30; i++)
+			for (int i = 0; i < 60; i++)
 			{
-				_books.Add(new Book() {Title = names[i], Id = i.ToString(), Author = "Jamie Ford"});
+				_books.Add(new Book() { Title = names[i] + " "+names[i+1], 
+					Id = i.ToString(), Author = "Some Author" });
 				_books[i].Thumbnail = EmbeddedRestServer.PathPrefix + @"assets\sampleThumbnail.png";
 				_books[i].PreviewPDF = EmbeddedRestServer.PathPrefix + @"assets\sampleBookPreview.pdf";
 				_books[i].Summary =

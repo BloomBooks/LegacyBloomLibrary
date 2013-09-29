@@ -1,24 +1,28 @@
-<lazy-style href="modules/detail/detail.css"></lazy-style>
-
-<div class="">
+<div class="detail">
     <div class="modal-header">
-        {{book.Title}}
-       
+
         <!--<a href="#" class="close" ng-click="close()>x</a>-->
         <div class="close" ng-click="close()">x</div>
     </div>
     <div class="modal-body">
         <img ng-src="{{book.Thumbnail}}" />
-        <div class="title">{{book.Title}}</div>
-        <div class="author">{{book.Author}}</div>
-        <div class="summary">{{book.Summary}}</div>
+        <div class="col2">
+            <div class="title">{{book.Title}}</div>
+            <div class="author">{{book.Author}}</div>
+            <div class="summary">{{book.Summary}}</div>
+            <div class="tags">
+                <label>Tags:</label><div ng-repeat="tag in book.Tags">
+                    <label><i class="icon-tag"></i>{{tag}}</label>
+                </div>
+            </div>
+            <div class="unfloat"></div>
+            <div class="actions">
+                <a ng-href="{{book.PreviewPDF}}" pdfoverlay>
+                    <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
+                <button type="button" class="btn btn-lg" ng-click="download()"><i class="icon-download"></i>  Open in Bloom</button>
+            </div>
 
-
-        <bootstrap-tagsinput tagClass="label btn-info" readOnly="true" ng-model="book.Tags"></bootstrap-tagsinput>
-
-        <a ng-href="{{book.PreviewPDF}}" pdfoverlay><button>Preview</button></a>
-        <button ng-click="download()">Download and open in Bloom Desktop</button>
-
-
-    </div>
+            <button id="OK" type="button" class="btn btn-info btn-lg" ng-click="close()">OK</button>
+        </div>
+</div>
 </div>
