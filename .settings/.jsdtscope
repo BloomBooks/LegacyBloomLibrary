@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="app/modules/detail/|app/modules/browse/|test/spec/controllers/|app/modules/app/" kind="src" path="src/BloomLibrary_AngularApp"/>
+	<classpathentry kind="src" path="src/BloomLibrary_AngularApp/app/modules/app"/>
+	<classpathentry kind="src" path="src/BloomLibrary_AngularApp/app/modules/browse"/>
+	<classpathentry kind="src" path="src/BloomLibrary_AngularApp/app/modules/detail"/>
+	<classpathentry kind="src" path="src/BloomLibrary_AngularApp/test/spec/controllers"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

@@ -53,7 +53,7 @@ BloomLibraryApp.run(
        // so that you can access them from any scope within your applications.For example,
        // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
        // to active whenever 'contacts.list' or one of its decendents is active.
-       $rootScope.$state = $state;
+       $rootScope.$statesrc/BloomLibrary_AngularApp$ = $state;
        $rootScope.$stateParams = $stateParams;
    }]);
 
