@@ -124,9 +124,7 @@ class BookImport {
 	public static function makeBloomBook($item) {
 		$book = new Book();
 		$values = objectToArray($item);
-// 		var_dump($values);
 		JsonDecoder::decode($book, $values);
-// 		var_dump($book);
 		return $book;
 	}
 	
