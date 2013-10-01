@@ -1,25 +1,26 @@
 'use strict';
 
-var BloomLibraryApp = angular.module('BloomLibraryApp', ['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "restangular", "ui.bootstrap",
+var BloomLibraryApp = angular.module('BloomLibraryApp', ['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.services", "ui.bootstrap",
     'ui.router',
- 'bootstrap-tagsinput'
+ 'bootstrap-tagsinput',
+ 'restangular'
 ])
 
-  .config(function ($locationProvider, $urlRouterProvider, $stateProvider, RestangularProvider
+  .config(function ($locationProvider, $urlRouterProvider, $stateProvider, RestangularProvider 
       ) {
 
       //TODO when we have hosting that can do the url rewriting this requires
       //$locationProvider.html5Mode(true);
       //$locationProvider.hashPrefix('!');
 
-      RestangularProvider.setBaseUrl('/1/classes');//1/classes is a parse.com thing
+      RestangularProvider.setBaseUrl('https://api.parse.com/1/');//1/classes is a parse.com thing
+		//authServiceProvider.setSession('');
+      
 
       // For any unmatched url, redirect to /state1
       $urlRouterProvider.otherwise("/browse");
 
   })
-.run(function run() {
-})
 .controller('AppCtrl', function AppCtrl($scope, $location) {
 })
 
@@ -53,7 +54,7 @@ BloomLibraryApp.run(
        // so that you can access them from any scope within your applications.For example,
        // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
        // to active whenever 'contacts.list' or one of its decendents is active.
-       $rootScope.$statesrc/BloomLibrary_AngularApp$ = $state;
+       $rootScope.$state = $state;
        $rootScope.$stateParams = $stateParams;
    }]);
 
