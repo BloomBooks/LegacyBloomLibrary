@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('BloomLibraryApp.browse').controller('BrowseCtrl', function ($scope, Restangular, $dialog, $timeout
-       //,$stateProvider //review
-       ) {
+angular.module('BloomLibraryApp.browse')
+	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bloomService', 
+	                           function ($scope, $dialog, $timeout, bloomService) {
 
-     
-      Restangular.all('classes/Books').getList().then(function (allBooks) {
+      bloomService.books_list().then(function (result) {
+    	var allBooks = result.results;
+      	console.log(result.results);
         $scope.numPerPage = 8;
         $scope.noOfPages = Math.ceil(allBooks.length / $scope.numPerPage);
         $scope.currentPage = 1;
@@ -15,7 +16,10 @@ angular.module('BloomLibraryApp.browse').controller('BrowseCtrl', function ($sco
       
         
       //$scope.updatePageControl = function () {
-      //    $timeout(function () { //wait for 'filteredBooks' to be changed
+      //    $timeout(function ()   	bloomService.books_list().then(function (allBooks) {
+      $scope.numPerPage = 8;
+//      $scope.noOfPages = Math.ceil(allBooks.length / $scope.numPerPage);
+      //wait for 'filteredBooks' to be changed
       //        $scope.noOfPages = Math.ceil($scope.filteredBooks.length / $scope.numPerPage);
       //        $scope.currentPage = 1;
       //        $scope.setPage = function (pageNo) {
@@ -48,5 +52,5 @@ angular.module('BloomLibraryApp.browse').controller('BrowseCtrl', function ($sco
       };
 
 
-  });
+  }]);
 

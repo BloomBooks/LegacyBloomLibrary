@@ -1,26 +1,20 @@
 'use strict';
 
-var BloomLibraryApp = angular.module('BloomLibraryApp', ['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.services", "ui.bootstrap",
-    'ui.router',
- 'bootstrap-tagsinput',
- 'restangular'
-])
+var BloomLibraryApp = angular.module('BloomLibraryApp', 
+				['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.services",
+				"ui.bootstrap", 'ui.router', 'restangular' ])
 
-  .config(function ($locationProvider, $urlRouterProvider, $stateProvider, RestangularProvider 
-      ) {
+  .config(['$urlRouterProvider',
+           function ($urlRouterProvider) {
 
       //TODO when we have hosting that can do the url rewriting this requires
       //$locationProvider.html5Mode(true);
       //$locationProvider.hashPrefix('!');
 
-      RestangularProvider.setBaseUrl('https://api.parse.com/1/');//1/classes is a parse.com thing
-		//authServiceProvider.setSession('');
-      
-
       // For any unmatched url, redirect to /state1
       $urlRouterProvider.otherwise("/browse");
 
-  })
+  }])
 .controller('AppCtrl', function AppCtrl($scope, $location) {
 })
 
@@ -28,9 +22,9 @@ var BloomLibraryApp = angular.module('BloomLibraryApp', ['BloomLibraryApp.browse
 BloomLibraryApp.filter('startFrom', function () {
     return function (input, start) {
         start = +start; //parse to int
-        if (input)
+        if (input) {
             return input.slice(start);
-        else
+        } else
             return "";
     }
 });
