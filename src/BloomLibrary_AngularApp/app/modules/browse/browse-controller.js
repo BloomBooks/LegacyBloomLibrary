@@ -5,7 +5,7 @@ angular.module('BloomLibraryApp.browse').controller('BrowseCtrl', function ($sco
        ) {
 
      
-      Restangular.all('Books').getList().then(function (allBooks) {
+      Restangular.all('classes/Books').getList().then(function (allBooks) {
         $scope.numPerPage = 8;
         $scope.noOfPages = Math.ceil(allBooks.length / $scope.numPerPage);
         $scope.currentPage = 1;

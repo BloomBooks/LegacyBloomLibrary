@@ -1,25 +1,26 @@
 'use strict';
 
-var BloomLibraryApp = angular.module('BloomLibraryApp', ['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "restangular", "ui.bootstrap",
+var BloomLibraryApp = angular.module('BloomLibraryApp', ['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.services", "ui.bootstrap",
     'ui.router',
- 'bootstrap-tagsinput'
+ 'bootstrap-tagsinput',
+ 'restangular'
 ])
 
-  .config(function ($locationProvider, $urlRouterProvider, $stateProvider, RestangularProvider
+  .config(function ($locationProvider, $urlRouterProvider, $stateProvider, RestangularProvider 
       ) {
 
       //TODO when we have hosting that can do the url rewriting this requires
       //$locationProvider.html5Mode(true);
       //$locationProvider.hashPrefix('!');
 
-      RestangularProvider.setBaseUrl('/1/classes');//1/classes is a parse.com thing
+      RestangularProvider.setBaseUrl('https://api.parse.com/1/');//1/classes is a parse.com thing
+		//authServiceProvider.setSession('');
+      
 
       // For any unmatched url, redirect to /state1
       $urlRouterProvider.otherwise("/browse");
 
   })
-.run(function run() {
-})
 .controller('AppCtrl', function AppCtrl($scope, $location) {
 })
 
