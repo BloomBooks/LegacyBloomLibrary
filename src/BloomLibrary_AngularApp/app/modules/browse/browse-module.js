@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BloomLibraryApp.browse', ['ui.router', 'restangular'])//, 'BloomLibraryApp.detail'])
-    .config(function config($stateProvider) {
+    .config(['$stateProvider', function config($stateProvider) {
 
         $stateProvider.state('browse', {
             //review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
@@ -10,5 +10,5 @@ angular.module('BloomLibraryApp.browse', ['ui.router', 'restangular'])//, 'Bloom
                     templateUrl: 'modules/browse/browse.tpl.html',
                     controller: 'BrowseCtrl'
         }); 
-    })
+    }]);
 

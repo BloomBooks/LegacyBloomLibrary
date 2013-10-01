@@ -1,37 +1,32 @@
 <div>
     <h1>Books</h1>
     <div class="container">
-        <div class="row">
-            <div class="search">
-                Search
-                <input placeholder="title, topic, or tag" ng-model="searchText" data-ng-change="updateFilter()" />
-                <button class='btn add-on'>
-                    <i class="glyphicon glyphicon-search"></i>
-                </button>
-            </div>
+        <div class="input-append">
+            <input type="text"  ng-keypress="x()" class="span2" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
+            <button class='btn' ng-click="SearchNow()">
+                <i class="icon-search"></i>
+            </button>
         </div>
-
+        
         <div class="results">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
             <div class="result"
-                ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage "
-                context="bookContextMenu" >
-<!--                ng-click="viewBook(book)"    >-->
+                ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage">
+                <!--                ng-click="viewBook(book)"    >-->
                 <div class="imageContainer">
                     <a ui-sref="browse.detail({bookId: book.Id})">
                         <img ng-src="{{book.Thumbnail}}" />
-                     </a>
+                    </a>
                 </div>
                 <div class="data">
-                    <h3 class="firstRowAboutBook">
-                        {{book.Title}}
+                    <h3 class="firstRowAboutBook">{{book.Title}}
                         <div class="author">{{book.Author}}</div>
                     </h3>
                     <div class="secondRowAboutBook">
                         <div class="pages">{{book.Pages}} pages</div>
                     </div>
                 </div>
-                        <div class="unfloat"></div>
+                <div class="unfloat"></div>
             </div>
         </div>
 
