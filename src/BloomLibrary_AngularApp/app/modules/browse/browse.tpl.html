@@ -8,10 +8,11 @@
             </button>
         </div>
         
-        <div class="results">
+        <div listview class="results" hide-if-empty="false" search="queryBooks()" items="books" visible-items="visibleBooks" select="">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
             <div class="result"
-                ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage">
+                ng-repeat="book in visibleBooks">
+                <!-- Was: ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage" -->
                 <!--                ng-click="viewBook(book)"    >-->
                 <div class="imageContainer">
                     <a ui-sref="browse.detail({bookId: book.volumeInfo.objectId})">
@@ -31,9 +32,5 @@
         </div>
 
 
-        <div class="row">
-            <!-- may not be up to bootstrap 3 yet. see: http://stackoverflow.com/a/18004893/723299       -->
-            <pagination num-pages="noOfPages" current-page="currentPage" class="pagination-small"></pagination>
-        </div>
     </div>
 </div>
