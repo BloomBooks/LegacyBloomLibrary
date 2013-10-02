@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('BloomLibraryApp.login').controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', function ($scope, $dialog, $timeout, silNoticeService, authService
-       ) {
-       	
+angular.module('BloomLibraryApp.login')
+	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', 
+	                          function ($scope, $dialog, $timeout, silNoticeService, authService) {
        	$scope.login = function() {
        		authService.login($scope.username, $scope.password, function(result) {
        			if (result.error) {
