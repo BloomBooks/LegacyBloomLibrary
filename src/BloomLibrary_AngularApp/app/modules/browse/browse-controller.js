@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bloomService', 
-	                           function ($scope, $dialog, $timeout, bloomService) {
+	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', 
+	                           function ($scope, $dialog, $timeout, bookService) {
 
-      bloomService.books_list().then(function (result) {
+      bookService.books_list().then(function (result) {
     	var allBooks = result.results;
       	console.log(result.results);
         $scope.numPerPage = 8;
