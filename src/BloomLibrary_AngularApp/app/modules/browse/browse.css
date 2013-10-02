@@ -1,4 +1,5 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
+/*
 UL
 {
 	margin-left: 0px;
@@ -12,6 +13,7 @@ LI
 	padding-left: 0px !important;
 	font: 1em Arial;
 }
+*/
 .search BUTTON.add-on
 {
 	height: 26px;

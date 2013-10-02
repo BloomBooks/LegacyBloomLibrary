@@ -17,6 +17,10 @@ var BloomLibraryApp = angular.module('BloomLibraryApp',
   }])
 .controller('AppCtrl', function AppCtrl($scope, $location) {
 })
+.controller('HeaderCtrl', ['$scope', '$location', function($scope, $location) {
+	$scope.location = $location.path();
+}])
+;
 
 //Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
 BloomLibraryApp.filter('startFrom', function () {
@@ -26,7 +30,7 @@ BloomLibraryApp.filter('startFrom', function () {
             return input.slice(start);
         } else
             return "";
-    }
+    };
 });
 
 //review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
@@ -43,7 +47,7 @@ BloomLibraryApp.run(
        //lets you write ng-click="alert('testing')"
        $rootScope.alert = function (text) {
            alert(text);
-       }
+       };
        // It's very handy to add references to $state and $stateParams to the $rootScope
        // so that you can access them from any scope within your applications.For example,
        // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>

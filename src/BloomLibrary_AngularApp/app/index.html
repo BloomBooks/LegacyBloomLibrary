@@ -11,6 +11,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- endbuild -->
     <!--    <link rel="stylesheet" href="components/bootstrap-css/css/temp-pagination-w-bs3-fix.css">-->
+    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="components/bootstrap-css/css/bootstrap.css">
     <link href="components/bootstrap-css/css/bootstrap-responsive.css" rel="stylesheet">
     <!-- for Bootstrap 2 only -->
@@ -31,10 +32,28 @@
 
     <!--<div class="container" ng-view></div>-->
     <!-- using ui.router -->
+	<div ng-controller="HeaderCtrl">
+	<div class="navbar" bs-navbar>
+	  <div class="navbar-inner">
+	    <a class="brand" href="#">Title</a>
+	    <ul class="nav">
+	      <!-- You can use regular expressions -->
+	      <li data-match-route="/(:?navbar)"><a href="#/">Home</a></li>
+	      <li data-match-route="/browse"><a href="#/browse">Browse</a></li>
+	    </ul>
+	    <div style="float: right" class="nav">
+	    <a class="btn" href="#/login">Login</a>or <a>Sign Up</a>
+	    </div>
+	  </div>
+	</div>
+	<!-- {{location}} -->
+	</div>
+	<div class="container">
+	<sil-notices></sil-notices>
+    <div ui-view></div>
+	</div>
 
-    <div class="container" ui-view></div>
-
-        <script src="components/jquery/jquery.js"></script>
+    <script src="components/jquery/jquery.js"></script>
     <script src="components/jquery-ui/ui/jquery-ui.js"></script>
 
     <script src="components/angular/angular.js"></script>

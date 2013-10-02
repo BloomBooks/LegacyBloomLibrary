@@ -11,8 +11,8 @@ angular.module('BloomLibraryApp.login')
 					silNoticeService.push(silNoticeService.SUCCESS, "Login Successful");
 					
 					// add session token to defaultHeaders
-					authService.setSession(result.sessionToken);
-       				var user = result;
+//					authService.setSession(result.sessionToken);
+//       				var user = result;
        			}
        		}, function(error) {
 	       		silNoticeService.push(silNoticeService.ERROR, error);
