@@ -14,16 +14,16 @@
                 ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage">
                 <!--                ng-click="viewBook(book)"    >-->
                 <div class="imageContainer">
-                    <a ui-sref="browse.detail({bookId: book.Id})">
-                        <img ng-src="{{book.Thumbnail}}" />
+                    <a ui-sref="browse.detail({bookId: book.volumeInfo.objectId})">
+                        <img ng-src="{{book.volumeInfo.imageLinks.thumbnail}}" />
                     </a>
                 </div>
                 <div class="data">
-                    <h3 class="firstRowAboutBook">{{book.Title}}
-                        <div class="author">{{book.Author}}</div>
+                    <h3 class="firstRowAboutBook">{{book.volumeInfo.title}}
+                        <div class="author">{{book.volumeInfo.authors | makeCommaList}}</div>
                     </h3>
                     <div class="secondRowAboutBook">
-                        <div class="pages">{{book.Pages}} pages</div>
+                        <div class="pages">{{book.volumeInfo.pageCount}} pages</div>
                     </div>
                 </div>
                 <div class="unfloat"></div>

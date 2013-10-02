@@ -50,7 +50,5 @@ angular.module('BloomLibraryApp.browse')
           $timeout(function () { $scope.updatePageControl()}, 1000);
           return titleMatch | tagMatch;
       };
-
-
   }]);
 
