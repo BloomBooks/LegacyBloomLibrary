@@ -42,14 +42,14 @@
                     <li data-match-route="/(:?navbar)"><a href="#/">Home</a></li>
                     <li data-match-route="/browse"><a href="#/browse">Browse</a></li>
                 </ul>
-
                 <div style="float: right" class="nav">
                     <ng-switch class="animate-switch-container" on="isLoggedIn()">
                         <div ng-switch-when="false">
-                            <a class="btn" href="#/login">Login</a>or <a>Sign Up</a>
+                            <a>Sign Up</a>   <a href="#/login">Login</a>  
                         </div>
                         <div ng-switch-default>
-                            Logout
+                           {{userName()}}
+                            <a ng-click="logout()">log out</a>
                         </div>
                     </ng-switch>
                 </div>

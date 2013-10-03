@@ -15,11 +15,16 @@ var BloomLibraryApp = angular.module('BloomLibraryApp',
       $urlRouterProvider.otherwise("/browse");
 
   }])
-.controller('AppCtrl', function AppCtrl($scope, $location) {
-})
+
 .controller('HeaderCtrl', ['$scope', 'authService', '$location', function($scope, authService, $location) {
     $scope.location = $location.path();
     $scope.isLoggedIn = authService.isLoggedIn;
+
+    $scope.logout = function () {
+        authService.logout();
+    };
+
+    $scope.userName = authService.userName;
 }]);
 
 //Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
@@ -56,36 +61,6 @@ BloomLibraryApp.run(
        $rootScope.$stateParams = $stateParams;
    }]);
 
-
-// In the template:
-//<lazy-style href="style.css"/>
-BloomLibraryApp.directive('lazyStyle', function () {
-    var loadedStyles = {};
-    return {
-        restrict: 'E',
-        link: function (scope, element, attrs) {
- 
-            var stylePath = attrs.href;
- 
-            if (stylePath in loadedStyles) {
-                return;
-            }
- 
-            if (document.createStyleSheet) {
-                document.createStyleSheet(stylePath); //IE
-            } else {
-                var link = document.createElement("link");
-                link.type = "text/css";
-                link.rel = "stylesheet";
-                link.href = stylePath;
-                document.getElementsByTagName("head")[0].appendChild(link);
-            }
- 
-            loadedStyles[stylePath] = true;
- 
-        }
-    };
-});
 
 BloomLibraryApp.directive('pdfoverlay', function () {
     return {
