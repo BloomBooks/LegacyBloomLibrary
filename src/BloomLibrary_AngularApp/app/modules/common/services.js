@@ -32,8 +32,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			restangularConfigurer.setDefaultHeaders(headers);
 			
 		};
-		this.books_list = function() {
-			return restangular.withConfig(restangularDefaultConfig).all('classes/books').getList();
+		this.getAllBooks = function () {
+		    return restangular.withConfig(restangularDefaultConfig).all('classes/books').getList().then(function(resultWithWrapper)   {
+		        return resultWithWrapper.results;
+		    })
 		};
-	}])
-;
+
+		this.getBookById = function (id) {
+		    return restangular.withConfig(restangularDefaultConfig).one('classes/books',id).get();
+		};
+	}]);
