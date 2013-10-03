@@ -113,3 +113,11 @@ UpgradeLog*.XML
 
 /src/WindowsFormsApplication1
 __stylizer.htm
+
+# ng-boilerplate
+*.sw*
+*~
+build/
+bin/
+node_modules/
+vendor/
