@@ -1,7 +1,7 @@
 
 angular.module('palaso.ui.listview', ['ui.bootstrap'])
   // Typeahead
-  .directive('listview', ["$timeout", function($timeout) {
+  .directive('listview', ["$timeout", "$filter", function($timeout, $filter) {
 		return {
 			restrict : 'EA',
 			transclude : true,
@@ -13,6 +13,9 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				items: "=",
 				hideIfEmpty: "@",
 				visibleItems: "=",
+				filterSearchString: "=",
+				filter: "=",
+				filterComparator: "&",
 			},
 			controller: ["$scope", function($scope) {
 				$scope.noOfPages = 3;  // TODO: calculate this automatically
@@ -20,6 +23,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				$scope.maxSize = 5;
 				$scope.itemsPerPage = 5;  // This should match the default value for the selector above
 				$scope.items = [];
+				$scope.filteredItems = [];
 				
 				this.activate = function(item) {
 					$scope.active = item;
@@ -52,10 +56,29 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 						sliceStart = 0;
 						sliceEnd = $scope.itemsPerPage;
 					}
-					$scope.visibleItems = $scope.items.slice(sliceStart, sliceEnd);
+					console.log('Selecting items from', sliceStart, 'to', sliceEnd);
+					$scope.visibleItems = $scope.filteredItems.slice(sliceStart, sliceEnd);
 				}
+				this.filterPages = function() {
+					console.log('LOOK HERE!');
+					console.log('filter search string is:', $scope.filterSearchString);
+					console.log(typeof($scope.filter));
+					if (!$scope.filterSearchString) {
+						$scope.filteredItems = $scope.items;
+					} else if ($scope.hasFilter) {
+						$scope.filteredItems = $filter('filter')(
+							$scope.items,
+							$scope.filter,
+							$scope.comparatorFunc
+						);
+					} else {
+						$scope.filteredItems = $scope.items;
+					}
+					console.log($scope.filteredItems.length, 'items left after filtering:');
+					console.log($scope.filteredItems);
+				};
 				this.updatePages = function() {
-					$scope.noOfPages = Math.ceil($scope.items.length / $scope.itemsPerPage);
+					$scope.noOfPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
 					if ($scope.currentPage > $scope.noOfPages) {
 						// This can happen if items have been deleted, for example
 						$scope.currentPage = $scope.noOfPages;
@@ -63,9 +86,24 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					if ($scope.currentPage < 1) {
 						$scope.currentPage = 1;
 					}
-				}
+				};
 				this.query = function() {
+					console.log('LOOK HERE ALSO!');
+					console.log(typeof($scope.filter));
+					console.log($scope.filter);
+					if ($scope.hasFilterComparator) {
+						$scope.comparatorFunc = $scope.comparatorFunc();
+						// Yes, this is different from how filter is treated.
+						// The filter is a name that Angular retrieves from
+						// previously-registered filters (hence why we're
+						// passing the *name* in the @filter attribute), but
+						// the comparator func is an actual function that
+						// needs to be passed through to Angular.
+					} else {
+						$scope.comparatorFunc = undefined;
+					}
 					$scope.search();
+					this.filterPages();
 					this.updatePages();
 //					$scope.search({
 //						term : $scope.term
@@ -73,6 +111,8 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				};
 			}],
 			link : function(scope, element, attrs, controller) {
+				scope.hasFilter = ('filter' in attrs);
+				scope.hasFilterComparator = ('filter-comparator' in attrs);
 				scope.$watch('currentPage', function() {
 					controller.updateVisibleItems();
 				});
@@ -81,9 +121,15 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					controller.updateVisibleItems();
 				});
 				scope.$watch('items', function() {
+					controller.filterPages();
 					controller.updatePages();
 					controller.updateVisibleItems();
 				}, true);
+				scope.$watch('filterSearchString', function() {
+					controller.filterPages();
+					controller.updatePages();
+					controller.updateVisibleItems();
+				});
 				controller.query();
 			}
 		};

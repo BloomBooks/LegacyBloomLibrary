@@ -20,6 +20,10 @@ angular.module('BloomLibraryApp.browse')
               $scope.books = result.results;
           });
       }; // TODO: Think about combination of filters with listview pages: 10 items per page, but filtered?
+
+	  $scope.foo = function(paramOne, paramTwo) {
+		  return paramOne + paramTwo;
+	  }
       
         
       //$scope.updatePageControl = function () {
@@ -56,7 +60,7 @@ angular.module('BloomLibraryApp.browse')
           var tagMatch = _.contains(book.Tags, s);
           var x = book.volumeInfo.authors.join().toLowerCase();
           var authorMatch = book.volumeInfo.authors.join().toLowerCase().indexOf(s) > -1;
-          $timeout(function () { $scope.updatePageControl()}, 1000);
+          //$timeout(function () { $scope.updatePageControl()}, 1000);
           return titleMatch | tagMatch | authorMatch;
       };
   }]);

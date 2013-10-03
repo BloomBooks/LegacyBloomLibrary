@@ -8,7 +8,7 @@
             </button>
         </div>
         
-        <div listview class="results" hide-if-empty="false" search="queryBooks()" items="books" visible-items="visibleBooks" select="">
+		<div listview class="results" hide-if-empty="false" search="queryBooks()" items="books" filter="matchingBooks" filter-search-string="searchText" visible-items="visibleBooks" equals="3">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
             <div class="result"
                 ng-repeat="book in visibleBooks">
