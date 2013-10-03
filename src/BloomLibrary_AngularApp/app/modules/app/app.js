@@ -17,10 +17,10 @@ var BloomLibraryApp = angular.module('BloomLibraryApp',
   }])
 .controller('AppCtrl', function AppCtrl($scope, $location) {
 })
-.controller('HeaderCtrl', ['$scope', '$location', function($scope, $location) {
-	$scope.location = $location.path();
-}])
-;
+.controller('HeaderCtrl', ['$scope', 'authService', '$location', function($scope, authService, $location) {
+    $scope.location = $location.path();
+    $scope.isLoggedIn = authService.isLoggedIn;
+}]);
 
 //Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
 BloomLibraryApp.filter('startFrom', function () {
