@@ -14,7 +14,7 @@
                 ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage">
                 <!--                ng-click="viewBook(book)"    >-->
                 <div class="imageContainer">
-                    <a ui-sref="browse.detail({bookId: book.volumeInfo.objectId})">
+                    <a ui-sref="browse.detail({bookId: book.objectId})">
                         <img ng-src="{{book.volumeInfo.imageLinks.thumbnail}}" />
                     </a>
                 </div>
