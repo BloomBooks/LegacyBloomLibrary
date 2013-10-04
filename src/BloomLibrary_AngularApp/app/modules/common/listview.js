@@ -56,13 +56,9 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 						sliceStart = 0;
 						sliceEnd = $scope.itemsPerPage;
 					}
-					console.log('Selecting items from', sliceStart, 'to', sliceEnd);
 					$scope.visibleItems = $scope.filteredItems.slice(sliceStart, sliceEnd);
 				}
 				this.filterPages = function() {
-					console.log('LOOK HERE!');
-					console.log('filter search string is:', $scope.filterSearchString);
-					console.log(typeof($scope.filter));
 					if (!$scope.filterSearchString) {
 						$scope.filteredItems = $scope.items;
 					} else if ($scope.hasFilter) {
@@ -74,8 +70,6 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					} else {
 						$scope.filteredItems = $scope.items;
 					}
-					console.log($scope.filteredItems.length, 'items left after filtering:');
-					console.log($scope.filteredItems);
 				};
 				this.updatePages = function() {
 					$scope.noOfPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
@@ -88,9 +82,6 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					}
 				};
 				this.query = function() {
-					console.log('LOOK HERE ALSO!');
-					console.log(typeof($scope.filter));
-					console.log($scope.filter);
 					if ($scope.hasFilterComparator) {
 						$scope.comparatorFunc = $scope.comparatorFunc();
 						// Yes, this is different from how filter is treated.
