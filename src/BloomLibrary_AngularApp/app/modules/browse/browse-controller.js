@@ -15,7 +15,7 @@ angular.module('BloomLibraryApp.browse')
 
       $scope.visibleBooks = [];
       $scope.queryBooks = function() {
-          bookService.books_list().then(function (result) {
+          bookService.getAllBooks().then(function (result) {
               $scope.books = result.results;
           });
       }; // TODO: Think about combination of filters with listview pages: 10 items per page, but filtered?
@@ -26,7 +26,7 @@ angular.module('BloomLibraryApp.browse')
       
         
       //$scope.updatePageControl = function () {
-      //    $timeout(function ()   	bloomService.books_list().then(function (allBooks) {
+      //    $timeout(function ()   	bloomService.getAllBooks().then(function (allBooks) {
       $scope.numPerPage = 8;
 //      $scope.noOfPages = Math.ceil(allBooks.length / $scope.numPerPage);
       //wait for 'filteredBooks' to be changed
