@@ -1,13 +1,14 @@
 <div>
     <h1>Books</h1>
     <div class="container">
-        <div class="input-append">
-            <input type="text"  ng-keypress="x()" class="span2" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
-            <button class='btn' ng-click="SearchNow()">
-                <i class="icon-search"></i>
-            </button>
-        </div>
-        
+        <form ng-submit="SearchNow()">
+            <div class="input-append">
+                <input type="text"  ng-keypress="x()" class="span2" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
+                <button class='btn' type='submit'>
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+        </form>
         <div class="results">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
             <div class="result"

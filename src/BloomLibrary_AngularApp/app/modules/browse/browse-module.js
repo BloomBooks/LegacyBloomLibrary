@@ -10,8 +10,6 @@ angular.module('BloomLibraryApp.browse', ['ui.router', 'restangular'])//, 'Bloom
             templateUrl: 'modules/browse/browse.tpl.html',
             controller: 'BrowseCtrl'
         });
-
-
     }])
 
 //we get a json list like ['me','you'] and we return 'me, you'
