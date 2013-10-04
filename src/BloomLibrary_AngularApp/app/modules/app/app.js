@@ -2,7 +2,7 @@
 
 var BloomLibraryApp = angular.module('BloomLibraryApp', 
 				['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services",
-				"ui.bootstrap", 'ui.router', 'restangular' ])
+				"ui.bootstrap", 'ui.router', 'palaso.ui.listview', 'restangular' ])
 
   .config(['$urlRouterProvider', '$stateProvider',
            function ($urlRouterProvider, $stateProvider) {
