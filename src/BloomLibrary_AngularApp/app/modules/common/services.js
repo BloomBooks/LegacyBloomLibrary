@@ -60,7 +60,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			restangularConfigurer.setDefaultHeaders(headers);
 		};
 		this.getAllBooks = function () {
-		    return restangular.withConfig(restangularDefaultConfig).all('classes/books').getList().then(function(resultWithWrapper)   {
+		    return restangular.withConfig(restangularDefaultConfig).all('classes/books').getList({"limit":50}).then(function(resultWithWrapper)   {
 		        return resultWithWrapper.results;
 		    })
 		};		
