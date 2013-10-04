@@ -110,15 +110,24 @@ function objectToArray($d) {
 class BookImport {
 	
 	public static function run() {
-		$urlGet = 'https://www.googleapis.com/books/v1/volumes?q=julesverne';
-		$response = Request::get($urlGet)->send();
-		
-// 		var_dump($response->body);
-		foreach($response->body->items as $item) {
-			$book = self::makeBloomBook($item);
-			self::postBloomBook($book);
+		$itemsPerPage = 40;
+		for($index=0; $index<500; $index+=$itemsPerPage)
+		{
+			$urlGet = "https://www.googleapis.com/books/v1/volumes?maxResults=$itemsPerPage&startIndex=$index&q=hamburger";
+			print('g');
+			$response = Request::get($urlGet)->send();
+			print('G');
+			
+	// 		var_dump($response->body);
+			foreach($response->body->items as $item) {
+				print('p');
+				$book = self::makeBloomBook($item);
+				self::postBloomBook($book);
+				print('P');
+			}
+			//var_dump(count($response->body->items));
+			print($index);
 		}
-		var_dump(count($response->body->items));
 	}
 	
 	public static function makeBloomBook($item) {
@@ -129,22 +138,29 @@ class BookImport {
 	}
 	
 	public static function postBloomBook($book) {
-		$urlPut = 'https://api.parse.com/1/classes/books';
-		$data = JsonEncoder::encode($book);
-		$json = json_encode($data);
-// 		var_dump($json);
-		$response = Request::post($urlPut)
-			->addHeader('X-Parse-Application-Id', 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5')
-			->addHeader('X-Parse-REST-API-Key', 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx')
-			->sendsJson()
-			->body($json)
-			->send();
-// 		var_dump($response);
+		try
+		{
+			$urlPut = 'https://api.parse.com/1/classes/books';
+			$data = JsonEncoder::encode($book);
+			$json = json_encode($data);
+	// 		var_dump($json);
+			$response = Request::post($urlPut)
+				->addHeader('X-Parse-Application-Id', 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5')
+				->addHeader('X-Parse-REST-API-Key', 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx')
+				->sendsJson()
+				->body($json)
+				->send();
+			//var_dump($response);
+		}
+		catch(Exception $z)
+		{
+			print "\nException $z\n";
+		}
 	}
 	
 	
 }
-
+ //PHPinfo(); 
 BookImport::run();
 
 ?>
