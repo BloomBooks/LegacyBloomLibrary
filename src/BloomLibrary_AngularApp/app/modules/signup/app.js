@@ -18,24 +18,29 @@ angular.module('BloomLibraryApp.signup', ['ui.router', 'BloomLibraryApp.services
 	    });
 	  }
 	}])
-	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', function SignupCtrl($scope, userService, notice) {
+	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', function SignupCtrl($scope, userService, notice, $state, auth) {
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;
 		
 		$scope.createUser = function(record) {
-			record.username = record.email;
-			$scope.submitting = true;
-			userService.register(record, function(result) {
-				$scope.submitting = false;
-				if (result.error) {
-					notice.push(notice.ERROR, result.error);
-				} else if (result.objectId) {
-					notice.push(notice.SUCCESS, "Thank you, " + record.name + ", for registering.  We will contact you via email when your account is active.");
-					$("#userForm").fadeOut();
-				}
-			});
-			return true;
+			if (record.email) {
+				record.username = record.email;
+				$scope.submitting = true;
+				userService.register(record, function(result) {
+					$scope.submitting = false;
+					if (result.data && result.data.error) {
+						notice.push(notice.ERROR, result.data.error);
+					} else if (result.objectId) {
+						notice.push(notice.SUCCESS, "Thank you, " + record.name + ", for registering. You are now logged in.");
+						$state.go('browse');
+						auth.setSession(result.sessionToken);
+					}
+				});
+				return true;
+			} else {
+				notice.push(notice.WARN, "The email address is not valid");
+			}
 		};
 		$scope.checkUserName = function() {
 			$scope.userNameOk = false;
@@ -51,6 +56,7 @@ angular.module('BloomLibraryApp.signup', ['ui.router', 'BloomLibraryApp.services
 						$scope.userNameOk = false;
 						$scope.userNameExists = true;
 					}
+					// todo: check for error state
 				});
 			}
 		}

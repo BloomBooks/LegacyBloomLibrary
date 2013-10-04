@@ -18,7 +18,7 @@
 								<span ng-show="userNameOk"><img id="userNameOk" src="assets/tick.png" title="User name is available!" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;"/></span>
 								<span ng-show="userNameExists"><img id="userNameExists" src="assets/exclamation.png" title="User name already exist!" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;"/></span>
 						</div>
-						{{record.email}}
+						<div ng-show="userNameExists" style="color:red">We already have an account with this address.  Would you like to <a href="#/login">login</a>?</div>
 						<div class="mandatoryfields">
 							If you can see this, do not fill in the following text field
 							<input type="text" name="name" ng-model="record.mandatoryfields" />

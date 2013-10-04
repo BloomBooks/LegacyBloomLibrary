@@ -12,8 +12,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             restangularConfigurer.setDefaultHeaders(headers);
 			
         };
-
-        return {
+        
+        var factory = {
 
             userName: function () { return userNameX; },
 
@@ -22,6 +22,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             setSession : function(sessionToken) {
                 if (sessionToken) {
                     headers['X-Parse-Session-Token'] = sessionToken;
+                    isLoggedIn = true;
                 }
                 restangular.withConfig(function(restangularConfigurer) {
                     restangularConfigurer.setDefaultHeaders(headers);
@@ -34,6 +35,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     .then(function (result) {
                         isLoggedIn = true;
                         userNameX = username;
+                        factory.setSession(result.sessionToken); // im not sure this actually works
                         successCallback(result);
                 },
                 function (result) {
@@ -45,10 +47,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
             logout: function () {
                 isLoggedIn = false;
-                setSession('');
+                factory.setSession('');
             }
 
-        }}])
+        };
+        
+        return factory;
+        }])
    
 	.service('bookService', ['Restangular', function(restangular) {
 		var restangularDefaultConfig = function(restangularConfigurer) {
