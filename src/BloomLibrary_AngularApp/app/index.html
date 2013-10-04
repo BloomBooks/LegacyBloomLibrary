@@ -11,19 +11,21 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- endbuild -->
     <!--    <link rel="stylesheet" href="components/bootstrap-css/css/temp-pagination-w-bs3-fix.css">-->
+    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="components/bootstrap-css/css/bootstrap.css">
     <link href="components/bootstrap-css/css/bootstrap-responsive.css" rel="stylesheet">
     <!-- for Bootstrap 2 only -->
 
     <link rel="stylesheet" href="modules/browse/browse.css">
+    <link rel="stylesheet" href="modules/detail/detail.css">
     <link rel="stylesheet" href="modules/browse/retrofitBootstrap3ForAngularJSPagination.css">
 
-       <link rel="stylesheet" href="components/fancybox/source/jquery.fancybox.css"></link>
+    <link rel="stylesheet" href="components/fancybox/source/jquery.fancybox.css"></link>
 
 </head>
 <body ng-app="BloomLibraryApp">
 
-<!--    <pre>
+    <!--    <pre>
       $state = {{$state.current.name}}
       $stateParams = {{$stateParams}}
       $state full url = {{ $state.$current.url.source }}
@@ -31,10 +33,37 @@
 
     <!--<div class="container" ng-view></div>-->
     <!-- using ui.router -->
+    <div ng-controller="HeaderCtrl">
+        <div class="navbar" bs-navbar>
+            <div class="navbar-inner">
+                <a class="brand" href="#">Title</a>
+                <ul class="nav">
+                    <!-- You can use regular expressions -->
+                    <li data-match-route="/(:?navbar)"><a href="#/">Home</a></li>
+                    <li data-match-route="/browse"><a href="#/browse">Browse</a></li>
+                </ul>
+                <div style="float: right" class="nav">
+                    <ng-switch class="animate-switch-container" on="isLoggedIn()">
+                        <div ng-switch-when="false">
+                            <a>Sign Up</a>   <a href="#/login">Login</a>  
+                        </div>
+                        <div ng-switch-default>
+                           {{userName()}}
+                            <a ng-click="logout()">log out</a>
+                        </div>
+                    </ng-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- {{location}} -->
+    </div>
+    <div class="container">
+        <sil-notices></sil-notices>
+        <div ui-view></div>
+    </div>
 
-    <div class="container" ui-view></div>
-
-        <script src="components/jquery/jquery.js"></script>
+    <script src="components/jquery/jquery.js"></script>
     <script src="components/jquery-ui/ui/jquery-ui.js"></script>
 
     <script src="components/angular/angular.js"></script>
@@ -48,7 +77,7 @@
 
     <script src="components/angular-ui-router/release/angular-ui-router.js"></script>
 
-       <script src="components/fancybox/source/jquery.fancybox.js"></script>
+    <script src="components/fancybox/source/jquery.fancybox.js"></script>
 
     <!-- app module -->
     <script src="modules/app/app.js"></script>
@@ -60,16 +89,16 @@
     <!-- detail module -->
     <script src="modules/detail/detail-module.js"></script>
     <script src="modules/detail/detail-controller.js"></script>
-    
+
     <!-- login module -->
     <script src="modules/login/login-module.js"></script>
     <script src="modules/login/login-controller.js"></script>
-    
+
     <!-- common module -->
     <script src="modules/common/notice.js"></script>
     <script src="modules/common/services.js"></script>
     <script src="modules/common/listview.js"></script>
-    
+
     <!-- endbuild -->
 </body>
 </html>

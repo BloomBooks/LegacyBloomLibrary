@@ -4,9 +4,8 @@ angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', 
 	                           function ($scope, $dialog, $timeout, bookService) {
 
-      bookService.books_list().then(function (result) {
-    	var allBooks = result.results;
-      	console.log(result.results);
+	 bookService.getAllBooks().then(function (allBooks) {
+	    console.log(allBooks);
         $scope.numPerPage = 8;
         $scope.noOfPages = Math.ceil(allBooks.length / $scope.numPerPage);
         $scope.currentPage = 1;
@@ -46,8 +45,6 @@ angular.module('BloomLibraryApp.browse')
           };
 
       }
-  //    $scope.$watch($scope.filteredBooks, $scope.updatePageControl(), true);
-      $scope.x = function () { alert('x'); }
 
       $scope.SearchNow = function () {
           $scope.searchText = $scope.searchTextRaw;

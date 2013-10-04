@@ -15,8 +15,17 @@ var BloomLibraryApp = angular.module('BloomLibraryApp',
       $urlRouterProvider.otherwise("/browse");
 
   }])
-.controller('AppCtrl', function AppCtrl($scope, $location) {
-})
+
+.controller('HeaderCtrl', ['$scope', 'authService', '$location', function($scope, authService, $location) {
+    $scope.location = $location.path();
+    $scope.isLoggedIn = authService.isLoggedIn;
+
+    $scope.logout = function () {
+        authService.logout();
+    };
+
+    $scope.userName = authService.userName;
+}]);
 
 //Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
 BloomLibraryApp.filter('startFrom', function () {
@@ -26,7 +35,7 @@ BloomLibraryApp.filter('startFrom', function () {
             return input.slice(start);
         } else
             return "";
-    }
+    };
 });
 
 //review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
@@ -43,7 +52,7 @@ BloomLibraryApp.run(
        //lets you write ng-click="alert('testing')"
        $rootScope.alert = function (text) {
            alert(text);
-       }
+       };
        // It's very handy to add references to $state and $stateParams to the $rootScope
        // so that you can access them from any scope within your applications.For example,
        // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
@@ -52,36 +61,6 @@ BloomLibraryApp.run(
        $rootScope.$stateParams = $stateParams;
    }]);
 
-
-// In the template:
-//<lazy-style href="style.css"/>
-BloomLibraryApp.directive('lazyStyle', function () {
-    var loadedStyles = {};
-    return {
-        restrict: 'E',
-        link: function (scope, element, attrs) {
- 
-            var stylePath = attrs.href;
- 
-            if (stylePath in loadedStyles) {
-                return;
-            }
- 
-            if (document.createStyleSheet) {
-                document.createStyleSheet(stylePath); //IE
-            } else {
-                var link = document.createElement("link");
-                link.type = "text/css";
-                link.rel = "stylesheet";
-                link.href = stylePath;
-                document.getElementsByTagName("head")[0].appendChild(link);
-            }
- 
-            loadedStyles[stylePath] = true;
- 
-        }
-    };
-});
 
 BloomLibraryApp.directive('pdfoverlay', function () {
     return {
