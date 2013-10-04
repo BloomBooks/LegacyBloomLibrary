@@ -606,7 +606,18 @@ module.exports = function ( grunt ) {
             version: grunt.config( 'pkg.version' )
           }
         });
-      }
+      }    ngmin: {
+          compile: {
+              files: [
+                {
+                  src: [ '<%= app_files.js %>' ],
+                  cwd: '<%= build_dir %>',
+                  dest: '<%= build_dir %>',
+                  expand: true
+                }
+              ]
+            }
+
     });
   });
 
