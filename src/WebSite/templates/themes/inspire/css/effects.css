@@ -1,0 +1,37 @@
+/* CSS3 / Browser specific CSS */
+#nav a, 
+#footer #footer-widgets h3,
+#featured.home h2 ,
+#logo .site-title a{ text-shadow:#000 0px 1px 0;}
+#nav li ul li a  { text-shadow:none;}
+#featured h2, #featured p { text-shadow:#000 0px 1px 0;}
+#footer-widgets { text-shadow:#fff 1px 1px 0; }
+#featured a.btn span { text-shadow:#fff 1px 1px 0; }
+
+#nav li ul,
+#nav li:hover, 
+#nav li.current_page_item,
+#nav li.current_page_parent,
+#nav li.current-menu-item,
+#nav li.current-menu-ancestor { border-radius:10px; -moz-border-radius:10px; -webkit-border-radius:10px;  }
+#nav li:hover, #nav li.current_page_item, #nav li.current_page_parent, #nav li.current-menu-item, #nav li.current-menu-ancestor { background-color: rgba(0, 0, 0, 0.3); }
+#nav li:hover, #nav li.current_page_item, #nav li.current_page_parent, #nav li.current-menu-item, #nav li.current-menu-ancestor { -webkit-box-shadow: 0px 1px 1px rgba(0,0,0,.5); -moz-box-shadow: 0px 0px 1px rgba(0,0,0,1); box-shadow: 0px 0px 1px rgba(0,0,0,.5);}
+#nav li ul { -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.5); -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.5); box-shadow: 0px 1px 3px rgba(0,0,0,.5);}
+#nav li li:hover, 
+#nav li li.current_page_item,
+#nav li li.current_page_parent,
+#nav li li.current-menu-item,
+#nav li li.current-menu-ancestor  { border-radius:0; -moz-border-radius:0; -webkit-border-radius:0; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow:none; }
+
+.button, .button:visited, .medium.button, .medium.button:visited { text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
+.button, .button:visited, .reply a { -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.25); text-shadow: 0 -1px 1px rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,.25); border-bottom-color: rgba(0,0,0,.35); }
+.button:hover, .reply a:hover { opacity:0.9; }
+
+#tabs, #searchform { border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;}
+#tabs ul.wooTabs li a.selected, #tabs ul.wooTabs li a:hover { border-top-right-radius:3px; border-top-left-radius:3px; -moz-border-radius-topright:3px;	-moz-border-radius-topleft:3px;-webkit-border-top-right-radius: 3px; -webkit-border-top-left-radius:3px; }
+
+.widget .textwidget, .widget ul, #tabs, .widget_woo_feedback .feedback { -webkit-box-shadow: 1px 2px 1px rgba(0,0,0,.15); -moz-box-shadow: 1px 2px 1px rgba(0,0,0,.15); box-shadow: 1px 2px 1px rgba(0,0,0,.15);  border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px; margin-right:2px;}
+
+#footer-widgets .widget .textwidget, #footer-widgets .widget ul, .widget ul ul { -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;  border-radius:0;-moz-border-radius:0;-webkit-border-radius:0; margin-right:0;}
+
+.port-cat a{ border-radius:10px; -moz-border-radius:10px; -webkit-border-radius:10px;  }
