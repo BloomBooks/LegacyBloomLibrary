@@ -58,15 +58,36 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			};
 			restangularConfigurer.setBaseUrl('https://api.parse.com/1');//1/classes is a parse.com thing
 			restangularConfigurer.setDefaultHeaders(headers);
-			
 		};
 		this.getAllBooks = function () {
 		    return restangular.withConfig(restangularDefaultConfig).all('classes/books').getList().then(function(resultWithWrapper)   {
 		        return resultWithWrapper.results;
 		    })
-		};
-
+		};		
 		this.getBookById = function (id) {
 		    return restangular.withConfig(restangularDefaultConfig).one('classes/books',id).get();
+		};
+	}])
+	.service('userService', ['Restangular', function(restangular) {
+		var checkforerror = function(callback) {
+			
+			
+		};
+		var restangularDefaultConfig = function(restangularConfigurer) {
+			var headers = {
+				'X-Parse-Application-Id':'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
+				'X-Parse-REST-API-Key':'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
+			};
+			restangularConfigurer.setBaseUrl('https://api.parse.com/1');//1/classes is a parse.com thing
+			restangularConfigurer.setDefaultHeaders(headers);
+		};
+		this.register = function(user, callback) {
+			if (!user.mandatoryfield) {
+				return restangular.withConfig(restangularDefaultConfig).all('users').post(user).then(callback,callback);
+			}
+		};
+		
+		this.readByUserName = function(username, callback) {
+			return restangular.withConfig(restangularDefaultConfig).all('users').getList({"where": '{"username": "' + username + '"}'}).then(callback,callback);
 		};
 	}]);

@@ -6,3 +6,7 @@
 .right {
 	float: right;
 }
+
+.mandatoryfields {
+	display: none;
+}

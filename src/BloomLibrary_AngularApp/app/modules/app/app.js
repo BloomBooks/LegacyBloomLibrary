@@ -1,11 +1,11 @@
 'use strict';
 
 var BloomLibraryApp = angular.module('BloomLibraryApp', 
-				['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.services",
+				['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services",
 				"ui.bootstrap", 'ui.router', 'restangular' ])
 
-  .config(['$urlRouterProvider',
-           function ($urlRouterProvider) {
+  .config(['$urlRouterProvider', '$stateProvider',
+           function ($urlRouterProvider, $stateProvider) {
 
       //TODO when we have hosting that can do the url rewriting this requires
       //$locationProvider.html5Mode(true);

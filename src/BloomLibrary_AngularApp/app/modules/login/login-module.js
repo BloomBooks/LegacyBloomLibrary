@@ -11,4 +11,4 @@ angular.module('BloomLibraryApp.login', ['ui.router', 'BloomLibraryApp.services'
                     controller: 'LoginCtrl'
         }); 
     })
-
+;
