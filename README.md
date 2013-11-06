@@ -7,17 +7,12 @@ Bloom Library is a single page application built with AngularJS, currently with 
 Dependencies
 =============
 
-* AngularJS
-* [Restangular](https://github.com/mgonto/restangular)
-* [Router-UI](https://github.com/angular-ui/ui-router)
-* Angular-UI
-* FancyBox
-* Bootstrap
-* Underscore
-* Lodash
-* JQuery
-* JQuery-UI
+You can see [current dependencies here](https://github.com/BloomBooks/BloomLibrary/blob/master/src/BloomLibrary_AngularApp/bower.json).
 
+After cloning, go to src\BloomLibrary_AngularApp and do
+
+    bower install
+    
 Where possible, use [bower](http://bower.io) to add dependencies, e.g.
 
     bower the-package-name --save
