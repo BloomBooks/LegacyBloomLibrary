@@ -1,20 +1,8 @@
 BloomLibrary
 ============
 
-Bloom Library is a single page application built with AngularJS.
+Bloom Library is a single page application built with AngularJS, currently with a Parse.com backend. It will allow users to updload Bloom shell books to share with others, and find shells to download and use.
 
-This isn't really a c#/asp thing, but it does include a self-hosted REST backend as c# exe for testing.
-
-Prerequisites
-=============
-1. Visual Studio 2010 or 2012
-2. [NuGet](http://docs.nuget.org/docs/start-here/installing-nuget)
-
-Set Up
-=============
-To use the test backend, you'll need to tell windows to allow this port to be used locally:
-
-    netsh http add urlacl url=http://+:5432/ user=yourwindowsaccountname
 
 Dependencies
 =============
