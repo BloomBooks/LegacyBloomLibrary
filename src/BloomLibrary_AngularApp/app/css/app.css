@@ -10,3 +10,5 @@
 .mandatoryfields {
 	display: none;
 }
+
+.separator { margin-left:14px; visibility:hidden;}

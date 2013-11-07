@@ -42,7 +42,9 @@ angular.module('BloomLibraryApp.signup', ['ui.router', 'BloomLibraryApp.services
 				notice.push(notice.WARN, "The email address is not valid");
 			}
 		};
-		$scope.checkUserName = function() {
+
+        //we'er using the email for the account hame
+		$scope.checkUserAccount = function() {
 			$scope.userNameOk = false;
 			$scope.userNameExists = false;
 			if ($scope.record.email) {
