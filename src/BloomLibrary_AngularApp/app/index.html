@@ -40,16 +40,16 @@
     <div ng-controller="HeaderCtrl">
         <div class="navbar" bs-navbar>
             <div class="navbar-inner">
-                <a class="brand" href="#">Title</a>
+                <a class="brand" href="#">Bloom Library</a>
                 <ul class="nav">
                     <!-- You can use regular expressions -->
                     <li data-match-route="/(:?navbar)"><a href="#/">Home</a></li>
-                    <li data-match-route="/browse"><a href="#/browse">Browse</a></li>
+                    <li data-match-route="/browse"><a href="#/browse">Books</a></li>
                 </ul>
                 <div ng-cloak style="float: right" class="nav">
                     <ng-switch class="animate-switch-container" on="isLoggedIn()">
                         <div ng-switch-when="false">
-                            <a href="#/signup">Sign Up</a>   <a href="#/login">Login</a>  
+                            <a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Login</a>
                         </div>
                         <div ng-switch-default>
                            {{userName()}}
