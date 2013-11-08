@@ -2,36 +2,42 @@ angular.module('BloomLibraryApp.services', ['restangular'])
     .factory('authService', ['Restangular', function(restangular) {
         var isLoggedIn = false;
         var userNameX = 'unknown';
+		// These headers are the magic keys for our account at Parse.com
+		// While someone is logged on, another header gets added (see setSession).
+		var headers = {
+			'X-Parse-Application-Id':'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
+			'X-Parse-REST-API-Key':'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
+		};
 
-        var restangularDefaultConfig = function (restangularConfigurer) {
-            var headers = {
-                'X-Parse-Application-Id':'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-                'X-Parse-REST-API-Key':'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
-            };
-            restangularConfigurer.setBaseUrl('https://api.parse.com/1');//1/classes is a parse.com thing
+		var restangularConfig = function (restangularConfigurer) {
+			restangularConfigurer.setBaseUrl('https://api.parse.com/1');// 1/indicates rev 1 of parse.com API
             restangularConfigurer.setDefaultHeaders(headers);
-			
         };
         
         var factory = {
 
             userName: function () { return userNameX; },
+			setUserName: function(newName) {userNameX = newName;},
 
-            isLoggedIn: function () { return isLoggedIn; },          
+			isLoggedIn: function () { return isLoggedIn; },
+
+			config: function () { return restangularConfig;},
 
             setSession : function(sessionToken) {
+				var sessionTokenKey = 'X-Parse-Session-Token';
                 if (sessionToken) {
-                    headers['X-Parse-Session-Token'] = sessionToken;
+					headers[sessionTokenKey] = sessionToken;
                     isLoggedIn = true;
                 }
-                restangular.withConfig(function(restangularConfigurer) {
-                    restangularConfigurer.setDefaultHeaders(headers);
-                });
+				else {
+					delete headers[sessionTokenKey];
+					isLoggedIn = false;
+				}
             },
 
             login: function(username, password, successCallback, errorCallback) {
                 // GET: .../login
-                restangular.withConfig(restangularDefaultConfig).all('login').getList({ 'username': username, 'password': password })
+				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username, 'password': password })
                     .then(function (result) {
                         isLoggedIn = true;
                         userNameX = username;
@@ -55,44 +61,29 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         return factory;
         }])
    
-	.service('bookService', ['Restangular', function(restangular) {
-		var restangularDefaultConfig = function(restangularConfigurer) {
-			var headers = {
-				'X-Parse-Application-Id':'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-				'X-Parse-REST-API-Key':'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
-			};
-			restangularConfigurer.setBaseUrl('https://api.parse.com/1');//1/classes is a parse.com thing
-			restangularConfigurer.setDefaultHeaders(headers);
-		};
+	.service('bookService', ['Restangular', 'authService', function(restangular, authService) {
 		this.getAllBooks = function () {
-		    return restangular.withConfig(restangularDefaultConfig).all('classes/books').getList({"limit":50}).then(function(resultWithWrapper)   {
+			return restangular.withConfig(authService.config()).all('classes/books').getList({"limit":50}).then(function(resultWithWrapper)   {
 		        return resultWithWrapper.results;
 		    })
 		};		
 		this.getBookById = function (id) {
-		    return restangular.withConfig(restangularDefaultConfig).one('classes/books',id).get();
+			return restangular.withConfig(authService.config()).one('classes/books',id).get();
 		};
 	}])
-	.service('userService', ['Restangular', function(restangular) {
+	.service('userService', ['Restangular', 'authService', function(restangular, authService) {
 		var checkforerror = function(callback) {
 			
 			
 		};
-		var restangularDefaultConfig = function(restangularConfigurer) {
-			var headers = {
-				'X-Parse-Application-Id':'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-				'X-Parse-REST-API-Key':'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
-			};
-			restangularConfigurer.setBaseUrl('https://api.parse.com/1');//1/classes is a parse.com thing
-			restangularConfigurer.setDefaultHeaders(headers);
-		};
+
 		this.register = function(user, callback) {
 			if (!user.mandatoryfield) {
-				return restangular.withConfig(restangularDefaultConfig).all('users').post(user).then(callback,callback);
+				return restangular.withConfig(authService.config()).all('users').post(user).then(callback,callback);
 			}
 		};
 		
 		this.readByUserName = function(username, callback) {
-			return restangular.withConfig(restangularDefaultConfig).all('users').getList({"where": '{"username": "' + username + '"}'}).then(callback,callback);
+			return restangular.withConfig(authService.config()).all('users').getList({"where": '{"username": "' + username + '"}'}).then(callback,callback);
 		};
 	}]);
