@@ -33,6 +33,7 @@ angular.module('BloomLibraryApp.signup', ['ui.router', 'BloomLibraryApp.services
 						notice.push(notice.ERROR, result.data.error);
 					} else if (result.objectId) {
 						notice.push(notice.SUCCESS, "Thank you, " + record.email + ", for registering. You are now logged in.");
+						auth.setUserName(record.email);
 						$state.go('browse');
 						auth.setSession(result.sessionToken);
 					}
