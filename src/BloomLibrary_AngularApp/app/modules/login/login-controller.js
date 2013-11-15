@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('BloomLibraryApp.login')
-	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', 
-	                          function ($scope, $dialog, $timeout, silNoticeService, authService) {
+	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', '$state',
+	                          function ($scope, $dialog, $timeout, silNoticeService, authService, $state) {
        	$scope.login = function() {
        		authService.login($scope.username, $scope.password, function(result) {
        			if (result.error) {
@@ -12,6 +12,8 @@ angular.module('BloomLibraryApp.login')
 					
 					// add session token to defaultHeaders
 					authService.setSession(result.sessionToken);
+
+					$state.go('browse'); //we're done here. Go back home
        			}
        		}, function(error) {
        			// catch for login credential failure
