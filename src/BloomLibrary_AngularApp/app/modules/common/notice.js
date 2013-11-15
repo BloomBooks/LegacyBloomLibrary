@@ -1,12 +1,25 @@
 angular.module('palaso.ui.notice', ['ui.bootstrap'])
-.factory('silNoticeService', ['$log', function($log) {
+.factory('silNoticeService', ['$log', '$timeout', function ($log, $timeout) {
 	var notices = [];
 	return {
 		push: function(type, message) {
 			notices.push({type: type(), message: message});
 		},
+		
+        //When we upgrade to angularjs 1.2, we'll use animate to fade the other guys out
+		replace: function (type, message) {
+		    this.push(type, message);
+		    var callme = this;
+		    $timeout(function () {
+		        callme.clear();
+		        callme.push(type, message);
+		    }, 1000);
+		},
 		remove: function(index) {
 			notices.splice(index, 1);
+		},
+		clear: function() {
+		    notices = [];
 		},
 		get: function() {
 			return notices;
