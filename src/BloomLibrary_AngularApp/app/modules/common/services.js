@@ -66,7 +66,17 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			return restangular.withConfig(authService.config()).all('classes/books').getList({"limit":50}).then(function(resultWithWrapper)   {
 		        return resultWithWrapper.results;
 		    })
-		};		
+		};
+		this.getAllBooksCount = function () {
+			return restangular.withConfig(authService.config()).all('classes/books').getList({"limit":0, "count":1}).then(function(resultWithWrapper)   {
+				return resultWithWrapper.count;
+			})
+		};
+		this.getBookRange = function (first, count) {
+			return restangular.withConfig(authService.config()).all('classes/books').getList({"skip":first, "limit":count}).then(function(resultWithWrapper)   {
+				return resultWithWrapper.results;
+			})
+		};
 		this.getBookById = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books',id).get();
 		};
