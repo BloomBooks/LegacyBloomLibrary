@@ -1,14 +1,21 @@
 'use strict';
 
 angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', 
-	                           function ($scope, $dialog, $timeout, bookService) {
+	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', '$location',
+	                           function ($scope, $dialog, $timeout, bookService, $state, $stateParams, $location) {
 
-	 bookService.getAllBooksCount().then(function (count) {
-        $scope.currentPage = 1;
-		$scope.bookCount = count;
-        $scope.setPage = function () { };
-      });
+								   $scope.$on("$locationChangeStart", function (event, nextLocation, currentLocation) {
+									   $scope.newLocation = nextLocation;
+								   });
+	   $scope.searchText = $stateParams["search"];
+	   $scope.searchTextRaw = $scope.searchText;
+	   bookService.getAllBooksCount().then(function (count) {
+		   $scope.currentPage = 1;
+		   $scope.bookCount = count;
+		   $scope.setPage = function () { };
+		   $scope.filteredBooksCount = count;
+		   $scope.initialized = true;
+	   });
 
 	  // browse.tpl.html listview div configures this to be called as pageItemsFunction when user chooses a page.
 	  // Todo: should get Filtered book range.
@@ -17,13 +24,6 @@ angular.module('BloomLibraryApp.browse')
 			  $scope.visibleBooks = result;
 		  })
 	  };
-
-	  $scope.getFiteredBookCount = function(searchString)
-	  {
-		  bookService.getFiteredBookCount(searchString).then(function(result) {
-			  $scope.filteredBookCount = result;
-		  })
-	  }
 
 	  $scope.foo = function(paramOne, paramTwo) {
 		  return paramOne + paramTwo;
@@ -43,7 +43,11 @@ angular.module('BloomLibraryApp.browse')
 		  // and do something to make the listview invoke getBookRange (even if the bookCount
 		  // does not change).
           $scope.searchText = $scope.searchTextRaw;
-		  $scope.getFiteredBookCount($scope.searchText);
+		  $state.go('.', {search: $scope.searchText});
+		  //$location.search("search", $scope.searchText);
+		  //bookService.getFilteredBooksCount($scope.searchText).then(function(result) {
+		//	  $scope.filteredBooksCount = result;
+		 // });
       }
 		// This may be a helpful starting point for setting up filtering
 //      $scope.matchingBooks = function (book) {

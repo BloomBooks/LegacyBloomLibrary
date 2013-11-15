@@ -72,6 +72,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				return resultWithWrapper.count;
 			})
 		};
+
+		this.getFilteredBooksCount = function (searchString) {
+			return restangular.withConfig(authService.config()).all('classes/books').getList({"limit":0, "count":1}).then(function(resultWithWrapper)   {
+				return resultWithWrapper.count / 2; // Todo: get real filtered count; this is just to test display update and invoking the function.
+			})
+		};
+
 		this.getBookRange = function (first, count) {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({"skip":first, "limit":count}).then(function(resultWithWrapper)   {
 				return resultWithWrapper.results;
