@@ -16,12 +16,13 @@ var BloomLibraryApp = angular.module('BloomLibraryApp',
 
   }])
 
-.controller('HeaderCtrl', ['$scope', 'authService', '$location', function($scope, authService, $location) {
+.controller('HeaderCtrl', ['$scope', 'authService', '$location', '$state', function($scope, authService, $location, $state) {
     $scope.location = $location.path();
     $scope.isLoggedIn = authService.isLoggedIn;
 
     $scope.logout = function () {
         authService.logout();
+        $state.go('browse');
     };
 
     $scope.userName = authService.userName;
