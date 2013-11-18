@@ -64,6 +64,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', function(restangular, authService, $q, $rootScope) {
 		// Initialize Parse.com javascript query module for our project.
 		// Note: we would prefer to do this query using the REST API, but it does not currently support substring matching.
+		// Please keep using the REST API wherever possible and the javascript API only where necessary.
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.

@@ -41,22 +41,6 @@ angular.module('BloomLibraryApp.browse')
 		  // does not change).
           $scope.searchText = $scope.searchTextRaw;
 		  $state.go('.', {search: $scope.searchText});
-		  //$location.search("search", $scope.searchText);
-		  //bookService.getFilteredBooksCount($scope.searchText).then(function(result) {
-		//	  $scope.filteredBooksCount = result;
-		 // });
       }
-		// This may be a helpful starting point for setting up filtering
-//      $scope.matchingBooks = function (book) {
-//          if (!$scope.searchText)
-//              return true;
-//          var s = $scope.searchText.toLowerCase();
-//          var titleMatch = book.volumeInfo.title.toLowerCase().indexOf(s) != -1;
-//          var tagMatch = _.contains(book.Tags, s);
-//          var x = book.volumeInfo.authors.join().toLowerCase();
-//          var authorMatch = book.volumeInfo.authors.join().toLowerCase().indexOf(s) > -1;
-//          //$timeout(function () { $scope.updatePageControl()}, 1000);
-//          return titleMatch | tagMatch | authorMatch;
-//      };
   }]);
 
