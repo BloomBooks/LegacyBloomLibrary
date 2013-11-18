@@ -4,12 +4,9 @@ angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', '$location',
 	                           function ($scope, $dialog, $timeout, bookService, $state, $stateParams, $location) {
 
-								   $scope.$on("$locationChangeStart", function (event, nextLocation, currentLocation) {
-									   $scope.newLocation = nextLocation;
-								   });
 	   $scope.searchText = $stateParams["search"];
 	   $scope.searchTextRaw = $scope.searchText;
-	   bookService.getAllBooksCount().then(function (count) {
+	   bookService.getFilteredBooksCount($scope.searchText).then(function (count) {
 		   $scope.currentPage = 1;
 		   $scope.bookCount = count;
 		   $scope.setPage = function () { };
@@ -20,7 +17,7 @@ angular.module('BloomLibraryApp.browse')
 	  // browse.tpl.html listview div configures this to be called as pageItemsFunction when user chooses a page.
 	  // Todo: should get Filtered book range.
 	  $scope.getBookRange = function (first, count) {
-		  bookService.getBookRange(first, count).then(function(result) {
+		  bookService.getFilteredBookRange(first, count, $scope.searchText).then(function(result) {
 			  $scope.visibleBooks = result;
 		  })
 	  };
