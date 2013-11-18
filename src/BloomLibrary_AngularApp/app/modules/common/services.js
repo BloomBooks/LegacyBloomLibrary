@@ -88,7 +88,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.getFilteredBooksCount = function (searchString) {
 			var defer = $q.defer();
 			var query = new Parse.Query('books');
-			query.contains('volumeInfo.title', searchString);
+			if (searchString)
+				query.contains('volumeInfo.title', searchString);
 			query.count({
 				success : function(count) {
 					$rootScope.$apply(function(){defer.resolve(count)});
@@ -119,7 +120,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			// Configure the query to give the results we want.
 			query.skip(first);
 			query.limit(count);
-			query.contains('volumeInfo.title', searchString);
+			if (searchString)
+				query.contains('volumeInfo.title', searchString);
 			// query.find returns a parse.com promise, but it is not quite the same api as
 			// as an angularjs promise. Instead, translate its find and error funtions using the
 			// angularjs promise.
