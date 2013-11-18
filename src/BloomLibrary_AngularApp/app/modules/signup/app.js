@@ -24,6 +24,8 @@ angular.module('BloomLibraryApp.signup', ['ui.router', 'BloomLibraryApp.services
 		$scope.userRegistered = false;
 		
 		$scope.createUser = function(record) {
+			if (record.foo)
+				return true; // In theory, only spambots will see and fill in this field, which JavaScript deletes.
 			if (record.email) {
 				record.username = record.email;
 				$scope.submitting = true;

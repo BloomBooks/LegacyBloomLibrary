@@ -23,6 +23,15 @@
 							<label>Password</label> <input required type="text"
 								ng-model="record.password" name="password" />
 						</div>
+                        <div id="hpot">
+                            <label for="foo">Leave this field blank</label>
+                            <input type="text" name="foo" id="foo" ng-model="record.foo">
+                        </div>
+                        <script>
+                            (function () {
+                                var e = document.getElementById("hpot");
+                                e.parentNode.removeChild(e);})();
+                        </script>
 						<button id="submit" class="btn btn-primary" type="submit"
 							ng-disabled="submitting || userNameLoading || userNameExists || userForm.$invalid">
 							Sign Up <i style="margin-left: 5px" class="icon-thumbs-up"></i>
