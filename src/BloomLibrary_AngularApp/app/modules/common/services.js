@@ -61,7 +61,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         return factory;
         }])
    
-	.service('bookService', ['Restangular', 'authService', function(restangular, authService) {
+	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', function(restangular, authService, $q, $rootScope) {
+		// Initialize Parse.com javascript query module for our project.
+		// Note: we would prefer to do this query using the REST API, but it does not currently support substring matching.
+		// Please keep using the REST API wherever possible and the javascript API only where necessary.
+		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
+		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
+		// our dependency on parse.com.
+		Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
 		this.getAllBooks = function () {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({"limit":50}).then(function(resultWithWrapper)   {
 		        return resultWithWrapper.results;
@@ -72,11 +79,71 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				return resultWithWrapper.count;
 			})
 		};
+
+		// Gets the count of books whose title contains searchString.
+		// Returns a promise which will deliver the count.
+		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
+		// and inside the scope of the function count will be the book count.
+		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
+		this.getFilteredBooksCount = function (searchString) {
+			var defer = $q.defer();
+			var query = new Parse.Query('books');
+			query.contains('volumeInfo.title', searchString);
+			query.count({
+				success : function(count) {
+					$rootScope.$apply(function(){defer.resolve(count)});
+				},
+				error : function(aError) {
+					defer.reject(aError);
+				}
+			});
+
+			return defer.promise;
+		};
+
 		this.getBookRange = function (first, count) {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({"skip":first, "limit":count}).then(function(resultWithWrapper)   {
 				return resultWithWrapper.results;
 			})
 		};
+
+		// We want a subset of the books whose title contains searchString.
+		// From that set we want up to count items starting at first (0-based).
+		// We will return the result as an angularjs promise. Typically the caller will
+		// do something like getFilteredBookRange(...).then(function(books) {...do somethign with books}
+		// By that time books will be an array of json-encoded book objects from parse.com.
+		this.getFilteredBookRange = function (first, count, searchString) {
+			var defer = $q.defer(); // used to implement angularjs-style promise
+			// This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
+			var query = new Parse.Query('books');
+			// Configure the query to give the results we want.
+			query.skip(first);
+			query.limit(count);
+			query.contains('volumeInfo.title', searchString);
+			// query.find returns a parse.com promise, but it is not quite the same api as
+			// as an angularjs promise. Instead, translate its find and error funtions using the
+			// angularjs promise.
+			query.find({
+				success : function(results) {
+					var objects = new Array(results.length);
+					for (i = 0; i < results.length; i++)
+					{
+						objects[i] = results[i].toJSON();
+					}
+					// I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
+					// There is further discussion at http://stackoverflow.com/questions/17426413/deferred-resolve-in-angularjs.
+					// Without it, the display does not update properly; typically each click updates to what it
+					// should have been after the previous click.
+					$rootScope.$apply(function(){defer.resolve(objects)});
+				},
+				error : function(aError) {
+					defer.reject(aError);
+				}
+			});
+
+			return defer.promise;
+		};
+
 		this.getBookById = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books',id).get();
 		};
