@@ -6,7 +6,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 			restrict : 'EA',
 			transclude : true,
 			replace : true,
-			template : '<div class="listview" ng-hide="hideIfEmpty && itemCount == 0"><div ng-transclude></div><div class="paginationblock"><pagination boundary-links="true" num-pages="noOfPages" current-page="currentPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination><div class="right pagination">Items per page: <select ng-model="itemsPerPage"><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></div></div></div>',
+			templateUrl : 'modules/common/pagecontrol.tpl.html',
 			scope : {
 				select : "&",
 				hideIfEmpty: "@",
@@ -39,6 +39,22 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				this.selectActive = function() {
 					this.select($scope.active);
 				};
+
+				$scope.prevPage = function () {
+					if ($scope.currentPage > 1) {
+						$scope.currentPage--;
+					}
+				};
+
+				$scope.nextPage = function () {
+					if ($scope.currentPage < $scope.noOfPages) {
+						$scope.currentPage++;
+					}
+				};
+
+				$scope.setPage = function () {
+					$scope.currentPage = this.n;
+				};
 				this.updateVisibleItems = function() {
 					var sliceStart;
 					var sliceEnd;
@@ -49,6 +65,33 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 						sliceStart = 0;
 					}
 					$scope.pageItemsFunction({first:sliceStart, itemsPerPage:$scope.itemsPerPage});
+
+					// Update the pages index, which depends on currentPage.
+					// Enhance: a separate function would be nicer, but it's tricky to call one
+					// of these function objects from another.
+					// pageButtons is an array, basically of the page numbers we will show.
+					// Where there is a gap, we insert a zero, which activates the "..." in the html.
+					$scope.pageButtons = new Array();
+					$scope.pageButtons[0] = 1; // always show page 0.
+					var j = 1;
+					for (i = $scope.currentPage - 5; i <= $scope.currentPage + 5; i++) {
+						if (i < 2 || i > $scope.noOfPages - 1) {
+							continue; //nonexistent, or the first/last pages added elsewhere.
+						}
+						if ($scope.pageButtons[j - 1] != i - 1) {
+							$scope.pageButtons[j] = 0; // gap in sequence, 0 produces ellipsis
+							j++;
+						}
+						$scope.pageButtons[j] = i; // produces button for i.
+						j++;
+					}
+					if ($scope.pageButtons[j - 1] < $scope.noOfPages) { // don't insert 1 twice if only one page
+						if ($scope.pageButtons[j - 1] < $scope.noOfPages - 1) {
+							$scope.pageButtons[j] = 0; // makes ellipsis if needed
+							j++;
+						}
+						$scope.pageButtons[j] = $scope.noOfPages; // last page button
+					}
 				}
 				this.updatePages = function() {
 					$scope.noOfPages = Math.ceil($scope.itemCount / $scope.itemsPerPage);
