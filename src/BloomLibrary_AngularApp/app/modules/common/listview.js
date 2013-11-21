@@ -6,19 +6,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 			restrict : 'EA',
 			transclude : true,
 			replace : true,
-			template : '<div>' // template must have one top-level element.
-				+ '<div ng-transclude></div>' // pulls in the body of what we are wrapping the list function around, from the caller
-				+ '<div class="pagination" ng-hide="noOfPages==1"><ul>' // The page index is a list inside a div (entirely hidden if only one page)
-				+ '<li class="previous" ng-class="{disabled: currentPage == 1}"><a href ng-click="prevPage()">Prev</a></li>' // the previous page button
-				+ '<li ng-repeat="n in pageButtons" ng-class="{active: n == currentPage}"	ng-click="setPage()">' // repeat this for all page buttons
-				+ 	'<span ng-hide="n!= 0">...</span>' // ellipsis is shown for 0 in pageButtons array, inserted where there is a gap
-				+	'<a href ng-hide="n==0" ng-bind="n">1</a>' // regular buttons appear when n is not zero. I don't know how the '1' becomes 'n'.
-				+ '</li>' // end of the repeating li for items in pageButtons
-				+ '<li class="next" ng-class="{disabled: currentPage == noOfPages}"><a href ng-click="nextPage()">Next</a></li>' // Next page button
-				+ '</ul></div>' // ends page index list and div
-				+ '<div class="pagination">Items per page: <select ng-model="itemsPerPage">' // items-per-page control
-				+	'<option value="3">3</option><option value="5" selected>5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option>' // the options
-				+ '</select></div></div>', // wrap it up
+			templateUrl : 'modules/common/pagecontrol.tpl.html',
 			scope : {
 				select : "&",
 				hideIfEmpty: "@",
