@@ -1,7 +1,7 @@
 'use strict';
 
 var BloomLibraryApp = angular.module('BloomLibraryApp', 
-				['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services",
+				['BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
 				"ui.bootstrap", 'ui.router', 'palaso.ui.listview', 'restangular' ])
 
   .config(['$urlRouterProvider', '$stateProvider',
