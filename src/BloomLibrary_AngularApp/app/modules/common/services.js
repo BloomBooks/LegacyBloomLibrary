@@ -13,7 +13,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			restangularConfigurer.setBaseUrl('https://api.parse.com/1');// 1/indicates rev 1 of parse.com API
             restangularConfigurer.setDefaultHeaders(headers);
         };
-        
+
         var factory = {
 
             userName: function () { return userNameX; },
@@ -57,10 +57,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
 
         };
-        
+
         return factory;
         }])
-   
+
 	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', function(restangular, authService, $q, $rootScope) {
 		// Initialize Parse.com javascript query module for our project.
 		// Note: we would prefer to do this query using the REST API, but it does not currently support substring matching.
@@ -113,7 +113,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do somethign with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString) {
+		this.getFilteredBookRange = function (first, count, searchString, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
 			// This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
 			var query = new Parse.Query('books');
@@ -122,6 +122,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			query.limit(count);
 			if (searchString)
 				query.contains('volumeInfo.title', searchString);
+			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
+			// It does not work for e.g. volumeInfo.title.
+			if (sortBy) {
+				if (ascending)
+					query.ascending(sortBy);
+				else
+					query.descending(sortBy);
+			}
 			// query.find returns a parse.com promise, but it is not quite the same api as
 			// as an angularjs promise. Instead, translate its find and error funtions using the
 			// angularjs promise.
@@ -152,8 +160,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	}])
 	.service('userService', ['Restangular', 'authService', function(restangular, authService) {
 		var checkforerror = function(callback) {
-			
-			
+
+
 		};
 
 		this.register = function(user, callback) {
@@ -161,7 +169,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				return restangular.withConfig(authService.config()).all('users').post(user).then(callback,callback);
 			}
 		};
-		
+
 		this.readByUserName = function(username, callback) {
 			return restangular.withConfig(authService.config()).all('users').getList({"where": '{"username": "' + username + '"}'}).then(callback,callback);
 		};
