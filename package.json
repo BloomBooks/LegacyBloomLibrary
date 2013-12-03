@@ -1,16 +1,16 @@
 {
-  "author": "Josh David Miller",
-  "name": "ng-boilerplate",
-  "version": "0.3.1",
-  "homepage": "http://bit.ly/ng-boilerplate",
+  "author": "John Hatton and SIL Interational",
+  "name": "BloomLibrary",
+  "version": "0.1.0",
+  "homepage": "http://bloom.palaso.org/",
   "licenses": {
     "type": "MIT",
-    "url": "https://raw.github.com/joshdmiller/ng-boilerplate/master/LICENSE"
+    "url": "http://sil.mit-license.org"
   },
-  "bugs": "https://github.com/joshdmiller/ng-boilerplate/issues",
+  "bugs": "https://trello.com/board/bloom-development/4f087ec138f81c83752051a0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:joshdmiller/ng-boilerplate.git"
+    "url": "https://github.com/BloomBooks/BloomLibrary"
   },
   "dependencies": {},
   "devDependencies": {

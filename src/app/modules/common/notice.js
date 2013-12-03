@@ -8,18 +8,18 @@ angular.module('palaso.ui.notice', ['ui.bootstrap'])
 		
         //When we upgrade to angularjs 1.2, we'll use animate to fade the other guys out
 		replace: function (type, message) {
-		    this.push(type, message);
-		    var callme = this;
-		    $timeout(function () {
-		        callme.clear();
-		        callme.push(type, message);
-		    }, 1000);
+			this.push(type, message);
+			var callme = this;
+			$timeout(function () {
+				callme.clear();
+				callme.push(type, message);
+			}, 1000);
 		},
 		remove: function(index) {
 			notices.splice(index, 1);
 		},
 		clear: function() {
-		    notices = [];
+			notices = [];
 		},
 		get: function() {
 			return notices;
@@ -27,7 +27,7 @@ angular.module('palaso.ui.notice', ['ui.bootstrap'])
 		ERROR:   function() { return 'error'; },
 		WARN:    function() { return 'warn'; },
 		INFO:    function() { return 'info'; },
-		SUCCESS: function() { return 'success'; },
+		SUCCESS: function() { return 'success'; }
 	};
 }])
 .directive('silNotices', ['silNoticeService', '$log', function(noticeService, $log) {
