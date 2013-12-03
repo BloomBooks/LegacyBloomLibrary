@@ -1,7 +1,7 @@
 angular.module('BloomLibraryApp.services', ['restangular'])
 	.factory('authService', ['Restangular', function (restangular) {
-		isLoggedIn = false;
-		userNameX = 'unknown';
+		var isLoggedIn = false;
+		var userNameX = 'unknown';
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		headers = {
@@ -24,7 +24,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			config: function () { return restangularConfig; },
 
 			setSession: function (sessionToken) {
-				sessionTokenKey = 'X-Parse-Session-Token';
+				var sessionTokenKey = 'X-Parse-Session-Token';
 				if (sessionToken) {
 					headers[sessionTokenKey] = sessionToken;
 					isLoggedIn = true;
@@ -86,8 +86,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
 		this.getFilteredBooksCount = function (searchString) {
-			defer = $q.defer();
-			query = new Parse.Query('books');
+			var defer = $q.defer();
+			var query = new Parse.Query('books');
 			if (searchString) {
 				query.contains('volumeInfo.title', searchString);
 			}
@@ -115,9 +115,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// do something like getFilteredBookRange(...).then(function(books) {...do somethign with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
 		this.getFilteredBookRange = function (first, count, searchString, sortBy, ascending) {
-			defer = $q.defer(); // used to implement angularjs-style promise
+			var defer = $q.defer(); // used to implement angularjs-style promise
 			// This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
-			query = new Parse.Query('books');
+			var query = new Parse.Query('books');
 			// Configure the query to give the results we want.
 			query.skip(first);
 			query.limit(count);
@@ -139,7 +139,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			// angularjs promise.
 			query.find({
 				success: function (results) {
-					objects = new Array(results.length);
+					var objects = new Array(results.length);
 					for (i = 0; i < results.length; i++) {
 						objects[i] = results[i].toJSON();
 					}
@@ -162,7 +162,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		};
 	} ])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
-		checkforerror = function (callback) {
+		var checkforerror = function (callback) {
 
 
 		};
