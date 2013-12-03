@@ -6,7 +6,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 			restrict : 'EA',
 			transclude : true,
 			replace : true,
-			templateUrl : 'src/app/modules/common/pagecontrol.tpl.html',
+			templateUrl : 'modules/common/pagecontrol.tpl.html',
 			scope : {
 				select : "&",
 				hideIfEmpty: "@",

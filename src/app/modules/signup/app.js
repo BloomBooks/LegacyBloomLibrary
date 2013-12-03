@@ -4,7 +4,7 @@ angular.module('BloomLibraryApp.signup', ['ui.router', 'BloomLibraryApp.services
     .config(function config($stateProvider) {
         $stateProvider.state('signup', {
                     url: "/signup",
-                    templateUrl: 'src/app/modules/signup/signup.tpl.html',
+                    templateUrl: 'modules/signup/signup.tpl.html',
                     controller: 'SignupCtrl'
         }); 
     })

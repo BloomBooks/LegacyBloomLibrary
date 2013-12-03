@@ -1,5 +1,16 @@
 'use strict';
 
+// Model declaration for the data grid view (url #/datagrid)
+angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ngGrid'])//, 'BloomLibraryApp.detail'])
+    .config(['$stateProvider', function config($stateProvider) {
+
+    	$stateProvider.state('datagrid', {
+    		url: "/datagrid",
+    		templateUrl: 'modules/datagrid/datagrid.tpl.html',
+    		controller: 'DataGridCtrl'
+    	});
+    } ]);
+
 // Controller for the data grid view (url #/datagrid)
 // Todo: Trello card says Columns of interest: Title, Date, Copyright Holder, License, Modified Date, Workflow Status: {Draft, Edited, Private Published, Web Published}
 // Most of these are not currently available (or at least not in the sample data).
