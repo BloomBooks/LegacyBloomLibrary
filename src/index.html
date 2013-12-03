@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title ng-bind="pageTitle"></title>
+
+    <!-- social media tags -->
+    <meta property="og:title" content="BloomLibrary" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://bloom.palaso.org/" />
+    <meta property="og:description" content="Let's grow a library: Bloom keeps things simple and efficient by offering a library of shell books. You just translate from a source language, and print.">
+
+    <!-- font awesome from BootstrapCDN -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+
+    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script><% }); %>
+
+    <!-- for parse.com queries. Please use ONLY in services.js. -->
+    <script src="http://www.parsecdn.com/js/parse-1.2.13.min.js"></script>
+
+  </head>
+  <body ng-app="BloomLibraryApp">
+    <div ng-controller="HeaderCtrl">
+        <div class="navbar" bs-navbar>
+            <div class="navbar-inner">
+                <a class="brand" href="#">Bloom Library</a>
+                <ul class="nav">
+                    <!-- You can use regular expressions -->
+                    <li data-match-route="/(:?navbar)"><a href="#/">Home</a></li>
+                    <li data-match-route="/browse"><a href="#/browse">Books</a></li>
+                </ul>
+                <div ng-cloak style="float: right" class="nav">
+                    <ng-switch class="animate-switch-container" on="isLoggedIn()">
+                        <div ng-switch-when="false">
+                            <a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Login</a>
+                        </div>
+                        <div ng-switch-default>
+                           {{userName()}}
+                            <a ng-click="logout()">log out</a>
+                        </div>
+                    </ng-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <sil-notices></sil-notices>
+        <div ui-view></div>
+    </div>
+  </body>
+</html>

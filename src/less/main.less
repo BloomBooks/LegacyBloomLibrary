@@ -1,0 +1,45 @@
+/**
+ * This is the main application stylesheet. It should include or import all
+ * stylesheets used throughout the application as this is the only stylesheet in
+ * the Grunt configuration that is automatically processed.
+ */
+
+
+/**
+ * First, we include the Twitter Bootstrap LESS files. Only the ones used in the
+ * project should be imported as the rest are just wasting space. Review: from ng-boilerplate; do we need (all of) this?
+ * Review: would it be better to import the vendor-specific css files specified in build.config.js here?
+ */
+
+@import '../../vendor/bootstrap/less/mixins.less';
+@import '../../vendor/bootstrap/less/reset.less';
+@import '../../vendor/bootstrap/less/utilities.less';
+@import '../../vendor/bootstrap/less/scaffolding.less';
+@import '../../vendor/bootstrap/less/type.less';
+@import '../../vendor/bootstrap/less/grid.less';
+@import '../../vendor/bootstrap/less/layouts.less';
+@import '../../vendor/bootstrap/less/navs.less';
+@import '../../vendor/bootstrap/less/navbar.less';
+@import '../../vendor/bootstrap/less/buttons.less';
+@import '../../vendor/bootstrap/less/button-groups.less';
+@import '../../vendor/bootstrap/less/dropdowns.less';
+
+
+/**
+ * This is our main variables file. It in turn imports the `variables` file from
+ * Twitter Bootstrap. We must include it last so we can overwrite any variable
+ * definitions in our imported stylesheets.
+ */
+
+@import 'variables.less';
+
+/**
+ * Now that all app-wide styles have been applied, we can load the styles for
+ * all the submodules and components we are using.
+ */
+
+@import '../app/app.less';
+@import '../app/modules/browse/browse.less';
+@import '../app/modules/datagrid/datagrid.less';
+@import '../app/modules/detail/detail.less';
+@import '../app/modules/browse/retrofitBootstrap3ForAngularJSPagination.less';
