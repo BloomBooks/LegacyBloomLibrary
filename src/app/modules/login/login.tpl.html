@@ -4,6 +4,7 @@
 	<input id="username" required type="text" name="username" ng-model="username" placeholder="your email"/>
 	<label for="password">Password</label>
 	<input id="password" required type="password" name="password" ng-model="password" placeholder="Enter your password" />
+    <div ng-hide="!loginFailed"><a ng-click="resetPassword()">Send reset password instructions to {{username}}</a></div>
 	<button class="btn" type="submit">Login</button>
 	</form>
 </div>
