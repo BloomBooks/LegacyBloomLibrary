@@ -5,22 +5,22 @@
         <div class="close" ng-click="close()">x</div>
     </div>
     <div class="modal-body">
-        <img ng-src="{{book.volumeInfo.imageLinks.thumbnail}}" />
+        <img ng-src="{{book.thumbnail}}" />
         <div class="detailCol2">
-            <div class="title">{{book.volumeInfo.title}}</div>
-            <div class="author">{{book.volumeInfo.authors  }}</div>
+            <div class="title">{{book.title}}</div>
+            <!--div class="author">{{book.volumeInfo.authors  }}</div>
             <div class="summary">{{book.volumeInfo.description}}</div>
             <div class="tags">
                 <label>Tags:</label><div ng-repeat="tag in book.volumeInfo.categories">
                     <label><i class="icon-tag"></i>{{tag}}</label>
                 </div>
-            </div>
+            </div-->
             <div class="unfloat"></div>
             <div class="actions">
-                <a ng-href="{{book.volumeInfo.previewLink}}" pdfoverlay>
+                <a ng-href="{{book.previewLink}}" pdfoverlay>
                      
                     <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
-                <button type="button" class="btn btn-lg" ng-click="download()"><i class="icon-download"></i>  Open in Bloom</button>
+                <a ng-href="{{book.bookOrder}}"><button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
             </div>
 
             <button id="OK" type="button" class="btn btn-info btn-lg" ng-click="close()">OK</button>
