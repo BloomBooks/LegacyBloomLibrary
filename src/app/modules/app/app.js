@@ -18,12 +18,13 @@
 
            } ])
 
-.controller('HeaderCtrl', ['$scope', 'authService', '$location', '$state', function ($scope, authService, $location, $state) {
+.controller('HeaderCtrl', ['$scope', 'authService', '$location', '$state', 'silNoticeService', function ($scope, authService, $location, $state, silNoticeService) {
 	$scope.location = $location.path();
 	$scope.isLoggedIn = authService.isLoggedIn;
 
 	$scope.logout = function () {
 		authService.logout();
+		silNoticeService.clear();
 		$state.go('browse');
 	};
 
