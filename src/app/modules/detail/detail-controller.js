@@ -2,8 +2,12 @@
 	'use strict';
 
 	angular.module('BloomLibraryApp.detail', ['ui.router', "restangular"])
-	.config(function config($urlRouterProvider, $stateProvider) {
-
+	.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
+		// Tell angular that urls starting with bloom: are OK. (Otherwise it marks them 'unsafe' and Chrome at
+		// least won't follow them.). This is needed for the Open in Bloom button.
+		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom):/);
+		// For angular 1.2 this should be changed to
+		//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom):/);
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
 			onEnter: function ($dialog, $state) {
@@ -40,9 +44,5 @@
 		$scope.$on('$locationChangeSuccess', function (event) {
 			dialog.close();
 		});
-
-		$scope.dowloand = function () {
-			alert('download');
-		};
 	} ]);
 } ());  // end wrap-everything function

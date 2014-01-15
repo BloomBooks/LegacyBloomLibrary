@@ -5,8 +5,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		headers = {
-			'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-			'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
+			'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
+			'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
 		};
 
 		restangularConfig = function (restangularConfigurer) {
@@ -55,7 +55,6 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				isLoggedIn = false;
 				factory.setSession('');
 			}
-
 		};
 
 		return factory;
@@ -68,7 +67,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-		Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
+		Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
 		this.getAllBooks = function () {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({ "limit": 50 }).then(function (resultWithWrapper) {
 				return resultWithWrapper.results;
@@ -89,7 +88,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			var defer = $q.defer();
 			var query = new Parse.Query('books');
 			if (searchString) {
-				query.contains('volumeInfo.title', searchString);
+				query.contains('title', searchString);
 			}
 			query.count({
 				success: function (count) {
@@ -122,7 +121,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			query.skip(first);
 			query.limit(count);
 			if (searchString) {
-				query.contains('volumeInfo.title', searchString);
+				query.contains('title', searchString);
 			}
 			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
 			// It does not work for e.g. volumeInfo.title.
