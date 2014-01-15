@@ -48,5 +48,10 @@
 
 			});
 		};
+			$scope.resetPassword = function() {
+				authService.sendResetPassword($scope.username);
+				silNoticeService.replace(silNoticeService.SUCCESS,
+					"Reset instructions sent. The sender of this message will be 'no-reply@bloomlibrary.org'; you may need to check your spam folder. Please enter your new password after resetting.");
+			};
 		} ]);
 } ());  // end wrap-everything function
