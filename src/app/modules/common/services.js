@@ -54,6 +54,21 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			logout: function () {
 				isLoggedIn = false;
 				factory.setSession('');
+			},
+
+			// curl -X POST \
+			//	-H "X-Parse-Application-Id: mqNCpJ1nB4a597asLF61OwYclJCOwfzgMNTMF6LL" \
+			//  -H "X-Parse-REST-API-Key: QN9bdJ8JODDYxUSXqWZTaz2y8WcX3d5kMi6ha3TU" \
+			//  -H "Content-Type: application/json" \
+			//  -d '{"email":"coolguy@iloveapps.com"}' \
+			//  https://api.parse.com/1/requestPasswordReset
+			sendResetPassword: function(email)
+			{
+				// It took some experimentation to get restangular to make the post we wanted, with
+				// fewer elements in the path than expected. There may be a simpler way, but this works.
+				// Enhance: is there any need/possibility of detecting errors here?
+				// For example, what if it's not a valid email address we know? Or if the network is down?
+				return restangular.withConfig(restangularConfig).one("requestPasswordReset").post('', {"email":email});
 			}
 		};
 
