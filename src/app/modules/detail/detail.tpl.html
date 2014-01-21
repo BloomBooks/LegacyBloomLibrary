@@ -24,7 +24,7 @@
             </div>
             <div class="unfloat"></div>
             <div class="actions">
-                <a ng-href="{{book.previewLink}}" pdfoverlay>
+                <a ng-href="{{book.thumbnail | thumbToPreview}}" pdfoverlay>
                      
                     <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
                 <a ng-href="{{book.bookOrder}}"><button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
