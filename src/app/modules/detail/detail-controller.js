@@ -27,6 +27,52 @@
 			}
 		});
 	})
+		// we get a string like 'by-nc-sa and we return a human-readable interpretation
+		// Review: the current implementation will give an 'anything goes' interpretation
+		// to any string it does not recognize (except ones javascript interprets as false).
+		// Note that Bloom does not currently produce any CC license codes that do NOT start 'by';
+		// Hence, all interpretations (except ask and custom) will include "You must attribute...".
+		// Since "anything goes" would logically be an empty string (lacking by, nc, nd, and sa)
+		// there is currently no standard way to encode this, though "any" would work.
+		.filter('interpretCC', function () {
+			return function (input) {
+				if (!input || input == "ask")
+				{
+					return "You must ask the author for permission to use this work.";
+				}
+				if (input == "custom")
+				{
+					return "You may use this work only as described in any adjacent notes or after asking the author for permission.";
+				}
+				var result = "";
+				if(input.indexOf("nc") < 0)
+				{
+					result+="You are free to make commercial use of this work. ";
+				}
+				else
+				{
+					result += "You may not use this work for commercial purposes. ";
+				}
+
+				if (input.indexOf("nd") < 0)
+				{
+					result += "You may not alter, transform, or build upon this work without permission. ";
+				}
+				else if (input.indexOf("sa") < 0)
+				{
+					result += "You may adapt or build upon this work, but you may distribute the resulting work only under the same or similar license to this one. ";
+				}
+				else
+				{
+					result += "You are free to adapt, remix, copy, distribute, and transmit this work. ";
+				}
+				if(input.indexOf("by") >= 0)
+				{
+					result += "You must attribute the work in the manner specified by the author. ";
+				}
+				return result;
+			};
+		})
 		//we get a json list like ['pdc','en', 'fr'] and we return ['pdc, English, French']
 		// Enhance: use some localizable mechanism
 		.filter('prettyLang', function () {

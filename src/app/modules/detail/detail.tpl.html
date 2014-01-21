@@ -16,6 +16,9 @@
             <div class="languages" ng-show="book.languages.length">
                 Languages: {{book.languages | prettyLang | makeCommaList  }}
             </div>
+            <div class="license">
+                License: <img class="ccLogo" src="assets/{{book.license}}.png" title="{{book.license | interpretCC}}"> {{book.licenseNotes}}
+            </div>
             <div class="unfloat"></div>
             <div class="actions">
                 <a ng-href="{{book.previewLink}}" pdfoverlay>
