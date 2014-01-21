@@ -117,6 +117,12 @@
 			return function (input) {
 				return input == null ? "" : input.join(", ");
 			};
+		})
+		//we get a date string and return it more nicely formatted
+		.filter('cleanDate', function () {
+			return function (input) {
+				return input == null ? "" : new Date(input).toLocaleDateString();
+			};
 		});
 
 	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', '$state', '$stateParams', 'dialog', 'bookService', '$location',

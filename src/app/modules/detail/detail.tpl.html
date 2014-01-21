@@ -19,6 +19,9 @@
             <div class="license">
                 License: <img class="ccLogo" src="assets/{{book.license}}.png" title="{{book.license | interpretCC}}"> {{book.licenseNotes}}
             </div>
+            <div class="status">
+                Pages: {{book.pageCount}}. Uploaded: {{book.updatedAt | cleanDate}}. {{book.copyright}}
+            </div>
             <div class="unfloat"></div>
             <div class="actions">
                 <a ng-href="{{book.previewLink}}" pdfoverlay>
