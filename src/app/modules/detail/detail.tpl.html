@@ -8,13 +8,14 @@
         <img ng-src="{{book.thumbnail}}" />
         <div class="detailCol2">
             <div class="title">{{book.title}}</div>
-            <!--div class="author">{{book.volumeInfo.authors  }}</div>
-            <div class="summary">{{book.volumeInfo.description}}</div>
-            <div class="tags">
-                <label>Tags:</label><div ng-repeat="tag in book.volumeInfo.categories">
-                    <label><i class="icon-tag"></i>{{tag}}</label>
-                </div>
-            </div-->
+            <div class="author">{{book.authors | makeCommaList  }}</div>
+            <!--div class="summary">{{book.summary}}</div-->
+            <div class="tags" ng-show="book.tags.length">
+                Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
+            </div>
+            <div class="languages" ng-show="book.languages.length">
+                Languages: {{book.languages | prettyLang | makeCommaList  }}
+            </div>
             <div class="unfloat"></div>
             <div class="actions">
                 <a ng-href="{{book.previewLink}}" pdfoverlay>

@@ -26,7 +26,52 @@
 					});
 			}
 		});
-	});
+	})
+		//we get a json list like ['pdc','en', 'fr'] and we return ['pdc, English, French']
+		// Enhance: use some localizable mechanism
+		.filter('prettyLang', function () {
+			return function (input) {
+				var result = [];
+				if (input == null)
+				{
+					return result;
+				}
+				var len = input.length;
+				for (var i = 0; i < len; i++)
+				{
+					switch(input[i])
+					{
+						case "en": result[i] = "English";
+							break;
+						case "fr": result[i] = "French";
+							break;
+						case "es": result[i] = "Spanish";
+							break;
+						case "de": result[i] = "German";
+							break;
+						case "zh": result[i] = "Chinese";
+							break;
+						case "ja": result[i] = "Japanese";
+							break;
+						case "ko": result[i] = "Korean";
+							break;
+						case "pt": result[i] = "Portuguese";
+							break;
+						case "ru": result[i] = "Russian";
+							break;
+						default: result[i] = input[i];
+							break;
+					}
+				}
+				return result;
+			};
+		})
+		//we get a json list like ['me','you'] and we return 'me, you'
+		.filter('makeCommaList', function () {
+			return function (input) {
+				return input == null ? "" : input.join(", ");
+			};
+		});
 
 	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', '$state', '$stateParams', 'dialog', 'bookService', '$location',
 
