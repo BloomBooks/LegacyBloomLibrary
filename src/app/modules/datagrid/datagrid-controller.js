@@ -57,8 +57,7 @@
 							title: item.volumeInfo.title,
 							published: item.volumeInfo.publishedDate,
 							publisher: item.volumeInfo.publisher,
-							pages: item.volumeInfo.pageCount,
-							authors: (item.volumeInfo.authors ? item.volumeInfo.authors.join(", ") : "")
+							pages: item.volumeInfo.pageCount
 						};
 					});
 				});
@@ -101,8 +100,7 @@
 				columnDefs: [{ field: 'title', displayName: 'Title', width: '***' },
 			{ field: 'published', displayName: 'Date', width: 80 },
 			{ field: 'publisher', displayName: 'Copyright', width: '**' },
-			{ field: 'pages', displayName: 'Pages', width: 50 },
-			{ field: 'authors', displayName: 'Authors', width: '***' }
+			{ field: 'pages', displayName: 'Pages', width: 50 }
 		]
 			};
 			//	$scope.searchText = $stateParams["search"];

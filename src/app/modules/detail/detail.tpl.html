@@ -8,8 +8,8 @@
         <img ng-src="{{book.thumbnail}}" />
         <div class="detailCol2">
             <div class="title">{{book.title}}</div>
-            <div class="author">{{book.authors | makeCommaList  }}</div>
-            <!--div class="summary">{{book.summary}}</div-->
+            <div class="credits">{{book.credits  }}</div>
+            <div class="summary">{{book.summary}}</div>
             <div class="tags" ng-show="book.tags.length">
                 Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
             </div>
