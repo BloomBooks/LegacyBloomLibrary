@@ -239,7 +239,14 @@ module.exports = function ( grunt ) {
     uglify: {
       compile: {
         options: {
-          banner: '<%= meta.banner %>'
+          banner: '<%= meta.banner %>',
+			// We should not need this, because we are using ng-min.
+			// See http://stackoverflow.com/questions/17238759/angular-module-minification-bug.
+			// See also https://github.com/ngbp/ngbp/issues/200
+			// However, we only apply ng-min to our own code, not the stuff we import from vendor, I believe.
+			// May need to apply it to everything.
+			// As of 1-22-14, the cost of mangle:false is to make our consolidated js file about 0.8M instead of 0.6M.
+			mangle:false
         },
         files: {
           '<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
