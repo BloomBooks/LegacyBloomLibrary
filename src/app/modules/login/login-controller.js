@@ -17,8 +17,46 @@
 	angular.module('BloomLibraryApp.login')
 	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', '$state',
 		function ($scope, $dialog, $timeout, silNoticeService, authService, $state) {
-		$scope.login = function () {
-			authService.login($scope.username, $scope.password, function (result) {
+
+			// Handle a bug in angular: it does not see when the browser auto-fills the user name
+			// and so does not update the model.
+			// See https://github.com/angular/angular.js/issues/1460#issuecomment-18572604.
+			// This code is modeled on a suggestion there by chrisirhc
+			var timer = null;
+			var wantTimer = true;
+			function startTimer() {
+				if (timer != null)
+				{
+					$timeout.cancel(timer); // just in case we already started one
+				}
+				if (!wantTimer)
+				{
+					return;
+				}
+				timer = $timeout(function () {
+					var value = $("#username").val();
+					if (value && $scope.username !== value) {
+						$scope.username = value;
+					}
+					startTimer();
+				}, 500); // Run this check every half second while login screen active
+			}
+
+			$scope.$on('$destroy', function () {
+				$timeout.cancel(timer);
+				wantTimer = false; // never start another for this scope
+			});
+
+			startTimer();
+
+			$scope.login = function () {
+				// catch autofill values in password field
+				var value = $("#password").val();
+				if (value && $scope.password !== value) {
+					$scope.password = value;
+				}
+
+				authService.login($scope.username, $scope.password, function (result) {
 				if (result.error) {
 					silNoticeService.replace(silNoticeService.ERROR, result.error);
 				} else {
