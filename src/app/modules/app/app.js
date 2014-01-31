@@ -4,6 +4,7 @@
 	var BloomLibraryApp = angular.module('BloomLibraryApp',
 				['templates-app', 'templates-common', // Required for ng-boilerplate, to use templates from templates-app.js instead of copying individual files.
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
+					"BloomLibraryApp.ccdialog",
 				"ui.bootstrap", 'ui.router', 'palaso.ui.listview', 'restangular'])
 
   .config(['$urlRouterProvider', '$stateProvider',
