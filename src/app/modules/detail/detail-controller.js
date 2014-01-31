@@ -27,52 +27,6 @@
 			}
 		});
 	})
-		// we get a string like 'by-nc-sa and we return a human-readable interpretation
-		// Review: the current implementation will give an 'anything goes' interpretation
-		// to any string it does not recognize (except ones javascript interprets as false).
-		// Note that Bloom does not currently produce any CC license codes that do NOT start 'by';
-		// Hence, all interpretations (except ask and custom) will include "You must attribute...".
-		// Since "anything goes" would logically be an empty string (lacking by, nc, nd, and sa)
-		// there is currently no standard way to encode this, though "any" would work.
-		.filter('interpretCC', function () {
-			return function (input) {
-				if (!input || input == "ask")
-				{
-					return "You must ask the author for permission to use this work.";
-				}
-				if (input == "custom")
-				{
-					return "You may use this work only as described in any adjacent notes or after asking the author for permission.";
-				}
-				var result = "";
-				if(input.indexOf("nc") < 0)
-				{
-					result+="You are free to make commercial use of this work. ";
-				}
-				else
-				{
-					result += "You may not use this work for commercial purposes. ";
-				}
-
-				if (input.indexOf("nd") < 0)
-				{
-					result += "You may not alter, transform, or build upon this work without permission. ";
-				}
-				else if (input.indexOf("sa") < 0)
-				{
-					result += "You may adapt or build upon this work, but you may distribute the resulting work only under the same or similar license to this one. ";
-				}
-				else
-				{
-					result += "You are free to adapt, remix, copy, distribute, and transmit this work. ";
-				}
-				if(input.indexOf("by") >= 0)
-				{
-					result += "You must attribute the work in the manner specified by the author. ";
-				}
-				return result;
-			};
-		})
 		//we get a json list like ['pdc','en', 'fr'] and we return ['pdc, English, French']
 		// Enhance: use some localizable mechanism
 		.filter('prettyLang', function () {
@@ -150,9 +104,13 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', '$state', '$stateParams', 'dialog', 'bookService', '$location',
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', '$state', '$stateParams', 'dialog', '$dialog','bookService', '$location',
 
-	function ($scope, $state, $stateParams, dialog, bookService, $location) {
+	// Argument names dialog and $dialog are unfortunately similar here. $dialog is the ui-bootstrap service
+	// we use to launch the cc dialog, and cannot be renamed AFAIK. dialog is the detail view itself, used
+	// for things like closing it. That could possibly be renamed but I don't know whether it is ours or
+	// built into ui-bootstrap.
+	function ($scope, $state, $stateParams, dialog, $dialog, bookService, $location) {
 		//get the book for which we're going to show the details
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;
@@ -160,6 +118,21 @@
 
 		$scope.close = function () {
 			dialog.close();
+		};
+
+		$scope.showLicense = function() {
+			$dialog.dialog(
+				{
+					backdrop: true,
+					keyboard: true, //make ESC close it (sadly the detail view too)
+					backdropClick: true, //make clicking on the backdrop close it (sadly the detail view too)
+					templateUrl: 'modules/detail/ccdialog.tpl.html',
+					controller: 'ccdialog',
+					dialogClass: 'modal ccmodal',
+					// this defines the value of 'book' as something that is injected into the BloomLibraryApp.ccdialog's
+					// controller, thus giving it access to the book whose license we want details about.
+					resolve: {book: function() {return $scope.book;}}
+				}).open();
 		};
 
 		// This is so the dialog closes when the back button in the browser is used.

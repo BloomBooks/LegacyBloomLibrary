@@ -17,7 +17,7 @@
                 Languages: {{book.languages | prettyLang | makeCommaList  }}
             </div>
             <div class="license">
-                License: <img class="ccLogo" src="assets/{{book.license}}.png" title="{{book.license | interpretCC}}"> {{book.licenseNotes}}
+                License: <a href="javascript:void(null);" ng-click="showLicense()">{{book.license}}</a> {{book.licenseNotes}}
             </div>
             <div class="status">
                 Pages: {{book.pageCount}}. Uploaded: {{book.updatedAt | cleanDate}}. {{book.copyright}}
