@@ -8,19 +8,19 @@
         <img ng-src="{{book.thumbnail}}" />
         <div class="detailCol2">
             <div class="title">{{book.title}}</div>
-            <div class="credits">{{book.credits  }}</div>
-            <div class="summary">{{book.summary}}</div>
-            <div class="tags" ng-show="book.tags.length">
-                Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
-            </div>
+            <div class="summary" ng-hide="!book.summary">Summary: {{book.summary}}</div>
+            <div class="detailPages">Pages: {{book.pageCount}}</div>
             <div class="languages" ng-show="book.languages.length">
                 Languages: {{book.languages | prettyLang | makeCommaList  }}
             </div>
+            <div class="copyright">{{book.copyright}}</div>
             <div class="license">
-                License: <a href="javascript:void(null);" ng-click="showLicense()">{{book.license}}</a> {{book.licenseNotes}}
+                License: <a href="javascript:void(null);" ng-click="showLicense()">{{book.license}}</a><span ng-hide="!book.licenseNotes">. (</span>{{book.licenseNotes}}<span ng-hide="!book.licenseNotes">)</span>
             </div>
-            <div class="status">
-                Pages: {{book.pageCount}}. Uploaded: {{book.updatedAt | cleanDate}}. {{book.copyright}}
+            <!--div class="credits">{{book.credits  }}</div-->
+            <div class="status">Uploaded: {{book.updatedAt | cleanDate}} by {{book.uploadedBy}}</div>
+            <div class="tags" ng-show="book.tags.length">
+                Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
             </div>
             <div class="unfloat"></div>
             <div class="actions">
@@ -28,9 +28,9 @@
                      
                     <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
                 <a ng-href="{{book.bookOrder}}"><button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
+                <button id="OK" type="button" class="btn btn-info btn-lg" ng-click="close()">OK</button>
             </div>
 
-            <button id="OK" type="button" class="btn btn-info btn-lg" ng-click="close()">OK</button>
         </div>
 </div>
 </div>
