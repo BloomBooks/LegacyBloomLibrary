@@ -74,7 +74,8 @@ module.exports = {
 	  'vendor/underscore/underscore.js',
 	  'vendor/angular-ui-router/release/angular-ui-router.js',
 	  'vendor/fancybox/source/jquery.fancybox.js',
-	  'vendor/ng-grid/ng-grid-2.0.7.debug.js'
+	  'vendor/ng-grid/ng-grid-2.0.7.debug.js',
+	  'vendor/angular-cookies/angular-cookies.js'
     ],
     css: [
 		'vendor/bootstrap-css/css/bootstrap.css',

@@ -1,0 +1,21 @@
+<div>
+    <div class="container">
+        <h1>Downloading to Bloom</h1>
+        <div class="download">You are asking this web page to download <span class="downloadTitle">{{book.title}}</span> so that you can edit it locally on your computer.</div>
+        <div class="download">In order to download files to Bloom, you must first install the right version of Bloom, which you can get
+            <!--Todo: href should be a link to a more stable version, but for now, only the bleeding-edge version
+            has the download functionality.-->
+        <a href="http://build.palaso.org/viewLog.html?buildId=33632&tab=artifacts&buildTypeId=bt222">here.</a>
+            <!--This can hopefully be removed when we have a good url for downloading a stable download-capable release.-->
+            (You will be asked to log in, but you can use the 'guest' login to do the download.)</div>
+        <div class="download">When you are ready to proceed, click the Download button.
+            You will initially see a rather scary message asking whether it is OK to have Bloom open a link.
+        Just tell the browser to go ahead. After a short delay, the book should open in Bloom, ready for you
+        to make your own book based on it. Most browsers have an option that will allow you to stop seeing the warning.</div>
+        <div class="download">You can also tell Bloom to bypass this page and open books directly in future, by checking the box below.
+            (Unfortunately, that won't suppress the warning from your browser...you will have to turn that off separately.)</div>
+        <div class="downloadCheck"><input type="checkbox" ng-model="skipDownloadPage"> Bypass this page for future downloads</input></div>
+        <div class="downloadButtons"><button id="Cancel" type="button" class="btn btn-info btn-lg" ng-click="cancel()">Close</button>
+            <a ng-href="{{book.bookOrder}}"><button id="Continue" type="button" class="btn btn-info btn-lg">Download</button></a></div>
+    </div>
+</div>

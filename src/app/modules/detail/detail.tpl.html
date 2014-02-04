@@ -27,10 +27,11 @@
                 <a ng-href="{{book.thumbnail | thumbToPreview}}" pdfoverlay>
                      
                     <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
-                <a ng-href="{{book.bookOrder}}"><button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
+                <a ng-href="{{book.bookOrder}}" ng-hide="!skipDownloadPage"><button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
+                <a ui-sref="download({bookId: book.objectId})" ng-hide="skipDownloadPage"><button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
                 <button id="OK" type="button" class="btn btn-info btn-lg" ng-click="close()">OK</button>
             </div>
 
         </div>
-</div>
+    </div>
 </div>
