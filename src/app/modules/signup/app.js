@@ -23,6 +23,13 @@
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;
+		$scope.showPassword = true;
+
+		var e = document.getElementById("hpot");
+		if (e)
+		{
+			e.parentNode.removeChild(e); // don't want humans to see this, only spambots
+		}
 
 		$scope.createUser = function (record) {
 			if (record.notHuman) {
