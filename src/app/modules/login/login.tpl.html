@@ -1,10 +1,14 @@
-<div class="container well span3">
+<div class="container well loginRoot"> <!-- uses many classes from signup.less for consistency-->
 	<form ng-submit="login()" name="loginform">
-	<label for="username">Email Address</label>
-	<input id="username" required type="text" name="username" ng-model="username" placeholder="your email"/>
-	<label for="password">Password</label>
-	<input id="password" required type="password" name="password" ng-model="password" placeholder="Enter your password" />
-    <div><a ng-click="resetPassword()">Send reset password instructions to {{username}}</a></div>
-	<button class="btn" type="submit">Login</button>
+	<label for="usernm">Email Address</label>
+	<input id="usernm" required type="email" name="usernm" ng-model="username" placeholder="your email"/>
+    <div class="password">
+        <label>Password</label>
+        <input class="passwordInput" required type="text" name="password" ng-model="password" placeholder="Enter your password" ng-show="showPassword"/>
+        <input class="passwordInput" required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword"/>
+    </div>
+    <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
+    <div class="resetPw"><a ng-show="loginform.usernm.$valid" ng-click="resetPassword()">Forgot password</a></div>
+    <div class="loginButton"><button class="btn signupBtn" type="submit">Login</button></div>
 	</form>
 </div>

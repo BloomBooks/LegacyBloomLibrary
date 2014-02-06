@@ -24,6 +24,7 @@
 			// This code is modeled on a suggestion there by chrisirhc
 			var timer = null;
 			var wantTimer = true;
+			$scope.showPassword = true;
 			function startTimer() {
 				if (timer != null)
 				{
@@ -89,7 +90,7 @@
 			$scope.resetPassword = function() {
 				authService.sendResetPassword($scope.username);
 				silNoticeService.replace(silNoticeService.SUCCESS,
-					"Reset instructions sent. The sender of this message will be 'no-reply@bloomlibrary.org'; you may need to check your spam folder. Please enter your new password after resetting.");
+					"An email with instructions for resetting your password has been sent to " + $scope.username + ". If you don't see it in a few minutes, check your spam/junk mail folder.");
 			};
 		} ]);
 } ());  // end wrap-everything function
