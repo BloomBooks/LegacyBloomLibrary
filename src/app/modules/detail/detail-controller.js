@@ -78,6 +78,19 @@
 				return input == null ? "" : new Date(input).toLocaleDateString();
 			};
 		})
+		//we get an email string and shorten it to make it give less away.
+		.filter('obfuscate', function () {
+			return function (input) {
+				if(!input) {
+					return "";
+				}
+				var index = input.lastIndexOf("@");
+				if (index < 0 || index + 3 >= input.length){
+					return input;
+				}
+				return input.substring(0, index + 3);
+			};
+		})
 		// we get a URL for the thumbnail and return the one for the Preview.
 		// input url is .../BookName/thumbnail.png
 		// output is .../BookName/BookName.pdf.

@@ -18,7 +18,7 @@
                 License: <a href="javascript:void(null);" ng-click="showLicense()">{{book.license}}</a><span ng-hide="!book.licenseNotes">. (</span>{{book.licenseNotes}}<span ng-hide="!book.licenseNotes">)</span>
             </div>
             <!--div class="credits">{{book.credits  }}</div-->
-            <div class="status">Uploaded: {{book.updatedAt | cleanDate}} by {{book.uploadedBy}}</div>
+            <div class="status">Uploaded: {{book.updatedAt | cleanDate}} by {{book.uploader.email | obfuscate}}</div>
             <div class="tags" ng-show="book.tags.length">
                 Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
             </div>

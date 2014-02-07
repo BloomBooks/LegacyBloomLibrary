@@ -135,6 +135,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			// Configure the query to give the results we want.
 			query.skip(first);
 			query.limit(count);
+			//query.include("uploader"); // reinstate this and code below if we need contents of uploader
 			if (searchString) {
 				query.contains('title', searchString);
 			}
@@ -155,6 +156,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				success: function (results) {
 					var objects = new Array(results.length);
 					for (i = 0; i < results.length; i++) {
+						// reinstate this and the line above if we need the contents (more than objectID) of the uploader field.
+//						// without this the extra fields downloaded by include("uploader") don't get copied to objects.
+//						var user = results[i].get("uploader");
+//						if (user)
+//						{
+//							results[i].set("uploader", user.toJSON());
+//						}
 						objects[i] = results[i].toJSON();
 					}
 					// I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
@@ -172,7 +180,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		};
 
 		this.getBookById = function (id) {
-			return restangular.withConfig(authService.config()).one('classes/books', id).get();
+			return restangular.withConfig(authService.config()).one('classes/books', id).get({include:"uploader"});
 		};
 	} ])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
