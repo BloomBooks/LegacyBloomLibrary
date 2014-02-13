@@ -2,6 +2,7 @@
     <div class="container">
         <h1>Downloading to Bloom</h1>
         <div class="download">You are asking this web page to download <span class="downloadTitle">{{book.title}}</span> so that you can edit it locally on your computer.</div>
+        <div ng-show="isWindows">
         <div class="download">In order to download files to Bloom, you must first install the right version of Bloom, which you can get
             <!--Todo: href should be a link to a more stable version, but for now, only the bleeding-edge version
             has the download functionality.-->
@@ -15,7 +16,14 @@
         <div class="download">You can also tell Bloom to bypass this page and open books directly in future, by checking the box below.
             (Unfortunately, that won't suppress the warning from your browser...you will have to turn that off separately.)</div>
         <div class="downloadCheck"><input type="checkbox" ng-model="skipDownloadPage"> Bypass this page for future downloads</input></div>
+        </div>
+        <div class="download" ng-hide="isWindows">
+            Unfortunately, downloading a bloom book to work with it offline requires the Bloom desktop program.
+            Currently, this program only runs on Windows operating systems. We are working to develop a Linux version.
+            If you just want to read the book, use the Preview button. Otherwise, you will need to find a Windows
+            computer where you can install Bloom desktop and try downloading the book again.
+        </div>
         <div class="downloadButtons"><button id="Cancel" type="button" class="btn btn-info btn-lg" ng-click="cancel()">Close</button>
-            <a ng-href="{{book.bookOrder}}"><button id="Continue" type="button" class="btn btn-info btn-lg">Download</button></a></div>
+            <a ng-href="{{book.bookOrder}}" ng-show="isWindows"><button id="Continue" type="button" class="btn btn-info btn-lg">Download</button></a></div>
     </div>
 </div>
