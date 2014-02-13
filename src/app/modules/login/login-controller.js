@@ -15,8 +15,8 @@
 ;
 
 	angular.module('BloomLibraryApp.login')
-	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', '$state',
-		function ($scope, $dialog, $timeout, silNoticeService, authService, $state) {
+	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', '$state', 'userService',
+		function ($scope, $dialog, $timeout, silNoticeService, authService, $state, userService) {
 
 			// Handle a bug in angular: it does not see when the browser auto-fills the user name
 			// and so does not update the model.
@@ -88,9 +88,18 @@
 			});
 		};
 			$scope.resetPassword = function() {
-				authService.sendResetPassword($scope.username);
-				silNoticeService.replace(silNoticeService.SUCCESS,
-					"An email with instructions for resetting your password has been sent to " + $scope.username + ". If you don't see it in a few minutes, check your spam/junk mail folder.");
+				//we'er using the email for the account hame
+				userService.readByUserName($scope.username, function (result) {
+					if (result.results.length === 0) {
+						silNoticeService.replace(silNoticeService.ERROR,
+							"We don't have an account with this address. Check the spelling and try again. Or you may just need to sign up for a new account.");
+					} else {
+						authService.sendResetPassword($scope.username);
+						silNoticeService.replace(silNoticeService.SUCCESS,
+							"An email with instructions for resetting your password has been sent to " + $scope.username + ". If you don't see it in a few minutes, check your spam/junk mail folder.");
+					}
+					// todo: check for error state
+				});
 			};
 		} ]);
 } ());  // end wrap-everything function
