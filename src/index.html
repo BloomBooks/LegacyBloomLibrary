@@ -30,10 +30,10 @@
                 <div ng-cloak style="float: right" class="nav">
                     <ng-switch class="animate-switch-container" on="isLoggedIn()">
                         <div ng-switch-when="false">
-                            <a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Log In</a>
+                            <a href="#terms" target="_blank">Terms of Use</a><span class="separator">|</span><a href="#privacy" target="_blank">Privacy</a><span class="separator">|</span><a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Log In</a>
                         </div>
                         <div ng-switch-default>
-                           {{userName()}}
+                            <a href="#terms" target="_blank">Terms of Use</a><span class="separator">|</span><a href="#privacy" target="_blank">Privacy</a><span class="separator">|</span>{{userName()}}
                             <a ng-click="logout()">log out</a>
                         </div>
                     </ng-switch>
