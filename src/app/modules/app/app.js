@@ -74,7 +74,10 @@
 			link: function (scope, element, attrs) {
 				$(element).fancybox({
 					'overlayShow': true,
-					'type': 'iframe'
+					'type': 'iframe',
+					iframe: {
+						preload: false
+					}
 				});
 			}
 		};
