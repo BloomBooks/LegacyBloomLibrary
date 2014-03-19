@@ -94,7 +94,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			});
 		};
 
-		// Gets the count of books whose title contains searchString.
+		// Gets the count of books whose search field (currently lowercase title plus concat of lowercase tags) contains searchString.
 		// Returns a promise which will deliver the count.
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
@@ -103,7 +103,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			var defer = $q.defer();
 			var query = new Parse.Query('books');
 			if (searchString) {
-				query.contains('title', searchString);
+				query.contains('search', searchString.toLowerCase());
 			}
 			query.count({
 				success: function (count) {
@@ -123,10 +123,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			});
 		};
 
-		// We want a subset of the books whose title contains searchString.
+		// We want a subset of the books whose search field contains searchString.
 		// From that set we want up to count items starting at first (0-based).
 		// We will return the result as an angularjs promise. Typically the caller will
-		// do something like getFilteredBookRange(...).then(function(books) {...do somethign with books}
+		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
 		this.getFilteredBookRange = function (first, count, searchString, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
@@ -137,7 +137,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			query.limit(count);
 			//query.include("uploader"); // reinstate this and code below if we need contents of uploader
 			if (searchString) {
-				query.contains('title', searchString);
+				query.contains('search', searchString.toLowerCase());
 			}
 			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
 			// It does not work for e.g. volumeInfo.title.
