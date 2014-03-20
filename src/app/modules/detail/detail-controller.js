@@ -21,7 +21,9 @@
 						controller: 'DetailCtrl'
 					}).open().then(function (result) {
 						if (!result) {
-							return $state.transitionTo("browse");
+							// Return to browse view when detail closes. Adding $state.params preserves
+							// any current filter parameters the browser view was using, such as the search string.
+							return $state.transitionTo("browse", $state.params);
 						}
 					});
 			}
