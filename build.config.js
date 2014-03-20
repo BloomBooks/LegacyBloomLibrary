@@ -84,6 +84,7 @@ module.exports = {
 		'vendor/ng-grid/ng-grid.css'
     ],
     assets: [
+		'vendor/fancybox/source/fancybox_sprite.png'
     ]
-  },
+  }
 };
