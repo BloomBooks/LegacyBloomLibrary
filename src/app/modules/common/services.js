@@ -20,6 +20,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			setUserName: function (newName) { userNameX = newName; },
 
 			isLoggedIn: function () { return isLoggedIn; },
+			isUserAdministrator: function () { return isUserAdministrator; },
 
 			config: function () { return restangularConfig; },
 
@@ -40,6 +41,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username, 'password': password })
 					.then(function (result) {
 						isLoggedIn = true;
+						isUserAdministrator = result.administrator;
 						userNameX = username;
 						factory.setSession(result.sessionToken); // im not sure this actually works
 						successCallback(result);
@@ -182,6 +184,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.getBookById = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books', id).get({include:"uploader"});
 		};
+
+		this.deleteBook = function (id) {
+			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
+		};
 	} ])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
 		var checkforerror = function (callback) {
@@ -198,4 +204,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.readByUserName = function (username, callback) {
 			return restangular.withConfig(authService.config()).all('users').getList({ "where": '{"username": "' + username + '"}' }).then(callback, callback);
 		};
-	} ]);
+	} ])
+	.service('bookCountService', function () { // service to provide shared access to this object between detail and browse for delete
+		var bookCountObject = {bookCount: 0};
+		return {
+			getCount: function() {
+				return bookCountObject;
+			}
+		};
+	});
