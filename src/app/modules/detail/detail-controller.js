@@ -20,11 +20,20 @@
 						templateUrl: 'modules/detail/detail.tpl.html',
 						controller: 'DetailCtrl'
 					}).open().then(function (result) {
-						if (!result) {
-							// Return to browse view when detail closes. Adding $state.params preserves
-							// any current filter parameters the browser view was using, such as the search string.
-							return $state.transitionTo("browse", $state.params);
+						// Return to browse view when detail closes. Adding $state.params preserves
+						// any current filter parameters the browser view was using, such as the search string.
+						// The result passed to the call to close() indicates whether we need to force
+						// a reload of the browse view (i.e., when we have deleted a book).
+						if (result) {
+							// don't try to go back to deleted book.
+							// What we really want to do here is to remove the bookId from params.
+							// (But we need a new object.)
+							// Currently, search is the only property we need to keep.
+							var params = {};
+							params.search = $state.params.search;
+							$state.transitionTo("browse", params);
 						}
+						$state.transitionTo("browse", $state.params);
 					});
 			}
 		});
@@ -119,16 +128,18 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', '$state', '$stateParams', 'dialog', '$dialog','bookService', '$location', '$cookies',
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$state', '$stateParams', 'dialog', '$dialog','bookService', '$location', '$cookies', 'bookCountService',
 
 	// Argument names dialog and $dialog are unfortunately similar here. $dialog is the ui-bootstrap service
 	// we use to launch the cc dialog, and cannot be renamed AFAIK. dialog is the detail view itself, used
 	// for things like closing it. That could possibly be renamed but I don't know whether it is ours or
 	// built into ui-bootstrap.
-	function ($scope, $state, $stateParams, dialog, $dialog, bookService, $location, $cookies) {
+	function ($scope, authService, $state, $stateParams, dialog, $dialog, bookService, $location, $cookies, bookCountService) {
+		$scope.canDeleteBook = false; // until we get the book and may make it true
 		//get the book for which we're going to show the details
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;
+			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName() == book.uploader.email || authService.isUserAdministrator());
 		});
 
 		$scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
@@ -151,7 +162,32 @@
 					resolve: {book: function() {return $scope.book;}}
 				}).open();
 		};
-
+		$scope.showDeleteDialog = function () {
+			$dialog.dialog({
+				backdrop: true,
+				keyboard: true,
+				backdropClick: true,
+				templateUrl: 'modules/detail/deleteDialog.tpl.html',
+				controller: 'deleteDialog',
+				dialogClass: 'modal ccmodal',
+				resolve: {
+					book: function () {
+						return $scope.book;
+					}
+				}
+			}).open().then(function(result) {
+					if (result) {
+						bookService.deleteBook($scope.book.objectId).then(function() {
+							var counts = bookCountService.getCount();
+							counts.bookCount--;
+							dialog.close(true); // object was deleted.
+						},
+						function(error) {
+							alert(error);
+						});
+					}
+				});
+		};
 		// This is so the dialog closes when the back button in the browser is used.
 		$scope.$on('$locationChangeSuccess', function (event) {
 			dialog.close();

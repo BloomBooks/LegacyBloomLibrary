@@ -1,0 +1,15 @@
+<div class="deleteDialog">
+    <div class="modal-header">
+        Are you sure?
+        <!--<a href="#" class="close" ng-click="close()>x</a>-->
+        <div class="close" ng-click="close()">x</div>
+    </div>
+    <div class="modal-body">
+        <div class="delete-body">If you continue, this version of the book <span class="bookName">{{book.title}}</span> will be removed from BloomLibrary.org.
+            There is no way to undo this except by uploading it again.</div>
+        <div class="actions right delete-actions">
+            <button type="button" class="btn btn-lg" ng-click="deleteBook()">Permanently delete this book</button>
+            <button type="button" class="btn  btn-info btn-lg" ng-click="close()">Cancel</button>
+        </div>
+    </div>
+</div>

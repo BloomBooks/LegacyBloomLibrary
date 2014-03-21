@@ -20,16 +20,21 @@
 });
 
 	angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', '$location',
-								function ($scope, $dialog, $timeout, bookService, $state, $stateParams, $location) {
+	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',
+								function ($scope, $dialog, $timeout, bookService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
 		$scope.searchTextRaw = $scope.searchText;
+		// if the service book count changes (e.g., because detailView deletes a book),
+		// update our scope's bookCount so the list view which is watching it will reload its page.
+		$scope.bookCountObject = bookCountService.getCount();
+		$scope.$watch('bookCountObject.bookCount', function() {
+			$scope.bookCount = $scope.bookCountObject.bookCount;
+		});
 		bookService.getFilteredBooksCount($scope.searchText).then(function (count) {
 			$scope.currentPage = 1;
-			$scope.bookCount = count;
+			$scope.bookCount = $scope.bookCountObject.bookCount = count;
 			$scope.setPage = function () { };
-			$scope.filteredBooksCount = count;
 			$scope.initialized = true;
 		});
 
