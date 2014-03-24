@@ -3,11 +3,12 @@
 
 	angular.module('BloomLibraryApp.detail', ['ui.router', "restangular"])
 	.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
-		// Tell angular that urls starting with bloom: are OK. (Otherwise it marks them 'unsafe' and Chrome at
-		// least won't follow them.). This is needed for the Open in Bloom button.
-		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom):/);
+		// Tell angular that urls starting with bloom: and mailto: (and http{s}: of course) are OK. (Otherwise it marks them 'unsafe' and Chrome at
+		// least won't follow them.). This is needed for the Open in Bloom button, mailto links. adding bloom is the unusual thing.
+		// This seems to be global...any additions might need to go in other instances as well to make them work.
+		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 		// For angular 1.2 this should be changed to
-		//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom):/);
+		//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
 			onEnter: function ($dialog, $state) {
@@ -136,6 +137,7 @@
 	// built into ui-bootstrap.
 	function ($scope, authService, $state, $stateParams, dialog, $dialog, bookService, $location, $cookies, bookCountService) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
+		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;

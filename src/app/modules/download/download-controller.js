@@ -8,7 +8,7 @@
 		.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
 			// Tell angular that urls starting with bloom: are OK. (Otherwise it marks them 'unsafe' and Chrome at
 			// least won't follow them.). This is needed for the Continue button.
-			$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom):/);
+			$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 			// For angular 1.2 this should be changed to
 			//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom):/);
 			$stateProvider.state('download', {

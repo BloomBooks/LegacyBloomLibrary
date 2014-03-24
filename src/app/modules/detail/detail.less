@@ -101,3 +101,32 @@ div.delete-actions
 {
   padding-top: 15px;
 }
+
+i.icon-flag, i.icon-trash
+{
+  float:left;
+  transform:scale(2.0,2.0);
+  -ms-transform:scale(2.0,2.0); /* IE 9 */
+  -moz-transform:scale(2.0,2.0); /* Firefox */
+  -webkit-transform:scale(2.0,2.0); /* Safari and Chrome */
+  -o-transform:scale(2.0,2.0); /* Opera */
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+i.icon-flag
+{
+  margin-left: 31px;
+}
+
+i.icon-trash
+{
+  margin-left: 10px;
+  margin-right: 47px; // 2x28px buttons + 10 gap + 31 left + 47 here = 128 + 16 for width & margin-right of image
+}
+
+i.icon-hidden
+{
+  visibility: hidden;
+}
