@@ -34,7 +34,6 @@
 							params.search = $state.params.search;
 							$state.transitionTo("browse", params);
 						}
-						$state.transitionTo("browse", $state.params);
 					});
 			}
 		});
@@ -142,6 +141,7 @@
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName() == book.uploader.email || authService.isUserAdministrator());
+			$scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
 		});
 
 		$scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
