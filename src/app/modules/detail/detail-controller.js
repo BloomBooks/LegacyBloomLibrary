@@ -164,6 +164,18 @@
 					resolve: {book: function() {return $scope.book;}}
 				}).open();
 		};
+		$scope.showPleaseLogIn = function() {
+			$dialog.dialog(
+				{
+					backdrop: true,
+					keyboard: true, //make ESC close it (sadly the detail view too)
+					backdropClick: true, //make clicking on the backdrop close it (sadly the detail view too)
+					templateUrl: 'modules/login/pleaseLogIn.tpl.html',
+					controller: 'pleaseLogIn',
+					dialogClass: 'modal ccmodal'
+				}).open();
+		};
+
 		$scope.showDeleteDialog = function () {
 			$dialog.dialog({
 				backdrop: true,
