@@ -5,7 +5,7 @@
 				['templates-app', 'templates-common', // Required for ng-boilerplate, to use templates from templates-app.js instead of copying individual files.
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
 					"BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.terms", "BloomLibraryApp.privacy", "BloomLibraryApp.infringement",
-					"BloomLibraryApp.deleteDialog",
+					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress",
 				"ui.bootstrap", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies'])
 
   .config(['$urlRouterProvider', '$stateProvider',
@@ -31,7 +31,20 @@
 	};
 
 	$scope.userName = authService.userName;
-} ]);
+} ])
+		.controller('LeftSidebar', ['$scope', '$dialog', function ($scope, $dialog) {
+			$scope.showInProgress = function() {
+				$dialog.dialog(
+					{
+						backdrop: true,
+						keyboard: true, //make ESC close it
+						backdropClick: true, //make clicking on the backdrop close it
+						templateUrl: 'modules/inProgress/inProgress.tpl.html',
+						controller: 'inProgress',
+						dialogClass: 'modal ccmodal'
+					}).open();
+			};
+		} ]);
 
 	//Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
 	BloomLibraryApp.filter('startFrom', function () {
