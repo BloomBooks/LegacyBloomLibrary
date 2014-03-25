@@ -40,6 +40,7 @@
 	})
 		//we get a json list like ['pdc','en', 'fr'] and we return ['pdc, English, French']
 		// Enhance: use some localizable mechanism
+		// Currently duplicated in browse-controller.js. Keep in sync.
 		.filter('prettyLang', function () {
 			return function (input) {
 				var result = [];
@@ -69,6 +70,8 @@
 						case "pt": result[i] = "Portuguese";
 							break;
 						case "ru": result[i] = "Russian";
+							break;
+						case "tpi": result[i] = "Tok Pisin";
 							break;
 						default: result[i] = input[i];
 							break;
