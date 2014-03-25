@@ -8,7 +8,7 @@
         <input class="passwordInput" required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword"/>
     </div>
     <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
-    <div class="resetPw"><a ng-show="loginform.usernm.$valid" ng-click="resetPassword()">Forgot password</a></div>
+    <div class="resetPw"><a ng-click="resetPassword()">Forgot password</a></div>
     <div class="loginButton"><button class="btn signupBtn" type="submit">Login</button></div>
 	</form>
 </div>
