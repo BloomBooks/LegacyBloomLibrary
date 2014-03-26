@@ -25,6 +25,7 @@
                                    ng-model="record.password" name="password" ng-show="!showPassword"/>
 						</div>
                         <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
+                        <div class="agreeTerms"><input type="checkbox" name="agree" ng-model="agreeToTerms">I agree to the Bloom Library's <a href="#terms" target="_blank">Terms of Use</a></input>.</div>
                         <div id="hpot">
                             <label for="notHuman">Leave this field blank</label>
                             <input type="text" name="notHuman" id="notHuman" ng-model="record.notHuman">
@@ -36,7 +37,6 @@
                                 Sign Up <i style="margin-left: 5px" class="icon-thumbs-up"></i>
                             </button>
                         </div>
-                        <div class="agreeTerms">By creating an account, you agree to the Bloom Library's <a href="#terms" target="_blank">Terms of Use</a></div>
 					</div>
 				</fieldset>
 			</form>
