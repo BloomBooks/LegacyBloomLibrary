@@ -19,11 +19,12 @@
 			});
 		};
 	} ])
-	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', function SignupCtrl($scope, userService, notice, $state, auth) {
+	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', '$dialog', function SignupCtrl($scope, userService, notice, $state, auth, $dialog) {
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;
 		$scope.showPassword = true;
+		$scope.agreeToTerms = false;
 
 		var e = document.getElementById("hpot");
 		if (e)
@@ -34,6 +35,19 @@
 		$scope.createUser = function (record) {
 			if (record.notHuman) {
 				return true; // In theory, only spambots will see and fill in this field, which JavaScript deletes.
+			}
+			if (!$scope.agreeToTerms)
+			{
+				$dialog.dialog(
+					{
+						backdrop: true,
+						keyboard: true, //make ESC close it
+						backdropClick: true, //make clicking on the backdrop close it
+						templateUrl: 'modules/login/mustAgree.tpl.html',
+						controller: 'mustAgree',
+						dialogClass: 'modal ccmodal'
+					}).open();
+				return true; // abort creating user.
 			}
 			if (record.email) {
 				record.username = record.email;
