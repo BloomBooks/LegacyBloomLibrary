@@ -1,15 +1,15 @@
-# [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate) [![Build Status](https://travis-ci.org/joshdmiller/ng-boilerplate.png?branch=master)](https://travis-ci.org/joshdmiller/ng-boilerplate)
+# [BloomLibrary](https://github.com/BloomBooks/BloomLibrary)
 
-An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
+A web site for sharing literacy materials, especially templates for translation into minority languages
 
 ***
 
 ## Quick Start
 
-Install Node.js and then:
+Install Node.js (e.g., from from http://nodejs.org/download/) and then:
 
 ```sh
-$ git clone git://github.com/joshdmiller/ng-boilerplate
+$ git clone  https://github.com/BloomBooks/BloomLibrary.git
 $ cd ng-boilerplate
 $ sudo npm -g install grunt-cli karma bower
 $ npm install
@@ -17,7 +17,11 @@ $ bower install
 $ grunt watch
 ```
 
-Finally, open `file:///path/to/ng-boilerplate/build/index.html` in your browser.
+(You can leave out the sudo on Windows.
+Currently bower asks you to choose between several versions of angular js,
+you should choose 1.0.8 which is typically choice 1)
+
+Finally, open `file:///path/to/bloomlibrary/build/index.html` in your browser.
 
 Happy hacking!
 
