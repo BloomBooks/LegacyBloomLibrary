@@ -10,7 +10,7 @@ Install Node.js (e.g., from from http://nodejs.org/download/) and then:
 
 ```sh
 $ git clone  https://github.com/BloomBooks/BloomLibrary.git
-$ cd ng-boilerplate
+$ cd BloomLibrary
 $ sudo npm -g install grunt-cli karma bower
 $ npm install
 $ bower install
