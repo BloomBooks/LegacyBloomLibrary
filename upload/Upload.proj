@@ -4,7 +4,7 @@
 
   <ItemGroup>
     <Root Include="../bin/index.html" />
-    <Assets Include="../bin/assets"/>
+    <Assets Include="../bin/assets/*"/>
     <FancyBox Include="../vendor/fancybox/source/jquery.fancybox.css"/>
     <NgGrid Include="../vendor/ng-grid/ng-grid.css"/>
   </ItemGroup>
@@ -42,6 +42,7 @@
       PublicRead="true" />
   </Target>
 
+  <!---TC Build is not currently generating this rarely-changed file. If it changes, run this task by hand or just upload manually.-->
   <Target Name="FancyBox">
     <S3BuildPublisher
       EncryptionContainerName ="$(Key)"
@@ -51,6 +52,7 @@
       PublicRead="true" />
   </Target>
 
+  <!---TC Build is not currently generating this rarely-changed file. If it changes, run this task by hand or just upload manually.-->
   <Target Name="NgGrid">
     <S3BuildPublisher
       EncryptionContainerName ="$(Key)"
@@ -60,6 +62,6 @@
       PublicRead="true" />
   </Target>
 
-  <Target Name="Upload" DependsOnTargets="Index;Assets;FancyBox;NgGrid"></Target>
+  <Target Name="Upload" DependsOnTargets="Index;Assets"></Target>
 
 </Project>
