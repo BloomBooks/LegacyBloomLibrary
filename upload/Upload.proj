@@ -74,6 +74,6 @@
       PublicRead="true" />
   </Target>
 
-  <Target Name="Upload" DependsOnTargets="Index;Assets;Svg"></Target>
+  <Target Name="Upload" DependsOnTargets="Index;Assets;Svg;FancyBox;NgGrid"></Target>
 
 </Project>
