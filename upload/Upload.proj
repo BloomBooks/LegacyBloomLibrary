@@ -4,7 +4,8 @@
 
   <ItemGroup>
     <Root Include="../bin/index.html" />
-    <Assets Include="../bin/assets/*"/>
+    <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg"/>
+    <Svg Include="../bin/assets/*.svg"/>
     <FancyBox Include="../vendor/fancybox/source/jquery.fancybox.css"/>
     <NgGrid Include="../vendor/ng-grid/ng-grid.css"/>
   </ItemGroup>
@@ -40,6 +41,17 @@
       DestinationBucket="$(Bucket)"
       DestinationFolder="assets"
       PublicRead="true" />
+  </Target>
+
+  <!-- Publish Svg files (with proper content type, which S3 does not guess correctly-->
+  <Target Name="Assets">
+    <S3BuildPublisher
+      EncryptionContainerName ="$(Key)"
+      SourceFiles="@(Svg)"
+      DestinationBucket="$(Bucket)"
+      DestinationFolder="assets"
+      PublicRead="true"
+      ContentType="image/svg+xml"/>
   </Target>
 
   <!---TC Build is not currently generating this rarely-changed file. If it changes, run this task by hand or just upload manually.-->
