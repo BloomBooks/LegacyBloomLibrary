@@ -91,7 +91,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-		//Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
+//		Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
 		Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
 		this.getAllBooks = function () {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({ "limit": 50 }).then(function (resultWithWrapper) {
