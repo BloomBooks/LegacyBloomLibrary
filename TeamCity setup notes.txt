@@ -1,0 +1,34 @@
+Notes on configuring the TeamCity build agent for BloomLibrary
+
+1. Set up a folder on the agent containing some vendor files the task needs to copy and a place for the agent to simulate AppData
+  - create a folder c:\bloom on the agent.
+  - Clone https://github.com/BloomBooks/BloomLibrary.git there, making a folder bloom/BloomLibrary
+  - create a folder bloom\AppData
+  - start dos prompt, cd to bloom\BloomLibrary
+  - npm -g install grunt-cli karma bower
+  - npm install
+  - bower install
+  (during bower install you will probably have to choose angularjs version 1.0.8 from a list of version options)
+  - I _think_ you can then delete everything in BloomLibrary except the vendor folder. However, it may be helpful to keep the rest around in case you need to update things at some point.
+
+2. Install various tools for the user that executes the automated tasks. On TeamCity
+  - Go to http://build.palaso.org/admin/editBuildRunners.html?id=buildType:bt366 (configure build steps on BloomLibrary continuous)
+  - enable the 'install tools for build agent' step
+  - run it once.
+  - assuming no problems, disable 'install tools for build agent' again.
+  
+3. Install the secret key that allows the agent to upload to S3. On TeamCity,
+  - go to http://build.palaso.org/admin/editBuildRunners.html?id=buildType:bt376, the BloomLibrary-Deploy project configuration
+  - enable the first step
+  - unless you actually want to deploy right now, disable the other steps
+  - edit the step and put in the right key for the user JohnThomson on the department AWS account
+    (No, I'm NOT going to publish it here!)
+  - run the build once
+  - !Important! edit the task and REMOVE the secret key!
+  - Disable the task again (and enable the other tasks if needed)
+ 
+
+Related notes:
+  - Upload task requires the Snowcode.S3BuildPublisher.dll
+  - The current source of this is commit 0a80f3016d994f12f34507918fde5cc769848f71 at https://github.com/JohnThomson/Snowcode.S3BuildPublisher/commit/0a80f3016d994f12f34507918fde5cc769848f71
+  
