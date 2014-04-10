@@ -145,6 +145,7 @@
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName() == book.uploader.email || authService.isUserAdministrator());
 			$scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
+            $scope.canSetBookshelf = authService.isLoggedIn() && authService.bookShelves().length > 0;
 		});
 
 		$scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
@@ -205,6 +206,12 @@
 					}
 				});
 		};
+        $scope.chooseBookshelves = function() {
+            // Todo: show a popup menu with all bookShelves and ones this book is in checked.
+            // Failing that there should at least be some visual indication whether the book is in the shelf.
+            var shelf = authService.bookShelves()[0];
+            bookService.ToggleBookInShelf($scope.book, shelf);
+        };
 		// This is so the dialog closes when the back button in the browser is used.
 		$scope.$on('$locationChangeSuccess', function (event) {
 			dialog.close();
