@@ -2,6 +2,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	.factory('authService', ['Restangular', function (restangular) {
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
+        var bookshelves = [];
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		// The first group are for the silbloomlibrarysandbox we use for development.
@@ -25,6 +26,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
 			userName: function () { return userNameX; },
 			setUserName: function (newName) { userNameX = newName; },
+            bookShelves: function() {return bookshelves;},
 
 			isLoggedIn: function () { return isLoggedIn; },
 			isUserAdministrator: function () { return isUserAdministrator; },
@@ -50,7 +52,24 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 						isLoggedIn = true;
 						isUserAdministrator = result.administrator;
 						userNameX = username;
-						factory.setSession(result.sessionToken); // im not sure this actually works
+                        var query = new Parse.Query('bookshelf');
+                        query.equalTo('owner', result);
+//                        query.find({
+//                            success: function (results) {
+//                                bookshelves = response.results;
+//                            },
+//                            error: function (aError) {
+//                                alert(aError);
+//                            }
+//                        });
+                        restangular.withConfig(restangularConfig).all('classes/bookshelf').getList({ 'where':{'owner': {"__type":"Pointer","className":"_User","objectId":result.objectId} }})
+                            .then(function (response) {
+                                bookshelves = response.results;
+                            },
+                        function(error) {
+                            alert(error);
+                        });
+                        factory.setSession(result.sessionToken); // im not sure this actually works
 						successCallback(result);
 					},
 				function (result) {
@@ -104,18 +123,88 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			});
 		};
 
+        this.getBookshelf = function(shelfName) {
+            // This version retrieves a version of the data and is shorter. But we use this object in ways that require
+            // it to be an actual parse.com API bookshelf object.
+//            return restangular.withConfig(authService.config()).all('classes/bookshelf').getList({ "name": shelfName }).then(function (resultWithWrapper) {
+//                return resultWithWrapper.results[0];
+//            });
+            var defer = $q.defer();
+            var query = new Parse.Query('bookshelf');
+                query.equalTo("name", shelfName);
+            query.find({
+                success: function (results) {
+                    // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
+                    // There is further discussion at http://stackoverflow.com/questions/17426413/deferred-resolve-in-angularjs.
+                    // Maybe it is NOT needed here; copied logic from getFilteredBookRange
+                    $rootScope.$apply(function () { defer.resolve(results[0]); });
+                },
+                error: function (aError) {
+                    defer.reject(aError);
+                }
+            });
+            return defer.promise;
+        };
+
+        // Reverse whether the book is a member of the shelf.
+        this.ToggleBookInShelf = function(book, shelf) {
+            // This should work (preliminary version...to ADD only) but runs into a bug in Parse,
+            // No 'Access-Control-Allow-Origin' header is present on the requested resource.
+            // So we use the javascript api
+//            restangular.withConfig(authService.config()).one('classes/bookshelf/'+shelf.objectId).post('',
+//                {books:{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"books","objectId":book.objectId}]}});
+            // the shelf and book objects may be restangular ones, not javascript ones. We need proper javascript API objects.
+            // We can simplify this if we use javascript API objects more widely...but I think we may need the JSON-ified
+            // objects for the angularJS interaction.
+            var bookshelf = Parse.Object.extend("bookshelf");
+            var query = new Parse.Query(bookshelf);
+            query.get(shelf.objectId, {
+                success: function(javaShelf) {
+                    var books = Parse.Object.extend("books");
+                    var bookQuery = new Parse.Query(books);
+                    bookQuery.get(book.objectId, {
+                        success: function(javaBook) {
+                            var relation = javaShelf.relation("books");
+                            var presentQuery = relation.query();
+                            presentQuery.equalTo("objectId", book.objectId);
+                            presentQuery.find({
+                                success:function(list) {
+                                    if (list.length > 0) {
+                                        relation.remove(javaBook);
+                                    }
+                                    else {
+                                        relation.add(javaBook);
+                                    }
+                                    javaShelf.save();
+                                }
+                            });
+                        },
+                        error: function(object, error) {
+                            alert(error);
+                        }
+                    });
+                },
+                error: function(object, error) {
+                    alert(error);
+                }
+            });
+        };
+
 		// Gets the count of books whose search field (currently lowercase title plus concat of lowercase tags) contains searchString.
 		// Returns a promise which will deliver the count.
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString) {
+		this.getFilteredBooksCount = function (searchString, shelf) {
 			var defer = $q.defer();
 			var query = new Parse.Query('books');
-			if (searchString) {
-				query.contains('search', searchString.toLowerCase());
-			}
-			query.count({
+            if (searchString && !shelf) {
+                query.contains('search', searchString.toLowerCase());
+            }
+            if (shelf) {
+                query = shelf.relation("books").query();
+            }
+            query.count({
 				success: function (count) {
 					$rootScope.$apply(function () { defer.resolve(count); });
 				},
@@ -138,17 +227,20 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, sortBy, ascending) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
-			// This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
+            // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
 			var query = new Parse.Query('books');
 			// Configure the query to give the results we want.
 			query.skip(first);
 			query.limit(count);
 			//query.include("uploader"); // reinstate this and code below if we need contents of uploader
-			if (searchString) {
+			if (searchString && !shelf) {
 				query.contains('search', searchString.toLowerCase());
 			}
+            if (shelf) {
+                query = shelf.relation("books").query();
+            }
 			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
 			// It does not work for e.g. volumeInfo.title.
 			if (sortBy) {
