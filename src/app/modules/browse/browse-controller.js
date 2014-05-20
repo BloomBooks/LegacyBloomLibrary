@@ -6,7 +6,7 @@
 		$stateProvider.state('browse', {
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
 			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
-			url: "/browse?search",
+			url: "/browse?search&shelf",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl'
 		});
@@ -65,24 +65,48 @@
 								function ($scope, $dialog, $timeout, bookService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
+        $scope.shelfName = $stateParams["shelf"];
 		$scope.searchTextRaw = $scope.searchText;
 		// if the service book count changes (e.g., because detailView deletes a book),
 		// update our scope's bookCount so the list view which is watching it will reload its page.
 		$scope.bookCountObject = bookCountService.getCount();
+        if (!$scope.initialized) {
+            // This helps prevent a count (e.g., from a previous search) continuing to take effect
+            // before we have figured out our new count.
+            $scope.bookCountObject.bookCount = 0;
+        }
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
-		bookService.getFilteredBooksCount($scope.searchText).then(function (count) {
-			$scope.currentPage = 1;
-			$scope.bookCount = $scope.bookCountObject.bookCount = count;
-			$scope.setPage = function () { };
-			$scope.initialized = true;
-		});
+        if (!$scope.searchText && !$scope.shelfName){
+            $scope.shelfName = "Featured"; // default browse url shows the featured list
+        }
+        $scope.getFilteredBookCount = function() {
+            bookService.getFilteredBooksCount($scope.searchText, $scope.shelf).then(function (count) {
+                $scope.currentPage = 1;
+                $scope.bookCount = $scope.bookCountObject.bookCount = count;
+                $scope.setPage = function () {
+                };
+                $scope.initialized = true;
+            });
+        };
+        if ($scope.shelfName) {
+            bookService.getBookshelf($scope.shelfName).then(function(shelf) {
+                $scope.shelf = shelf;
+                $scope.getFilteredBookCount();
+            });
+            // Todo: what if no such shelf??
+        }
+        else {
+            $scope.getFilteredBookCount();
+        }
 
 		// browse.tpl.html listview div configures this to be called as pageItemsFunction when user chooses a page.
-		// Todo: should get Filtered book range.
 		$scope.getBookRange = function (first, count) {
-			bookService.getFilteredBookRange(first, count, $scope.searchText).then(function (result) {
+            if (!$scope.initialized) {
+                return; // can't do useful query.
+            }
+			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf).then(function (result) {
 				$scope.visibleBooks = result;
 			});
 		};
@@ -105,7 +129,7 @@
 			// and do something to make the listview invoke getBookRange (even if the bookCount
 			// does not change).
 			$scope.searchText = $scope.searchTextRaw;
-			$state.go('.', { search: $scope.searchText });
+			$state.go('.', { search: $scope.searchText, shelf: "" });
 		};
 	} ]);
 } ());   // end wrap-everything function
