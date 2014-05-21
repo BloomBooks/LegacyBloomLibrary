@@ -1,4 +1,4 @@
-# [BloomLibrary](https://github.com/BloomBooks/BloomLibrary)
+npm# [BloomLibrary](https://github.com/BloomBooks/BloomLibrary)
 
 A web site for sharing literacy materials, especially templates for translation into minority languages
 
@@ -19,7 +19,10 @@ $ grunt watch
 
 (You can leave out the sudo on Windows.
 Currently bower asks you to choose between several versions of angular js,
-you should choose 1.0.8 which is typically choice 1)
+you should choose 1.0.8 which is typically choice 1.
+Also between versions of jquery...choose 2.0.3.
+Some specific versions are required because source files that our program
+references change locations or the name includes the version.)
 
 Finally, open `file:///path/to/bloomlibrary/build/index.html` in your browser.
 

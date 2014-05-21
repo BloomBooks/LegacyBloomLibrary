@@ -10,7 +10,8 @@
     "bootstrap-css": "~2",
     "bootstrap-modal": "~2.1.0",
     "fancybox": "~2.1.5",
-    "ng-grid": "~2.0.7"
+    "ng-grid": "2.0.7",
+	"jquery": "~2.0.3"
   },
   "devDependencies": {
     "angular": "~1.0.8",

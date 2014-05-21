@@ -78,9 +78,7 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
-        if (!$scope.searchText && !$scope.shelfName){
-            $scope.shelfName = "Featured"; // default browse url shows the featured list
-        }
+
         $scope.getFilteredBookCount = function() {
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf).then(function (count) {
                 $scope.currentPage = 1;
