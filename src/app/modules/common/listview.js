@@ -1,7 +1,7 @@
 
 angular.module('palaso.ui.listview', ['ui.bootstrap'])
 // Typeahead
-	.directive('listview', ["$timeout", function ($timeout) {
+	.directive('listview', ["$timeout", "$cookies", function ($timeout, $cookies) {
 		return {
 			restrict: 'EA',
 			transclude: true,
@@ -18,6 +18,10 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				$scope.currentPage = 1;
 				$scope.maxSize = 5;
 				$scope.itemsPerPage = 5;  // This should match the default value for the selector above
+                var savedIpp = $cookies[$scope.pageCountTag];
+                if (savedIpp && !isNaN(savedIpp)) {
+                    $scope.itemsPerPage = Number(savedIpp);
+                }
 
 				this.activate = function (item) {
 					$scope.active = item;
@@ -93,6 +97,9 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 						$scope.pageButtons[j] = $scope.noOfPages; // last page button
 					}
 				};
+                this.updateItemsPerPage = function(ipp) {
+                    $cookies[$scope.pageCountTag] = $scope.itemsPerPage;
+                };
 				this.updatePages = function () {
 					$scope.noOfPages = Math.ceil($scope.itemCount / $scope.itemsPerPage);
 					if ($scope.currentPage > $scope.noOfPages) {
@@ -115,6 +122,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					controller.updateVisibleItems();
 				});
 				scope.$watch('itemsPerPage', function () {
+                    controller.updateItemsPerPage();
 					controller.updatePages();
 					controller.updateVisibleItems();
 				});
