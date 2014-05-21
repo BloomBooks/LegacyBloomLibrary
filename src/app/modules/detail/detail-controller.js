@@ -25,15 +25,12 @@
 						// any current filter parameters the browser view was using, such as the search string.
 						// The result passed to the call to close() indicates whether we need to force
 						// a reload of the browse view (i.e., when we have deleted a book).
-						if (result) {
-							// don't try to go back to deleted book.
-							// What we really want to do here is to remove the bookId from params.
-							// (But we need a new object.)
-							// Currently, search is the only property we need to keep.
-							var params = {};
-							params.search = $state.params.search;
-							$state.transitionTo("browse", params);
-						}
+                        // Currently it seems to work without doing anything different when result is true.
+                        // I'm not sure why.
+                        var params = {};
+                        params.search = $state.params.search;
+                        params.shelf = $state.params.shelf;
+                        $state.transitionTo("browse", params);
 					});
 			}
 		});
