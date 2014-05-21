@@ -229,18 +229,50 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// By that time books will be an array of json-encoded book objects from parse.com.
 		this.getFilteredBookRange = function (first, count, searchString, shelf, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
+            if (!searchString && !shelf) {
+                // default initial state. Show featured books and then all the rest.
+                // This is implemented by cloud code, so just call the cloud function.
+                // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
+                // to the cloud function.
+                Parse.Cloud.run('defaultBooks', { first: first, count: count }, {
+                    success: function(results) {
+                        var objects = new Array(results.length);
+                        for (i = 0; i < results.length; i++) {
+                        // If we need the contents (more than objectID) of the uploader field, we will need
+                        // something like this...probably some changes to the defaultBooks cloud code, too.
+//						// without this the extra fields downloaded by include("uploader") don't get copied to objects.
+//						var user = results[i].get("uploader");
+//						if (user)
+//						{
+//							results[i].set("uploader", user.toJSON());
+//						}
+                            objects[i] = results[i].toJSON();
+                        }
+                        // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
+                        // There is further discussion at http://stackoverflow.com/questions/17426413/deferred-resolve-in-angularjs.
+                        // Without it, the display does not update properly; typically each click updates to what it
+                        // should have been after the previous click.
+                        $rootScope.$apply(function () { defer.resolve(objects); });
+                    },
+                    error: function(error) {
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+            }
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
 			var query = new Parse.Query('books');
 			// Configure the query to give the results we want.
-			query.skip(first);
-			query.limit(count);
-			//query.include("uploader"); // reinstate this and code below if we need contents of uploader
 			if (searchString && !shelf) {
 				query.contains('search', searchString.toLowerCase());
 			}
             if (shelf) {
                 query = shelf.relation("books").query();
             }
+
+            query.skip(first);
+            query.limit(count);
+            //query.include("uploader"); // reinstate this and code below if we need contents of uploader
 			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
 			// It does not work for e.g. volumeInfo.title.
 			if (sortBy) {
