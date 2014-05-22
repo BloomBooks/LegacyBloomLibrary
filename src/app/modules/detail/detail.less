@@ -1,3 +1,5 @@
+@icon-button-size: 18px;
+
 .modal-body
 {
 	padding-top: 0px;
@@ -18,7 +20,7 @@
 .modal .title
 {
 	color: #000000;
-	font-size: 24pt;
+	font-size: 16pt;
 	margin-top: -2px;
 	line-height: 1;
 }
@@ -70,12 +72,8 @@ LABEL
 }
 .detail .actions
 {
-	/*+placement:float-left 0px 0px;*/
-	float: left;
-	position: relative;
-	left: 0px;
-	top: 0px;
-    margin-top: 11px;
+    margin-top: 35px;
+    margin-bottom:15px;
 }
 
 .ccmodal
@@ -105,14 +103,19 @@ div.delete-actions
 i.icon-trash, i.icon-folder-open
 {
   float:left;
-  transform:scale(2.0,2.0);
-  -ms-transform:scale(2.0,2.0); /* IE 9 */
-  -moz-transform:scale(2.0,2.0); /* Firefox */
-  -webkit-transform:scale(2.0,2.0); /* Safari and Chrome */
-  -o-transform:scale(2.0,2.0); /* Opera */
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
+//  transform:scale(2.0,2.0);
+//  -ms-transform:scale(2.0,2.0); /* IE 9 */
+//  -moz-transform:scale(2.0,2.0); /* Firefox */
+//  -webkit-transform:scale(2.0,2.0); /* Safari and Chrome */
+//  -o-transform:scale(2.0,2.0); /* Opera */
+  width: 20px;
+  font-size: 8pt;
+  color: lightgrey;
+}
+
+i:hover{
+  color: black;
+  text-decoration: none;
 }
 
 i.icon-folder-open
@@ -134,9 +137,14 @@ i.icon-hidden
 i.abuseIcon
 {
   float:left;
+  margin-top: 5px;
   margin-left: 16px;
-  width: 28px;
-  height: 28px;
+  width: @icon-button-size;
+  height: @icon-button-size;
   background-image: url("reportAbuse.svg");
-  background-size: 28px 28px // so it scales the image rather than clipping
+  background-size: @icon-button-size @icon-button-size // so it scales the image rather than clipping
+}
+
+#bottomRowBigButtons {
+  float:right;
 }

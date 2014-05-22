@@ -35,21 +35,29 @@ div.showPassword
 button.signupBtn {
   float:right;
 }
-div.showPassInput {
-  font-size: smaller;
-  background-color: #d3d3d3;
-  color: white;
-  float:right;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  padding-right: 3px;
+
+#forgotAndShowRow {
+  //margin-top:10px;
+  * {
+    display: inline-block;
+    float: left;
+  }
+  a { //forgot password link
+    font-size: smaller;
+  }
+  input {//checkbox
+    margin-left: 25px;
+  }
+  label { // "Show Password"
+    font-size: smaller;
+  }
 }
 
 input.passwordInput {
   margin-bottom: 0px;
   border-bottom-right-radius: 0px;
 }
-div.well {
+.well {
   overflow: hidden; /* stretch around button even though it is float: right */
   padding: 25px;
   padding-right: 4px; /* reduced to fit 21px icon right of email */

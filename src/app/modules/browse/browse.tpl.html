@@ -22,7 +22,9 @@
                     </a>
                 </div>
                 <div class="data">
-                    <h3 class="firstRowAboutBook">{{book.title}}</h3>
+                    <a ui-sref="browse.detail({bookId: book.objectId})">
+                        <h3 class="firstRowAboutBook">{{book.title}}</h3>
+                    </a>
                     <div class="secondRowAboutBook">
                         <div class="pages">{{book.pageCount}} pages</div>
                     </div>
