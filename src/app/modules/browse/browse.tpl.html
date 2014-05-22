@@ -10,7 +10,7 @@
             </div>
         </form>
         <div>matches: {{bookCount}}</div>
-		<div listview class="results" hide-if-empty="false" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)">
+		<div listview class="results" hide-if-empty="false" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
             <div class="result"
                 ng-repeat="book in visibleBooks">
