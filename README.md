@@ -28,6 +28,7 @@ After pulling new releases, you may need to update various libraries. Do that wi
 
 
 ```sh
+npm update
 bower update
 ```
 
