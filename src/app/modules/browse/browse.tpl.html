@@ -28,8 +28,8 @@
                     <div class="secondRowAboutBook">
                         <div class="pages">{{book.pageCount}} pages</div>
                     </div>
-                    <div class="languages" ng-show="book.languages.length">
-                        Languages: {{book.languages | prettyLang | makeCommaList  }}
+                    <div class="languages" ng-show="book.langPointers.length">
+                        Languages: <span ng-repeat="lang in book.langPointers"><a ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
                     </div>
                     <div class="tags" ng-show="book.tags.length">
                         Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
