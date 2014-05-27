@@ -9,14 +9,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// The second group are for silbloomlibrary used in production.
 		// Comment out the ones you aren't using.
 		// See also the keys below in the Parse.initialize call.
-//		headers = {
-//			'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
-//			'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
-//		};
 		headers = {
-			'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-			'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
+			'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
+			'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
 		};
+//		headers = {
+//			'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
+//			'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
+//		};
 		restangularConfig = function (restangularConfigurer) {
 			restangularConfigurer.setBaseUrl('https://api.parse.com/1'); // 1/indicates rev 1 of parse.com API
 			restangularConfigurer.setDefaultHeaders(headers);
@@ -110,8 +110,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-//		Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
-		Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
+		Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
+//		Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
 		this.getAllBooks = function () {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({ "limit": 50 }).then(function (resultWithWrapper) {
 				return resultWithWrapper.results;
@@ -236,6 +236,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 // to the cloud function.
                 Parse.Cloud.run('defaultBooks', { first: first, count: count }, {
                     success: function(results) {
+                        // enhance JohnT: a chunk of duplicate code here should be pulled out into a function.
                         var objects = new Array(results.length);
                         for (i = 0; i < results.length; i++) {
                         // If we need the contents (more than objectID) of the uploader field, we will need
@@ -246,6 +247,19 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //						{
 //							results[i].set("uploader", user.toJSON());
 //						}
+                            // Before we convert results[i] to JSON, we have to convert its langPointers to JSON.
+                            // the data we want is included in the results of defaultBooks, but for some reason
+                            // toJSON does not convert the linked objects' extra data.
+                            var langArray = results[i].get("langPointers");
+                            if (langArray)
+                            {
+                                var fixedArray = [];
+                                for (var j = 0; j < langArray.length; j++) {
+                                    fixedArray.push(langArray[j].toJSON());
+                                }
+                                results[i].set("langPointers", fixedArray);
+                            }
+
                             objects[i] = results[i].toJSON();
                         }
                         // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
@@ -272,6 +286,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
             query.skip(first);
             query.limit(count);
+            query.include("langPointers");
             //query.include("uploader"); // reinstate this and code below if we need contents of uploader
 			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
 			// It does not work for e.g. volumeInfo.title.
@@ -297,6 +312,19 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //						{
 //							results[i].set("uploader", user.toJSON());
 //						}
+                        // Before we convert results[i] to JSON, we have to convert its langPointers to JSON.
+                        // including this data in the query above makes sure it is there, but for some reason
+                        // toJSON does not convert the linked objects' extra data.
+                        var langArray = results[i].get("langPointers");
+						if (langArray)
+						{
+                            var fixedArray = [];
+                            for (var j = 0; j < langArray.length; j++) {
+                                fixedArray.push(langArray[j].toJSON());
+                            }
+							results[i].set("langPointers", fixedArray);
+						}
+
 						objects[i] = results[i].toJSON();
 					}
 					// I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
@@ -314,7 +342,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		};
 
 		this.getBookById = function (id) {
-			return restangular.withConfig(authService.config()).one('classes/books', id).get({include:"uploader"});
+			return restangular.withConfig(authService.config()).one('classes/books', id).get({include:"uploader,langPointers"});
 		};
 
 		this.deleteBook = function (id) {

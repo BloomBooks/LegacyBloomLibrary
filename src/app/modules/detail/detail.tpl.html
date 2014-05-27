@@ -10,8 +10,8 @@
             <div class="title">{{book.title}}</div>
             <div class="summary" ng-hide="!book.summary">Summary: {{book.summary}}</div>
             <div class="detailPages">Pages: {{book.pageCount}}</div>
-            <div class="languages" ng-show="book.languages.length">
-                Languages: {{book.languages | prettyLang | makeCommaList  }}
+            <div class="languages" ng-show="book.langPointers.length">
+                Languages: <span ng-repeat="lang in book.langPointers"><a ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
             </div>
             <div class="copyright">{{book.copyright}}</div>
             <div class="license">
