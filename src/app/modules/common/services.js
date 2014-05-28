@@ -5,18 +5,22 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         var bookshelves = [];
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
-		// The first group are for the silbloomlibrarysandbox we use for development.
-		// The second group are for silbloomlibrary used in production.
-		// Comment out the ones you aren't using.
 		// See also the keys below in the Parse.initialize call.
-		headers = {
-			'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
-			'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
-		};
-//		headers = {
-//			'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-//			'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
-//		};
+        var headers;
+        if (window.location.href.indexOf("books.bloomlibrary.org") < 0) {
+            // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
+            headers = {
+                'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
+                'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
+            };
+        }
+        else {
+            // we're live! Use the real silbloomlibrary api strings.
+            headers = {
+                'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
+                'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
+            };
+        }
 		restangularConfig = function (restangularConfigurer) {
 			restangularConfigurer.setBaseUrl('https://api.parse.com/1'); // 1/indicates rev 1 of parse.com API
 			restangularConfigurer.setDefaultHeaders(headers);
@@ -105,13 +109,20 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
 	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', function (restangular, authService, $q, $rootScope) {
 		// Initialize Parse.com javascript query module for our project.
-		// Note: we would prefer to do this query using the REST API, but it does not currently support substring matching.
+		// Note: we would prefer to do things in this service using the REST API, but it does not currently support
+		// substring matching and other things we need.
 		// Please keep using the REST API wherever possible and the javascript API only where necessary.
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-		Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
-//		Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
+        if (window.location.href.indexOf("books.bloomlibrary.org") < 0) {
+            // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
+            Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
+        }
+        else {
+            // we're live! Use the real silbloomlibrary api strings.
+            Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
+        }
 		this.getAllBooks = function () {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({ "limit": 50 }).then(function (resultWithWrapper) {
 				return resultWithWrapper.results;
