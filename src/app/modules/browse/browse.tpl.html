@@ -18,7 +18,7 @@
                 <!--                ng-click="viewBook(book)"    >-->
                 <div class="imageContainer">
                     <a ui-sref="browse.detail({bookId: book.objectId})">
-                        <img ng-src="{{book.thumbnail}}" />
+                        <img ng-src="{{book.baseUrl | makeThumbnailUrl}}" />
                     </a>
                 </div>
                 <div class="data">

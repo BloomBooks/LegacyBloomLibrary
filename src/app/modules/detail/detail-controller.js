@@ -60,29 +60,31 @@
 				return input.substring(0, index + 3);
 			};
 		})
-		// we get a URL for the thumbnail and return the one for the Preview.
-		// input url is .../BookName/thumbnail.png
+		// we get a URL for the contents of the book and return the one for the Preview.
+		// input url is .../BookName/
 		// output is .../BookName/BookName.pdf.
 		// (Except that both are url encoded, so the slashes appear as %2f.)
-		.filter('thumbToPreview', function () {
-			return function (input) {
-				if (input == null)
+		.filter('makePreviewUrl', function () {
+			return function (baseUrl) {
+				if (baseUrl == null)
 				{
 					return null;
 				}
-				var suffix =  "%2fthumbnail.png";
-				if (input.indexOf(suffix, input.length - suffix.length) < 0) // !endsWith(suffix)
+//				var suffix =  "%2fthumbnail.png";
+//				if (input.indexOf(suffix, input.length - suffix.length) < 0) // !endsWith(suffix)
+//				{
+//					return null;
+//				}
+//				var leadin = input.substring(0, input.length - suffix.length);
+                var lastSlashIndex = baseUrl.lastIndexOf("%2f");
+                var leadin = baseUrl.substring(0,lastSlashIndex);
+                var slashBeforeBookName = leadin.lastIndexOf("%2f");
+				if (slashBeforeBookName < 0)
 				{
 					return null;
 				}
-				var leadin = input.substring(0, input.length - suffix.length);
-				var lastSlash = leadin.lastIndexOf("%2f");
-				if (lastSlash < 0)
-				{
-					return null;
-				}
-				var name = leadin.substring(lastSlash); // includes leading slash (%2f)
-				return leadin + name + ".pdf";
+				var name = leadin.substring(slashBeforeBookName+3); // includes leading slash (%2f)
+				return baseUrl + name + ".pdf";
 			};
 		});
 

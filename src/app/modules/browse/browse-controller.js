@@ -12,11 +12,28 @@
 		});
 	} ])
 	//we get a json list like ['me','you'] and we return 'me, you'
-.filter('makeCommaList', function () {
-	return function (input) {
-		return input == null ? "" : input.join(", ");
-	};
-});
+	.filter('makeCommaList', function () {
+		return function (input) {
+			return input == null ? "" : input.join(", ");
+		};
+	})
+
+	.filter('makeThumbnailUrl', function () {
+		return function (baseUrl) {
+			if (!baseUrl) {
+				return "";
+			}
+			return baseUrl + "thumbnail-70.png";
+		};
+	})
+	.filter('makeDetailSizedThumbnailUrl', function () {
+		return function (baseUrl) {
+			if (!baseUrl) {
+				return "";
+			}
+			return baseUrl + "thumbnail-256.png";
+		};
+	});
 
 	angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',

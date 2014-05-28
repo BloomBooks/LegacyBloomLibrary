@@ -5,7 +5,7 @@
         <div class="close" ng-click="close()">x</div>
     </div>
     <div class="modal-body">
-        <img ng-src="{{book.thumbnail}}" />
+        <img ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}" />
         <div class="detailCol2">
             <div class="title">{{book.title}}</div>
             <div class="summary" ng-hide="!book.summary">Summary: {{book.summary}}</div>
@@ -34,7 +34,7 @@
 %20%20-%20the%20content%20of%20this%20book%20could%20harm%20people%0D%0A%20%20-%20this%20book%20was%20posted%20without%20the%20copyright%20holder's%20permission.%0D%0AThis%20book%20may%20be%20found%20at%20{{location}}."><i tooltip="Report violation of this site's terms of use" tooltip-placement="right" class="abuseIcon"></i></a>
             <a href="" ng-click="showDeleteDialog()"><i tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}"></i></a>
             <a href="" ng-click="chooseBookshelves()"><i tooltip="Add/Remove book from bookshelf" tooltip-placement="right" ng-class="{'icon-folder-open': true, 'icon-hidden':!canSetBookshelf}"></i></a>
-            <a ng-href="{{book.thumbnail | thumbToPreview}}" pdfoverlay>
+            <a ng-href="{{book.baseUrl | makePreviewUrl}}" pdfoverlay>
 
            <div id="bottomRowBigButtons">
                <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
