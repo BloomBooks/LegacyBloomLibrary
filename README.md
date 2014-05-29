@@ -34,7 +34,13 @@ bower update
 
 ## About the grunt files
 
-We built these using [ngBoilerplate](https://github.com/ngbp/ngbp). See the readme of ngBoilerplate for more information about the directory structure and the purpose of many files.
+We built these using [ngBoilerplate](https://github.com/ngbp/ngbp). Read the build.config.js file to see most of what is going on. See the readme of ngBoilerplate for more information. Here are key things:
+
+Grunt merges many vendor and app-specific less files together into the bloom_xyz.css file. The list of these files is main.less.
+If you have a css file to load separately, list that in build.config.js.
+
+Normally we have tests run via the offscreen browser phantomjs. If you want to debug using a normal browser, you'll find that setting in karma/X:\dev\BloomLibrary\karma\karma-unit.tpl.js.
+
 
 ## Roadmap
 

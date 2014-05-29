@@ -75,16 +75,24 @@ module.exports = {
 	  'vendor/angular-ui-router/release/angular-ui-router.js',
 	  'vendor/fancybox/source/jquery.fancybox.js',
 	  'vendor/ng-grid/ng-grid-2.0.7.debug.js',
-	  'vendor/angular-cookies/angular-cookies.js'
+	  'vendor/angular-cookies/angular-cookies.js',
+      'vendor/bootstrap-modal/js/*.js'
     ],
     css: [
-		'vendor/bootstrap-css/css/bootstrap.css',
+        /* most/all of our stylesheets are compiled into on file from less files.
+         The list of those is kept in src/main.less */
+
+		/*'vendor/bootstrap-css/css/bootstrap.css',
 		'vendor/bootstrap-css/css/bootstrap-responsive.css',
 		'vendor/fancybox/source/jquery.fancybox.css',
 		'vendor/ng-grid/ng-grid.css'
+        */
+        'vendor/bootstrap-modal/css/*.css',
+         'vendor/bootstrap-css/css/*.css'
     ],
     assets: [
-		'vendor/fancybox/source/fancybox_sprite.png'
+		'vendor/fancybox/source/fancybox*.png',
+        'vendor/fancybox/source/fancybox*.gif'
     ]
   }
 };
