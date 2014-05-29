@@ -81,18 +81,11 @@ module.exports = {
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.
          The list of those is kept in src/main.less */
-
-		/*'vendor/bootstrap-css/css/bootstrap.css',
-		'vendor/bootstrap-css/css/bootstrap-responsive.css',
-		'vendor/fancybox/source/jquery.fancybox.css',
-		'vendor/ng-grid/ng-grid.css'
-        */
-        'vendor/bootstrap-modal/css/*.css',
-         'vendor/bootstrap-css/css/*.css'
     ],
     assets: [
-		'vendor/fancybox/source/fancybox*.png',
-        'vendor/fancybox/source/fancybox*.gif'
+		'vendor/fancybox/source/fancybox_sprite.png',
+        'vendor/fancybox/source/fancybox*.gif',
+         'vendor/bootstrap-css/img/*.png' //for glyphicons-halflings.png
     ]
   }
 };
