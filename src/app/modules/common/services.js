@@ -206,7 +206,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString, shelf) {
+		this.getFilteredBooksCount = function (searchString, shelf, lang) {
 			var defer = $q.defer();
 			var query = new Parse.Query('books');
             if (searchString && !shelf) {
@@ -214,6 +214,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
             if (shelf) {
                 query = shelf.relation("books").query();
+            }
+            else if(lang)
+            {
+                var langQuery = new Parse.Query('language');
+                langQuery.equalTo('isoCode', lang);
+                query.matchesQuery('langPointers', langQuery);
             }
             query.count({
 				success: function (count) {
@@ -238,9 +244,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, sortBy, ascending) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
-            if (!searchString && !shelf) {
+            if (!searchString && !shelf && !lang) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
@@ -293,6 +299,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			}
             if (shelf) {
                 query = shelf.relation("books").query();
+            }
+            else if(lang)
+            {
+                var langQuery = new Parse.Query('language');
+                langQuery.equalTo('isoCode', lang);
+                query.matchesQuery('langPointers', langQuery);
             }
 
             query.skip(first);
@@ -359,6 +371,39 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.deleteBook = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
+
+        // We want all the languages we know.
+        // Review: should this be in its own service, since it's not particularly related to books?
+        this.getLanguages = function () {
+            var defer = $q.defer(); // used to implement angularjs-style promise
+
+            // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
+            var query = new Parse.Query('language');
+            // Configure the query to give the results we want.
+            // Enhance: we'd really like to sort by number of books containing it.
+            query.ascending("name");
+            query.limit(1000); // we want all the languages there are, but this is the most parse will give us.
+
+            // query.find returns a parse.com promise, but it is not quite the same api as
+            // as an angularjs promise. Instead, translate its find and error funtions using the
+            // angularjs promise.
+            query.find({
+                success: function (results) {
+                    var objects = new Array(results.length);
+                    for (i = 0; i < results.length; i++) {
+                        objects[i] = results[i].toJSON();
+                    }
+                    // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
+                    // NOT using it in this context.
+                    $rootScope.$apply(function () { defer.resolve(objects); });
+                },
+                error: function (aError) {
+                    defer.reject(aError);
+                }
+            });
+
+            return defer.promise;
+        };
 	} ])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
 		var checkforerror = function (callback) {

@@ -44,27 +44,20 @@
     <div ng-controller="LeftSidebar" class="span3">
         <div class="bookshelves">
             <h4>Bookshelves</h4>
+            <div><a class="bookshelfItem" href="#browse?">All Books</a></div>
             <div><a class="bookshelfItem" href="#browse?search=&shelf=Featured">Featured</a></div>
             <div><a class="bookshelfItem" href="" ng-click="showInProgress()">New Arrivals</a></div>
-            <div><a class="bookshelfItem" href="" ng-click="showInProgress()">Waiting for Review</a></div>
             <div><a class="bookshelfItem" href="" ng-click="showInProgress()">My Uploads</a></div>
-            <div><a class="bookshelfItem" href="" ng-click="showInProgress()">more...</a></div>
         </div>
         <div class="narrowSearch">
             <h4>Narrow Search By</h4>
             <h5>Languages</h5>
-            <div><input type="checkbox" ng-click="showInProgress()">English (145)</input></div>
-            <div><input type="checkbox" ng-click="showInProgress()">Tok Pisin (130</input></div>
-            <div><input type="checkbox" ng-click="showInProgress()">Thai (5)</input></div>
-            <div><input type="checkbox" ng-click="showInProgress()">Bahasia Indonesia (3)</input></div>
-            <div><input type="checkbox" ng-click="showInProgress()">French (2)</input></div>
-            <div><a href="" ng-click="showInProgress()">more...</a></div>
+            <div ng-repeat="lang in topLanguages"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div>
             <h5>Tags</h5>
             <div><a class="tagItem" href="" ng-click="showInProgress()">Health(27)</a></div>
             <div><a class="tagItem" href="" ng-click="showInProgress()">Tradition(33)</a></div>
             <div><a class="tagItem" href="" ng-click="showInProgress()">Animal Stories(15)</a></div>
             <div><a class="tagItem" href="" ng-click="showInProgress()">Coloring Book(1)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">more...</a></div>
         </div>
     </div>
     <div class="span10">
