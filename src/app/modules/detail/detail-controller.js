@@ -30,6 +30,7 @@
                         var params = {};
                         params.search = $state.params.search;
                         params.shelf = $state.params.shelf;
+                        params.lang = $state.params.lang;
                         $state.transitionTo("browse", params);
 					});
 			}

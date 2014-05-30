@@ -50,7 +50,7 @@
 				if (sortField == 'title') {
 					sortBy = 'volumeInfo.title';
 				}
-				bookService.getFilteredBookRange(first, count, searchText, "", sortBy).then(function (result) {
+				bookService.getFilteredBookRange(first, count, searchText, "", "", sortBy).then(function (result) {
 					$scope.visibleBooks = result;
 					$scope.visibleData = $scope.visibleBooks.map(function (item) {
 						return {

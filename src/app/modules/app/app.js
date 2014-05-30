@@ -32,7 +32,8 @@
 
 	$scope.userName = authService.userName;
 } ])
-		.controller('LeftSidebar', ['$scope', '$dialog', function ($scope, $dialog) {
+		.controller('LeftSidebar', ['$scope', '$dialog', '$state', 'bookService',
+            function ($scope, $dialog, $state, bookService) {
 			$scope.showInProgress = function() {
 				$dialog.dialog(
 					{
@@ -44,6 +45,21 @@
 						dialogClass: 'modal ccmodal'
 					}).open();
 			};
+            $scope.filterLanguage = function(language) {
+                $state.go('browse', {shelf:'',lang:language}); // keep search param unchanged.
+            };
+
+                // At some point, we may manually control topLanguages, and have a 'more' link to show them all.
+//            $scope.topLanguages = [
+//                {isoCode: 'en', name:'English'},
+//                {isoCode: 'tpi', name:'Tok Pisin'},
+//                {isoCode: 'th', name:'Thai'},
+//                {isoCode: 'id', name:'Bahasia Indonesia'},
+//                {isoCode: 'fr', name:'French'}
+//            ];
+                bookService.getLanguages().then(function(languages) {
+                    $scope.topLanguages = languages;
+                });
 		} ]);
 
 	//Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
