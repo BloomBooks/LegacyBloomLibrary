@@ -1,5 +1,4 @@
 <div>
-    <h1>Books</h1>
     <div class="container">
         <form ng-submit="SearchNow()">
             <div class="input-append">
@@ -10,9 +9,9 @@
             </div>
         </form>
         <div>matches: {{bookCount}}</div>
-		<div listview class="results" hide-if-empty="false" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
+		<ul listview class="books" hide-if-empty="false" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
-            <div class="result"
+            <li class="book"
                 ng-repeat="book in visibleBooks">
                 <!-- Was: ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage" -->
                 <!--                ng-click="viewBook(book)"    >-->
@@ -36,8 +35,8 @@
                     </div>
                 </div>
                 <div class="unfloat"></div>
-            </div>
-        </div>
+            </li>
+        </ul>
         <!-- temporary affordance for trying out the new datagrid. Not the final design -->
         <!--form action="#datagrid"><input type="submit" value="Grid view"></form-->
     </div>
