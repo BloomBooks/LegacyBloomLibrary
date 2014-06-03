@@ -31,6 +31,7 @@
                         params.search = $state.params.search;
                         params.shelf = $state.params.shelf;
                         params.lang = $state.params.lang;
+                        params.tag = $state.params.tag;
                         $state.transitionTo("browse", params);
 					});
 			}

@@ -52,12 +52,9 @@
         <div class="narrowSearch">
             <h4>Narrow Search By</h4>
             <h5>Languages</h5>
-            <div ng-repeat="lang in topLanguages"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div>
+            <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div></div>
             <h5>Tags</h5>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Health(27)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Tradition(33)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Animal Stories(15)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Coloring Book(1)</a></div>
+            <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a></div></div>
         </div>
     </div>
     <div class="span10">

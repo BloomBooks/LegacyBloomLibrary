@@ -201,26 +201,48 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             });
         };
 
-		// Gets the count of books whose search field (currently lowercase title plus concat of lowercase tags) contains searchString.
-		// Returns a promise which will deliver the count.
-		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
-		// and inside the scope of the function count will be the book count.
-		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString, shelf, lang) {
-			var defer = $q.defer();
-			var query = new Parse.Query('books');
+        // Common to getFilteredBooks{Count,Range}...though they do different things if all four params are blank.
+        // Return a query the yields books whose title (or tags) contain searchString, if any
+        // and whose languages list includes the specified language, if any
+        // and whose tags include the specified tag, if any;
+        // or, if shelf is specified, return exactly the books in that shelf, ignoring other params.
+        this.makeQuery = function(searchString, shelf, lang, tag)
+        {
+            var query = new Parse.Query('books');
             if (searchString && !shelf) {
                 query.contains('search', searchString.toLowerCase());
             }
             if (shelf) {
                 query = shelf.relation("books").query();
             }
-            else if(lang)
-            {
-                var langQuery = new Parse.Query('language');
-                langQuery.equalTo('isoCode', lang);
-                query.matchesQuery('langPointers', langQuery);
+            else {
+                if(lang) {
+                    var langQuery = new Parse.Query('language');
+                    langQuery.equalTo('isoCode', lang);
+                    query.matchesQuery('langPointers', langQuery);
+                }
+                if (tag) {
+                    query.equalTo("tags", tag);
+                }
             }
+            return query;
+        };
+
+		// Gets the count of books we currently want to display.
+		// Returns a promise which will deliver the count.
+		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
+		// and inside the scope of the function count will be the book count.
+		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
+		this.getFilteredBooksCount = function (searchString, shelf, lang, tag) {
+			var defer = $q.defer();
+
+            var query;
+            if (!searchString && !shelf && !lang && !tag) {
+                query = new Parse.Query('books'); // good enough for count, we just want them all in some order.
+            } else {
+                query = this.makeQuery(searchString, shelf, lang, tag);
+            }
+
             query.count({
 				success: function (count) {
 					$rootScope.$apply(function () { defer.resolve(count); });
@@ -228,7 +250,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				error: function (aError) {
 					defer.reject(aError);
 				}
-			});
+            });
 
 			return defer.promise;
 		};
@@ -239,14 +261,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			});
 		};
 
-		// We want a subset of the books whose search field contains searchString.
+		// We want a subset of the books of current interest.
 		// From that set we want up to count items starting at first (0-based).
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, sortBy, ascending) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
-            if (!searchString && !shelf && !lang) {
+            if (!searchString && !shelf && !lang && !tag) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
@@ -292,20 +314,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return defer.promise;
             }
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
-			var query = new Parse.Query('books');
-			// Configure the query to give the results we want.
-			if (searchString && !shelf) {
-				query.contains('search', searchString.toLowerCase());
-			}
-            if (shelf) {
-                query = shelf.relation("books").query();
-            }
-            else if(lang)
-            {
-                var langQuery = new Parse.Query('language');
-                langQuery.equalTo('isoCode', lang);
-                query.matchesQuery('langPointers', langQuery);
-            }
+			var query = this.makeQuery(searchString, shelf, lang, tag);
 
             query.skip(first);
             query.limit(count);

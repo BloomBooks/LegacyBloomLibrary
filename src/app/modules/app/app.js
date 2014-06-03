@@ -32,8 +32,14 @@
 
 	$scope.userName = authService.userName;
 } ])
-		.controller('LeftSidebar', ['$scope', '$dialog', '$state', 'bookService',
-            function ($scope, $dialog, $state, bookService) {
+		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService',
+            function ($scope, $dialog, $state, $location, $rootScope, bookService) {
+            $scope.currentLang = $location.$$search.lang;
+            $scope.currentTag = $location.$$search.tag;
+            $rootScope.$on('$locationChangeSuccess', function() {
+                $scope.currentLang = $location.$$search.lang;
+                $scope.currentTag = $location.$$search.tag;
+            });
 			$scope.showInProgress = function() {
 				$dialog.dialog(
 					{
@@ -46,7 +52,12 @@
 					}).open();
 			};
             $scope.filterLanguage = function(language) {
-                $state.go('browse', {shelf:'',lang:language}); // keep search param unchanged.
+                $scope.currentLang = language;
+                $state.go('browse', {shelf:'',lang:language}); // keep search and tag param unchanged.
+            };
+            $scope.filterTag = function(tagName) {
+                $scope.currentTag = tagName;
+                $state.go('browse', {shelf:'',tag:tagName}); // keep search and lang param unchanged.
             };
 
                 // At some point, we may manually control topLanguages, and have a 'more' link to show them all.
@@ -60,6 +71,11 @@
                 bookService.getLanguages().then(function(languages) {
                     $scope.topLanguages = languages;
                 });
+                // Replicated from Bloom.Book.RuntimeInformationInjector.AddUISettingsToDom().
+                // Eventually this will be user-extensible and retrieved using a query on some new table.
+                $scope.topTags = [
+                    "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
+                ];
 		} ]);
 
 	//Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
