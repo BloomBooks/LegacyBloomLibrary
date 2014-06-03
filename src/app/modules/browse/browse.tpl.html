@@ -8,8 +8,9 @@
                 </button>
             </div>
         </form>
-        <div>matches: {{bookCount}}</div>
-		<ul listview class="books" hide-if-empty="false" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
+        <div ng-hide="bookCount==0">matches: {{bookCount}}</div>
+        <div ng-show="bookCount==0">Sorry, there are no books that match your search.</div>
+        <ul listview class="books" hide-if-empty="false" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
             <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
             <li class="book"
                 ng-repeat="book in visibleBooks">
