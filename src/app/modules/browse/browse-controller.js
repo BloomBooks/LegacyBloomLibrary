@@ -6,7 +6,7 @@
 		$stateProvider.state('browse', {
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
 			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
-			url: "/browse?search&shelf&lang",
+			url: "/browse?search&shelf&lang&tag",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl'
 		});
@@ -42,7 +42,8 @@
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
         $scope.lang = $stateParams["lang"];
-		$scope.searchTextRaw = $scope.searchText;
+        $scope.tag = $stateParams["tag"];
+        $scope.searchTextRaw = $scope.searchText;
 		// if the service book count changes (e.g., because detailView deletes a book),
 		// update our scope's bookCount so the list view which is watching it will reload its page.
 		$scope.bookCountObject = bookCountService.getCount();
@@ -56,7 +57,7 @@
 		});
 
         $scope.getFilteredBookCount = function() {
-            bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang).then(function (count) {
+            bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
                 $scope.currentPage = 1;
                 $scope.bookCount = $scope.bookCountObject.bookCount = count;
                 $scope.setPage = function () {
@@ -80,7 +81,7 @@
             if (!$scope.initialized) {
                 return; // can't do useful query.
             }
-			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang).then(function (result) {
+			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (result) {
 				$scope.visibleBooks = result;
 			});
 		};
