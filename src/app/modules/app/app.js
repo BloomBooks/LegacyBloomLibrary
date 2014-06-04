@@ -36,9 +36,11 @@
             function ($scope, $dialog, $state, $location, $rootScope, bookService) {
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
+            $scope.currentShelf = $location.$$search.shelf;
             $rootScope.$on('$locationChangeSuccess', function() {
                 $scope.currentLang = $location.$$search.lang;
                 $scope.currentTag = $location.$$search.tag;
+                $scope.currentShelf = $location.$$search.shelf;
             });
 			$scope.showInProgress = function() {
 				$dialog.dialog(
@@ -52,12 +54,13 @@
 					}).open();
 			};
             $scope.filterLanguage = function(language) {
-                $scope.currentLang = language;
-                $state.go('browse', {shelf:'',lang:language}); // keep search and tag param unchanged.
+                $state.go('browse', {lang:language}); // keep other params unchanged.
             };
             $scope.filterTag = function(tagName) {
-                $scope.currentTag = tagName;
-                $state.go('browse', {shelf:'',tag:tagName}); // keep search and lang param unchanged.
+                $state.go('browse', {tag:tagName}); // keep other params unchanged.
+            };
+            $scope.filterShelf = function(shelfName) {
+                $state.go('browse', {search: '', shelf:shelfName}); // keep other params unchanged.
             };
 
                 // At some point, we may manually control topLanguages, and have a 'more' link to show them all.

@@ -206,24 +206,23 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         // and whose languages list includes the specified language, if any
         // and whose tags include the specified tag, if any;
         // or, if shelf is specified, return exactly the books in that shelf, ignoring other params.
-        this.makeQuery = function(searchString, shelf, lang, tag)
-        {
-            var query = new Parse.Query('books');
-            if (searchString && !shelf) {
-                query.contains('search', searchString.toLowerCase());
-            }
+        this.makeQuery = function(searchString, shelf, lang, tag) {
+            var query;
             if (shelf) {
                 query = shelf.relation("books").query();
+            } else {
+                query = new Parse.Query('books');
             }
-            else {
-                if(lang) {
-                    var langQuery = new Parse.Query('language');
-                    langQuery.equalTo('isoCode', lang);
-                    query.matchesQuery('langPointers', langQuery);
-                }
-                if (tag) {
-                    query.equalTo("tags", tag);
-                }
+            if (searchString) {
+                query.contains('search', searchString.toLowerCase());
+            }
+            if (lang) {
+                var langQuery = new Parse.Query('language');
+                langQuery.equalTo('isoCode', lang);
+                query.matchesQuery('langPointers', langQuery);
+            }
+            if (tag) {
+                query.equalTo("tags", tag);
             }
             return query;
         };
