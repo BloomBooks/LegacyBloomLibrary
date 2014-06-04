@@ -44,16 +44,18 @@
     <div ng-controller="LeftSidebar" class="span3">
         <div class="bookshelves">
             <h4>Bookshelves</h4>
-            <div><a class="bookshelfItem" href="#browse?">All Books</a></div>
-            <div><a class="bookshelfItem" href="#browse?search=&shelf=Featured">Featured</a></div>
+            <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
+            <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
             <div><a class="bookshelfItem" href="" ng-click="showInProgress()">New Arrivals</a></div>
             <div><a class="bookshelfItem" href="" ng-click="showInProgress()">My Uploads</a></div>
         </div>
         <div class="narrowSearch">
             <h4>Narrow Search By</h4>
             <h5>Languages</h5>
+            <div><a href="" ng-click="filterLanguage('')">Clear</a></div>
             <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div></div>
             <h5>Tags</h5>
+            <div><a href="" ng-click="filterTag('')">Clear</a></div>
             <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a></div></div>
         </div>
     </div>
