@@ -15,6 +15,7 @@
 	// Not sure if we need this...there's currently nothing for the controller to do.
 	angular.module('BloomLibraryApp.terms').controller('TermsCtrl', ['$scope',
 		function ($scope) {
+            window.scrollTo(0,0);
 		} ]);
 
 
@@ -33,7 +34,8 @@
 	// Not sure if we need this...there's currently nothing for the controller to do.
 	angular.module('BloomLibraryApp.privacy').controller('PrivacyCtrl', ['$scope',
 		function ($scope) {
-		} ]);
+            window.scrollTo(0,0);
+        } ]);
 
     // This module similarly manages the infringement page that comes up when the user clicks the SIL Notice Policy link in the header
     // or in the Terms page.
@@ -50,5 +52,6 @@
     // Not sure if we need this...there's currently nothing for the controller to do.
     angular.module('BloomLibraryApp.privacy').controller('InfringementCtrl', ['$scope',
         function ($scope) {
+            window.scrollTo(0,0);
         } ]);
 } ());  // end wrap-everything function
