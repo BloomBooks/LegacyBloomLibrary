@@ -37,10 +37,12 @@
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
+            $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             $rootScope.$on('$locationChangeSuccess', function() {
                 $scope.currentLang = $location.$$search.lang;
                 $scope.currentTag = $location.$$search.tag;
                 $scope.currentShelf = $location.$$search.shelf;
+                $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             });
 			$scope.showInProgress = function() {
 				$dialog.dialog(
