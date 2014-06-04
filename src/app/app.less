@@ -30,3 +30,26 @@ div.bookshelves
 div.activeFilter {
   font-weight: bold;
 }
+
+/* this group (down to site-footer) are used to implement the sticky footer, using ideas from http://codepen.io/chriscoyier/pen/uwJjr */
+html, body {
+  height: 100%;
+}
+.page-wrap {
+  min-height: 100%;
+  /* equal to site-footer height */
+  margin-bottom: -42px;
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.site-footer, .page-wrap:after {
+  /* equal to page-wrap margin-bottom */
+  height: 42px;
+}
+
+div.footerLinks {
+  float: right;
+}
