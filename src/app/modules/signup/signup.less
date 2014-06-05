@@ -5,18 +5,18 @@
 
 .loginRoot
 {
-  width: 239px; // what the well in the signup works out to.
+  width: 270px; // what the well in the signup works out to.
 }
 
 div.signupButton
 {
-  margin-right: 26px; /* somehow makes it align with inputs */
+  margin-right: 24px; /* somehow makes it align with inputs */
   margin-top: 10px;
 }
 div.loginButton
 {
-  margin-right: 26px; /* somehow makes it align with inputs */
-  margin-top: 10px; /* less than signup button because relative to 'forgot password' */
+  margin-right: 19px; /* somehow makes it align with inputs */
+  margin-top: 35px;
 }
 div.password
 {
@@ -46,7 +46,7 @@ button.signupBtn {
     font-size: smaller;
   }
   input {//checkbox
-    margin-left: 25px;
+    margin-left: 15px;
   }
   label { // "Show Password"
     font-size: smaller;
@@ -57,6 +57,10 @@ input.passwordInput {
   margin-bottom: 0px;
   border-bottom-right-radius: 0px;
 }
+
+input.passwordInput, input.userNameInput {
+  width: 90%;
+}
 .well {
   overflow: hidden; /* stretch around button even though it is float: right */
   padding: 25px;
@@ -65,4 +69,8 @@ input.passwordInput {
 
 div.agreeTerms {
   margin-top: 30px;
+}
+
+label.passwordLabel {
+  float: none;
 }

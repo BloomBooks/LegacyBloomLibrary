@@ -1,11 +1,15 @@
-<div class="container well loginRoot"> <!-- uses many classes from signup.less for consistency-->
+<div class="container loginRoot"> <!-- uses many classes from signup.less for consistency-->
 	<form ng-submit="login()" name="loginform">
+        <fieldset>
+            <div class="well">
 	<label for="usernm">Email Address</label>
-	<input id="usernm" spellcheck="false" required type="email" name="usernm" ng-model="username" placeholder="your email"/>
+	<input class="userNameInput" id="usernm" spellcheck="false" required type="email" name="usernm" ng-model="username" placeholder="your email"/>
     <div class="password">
-        <label>Password</label>
-        <input class="passwordInput" spellcheck="false" required type="text" name="password" ng-model="password" placeholder="Enter your password" ng-show="showPassword"/>
-        <input class="passwordInput" required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword"/>
+        <div><label class="passwordLabel">Password</label></div>
+        <div>
+            <input class="passwordInput" spellcheck="false" required type="text" name="password" ng-model="password" placeholder="Enter your password" ng-show="showPassword"/>
+            <input class="passwordInput" required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword"/>
+        </div>
     </div>
        <div id="forgotAndShowRow">
             <a class="resetPw" ng-click="resetPassword()">Forgot password</a>
@@ -13,5 +17,7 @@
             <label>Show password</label>
        </div>
     <div class="loginButton"><button class="btn signupBtn" type="submit">Login</button></div>
+            </div>
+        </fieldset>
 	</form>
 </div>
