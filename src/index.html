@@ -23,6 +23,7 @@
 
   </head>
   <body ng-app="BloomLibraryApp">
+  <div class="page-wrap">
     <div ng-controller="HeaderCtrl">
         <div class="navbar" bs-navbar>
             <div class="navbar-inner">
@@ -30,10 +31,10 @@
                 <div ng-cloak style="float: right" class="nav">
                     <ng-switch class="animate-switch-container" on="isLoggedIn()">
                         <div ng-switch-when="false">
-                            <a href="#terms" target="_blank">Terms of Use</a><span class="separator">|</span><a href="#privacy" target="_blank">Privacy</a><span class="separator">|</span><a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Log In</a>
+                            <a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Log In</a>
                         </div>
                         <div ng-switch-default>
-                            <a href="#terms" target="_blank">Terms of Use</a><span class="separator">|</span><a href="#privacy" target="_blank">Privacy</a><span class="separator">|</span>{{userName()}}
+                            {{userName()}}
                             <a ng-click="logout()">log out</a>
                         </div>
                     </ng-switch>
@@ -41,28 +42,35 @@
             </div>
         </div>
     </div>
-    <div ng-controller="LeftSidebar" class="span3">
-        <div class="bookshelves">
-            <h4>Bookshelves</h4>
-            <div><a class="bookshelfItem" href="#browse?">All Books</a></div>
-            <div><a class="bookshelfItem" href="#browse?search=&shelf=Featured">Featured</a></div>
-            <div><a class="bookshelfItem" href="" ng-click="showInProgress()">New Arrivals</a></div>
-            <div><a class="bookshelfItem" href="" ng-click="showInProgress()">My Uploads</a></div>
+        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="span3">
+            <div class="bookshelves">
+                <h4>Bookshelves</h4>
+                <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
+                <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
+                <div><a class="bookshelfItem" href="" ng-click="showInProgress()">New Arrivals</a></div>
+                <div><a class="bookshelfItem" href="" ng-click="showInProgress()">My Uploads</a></div>
+            </div>
+            <div class="narrowSearch">
+                <h4>Narrow Search By</h4>
+                <h5>Languages</h5>
+                <div><a href="" ng-click="filterLanguage('')">Clear</a></div>
+                <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div></div>
+                <h5>Tags</h5>
+                <div><a href="" ng-click="filterTag('')">Clear</a></div>
+                <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a></div></div>
+            </div>
         </div>
-        <div class="narrowSearch">
-            <h4>Narrow Search By</h4>
-            <h5>Languages</h5>
-            <div ng-repeat="lang in topLanguages"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div>
-            <h5>Tags</h5>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Health(27)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Tradition(33)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Animal Stories(15)</a></div>
-            <div><a class="tagItem" href="" ng-click="showInProgress()">Coloring Book(1)</a></div>
+        <div class="span10">
+            <sil-notices></sil-notices>
+            <div ui-view></div>
         </div>
     </div>
-    <div class="span10">
-        <sil-notices></sil-notices>
-        <div ui-view></div>
+    <div class="site-footer">
+        <div class="navbar-inner">
+            <div class="footerLinks">
+                <a href="#/terms">Terms of Use</a><span class="separator">|</span><a href="#/privacy">Privacy</a>
+            </div>
+        </div>
     </div>
   </body>
 </html>

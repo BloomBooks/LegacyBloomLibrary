@@ -17,7 +17,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				$scope.noOfPages = 3;  // TODO: calculate this automatically
 				$scope.currentPage = 1;
 				$scope.maxSize = 5;
-				$scope.itemsPerPage = 5;  // This should match the default value for the selector above
+				$scope.itemsPerPage = 10;  // This should match the default value for the selector above
                 var savedIpp = $cookies[$scope.pageCountTag];
                 if (savedIpp && !isNaN(savedIpp)) {
                     $scope.itemsPerPage = Number(savedIpp);

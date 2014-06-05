@@ -32,8 +32,18 @@
 
 	$scope.userName = authService.userName;
 } ])
-		.controller('LeftSidebar', ['$scope', '$dialog', '$state', 'bookService',
-            function ($scope, $dialog, $state, bookService) {
+		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService',
+            function ($scope, $dialog, $state, $location, $rootScope, bookService) {
+            $scope.currentLang = $location.$$search.lang;
+            $scope.currentTag = $location.$$search.tag;
+            $scope.currentShelf = $location.$$search.shelf;
+            $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
+            $rootScope.$on('$locationChangeSuccess', function() {
+                $scope.currentLang = $location.$$search.lang;
+                $scope.currentTag = $location.$$search.tag;
+                $scope.currentShelf = $location.$$search.shelf;
+                $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
+            });
 			$scope.showInProgress = function() {
 				$dialog.dialog(
 					{
@@ -46,7 +56,13 @@
 					}).open();
 			};
             $scope.filterLanguage = function(language) {
-                $state.go('browse', {shelf:'',lang:language}); // keep search param unchanged.
+                $state.go('browse', {lang:language}); // keep other params unchanged.
+            };
+            $scope.filterTag = function(tagName) {
+                $state.go('browse', {tag:tagName}); // keep other params unchanged.
+            };
+            $scope.filterShelf = function(shelfName) {
+                $state.go('browse', {search: '', shelf:shelfName}); // keep other params unchanged.
             };
 
                 // At some point, we may manually control topLanguages, and have a 'more' link to show them all.
@@ -60,6 +76,11 @@
                 bookService.getLanguages().then(function(languages) {
                     $scope.topLanguages = languages;
                 });
+                // Replicated from Bloom.Book.RuntimeInformationInjector.AddUISettingsToDom().
+                // Eventually this will be user-extensible and retrieved using a query on some new table.
+                $scope.topTags = [
+                    "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
+                ];
 		} ]);
 
 	//Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
