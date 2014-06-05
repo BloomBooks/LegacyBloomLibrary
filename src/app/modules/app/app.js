@@ -32,6 +32,9 @@
 
 	$scope.userName = authService.userName;
 } ])
+        .controller('FooterCtrl', ['$scope', function($scope) {
+            $scope.year = new Date().getFullYear().toString();
+        }])
 		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService',
             function ($scope, $dialog, $state, $location, $rootScope, bookService) {
             $scope.currentLang = $location.$$search.lang;
