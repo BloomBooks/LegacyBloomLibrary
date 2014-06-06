@@ -209,7 +209,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.makeQuery = function(searchString, shelf, lang, tag) {
             var query;
             if (shelf) {
-                query = shelf.relation("books").query();
+                if (shelf.name == "$recent") {
+                    // Special query for recently modified books ("New Arrivals", currently defined as
+                    // all books, but sorted to show most recently modified first).
+                    query = new Parse.Query('books');
+                    query.descending('updatedAt');
+                }
+                else {
+                    query = shelf.relation("books").query();
+                }
             } else {
                 query = new Parse.Query('books');
             }
@@ -319,9 +327,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             query.limit(count);
             query.include("langPointers");
             //query.include("uploader"); // reinstate this and code below if we need contents of uploader
-			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
-			// It does not work for e.g. volumeInfo.title.
-			if (sortBy) {
+			// Sorting probably works only for top-level complete fields.
+			// It does not work for e.g. (obsolete) volumeInfo.title.
+            // The $recent shelf is implemented as a special sort, so we need to disable any other for that.
+			if (sortBy && (!shelf || shelf.name != '$recent')) {
 				if (ascending) {
 					query.ascending(sortBy);
 				}
