@@ -103,11 +103,15 @@ div.delete-actions
 i.icon-trash, i.icon-folder-open
 {
   float:left;
-//  transform:scale(2.0,2.0);
-//  -ms-transform:scale(2.0,2.0); /* IE 9 */
-//  -moz-transform:scale(2.0,2.0); /* Firefox */
-//  -webkit-transform:scale(2.0,2.0); /* Safari and Chrome */
-//  -o-transform:scale(2.0,2.0); /* Opera */
+  // These transforms make the trash icon from glyph-icons about the right size
+  // If you think of taking them out, make sure you haven't shrunk the delete icon.
+  // If you know a better way to grow it (or a better icon), go for it.
+  transform:scale(2.0,2.0);
+  -ms-transform:scale(2.0,2.0); /* IE 9 */
+  -moz-transform:scale(2.0,2.0); /* Firefox */
+  -webkit-transform:scale(2.0,2.0); /* Safari and Chrome */
+  -o-transform:scale(2.0,2.0); /* Opera */
+  margin-top:8px;
   width: 20px;
   font-size: 8pt;
   color: lightgrey;
