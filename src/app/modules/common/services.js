@@ -160,6 +160,33 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return defer.promise;
         };
 
+        // Returns a promise indicating whether the book is in the shelf
+        // We will probably replace this with a different function that returns a list of the shelves a book is on,
+        // once we support multiple books. Thus, I haven't particularly tried to make this elegant
+        this.isBookInShelf = function(bookId, shelf) {
+            var defer = $q.defer();
+            var bookshelf = Parse.Object.extend("bookshelf");
+            var query = new Parse.Query(bookshelf);
+            query.get(shelf.objectId, {
+                success: function(javaShelf) {
+                    var relation = javaShelf.relation("books");
+                    var presentQuery = relation.query();
+                    presentQuery.equalTo("objectId", bookId);
+                    presentQuery.find({
+                        success:function(list) {
+                            // Without the $rootScope.$apply, the promise action doesn't happen
+                            // until something changes that forces an angular execution cycle.
+                            $rootScope.$apply(function () { defer.resolve(list.length > 0);});
+                        }
+                    });
+                },
+                error: function(object, error) {
+                    defer.reject(aError);
+                }
+            });
+            return defer.promise;
+        };
+
         // Reverse whether the book is a member of the shelf.
         this.ToggleBookInShelf = function(book, shelf) {
             // This should work (preliminary version...to ADD only) but runs into a bug in Parse,

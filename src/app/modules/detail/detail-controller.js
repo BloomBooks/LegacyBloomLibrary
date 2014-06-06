@@ -103,11 +103,19 @@
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName() == book.uploader.email || authService.isUserAdministrator());
-			$scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
-            $scope.canSetBookshelf = authService.isLoggedIn() && authService.bookShelves().length > 0;
 		});
+        $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
+        $scope.canSetBookshelf = authService.isLoggedIn() && authService.bookShelves().length > 0;
+        if ($scope.canSetBookshelf) {
+            // Todo: this is a temporary way to show whether the book is in the shelf, based on the fact that
+            // we currently have only one shelf. Hence the name, isBookFeatured.
+            bookService.isBookInShelf($stateParams.bookId,  authService.bookShelves()[0]).then(function(result) {
+                $scope.isBookFeatured = result;
+            });
+        }
 
-		$scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
+
+        $scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
 
 			$scope.close = function () {
 			dialog.close();
@@ -170,6 +178,7 @@
             // Failing that there should at least be some visual indication whether the book is in the shelf.
             var shelf = authService.bookShelves()[0];
             bookService.ToggleBookInShelf($scope.book, shelf);
+            $scope.isBookFeatured = !$scope.isBookFeatured;
         };
 		// This is so the dialog closes when the back button in the browser is used.
 		$scope.$on('$locationChangeSuccess', function (event) {
