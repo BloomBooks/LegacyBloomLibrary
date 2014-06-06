@@ -68,10 +68,10 @@
         // Every path in this 'if' should eventually call getFilteredBookCount(). We can't just move outside
         // because in at least one path we have to wait to call it after a promise is fulfilled.
         if ($scope.shelfName) {
-            if ($scope.shelfName =='$recent')
+            if ($scope.shelfName.substring(0,1) =='$')
             {
                 // Not a real shelf, triggers a special query
-                $scope.shelf = {name: '$recent'};
+                $scope.shelf = {name: $scope.shelfName};
                 $scope.getFilteredBookCount();
             }
             else {

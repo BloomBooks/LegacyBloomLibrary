@@ -3,6 +3,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
+        var userObjectId = null;
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
@@ -34,6 +35,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
 			isLoggedIn: function () { return isLoggedIn; },
 			isUserAdministrator: function () { return isUserAdministrator; },
+            userObjectId: function() {return userObjectId;},
 
 			config: function () { return restangularConfig; },
 
@@ -53,6 +55,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				// GET: .../login
 				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username, 'password': password })
 					.then(function (result) {
+                        userObjectId = result.objectId;
 						isLoggedIn = true;
 						isUserAdministrator = result.administrator;
 						userNameX = username;
@@ -214,6 +217,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     // all books, but sorted to show most recently modified first).
                     query = new Parse.Query('books');
                     query.descending('updatedAt');
+                } else if (shelf.name == "$myUploads") {
+                    query = new Parse.Query('books');
+                    query.equalTo('uploader', {
+                        __type: 'Pointer',
+                        className: '_User',
+                        objectId: authService.userObjectId()
+                    });
                 }
                 else {
                     query = shelf.relation("books").query();
