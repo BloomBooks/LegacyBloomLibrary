@@ -65,12 +65,24 @@
                 $scope.initialized = true;
             });
         };
+        // Every path in this 'if' should eventually call getFilteredBookCount(). We can't just move outside
+        // because in at least one path we have to wait to call it after a promise is fulfilled.
         if ($scope.shelfName) {
-            bookService.getBookshelf($scope.shelfName).then(function(shelf) {
-                $scope.shelf = shelf;
+            if ($scope.shelfName =='$recent')
+            {
+                // Not a real shelf, triggers a special query
+                $scope.shelf = {name: '$recent'};
                 $scope.getFilteredBookCount();
-            });
-            // Todo: what if no such shelf??
+            }
+            else {
+                // We need to retrieve the shelf object, and we can't run the query to get the count
+                // until we get the result.
+                bookService.getBookshelf($scope.shelfName).then(function (shelf) {
+                    $scope.shelf = shelf;
+                    $scope.getFilteredBookCount();
+                });
+                // Todo: what if no such shelf??
+            }
         }
         else {
             $scope.getFilteredBookCount();
