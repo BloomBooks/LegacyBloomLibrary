@@ -48,7 +48,7 @@
                 <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
                 <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
                 <div><div ng-class="{activeFilter: currentShelf == '$recent'}"><a class="bookshelfItem" href="" ng-click="filterShelf('$recent')">New Arrivals</a></div></div>
-                <div><a class="bookshelfItem" href="" ng-click="showInProgress()">My Uploads</a></div>
+                <div><div ng-class="{activeFilter: currentShelf == '$myUploads'}"><a class="bookshelfItem" href="" ng-click="filterMyUploads()">My Uploads</a></div></div>
             </div>
             <div class="narrowSearch">
                 <h4>Narrow Search By</h4>
