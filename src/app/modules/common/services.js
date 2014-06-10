@@ -3,6 +3,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
+        var userObjectId = null;
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
@@ -34,6 +35,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
 			isLoggedIn: function () { return isLoggedIn; },
 			isUserAdministrator: function () { return isUserAdministrator; },
+            userObjectId: function() {return userObjectId;},
 
 			config: function () { return restangularConfig; },
 
@@ -53,6 +55,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				// GET: .../login
 				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username, 'password': password })
 					.then(function (result) {
+                        userObjectId = result.objectId;
 						isLoggedIn = true;
 						isUserAdministrator = result.administrator;
 						userNameX = username;
@@ -157,6 +160,33 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return defer.promise;
         };
 
+        // Returns a promise indicating whether the book is in the shelf
+        // We will probably replace this with a different function that returns a list of the shelves a book is on,
+        // once we support multiple books. Thus, I haven't particularly tried to make this elegant
+        this.isBookInShelf = function(bookId, shelf) {
+            var defer = $q.defer();
+            var bookshelf = Parse.Object.extend("bookshelf");
+            var query = new Parse.Query(bookshelf);
+            query.get(shelf.objectId, {
+                success: function(javaShelf) {
+                    var relation = javaShelf.relation("books");
+                    var presentQuery = relation.query();
+                    presentQuery.equalTo("objectId", bookId);
+                    presentQuery.find({
+                        success:function(list) {
+                            // Without the $rootScope.$apply, the promise action doesn't happen
+                            // until something changes that forces an angular execution cycle.
+                            $rootScope.$apply(function () { defer.resolve(list.length > 0);});
+                        }
+                    });
+                },
+                error: function(object, error) {
+                    defer.reject(aError);
+                }
+            });
+            return defer.promise;
+        };
+
         // Reverse whether the book is a member of the shelf.
         this.ToggleBookInShelf = function(book, shelf) {
             // This should work (preliminary version...to ADD only) but runs into a bug in Parse,
@@ -209,7 +239,22 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.makeQuery = function(searchString, shelf, lang, tag) {
             var query;
             if (shelf) {
-                query = shelf.relation("books").query();
+                if (shelf.name == "$recent") {
+                    // Special query for recently modified books ("New Arrivals", currently defined as
+                    // all books, but sorted to show most recently modified first).
+                    query = new Parse.Query('books');
+                    query.descending('updatedAt');
+                } else if (shelf.name == "$myUploads") {
+                    query = new Parse.Query('books');
+                    query.equalTo('uploader', {
+                        __type: 'Pointer',
+                        className: '_User',
+                        objectId: authService.userObjectId()
+                    });
+                }
+                else {
+                    query = shelf.relation("books").query();
+                }
             } else {
                 query = new Parse.Query('books');
             }
@@ -319,9 +364,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             query.limit(count);
             query.include("langPointers");
             //query.include("uploader"); // reinstate this and code below if we need contents of uploader
-			// Review: have not yet verified that sorting works at all. At best it probably works only for top-level complete fields.
-			// It does not work for e.g. volumeInfo.title.
-			if (sortBy) {
+			// Sorting probably works only for top-level complete fields.
+			// It does not work for e.g. (obsolete) volumeInfo.title.
+            // The $recent shelf is implemented as a special sort, so we need to disable any other for that.
+			if (sortBy && (!shelf || shelf.name != '$recent')) {
 				if (ascending) {
 					query.ascending(sortBy);
 				}

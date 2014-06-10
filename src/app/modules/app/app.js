@@ -32,8 +32,11 @@
 
 	$scope.userName = authService.userName;
 } ])
-		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService',
-            function ($scope, $dialog, $state, $location, $rootScope, bookService) {
+        .controller('FooterCtrl', ['$scope', function($scope) {
+            $scope.year = new Date().getFullYear().toString();
+        }])
+		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService', 'authService',
+            function ($scope, $dialog, $state, $location, $rootScope, bookService, authService) {
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
@@ -63,6 +66,26 @@
             };
             $scope.filterShelf = function(shelfName) {
                 $state.go('browse', {search: '', shelf:shelfName}); // keep other params unchanged.
+            };
+            $scope.filterMyUploads = function() {
+                if (authService.isLoggedIn()) {
+                    $state.go('browse', {search: '', shelf: '$myUploads'}); // keep other params unchanged.
+                } else {
+                    $scope.showPleaseLogIn();
+                }
+            };
+
+            // Sadly duplicated in detail controller
+            $scope.showPleaseLogIn = function() {
+                $dialog.dialog(
+                    {
+                        backdrop: true,
+                        keyboard: true, //make ESC close it
+                        backdropClick: true, //make clicking on the backdrop close it
+                        templateUrl: 'modules/login/pleaseLogIn.tpl.html',
+                        controller: 'pleaseLogIn',
+                        dialogClass: 'modal ccmodal'
+                    }).open();
             };
 
                 // At some point, we may manually control topLanguages, and have a 'more' link to show them all.
