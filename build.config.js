@@ -88,8 +88,8 @@ module.exports = {
          automatically copied to .less, and adding to src/main.less. */
     ],
     assets: [
-		'vendor/fancybox/source/fancybox_sprite.png',
-        'vendor/fancybox/source/fancybox*.gif',
+		'vendor/fancybox/source/*.png',
+        'vendor/fancybox/source/*.gif',
          'vendor/bootstrap-css/img/*.png' //for glyphicons-halflings.png
     ]
   }
