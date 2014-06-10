@@ -80,12 +80,12 @@ module.exports = {
     ],
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.
-         The list of those is kept in src/main.less */
-        // This one file does not work when included in main.less. I have not been able to figure out why.
-        // What fails (among other things, possibly) is the tooltips in the detail view, e.g., on the
-        // flag and delete icons and the Open in Bloom button. If bootstrap.css is included instead of linked to,
-        // these tooltips display embedded in the detail view and mess up its layout; they don't look like tooltips.
-        'vendor/bootstrap-css/css/bootstrap.min.css'
+         The list of those is kept in src/main.less.
+         The css section here is basically obsolete, and although I (JohnT) fixed some
+         of the bugs, it doesn't fully work...typically you will have to manually copy
+         the css files listed here to appropriate destinations both locally and on aws.
+         Consider instead extending the list css_less in Gruntfile.js of css files
+         automatically copied to .less, and adding to src/main.less. */
     ],
     assets: [
 		'vendor/fancybox/source/fancybox_sprite.png',

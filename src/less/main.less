@@ -8,9 +8,14 @@
 /**
  * First, we include the Twitter Bootstrap LESS files. Only the ones used in the
  * project should be imported as the rest are just wasting space. Review: from ng-boilerplate; do we need (all of) this?
- * Review: would it be better to import the vendor-specific css files specified in build.config.js here?
+ * Note that only .less files get included during the build process (and become part of assets/BloomLibrary-N-.css).
+ * If you put css files in this list, the build process leaves them as @imports, and the target files will need
+ * to be put in the right places.
+ * If you don't have a .less version of what you want, consider extending the css_less list in Gruntfile.js,
+ * and importing the .less version.
  */
 
+@import '../../vendor/bootstrap/less/tooltip.less';
 @import '../../vendor/bootstrap/less/mixins.less';
 @import '../../vendor/bootstrap/less/reset.less';
 @import '../../vendor/bootstrap/less/utilities.less';
@@ -25,7 +30,7 @@
 @import '../../vendor/bootstrap/less/dropdowns.less';
 @import '../../vendor/bootstrap/less/close.less';
 @import '../../vendor/bootstrap/less/modals.less';
-@import '../../vendor/fancybox/source/jquery.fancybox.css';
+@import '../../vendor/fancybox/source/jquery.fancybox.less';
         //'vendor/bootstrap-modal/css/*.css',
          //'vendor/bootstrap-css/css/*.css'
 /**
