@@ -53,3 +53,21 @@ html, body {
 div.footerLinks {
   float: right;
 }
+
+/* a rightContainer div with a nested mainContent div makes a block whose contents will stick to the main content
+area, leaving room for a 240px sidebar and 20px space...and will stay in that position even if the window
+is not wide enough.*/
+div.rightContainer {
+  float: right;
+  width: 100%;
+  margin-left: -260px;
+}
+div.mainContent {
+  margin-left: 260px;
+}
+
+div.staticPage {
+  margin-left: -200px; /* cancels out part of 260px normally left for sidebar */
+  max-width: 900px;
+  margin-right: 60px;
+}
