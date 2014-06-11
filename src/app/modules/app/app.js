@@ -133,6 +133,33 @@
 	$rootScope.alert = function (text) {
 		alert(text);
 	};
+	
+	//Keeps the correct nav link active
+	$('.navbar li').click(function(e) {
+		$('.navbar li.active').removeClass('active');
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			$this.addClass('active');
+		}
+		e.preventDefault();
+	});
+	
+	//Load the UserVoice widget
+	var uvOptions = {};
+	(function() {
+		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+		uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/xoQAlIzNrOFQpMmMnRcg7w.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+	})();
+	
+	//Start the automatic changing of carousel slides (on Home page)
+	!function ($) {
+            $(function(){
+              // carousel demo
+              $('#homeCarousel').carousel()
+            })
+        }(window.jQuery)
+	
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
 	// <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
