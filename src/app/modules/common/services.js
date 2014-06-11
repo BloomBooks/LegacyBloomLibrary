@@ -1,9 +1,11 @@
 angular.module('BloomLibraryApp.services', ['restangular'])
-	.factory('authService', ['Restangular', function (restangular) {
+	.factory('authService', ['Restangular', "$cookies", function (restangular, $cookies) {
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
         var userObjectId = null;
+        var saveUserNameTag = 'userName';
+        var savePasswordTag = 'password';
 		// These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
@@ -59,6 +61,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 						isLoggedIn = true;
 						isUserAdministrator = result.administrator;
 						userNameX = username;
+                        // There's no expiration on this...browser will remember your details until you log out, even
+                        // if you close the browser altogether. This is not meant to be high-security.
+                        $cookies[saveUserNameTag] = username;
+                        $cookies[savePasswordTag] = password;
                         var query = new Parse.Query('bookshelf');
                         query.equalTo('owner', result);
 //                        query.find({
@@ -87,7 +93,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			},
 
 			logout: function () {
-				isLoggedIn = false;
+                $cookies[saveUserNameTag] = '';
+                $cookies[savePasswordTag] = '';
+
+                isLoggedIn = false;
 				factory.setSession('');
 			},
 
@@ -106,6 +115,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				return restangular.withConfig(restangularConfig).one("requestPasswordReset").post('', {"email":email});
 			}
 		};
+
+        var tryUserName = $cookies[saveUserNameTag];
+        var tryPassword = $cookies[savePasswordTag];
+        if (tryUserName) {
+            factory.login(tryUserName, tryPassword, function() {}, function() {});
+        }
 
 		return factory;
 	} ])
