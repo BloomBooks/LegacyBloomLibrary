@@ -153,13 +153,13 @@
 	})();
 	
 	//Start the automatic changing of carousel slides (on Home page)
-	!function ($) {
+       (function ($) {
             $(function(){
               // carousel demo
-              $('#homeCarousel').carousel()
-            })
-        }(window.jQuery)
-	
+              $('#homeCarousel').carousel();
+            });
+        })(window.jQuery);
+
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
 	// <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
