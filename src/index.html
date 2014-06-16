@@ -24,7 +24,7 @@
   </head>
   <body ng-app="BloomLibraryApp">
   <div class="page-wrap">
-    <div ng-controller="HeaderCtrl">
+    <div class="site-header" ng-controller="HeaderCtrl">
         <div class="navbar" bs-navbar>
             <div class="navbar-inner">
                 <a class="brand" href="#/home"><img src="assets/navbarlogo.png"/></a>
@@ -42,8 +42,8 @@
                         </ul>
                     </li>
                 </ul>
-                <ul ng-cloak style="float: right" class="nav">
-                    <li><a href="#/browse">Book Library</a></li>
+                <ul ng-cloak class="nav pull-right">
+                    <li class="enlarge"><a href="#/browse">Book Library</a></li>
                     <ng-switch class="animate-switch-container nav" on="isLoggedIn()">
                         <span ng-switch-when="false" class="nav">
                             <li><a href="#/signup">Sign Up</a></li>
@@ -84,9 +84,14 @@
         </div>
     </div>
     <div class="site-footer" ng-controller="FooterCtrl">
-        <div class="navbar-inner">
-            <div class="footerLinks">
-                &copy; {{year}} SIL International <span class="separator">|</span><a href="#/terms">Terms of Use</a><span class="separator">|</span><a href="#/privacy">Privacy</a>
+        <div class="navbar" bs-navbar>
+            <div class="navbar-inner">
+                <ul class="nav pull-right">
+                    <li><p class="navbar-text">&copy; {{year}} SIL International</p></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="#/terms">Terms of Use</a></li>
+                    <li><a href="#/privacy">Privacy</a></li>
+                </ul>
             </div>
         </div>
     </div>
