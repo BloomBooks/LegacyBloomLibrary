@@ -28,6 +28,12 @@
         <div class="navbar" bs-navbar>
             <div class="navbar-inner">
                 <a class="brand" href="#/home"><img src="assets/navbarlogo.png"/></a>
+                <div class="user">
+                    &nbsp;
+                    <ng-switch on="isLoggedIn()">
+                        <span ng-switch-when="true" class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
+                    </ng-switch>
+                </div>
                 <ul class="nav">
                     <li class="active"><a href="#/home">Home</a></li>
                     <li><a href="#/features">Features</a></li>
@@ -45,14 +51,15 @@
                 <ul ng-cloak class="nav pull-right">
                     <li class="enlarge"><a href="#/browse">Book Library</a></li>
                     <ng-switch class="animate-switch-container nav" on="isLoggedIn()">
-                        <span ng-switch-when="false" class="nav">
+                        <span ng-switch-when="false" class="animate-switch nav">
                             <li><a href="#/signup">Sign Up</a></li>
                             <li><a href="#/login">Log In</a></li>
                         </span>
-                        <li ng-switch-default>
-                            {{userName()}}
-                            <a ng-click="logout()">log out</a>
+                        <span ng-switch-default class="animate-switch nav">
+                        <li>
+                            <a class="logout" ng-click="logout()">Log Out</a>
                         </li>
+                        </span>
                     </ng-switch>
                 </ul>
             </div>
