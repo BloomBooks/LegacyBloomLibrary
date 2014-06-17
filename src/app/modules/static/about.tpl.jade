@@ -1,31 +1,20 @@
-mixin SIL
-	| &nbsp;(
-	a(href='http://sil.org') SIL International
-	| )
+mixin SIL(name, rolls)
+	p
+		=name
+		&nbsp;(
+		a(href='http://sil.org') SIL International
+		| ) :&nbsp;
+		=rolls
 
 .staticPage
 	h3 Credits
-	p Eberhard Beilharz
-		+SIL
-		| : Linux Programming
-	p John Hatton
-		+SIL
-		| : Program Manager, Design, Programming, CSS
-	p Marlon Hovland
-		+SIL
-		| : Documentation
-	p Gordon Martin
-		+SIL
-		| : Programming, CSS
-	p Marvin Nichols
-		+SIL
-		| : Testing
-	p Andrew Polk
-		+SIL
-		| : Web
-	p John Thomson
-		+SIL
-		| : Manager for Versions 2 and 3, Programming
+	+SIL('Eberhard Beilharz', 'Linux Programming')
+	+SIL('John Hatton','Program Manager, Design, Programming, CSS')
+	+SIL('Marlon Hovland','Documentation')
+	+SIL('Gordon Martin','Programming, CSS')
+	+SIL('Marvin Nichols','Testing')
+	+SIL('Andrew Polk','Web')
+	+SIL('John Thomson','Manager for Versions 2 and 3, Programming')
 	p Bruce Cox & Jeremy Brown have contributed javascript code.
 	h3 Bloom relies on the following open source works of others:
 	ul
@@ -52,11 +41,9 @@ mixin SIL
 			a(href='http://code.google.com/p/wkhtmltopdf') wkhtmltoimage:
 			| Jan Habermann, Christian Sciberras and Jakob Truelsen
 	h3 Thanks
-	p Glenys Waters,
-		+SIL
+	p Glenys Waters
 	p Payap University Linguistics Institute, Chiang Mai, Thailand
 	p Michael Cochran, Cambell Prince, Jon Coombs, David Coward, Hannes Hirzel
-		+SIL
 	p JetBrains for free open-source license for&nbsp;
 		a(href='http://www.jetbrains.com/resharper/') Resharper
 		| , which keeps our c# code clean and agile,&nbsp;
