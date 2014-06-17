@@ -1,32 +1,18 @@
 <div class="staticPage">
-    <!-- Carousel
-    ================================================== -->
-    <div id="homeCarousel" class="carousel slide">
-        <ol class="carousel-indicators">
-            <li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#homeCarousel" data-slide-to="1"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="image-frame">
-                    <span class="alignhelper"></span><img src="assets/class.jpg"alt="Class">
-                </div>
-                <div class="carousel-caption">
-                    <p class="lead">Learning to read takes books. Learning to read <em>well</em>, and developing a love of reading, takes <em>lots of books</em>.  Books at all different skill levels. But how are low-literacy language communities ever to get all those books in their language?  They can do it with Bloom.</p>
-                </div>
-            </div>
-            <div class="item">
-                <div class="image-frame">
-                    <span class="alignhelper"></span><img src="assets/shellbook.png" alt="Shell Book">
-                </div>
-                <div class="carousel-caption">
-                    <p class="lead">Bloom keeps things simple and efficient by offering a library of shell books. You just translate from a source language, and print.</p>
-                </div>
-            </div>
+	<!-- Carousel - text and images set in app.js -->
+    <div ng-controller="CarouselCtrl">
+        <div>
+            <carousel interval="myInterval">
+                <slide ng-repeat="slide in slides" active="slide.active">
+                    <img ng-src="{{slide.image}}" style="margin:auto;">
+                    <div class="carousel-caption">
+                        <p>{{slide.text}}</p>
+                    </div>
+                </slide>
+            </carousel>
         </div>
-        <a class="left carousel-control" href="#homeCarousel" data-slide="prev">&lsaquo;</a>
-        <a class="right carousel-control" href="#homeCarousel" data-slide="next">&rsaquo;</a>
-    </div><!-- /.carousel -->
+    </div>
+	<!-- /Carousel -->
     
     <div class="container-fluid">
         <div class="row-fluid">

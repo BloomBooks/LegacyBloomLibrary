@@ -102,28 +102,21 @@ div.staticPage {
 }
 
 .carousel {
-  background-color: #000;
+  background-color: @darkGray;
+  width: 860px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .carousel-caption {
   text-align: center;
+  font-size: 14px;
+  font-weight: bold;
 }
 .carousel-control {
   cursor: pointer;
 }
-.carousel img {
-  vertical-align: middle;
-  max-height: 400px;
-  max-width: 900px;
-}
-.image-frame {
-  height: 350px;
-  width: 900px;
-  text-align: center;
-}
-.alignhelper {
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
+.staticPage a.carousel-control {
+  color: @lightGray;
 }
 .carousel-indicators li {
   cursor: pointer;
