@@ -155,7 +155,6 @@
 	//Start the automatic changing of carousel slides (on Home page)
        (function ($) {
             $(function(){
-              // carousel demo
               $('#homeCarousel').carousel();
             });
         })(window.jQuery);
