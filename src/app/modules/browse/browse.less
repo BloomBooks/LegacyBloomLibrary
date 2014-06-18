@@ -42,7 +42,6 @@ H3.bookTitle
 	padding-top: 0px;
     padding-bottom: 3px;
 	line-height: 1em;
-    color: @darkGray;
 }
 .author
 {
@@ -106,11 +105,11 @@ input.searchInput {
 
 .tag {
     -font-style: italic;
-    color: gray;
+    color: @lightText;
 }
 
 a.languageName {
-    color: black;
+    color: @darkText;
 }
 
 li .bookInfo{
@@ -121,3 +120,22 @@ li .bookInfo{
 .icon-tag{
     -color: lightgray;
 }
+
+body{
+    color: @darkGray;
+}
+
+a:hover .bookInfo *,
+a:focus   .bookInfo *{
+  color: @darkText;
+  text-decoration:none; //this isn't working. We only wan the title to get underlined.
+}
+
+//There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
+a:hover .bookTitle,
+a:focus  .bookTitle{
+  color: @linkColorHover;
+  text-decoration: underline;
+}
+
+

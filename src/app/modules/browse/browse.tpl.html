@@ -17,26 +17,31 @@
                     ng-repeat="book in visibleBooks">
                     <!-- Was: ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage" -->
                     <!--                ng-click="viewBook(book)"    >-->
-                    <div class="imageContainer">
-                        <a ui-sref="browse.detail({bookId: book.objectId})">
+                    <a ui-sref="browse.detail({bookId: book.objectId})">
+                        <div class="imageContainer">
+
                             <img ng-src="{{book.baseUrl | makeThumbnailUrl}}" />
-                        </a>
-                    </div>
-                    <div class="bookInfo">
-                        <a ui-sref="browse.detail({bookId: book.objectId})">
-                            <h3 class="bookTitle">{{book.title}}</h3>
-                        </a>
-                        <!--<div class="secondRowAboutBook">
-                            <div class="pages">{{book.pageCount}} pages</div>
-                        </div>-->
-                        <div class="languages" ng-show="book.langPointers.length">
-                            <!--Languages:--> <span ng-repeat="lang in book.langPointers"><a class="languageName" ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
                         </div>
-                        <div class="tags" ng-show="book.tags.length">
-                            <span class="tag" ng-repeat="tag in book.tags"><!--<i class="icon-tags"></i>-->{{tag}} </span>
+                        <div class="bookInfo">
+                           <!-- <a ui-sref="browse.detail({bookId: book.objectId})">-->
+                                <h3 class="bookTitle">{{book.title}}</h3>
+                            <!--</a>-->
+                            <!--<div class="secondRowAboutBook">
+                <div class="pages">{{book.pageCount}} pages</div>
+            </div>-->
+                            <div class="languages" ng-show="book.langPointers.length">
+                                <!--Languages:--> <span ng-repeat="lang in book.langPointers">
+                                    <!--<a class="languageName" ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a>-->
+                                    {{lang.name}}
+                                    <span ng-hide="$last">, </span>
+                                </span>
+                            </div>
+                            <div class="tags" ng-show="book.tags.length">
+                                <span class="tag" ng-repeat="tag in book.tags"><!--<i class="icon-tags"></i>-->{{tag}} </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="unfloat"></div>
+                        <div class="unfloat"></div>
+                    </a>
                 </li>
             </ul>
         </div>
