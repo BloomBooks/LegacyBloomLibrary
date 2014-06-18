@@ -1,14 +1,14 @@
 <div>
     <div class="container">
-        <form ng-submit="SearchNow()">
+        <form class="pull-right" ng-submit="SearchNow()">
             <div class="input-append">
-                <input type="text"  ng-keypress="x()" class="searchInput" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
-                <button class='btn' type='submit'>
+                <input type="text" ng-keypress="x()" class="searchInput" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
+                <button class='btn searchBtn' type='submit'>
                     <i class="icon-search"></i>
                 </button>
             </div>
         </form>
-        <div ng-hide="bookCount==0">matches: {{bookCount}}</div>
+        <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
         <div ng-show="bookCount==0">Sorry, there are no books that match your search.</div>
         <div ng-hide="bookCount==0">
             <ul listview class="books" hide-if-empty="true" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
@@ -22,18 +22,18 @@
                             <img ng-src="{{book.baseUrl | makeThumbnailUrl}}" />
                         </a>
                     </div>
-                    <div class="data">
+                    <div class="bookInfo">
                         <a ui-sref="browse.detail({bookId: book.objectId})">
-                            <h3 class="firstRowAboutBook">{{book.title}}</h3>
+                            <h3 class="bookTitle">{{book.title}}</h3>
                         </a>
-                        <div class="secondRowAboutBook">
+                        <!--<div class="secondRowAboutBook">
                             <div class="pages">{{book.pageCount}} pages</div>
-                        </div>
+                        </div>-->
                         <div class="languages" ng-show="book.langPointers.length">
-                            Languages: <span ng-repeat="lang in book.langPointers"><a ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
+                            <!--Languages:--> <span ng-repeat="lang in book.langPointers"><a class="languageName" ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
                         </div>
                         <div class="tags" ng-show="book.tags.length">
-                            Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
+                            <span class="tag" ng-repeat="tag in book.tags"><!--<i class="icon-tags"></i>-->{{tag}} </span>
                         </div>
                     </div>
                     <div class="unfloat"></div>
