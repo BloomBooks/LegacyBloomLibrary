@@ -107,7 +107,7 @@
 		}])
         .controller('CarouselCtrl', ['$scope', 
             function ($scope) {
-                $scope.myInterval = 5000;
+                $scope.myInterval = 10000;
                 var slides = $scope.slides = [];
                 slides.push({
                     image: 'assets/class.jpg',
