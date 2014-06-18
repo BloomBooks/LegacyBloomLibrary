@@ -18,8 +18,10 @@ div.bookshelves, div.narrowSearch
   border-style:solid;
   border-width: 1px;
   margin-left: 10px;
+  margin-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
+  padding-bottom: 10px;
 }
 
 div.bookshelves
@@ -54,22 +56,14 @@ div.footerLinks {
   float: right;
 }
 
-/* a rightContainer div with a nested mainContent div makes a block whose contents will stick to the main content
-area, leaving room for a 240px sidebar and 20px space...and will stay in that position even if the window
-is not wide enough.*/
-div.rightContainer {
-  float: right;
-  width: 100%;
-  margin-left: -260px;
-}
-div.mainContent {
-  margin-left: 260px;
-}
-
 div.staticPage {
-  margin-left: -200px; /* cancels out part of 260px normally left for sidebar */
-  max-width: 900px;
+  width: 900px;
+  margin-left: 60px;
   margin-right: 60px;
+}
+div.container.not-centered {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .navbar li.enlarge.active a {
@@ -85,7 +79,7 @@ div.staticPage {
   .border-radius(0);
 }
 .site-header .navbar ul.nav {
-  margin: 18px 0px 0px 50px;
+  margin: 9px 0px 0px 50px;
 }
 .site-header a {
   font-size: 18px;
