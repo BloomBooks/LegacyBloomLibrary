@@ -14,11 +14,9 @@ LI
 	font: 1em Arial;
 }
 */
-.search BUTTON.add-on
+.searchBtn
 {
-	height: 26px;
-	/*[empty]padding-left:;*/
-	margin-left: -4px;
+	/* this is not enough: background-color: black; */
 }
 .search INPUT
 {
@@ -36,15 +34,15 @@ BODY
 {
 	margin-left: 20px;
 }
-H3.firstRowAboutBook
+H3.bookTitle
 {
 	font-size: 103%;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-top: 0px;
-	padding-bottom: 6px;
+    padding-bottom: 3px;
 	line-height: 1em;
-    color: rgb(0, 75, 145)
+    color: @darkGray;
 }
 .author
 {
@@ -65,7 +63,7 @@ H3.firstRowAboutBook
 	float: left;
 	margin-right: 7px;
 }
-IMG
+.imageContainer IMG
 {
 	text-align: center;
 	height: 70px; //Bloom version 2 sets all books to this height
@@ -104,4 +102,22 @@ input.searchInput {
   width: 150px;
   margin: 0px;
   height: 24px;
+}
+
+.tag {
+    -font-style: italic;
+    color: gray;
+}
+
+a.languageName {
+    color: black;
+}
+
+li .bookInfo{
+  font-size: 9pt;
+  line-height: 16px;
+}
+
+.icon-tag{
+    -color: lightgray;
 }

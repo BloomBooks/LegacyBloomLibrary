@@ -76,7 +76,9 @@ module.exports = {
 	  'vendor/fancybox/source/jquery.fancybox.js',
 	  'vendor/ng-grid/ng-grid-2.0.7.debug.js',
 	  'vendor/angular-cookies/angular-cookies.js',
-      'vendor/bootstrap-modal/js/*.js'
+      'vendor/bootstrap-modal/js/*.js',
+      'vendor/bootstrap/js/bootstrap-carousel.js',
+      'vendor/bootstrap/js/bootstrap-transition.js'
     ],
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.

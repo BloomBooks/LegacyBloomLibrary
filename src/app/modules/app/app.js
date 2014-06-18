@@ -104,7 +104,20 @@
                 $scope.topTags = [
                     "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
                 ];
-		} ]);
+		}])
+        .controller('CarouselCtrl', ['$scope', 
+            function ($scope) {
+                $scope.myInterval = 5000;
+                var slides = $scope.slides = [];
+                slides.push({
+                    image: 'assets/class.jpg',
+                    text: 'Learning to read takes books. Learning to read well, and developing a love of reading, takes lots of books.  Books at all different skill levels. But how are low-literacy language communities ever to get all those books in their language?  They can do it with Bloom.'
+                });
+                slides.push({
+                    image: 'assets/shellbook.png',
+                    text: 'Bloom keeps things simple and efficient by offering a library of shell books. You just translate from a source language, and print.'
+                });
+        }]);
 
 	//Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
 	BloomLibraryApp.filter('startFrom', function () {
@@ -133,6 +146,25 @@
 	$rootScope.alert = function (text) {
 		alert(text);
 	};
+	
+	//Keeps the correct nav link active
+	$('.navbar li').click(function(e) {
+		$('.navbar li.active').removeClass('active');
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			$this.addClass('active');
+		}
+		e.preventDefault();
+	});
+	
+	//Load the UserVoice widget
+	var uvOptions = {};
+	(function() {
+		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+		uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/xoQAlIzNrOFQpMmMnRcg7w.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+	})();
+
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
 	// <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>

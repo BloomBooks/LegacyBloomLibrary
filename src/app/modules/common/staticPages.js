@@ -28,6 +28,62 @@
                 templateUrl: 'modules/terms/infringement.tpl.html',
                 controller: 'GoToTop'
             });
+            // This state manages the Home page.
+            // its url looks like #/home.
+            $stateProvider.state('home', {
+                url: "/home",
+                templateUrl: 'modules/static/home.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the Features page in the menu.
+            // its url looks like #/features.
+            $stateProvider.state('features', {
+                url: "/features",
+                templateUrl: 'modules/static/features.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the Download page in the menu (for downloading the desktop application).
+            // its url looks like #/download.
+            $stateProvider.state('downloadapp', {
+                url: "/downloadapp",
+                templateUrl: 'modules/static/downloadapp.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the Support page in the menu.
+            // its url looks like #/support.
+            $stateProvider.state('support', {
+                url: "/support",
+                templateUrl: 'modules/static/support.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the Art of Reading page (accessed from Download page).
+            // its url looks like #/artofreading.
+            $stateProvider.state('artofreading', {
+                url: "/artofreading",
+                templateUrl: 'modules/static/artofreading.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the About page under More in the menu.
+            // its url looks like #/about.
+            $stateProvider.state('about', {
+                url: "/about",
+                templateUrl: 'modules/static/about.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the Open Source page under More in the menu.
+            // its url looks like #/opensource.
+            $stateProvider.state('opensource', {
+                url: "/opensource",
+                templateUrl: 'modules/static/opensource.tpl.html',
+                controller: 'GoToTop'
+            });
+            // This state manages the Suggestions page under More in the menu.
+            // its url looks like #/suggestions.
+            $stateProvider.state('suggestions', {
+                url: "/suggestions",
+                templateUrl: 'modules/static/suggestions.tpl.html',
+                controller: 'GoToTop'
+            });
         });
 
 	// All the controller for static pages does is to scroll to the top when the page opens.
