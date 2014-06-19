@@ -14,11 +14,10 @@ LI
 	font: 1em Arial;
 }
 */
-.search BUTTON.add-on
+
+.searchBtn
 {
-	height: 26px;
-	/*[empty]padding-left:;*/
-	margin-left: -4px;
+	/* this is not enough: background-color: black; */
 }
 .search INPUT
 {
@@ -36,15 +35,14 @@ BODY
 {
 	margin-left: 20px;
 }
-H3.firstRowAboutBook
+H3.bookTitle
 {
 	font-size: 103%;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-top: 0px;
-	padding-bottom: 6px;
+    padding-bottom: 3px;
 	line-height: 1em;
-    color: rgb(0, 75, 145)
 }
 .author
 {
@@ -65,7 +63,7 @@ H3.firstRowAboutBook
 	float: left;
 	margin-right: 7px;
 }
-IMG
+.imageContainer IMG
 {
 	text-align: center;
 	height: 70px; //Bloom version 2 sets all books to this height
@@ -86,13 +84,10 @@ IMG
     width: 700px;
     list-style-type: none;
 }
-.book
-{
-	margin-bottom: 15px;
-	margin-top: 18px;
-    float: left;
-    width: 350px;
+.books a:hover, .books a:focus {
+  text-decoration: none;
 }
+
 .pagination{
     clear: both;
 }
@@ -105,3 +100,49 @@ input.searchInput {
   margin: 0px;
   height: 24px;
 }
+
+.tag {
+    -font-style: italic;
+    color: @lightText;
+}
+
+a.languageName {
+    color: @darkText;
+}
+
+li .bookInfo{
+  font-size: 9pt;
+  line-height: 16px;
+}
+
+.icon-tag{
+    -color: lightgray;
+}
+
+body{
+    color: @darkGray;
+}
+
+.book {
+    margin-bottom: 15px;
+	margin-top: 18px;
+    float: left;
+    width: 350px;
+
+    a{
+        color:@darkText;
+    }
+    a:hover .bookInfo *,
+    a:focus   .bookInfo *{
+      color: @darkText;
+      text-decoration:none; //this isn't working. We only wan the title to get underlined.
+    }
+
+    //There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
+    a:hover .bookTitle,
+    a:focus  .bookTitle{
+      color: @linkColorHover;
+      text-decoration: underline;
+    }
+}
+

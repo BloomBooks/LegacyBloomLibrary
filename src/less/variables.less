@@ -5,6 +5,38 @@
 
 @import '../../vendor/bootstrap/less/variables.less';
 
+//Review: Where should we put global bootstrap overrides like this?
+
+.modal-body{
+    input {
+        margin-bottom: 10px;
+    }
+}
+.modal-footer {
+  border-top: 0px solid;
+  background-color: white;
+}
+
+.modal-body fieldset {
+    border: 0;
+}
+/**
+ * Colors
+ */
+@lightGray: #E5E5E5;
+@darkGray: #333333;
+@bloomRed: #D65649;
+@navbarBackground: @darkGray;
+@navbarBackgroundHighlight: @navbarBackground;
+@navbarLinkColorActive: @bloomRed;
+@navbarLinkColorHover: @navbarLinkColorActive;
+@navbarLinkColor: @lightGray;
+@navbarLinkBackgroundActive: @navbarBackground;
+
+@btnPrimaryBackground: @bloomRed;
+@darkText: @darkGray;
+@lightText: @darkText;
+@headingsColor:  @darkText;
 
 /**
  * Typography-related.
@@ -12,3 +44,6 @@
 
 @sansFontFamily: 'Roboto', sans-serif;
 
+//@linkColor: @darkText;
+
+@linkColorHover: @bloomRed;

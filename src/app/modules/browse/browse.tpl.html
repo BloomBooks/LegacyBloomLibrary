@@ -1,46 +1,76 @@
-<div>
-    <div class="container">
-        <form ng-submit="SearchNow()">
-            <div class="input-append">
-                <input type="text"  ng-keypress="x()" class="searchInput" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
-                <button class='btn' type='submit'>
-                    <i class="icon-search"></i>
-                </button>
+<div class="container not-centered">
+    <div class="row">
+        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="span3">
+            <div class="bookshelves">
+                <h4>Bookshelves</h4>
+                <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
+                <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
+                <div><div ng-class="{activeFilter: currentShelf == '$recent'}"><a class="bookshelfItem" href="" ng-click="filterShelf('$recent')">New Arrivals</a></div></div>
+                <div><div ng-class="{activeFilter: currentShelf == '$myUploads'}"><a class="bookshelfItem" href="" ng-click="filterMyUploads()">My Uploads</a></div></div>
             </div>
-        </form>
-        <div ng-hide="bookCount==0">matches: {{bookCount}}</div>
-        <div ng-show="bookCount==0">Sorry, there are no books that match your search.</div>
-        <div ng-hide="bookCount==0">
-            <ul listview class="books" hide-if-empty="true" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
-                <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
-                <li class="book"
-                    ng-repeat="book in visibleBooks">
-                    <!-- Was: ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage" -->
-                    <!--                ng-click="viewBook(book)"    >-->
-                    <div class="imageContainer">
-                        <a ui-sref="browse.detail({bookId: book.objectId})">
-                            <img ng-src="{{book.baseUrl | makeThumbnailUrl}}" />
-                        </a>
-                    </div>
-                    <div class="data">
-                        <a ui-sref="browse.detail({bookId: book.objectId})">
-                            <h3 class="firstRowAboutBook">{{book.title}}</h3>
-                        </a>
-                        <div class="secondRowAboutBook">
-                            <div class="pages">{{book.pageCount}} pages</div>
-                        </div>
-                        <div class="languages" ng-show="book.langPointers.length">
-                            Languages: <span ng-repeat="lang in book.langPointers"><a ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
-                        </div>
-                        <div class="tags" ng-show="book.tags.length">
-                            Tags: <span ng-repeat="tag in book.tags"><i class="icon-tag"></i>{{tag}} </span>
-                        </div>
-                    </div>
-                    <div class="unfloat"></div>
-                </li>
-            </ul>
+            <div class="narrowSearch">
+                <h4>Narrow Search By</h4>
+                <h5>Languages</h5>
+                <div><a href="" ng-click="filterLanguage('')">Clear</a></div>
+                <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div></div>
+                <h5>Tags</h5>
+                <div><a href="" ng-click="filterTag('')">Clear</a></div>
+                <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a></div></div>
+            </div>
         </div>
-        <!-- temporary affordance for trying out the new datagrid. Not the final design -->
-        <!--form action="#datagrid"><input type="submit" value="Grid view"></form-->
+        <div class="rightContainer span9">
+            <div class="mainContent">
+                <div>
+                    <div class="container">
+                        <form class="pull-right" ng-submit="SearchNow()">
+                            <div class="input-append">
+                                <input type="text" ng-keypress="x()" class="searchInput" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" />
+                                <button class='btn searchBtn' type='submit'>
+                                    <i class="icon-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
+                        <div ng-show="bookCount==0">Sorry, there are no books that match your search.</div>
+                        <div ng-hide="bookCount==0">
+                            <ul listview class="books" hide-if-empty="true" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
+                                <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
+                                <li class="book"
+                                    ng-repeat="book in visibleBooks">
+                                    <!-- Was: ng-repeat="book in filteredBooks = (books | filter:matchingBooks) |  startFrom:(currentPage-1)*numPerPage  | limitTo:numPerPage" -->
+                                    <!--                ng-click="viewBook(book)"    >-->
+                                    <a ui-sref="browse.detail({bookId: book.objectId})">
+                                        <div class="imageContainer">
+                                            <img ng-src="{{book.baseUrl | makeThumbnailUrl}}" />
+                                        </div>
+                                        <div class="bookInfo">
+                                            <!-- <a ui-sref="browse.detail({bookId: book.objectId})">-->
+                                            <h3 class="bookTitle">{{book.title}}</h3>
+                                            <!--</a>-->
+                                            <!--<div class="secondRowAboutBook">
+                                            <div class="pages">{{book.pageCount}} pages</div>
+                                            </div>-->
+                                            <div class="languages" ng-show="book.langPointers.length">
+                                                <!--Languages:--> <span ng-repeat="lang in book.langPointers">
+                                                    <!--<a class="languageName" ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a>-->
+                                                    {{lang.name}}
+                                                    <span ng-hide="$last">, </span>
+                                                </span>
+                                            </div>
+                                            <div class="tags" ng-show="book.tags.length">
+                                                <span class="tag" ng-repeat="tag in book.tags"><!--<i class="icon-tags"></i>-->{{tag}} </span>
+                                            </div>
+                                        </div>
+                                        <div class="unfloat"></div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- temporary affordance for trying out the new datagrid. Not the final design -->
+                        <!--form action="#datagrid"><input type="submit" value="Grid view"></form-->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

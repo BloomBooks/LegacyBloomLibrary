@@ -21,10 +21,10 @@
 			// Handle a bug in angular: it does not see when the browser auto-fills the user name
 			// and so does not update the model.
 			// See https://github.com/angular/angular.js/issues/1460#issuecomment-18572604.
-			// This code is modeled on a suggestion there by chrisirhc
+			// This code is modelled on a suggestion there by chrisirhc
 			var timer = null;
 			var wantTimer = true;
-			$scope.showPassword = true;
+			$scope.showPassword = false;
 			function startTimer() {
 				if (timer != null)
 				{
@@ -88,7 +88,7 @@
 			});
 		};
 			$scope.resetPassword = function() {
-				//we'er using the email for the account hame
+				//we're using the email for the account name
 				userService.readByUserName($scope.username, function (result) {
 					if (result.results.length === 0) {
 						silNoticeService.replace(silNoticeService.ERROR,

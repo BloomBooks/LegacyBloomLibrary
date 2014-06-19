@@ -11,8 +11,8 @@
 			$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 			// For angular 1.2 this should be changed to
 			//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom):/);
-			$stateProvider.state('download', {
-				url: "/download/:bookId",
+			$stateProvider.state('downloadBook', {
+				url: "/downloadBook/:bookId",
 				templateUrl: 'modules/download/download.tpl.html',
 				controller: 'DownloadCtrl'
 			});

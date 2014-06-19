@@ -23,52 +23,60 @@
 
   </head>
   <body ng-app="BloomLibraryApp">
-  <div class="page-wrap">
-    <div ng-controller="HeaderCtrl">
-        <div class="navbar" bs-navbar>
-            <div class="navbar-inner">
-                <a class="brand" href="http://bloom.palaso.org">Bloom Library</a>
-                <div ng-cloak style="float: right" class="nav">
-                    <ng-switch class="animate-switch-container" on="isLoggedIn()">
-                        <div ng-switch-when="false">
-                            <a href="#/signup">Sign Up</a><span class="separator">|</span><a href="#/login">Log In</a>
-                        </div>
-                        <div ng-switch-default>
-                            {{userName()}}
-                            <a ng-click="logout()">log out</a>
-                        </div>
-                    </ng-switch>
+    <div class="page-wrap">
+        <div class="site-header" ng-controller="HeaderCtrl">
+            <div class="navbar" bs-navbar>
+                <div class="navbar-inner">
+                    <a class="brand" href="#/home"><img src="assets/bloomNavbarLogo.svg"/></a>
+                    <div class="user">
+                        &nbsp;
+                        <ng-switch on="isLoggedIn()">
+                            <span ng-switch-when="true" class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
+                        </ng-switch>
+                    </div>
+                    <ul class="nav">
+                        <li class="active"><a href="#/home">Home</a></li>
+                        <li><a href="#/features">Features</a></li>
+                        <li><a href="#/download">Download</a></li>
+                        <li><a href="#/support">Support</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/about">About</a></li>
+                                <li><a href="#/opensource">Open Source</a></li>
+                                <li><a href="#/suggestions">Suggestions</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul ng-cloak class="nav pull-right">
+                        <li class="enlarge"><a href="#/browse">Book Library</a></li>
+                        <ng-switch class="animate-switch-container nav" on="isLoggedIn()">
+                            <span ng-switch-when="false" class="animate-switch nav">
+                                <li><a href="#/signup">Sign Up</a></li>
+                                <li><a href="#/login">Log In</a></li>
+                            </span>
+                            <span ng-switch-default class="animate-switch nav">
+                            <li>
+                                <a class="logout" ng-click="logout()">Log Out</a>
+                            </li>
+                            </span>
+                        </ng-switch>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="span3">
-            <div class="bookshelves">
-                <h4>Bookshelves</h4>
-                <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
-                <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
-                <div><div ng-class="{activeFilter: currentShelf == '$recent'}"><a class="bookshelfItem" href="" ng-click="filterShelf('$recent')">New Arrivals</a></div></div>
-                <div><div ng-class="{activeFilter: currentShelf == '$myUploads'}"><a class="bookshelfItem" href="" ng-click="filterMyUploads()">My Uploads</a></div></div>
-            </div>
-            <div class="narrowSearch">
-                <h4>Narrow Search By</h4>
-                <h5>Languages</h5>
-                <div><a href="" ng-click="filterLanguage('')">Clear</a></div>
-                <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div></div>
-                <h5>Tags</h5>
-                <div><a href="" ng-click="filterTag('')">Clear</a></div>
-                <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a></div></div>
-            </div>
-        </div>
-        <div class="span10">
-            <sil-notices></sil-notices>
-            <div ui-view></div>
-        </div>
+        <sil-notices></sil-notices>
+        <div ui-view></div>
     </div>
     <div class="site-footer" ng-controller="FooterCtrl">
-        <div class="navbar-inner">
-            <div class="footerLinks">
-                &copy; {{year}} SIL International <span class="separator">|</span><a href="#/terms">Terms of Use</a><span class="separator">|</span><a href="#/privacy">Privacy</a>
+        <div class="navbar" bs-navbar>
+            <div class="navbar-inner">
+                <ul class="nav pull-right">
+                    <li><p class="navbar-text">&copy; {{year}} SIL International</p></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="#/terms">Terms of Use</a></li>
+                    <li><a href="#/privacy">Privacy</a></li>
+                </ul>
             </div>
         </div>
     </div>

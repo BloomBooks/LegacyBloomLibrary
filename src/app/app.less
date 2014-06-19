@@ -1,14 +1,17 @@
+a {
+  cursor: pointer;
+}
 
 .left {
-	float: left;
+  float: left;
 }
 
 .right {
-	float: right;
+  float: right;
 }
 
 .mandatoryfields {
-	display: none;
+  display: none;
 }
 
 .separator { margin-left:14px; visibility:hidden;}
@@ -18,8 +21,10 @@ div.bookshelves, div.narrowSearch
   border-style:solid;
   border-width: 1px;
   margin-left: 10px;
+  margin-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
+  padding-bottom: 10px;
 }
 
 div.bookshelves
@@ -52,4 +57,61 @@ html, body {
 
 div.footerLinks {
   float: right;
+}
+
+div.staticPage {
+  width: 900px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+div.container.not-centered {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.navbar li.enlarge.active a {
+  font-size: 36px;
+  margin-top: -5px;
+}
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+  box-shadow: none;
+}
+.navbar-inner {
+  .border-radius(0);
+}
+.site-header .navbar ul.nav {
+  margin: 9px 0px 0px 50px;
+}
+.site-header a {
+  font-size: 18px;
+}
+.site-header {
+  color: @navbarLinkColor;
+  font-size: 18px;
+}
+.site-header .user {
+  margin: 15px 35px 0px 0px;
+}
+.site-footer .navbar {
+  margin-bottom: 0;
+}
+
+.carousel {
+  background-color: @darkGray;
+  width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.carousel-caption {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+.staticPage a.carousel-control {
+  color: @lightGray;
+}
+.carousel-indicators li {
+  cursor: pointer;
 }

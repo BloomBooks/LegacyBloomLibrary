@@ -49,7 +49,7 @@ see https://trello.com/b/eO6j48sf/bloom-library
 ### Contributing
 
 Books may be contributed to the website once we have it working. Code contributions are welcome also.
-We recommend interactin through the Trello board to be sure we're on the same track.
+We recommend interacting through the Trello board to be sure we're on the same track.
 
 Copyright and License
 =======

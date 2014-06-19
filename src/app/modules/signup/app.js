@@ -23,7 +23,7 @@
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;
-		$scope.showPassword = true;
+		$scope.showPassword = false;
 		$scope.agreeToTerms = false;
 
 		var e = document.getElementById("hpot");
