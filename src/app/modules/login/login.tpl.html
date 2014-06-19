@@ -3,20 +3,24 @@
         
         <div class="modal-body">
             <h2>Log In</h2>
-            <label for="usernm">Email Address</label>
-            <input class="userNameInput" id="usernm" spellcheck="false" required type="email" name="usernm" ng-model="username" placeholder="Enter your email address"/>
-            <div class="password">
-                <div><label class="passwordLabel">Password</label></div>
-                <div>
-                    <input class="passwordInput" spellcheck="false" required type="text" name="password" ng-model="password" placeholder="Enter your password" ng-show="showPassword"/>
-                    <input class="passwordInput" required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword"/>
-                </div>
+            <div class="input-wrapper">
+                <label for="usernm">Email Address</label>
+                <input class="userNameInput" id="usernm" spellcheck="false" required type="email" name="usernm" ng-model="username" placeholder="Enter your email address" />
             </div>
-            <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
+            <div class="input-wrapper">
+                <div class="password">
+                    <div><label class="passwordLabel">Password</label></div>
+                    <div>
+                        <input class="passwordInput" spellcheck="false" required type="text" name="password" ng-model="password" placeholder="Enter your password" ng-show="showPassword" />
+                        <input class="passwordInput" required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword" />
+                    </div>
+                </div>
+                <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
+            </div>
             <div id="forgot">
                 <a class="resetPw" ng-click="resetPassword()">Forgot password?</a>
             </div>
-            <div class="loginButton"><button class="btn  btn-primary signupBtn" type="submit">Log In</button></div>
+            <div class="loginButton"><button class="btn btn-primary signupBtn" type="submit">Log In</button></div>
         </div>
         
     </form>
