@@ -1,44 +1,43 @@
 <div class="container" ng-app="signup" ng-cloak>
-    <div ng-controller="SignupCtrl" class="container signup">
-        <form ng-disabled="userRegistered" ng-submit="createUser(record)" id="userForm">
-            <fieldset>
-                <div class="well">
-                    <div>
-                        <label>Email Address</label> 
-                        <input required type="email" class="userNameInput"
-                            placeholder="Enter your email address" ng-model="record.email"
-                            name="email" id="email" ng-blur="checkUserAccount()" />
-                        <span ng-show="userNameLoading"><img id="userNameLoading" src="assets/loading-small.gif" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;" /></span>
-                        <span ng-show="userNameOk"><img id="userNameOk" src="assets/tick.png" title="User name is available!" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;"/></span>
-                        <span ng-show="userNameExists"><img id="userNameExists" src="assets/exclamation.png" title="User name already exists!" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;"/></span>
-                    </div>
-                    <div ng-show="userNameExists" style="color:red">We already have an account with this address.  Would you like to <a href="#/login">login</a>?</div>
-                    <div class="mandatoryfields">
-                        If you can see this, do not fill in the following text field
-                        <input type="text" name="name" ng-model="record.mandatoryfields" />
-                    </div>
-                    <div class="password">
-                        <label>Password</label> 
-                        <input class="passwordInput" placeholder="Enter your password" required type="text"
-                            ng-model="record.password" name="password" ng-show="showPassword"/>
-                        <input class="passwordInput" placeholder="Enter your password" required type="password"
-                               ng-model="record.password" name="password" ng-show="!showPassword"/>
-                    </div>
-                    <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
-                    <div class="agreeTerms"><input type="checkbox" name="agree" ng-model="agreeToTerms">I agree to the Bloom Library's <a href="#terms" target="_blank">Terms of Use</a></input>.</div>
-                    <div id="hpot">
-                        <label for="notHuman">Leave this field blank</label>
-                        <input type="text" name="notHuman" id="notHuman" ng-model="record.notHuman">
-                    </div>
-                    <div></div>
-                    <div class="signupButton">
-                        <button id="submit" class="btn btn-primary signupBtn" type="submit"
-                            ng-disabled="submitting || userNameLoading || userNameExists || userForm.$invalid">
-                            Sign Up <i style="margin-left: 5px" class="icon-thumbs-up"></i>
-                        </button>
-                    </div>
+    <div ng-controller="SignupCtrl" class="modal signup">
+        <div class="modal-body">
+            <h2>Sign Up</h2> 
+            <form ng-disabled="userRegistered" ng-submit="createUser(record)" id="userForm">
+                <div>
+                    <label>Email Address</label>
+                    <input required type="email" class="userNameInput"
+                           placeholder="Enter your email address" ng-model="record.email"
+                           name="email" id="email" ng-blur="checkUserAccount()" />
+                    <span ng-show="userNameLoading"><img id="userNameLoading" src="assets/loading-small.gif" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;" /></span>
+                    <span ng-show="userNameOk"><img id="userNameOk" src="assets/tick.png" title="User name is available!" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;" /></span>
+                    <span ng-show="userNameExists"><img id="userNameExists" src="assets/exclamation.png" title="User name already exists!" style="width: 16px; height: 16px; position: absolute; padding-left: 5px; padding-top: 8px;" /></span>
                 </div>
-            </fieldset>
-        </form>
+                <div ng-show="userNameExists" style="color:red">We already have an account with this address.  Would you like to <a href="#/login">login</a>?</div>
+                <div class="mandatoryfields">
+                    If you can see this, do not fill in the following text field
+                    <input type="text" name="name" ng-model="record.mandatoryfields" />
+                </div>
+                <div class="password">
+                    <label>Password</label>
+                    <input class="passwordInput" placeholder="Choose your password" required type="text"
+                           ng-model="record.password" name="password" ng-show="showPassword" />
+                    <input class="passwordInput" placeholder="Choose your password" required type="password"
+                           ng-model="record.password" name="password" ng-show="!showPassword" />
+                </div>
+                <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword">Show password</input></div></div>
+                <div class="agreeTerms"><input type="checkbox" name="agree" ng-model="agreeToTerms">I agree to the Bloom Library's <a href="#terms" target="_blank">Terms of Use</a></input>.</div>
+                <div id="hpot">
+                    <label for="notHuman">Leave this field blank</label>
+                    <input type="text" name="notHuman" id="notHuman" ng-model="record.notHuman">
+                </div>
+                <div></div>
+                <div class="signupButton">
+                    <button id="submit" class="btn btn-primary signupBtn" type="submit"
+                            ng-disabled="submitting || userNameLoading || userNameExists || userForm.$invalid">
+                        Sign Up <i style="margin-left: 5px" class="icon-thumbs-up"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

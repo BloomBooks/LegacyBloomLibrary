@@ -44,8 +44,8 @@
             });
             // This state manages the Download page in the menu (for downloading the desktop application).
             // its url looks like #/download.
-            $stateProvider.state('downloadapp', {
-                url: "/downloadapp",
+            $stateProvider.state('download', {
+                url: "/download",
                 templateUrl: 'modules/static/downloadapp.tpl.html',
                 controller: 'GoToTop'
             });
