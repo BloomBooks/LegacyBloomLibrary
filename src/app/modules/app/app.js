@@ -157,7 +157,12 @@
 		e.preventDefault();
 	});
 	
-	//Load the UserVoice widget
+	$('.navbar a.brand').click(function(e) {
+		$('.navbar li.active').removeClass('active');
+		$('.navbar li.home').addClass('active');
+	});
+	
+	//Load the UserVoice widget	
 	var uvOptions = {};
 	(function() {
 		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
