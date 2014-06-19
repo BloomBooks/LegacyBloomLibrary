@@ -65,34 +65,8 @@
                 </div>
             </div>
         </div>
-        <div class="container not-centered">
-            <div class="row">
-                <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="span3">
-                    <div class="bookshelves">
-                        <h4>Bookshelves</h4>
-                        <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
-                        <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
-                        <div><div ng-class="{activeFilter: currentShelf == '$recent'}"><a class="bookshelfItem" href="" ng-click="filterShelf('$recent')">New Arrivals</a></div></div>
-                        <div><div ng-class="{activeFilter: currentShelf == '$myUploads'}"><a class="bookshelfItem" href="" ng-click="filterMyUploads()">My Uploads</a></div></div>
-                    </div>
-                    <div class="narrowSearch">
-                        <h4>Narrow Search By</h4>
-                        <h5>Languages</h5>
-                        <div><a href="" ng-click="filterLanguage('')">Clear</a></div>
-                        <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a></div></div>
-                        <h5>Tags</h5>
-                        <div><a href="" ng-click="filterTag('')">Clear</a></div>
-                        <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a></div></div>
-                    </div>
-                </div>
-                <div class="rightContainer span9">
-                    <div class="mainContent">
-                        <sil-notices></sil-notices>
-                        <div ui-view></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <sil-notices></sil-notices>
+        <div ui-view></div>
     </div>
     <div class="site-footer" ng-controller="FooterCtrl">
         <div class="navbar" bs-navbar>
