@@ -14,6 +14,7 @@ LI
 	font: 1em Arial;
 }
 */
+
 .searchBtn
 {
 	/* this is not enough: background-color: black; */
@@ -86,13 +87,7 @@ H3.bookTitle
 .books a:hover, .books a:focus {
   text-decoration: none;
 }
-.book
-{
-	margin-bottom: 15px;
-	margin-top: 18px;
-    float: left;
-    width: 350px;
-}
+
 .pagination{
     clear: both;
 }
@@ -128,17 +123,26 @@ body{
     color: @darkGray;
 }
 
-a:hover .bookInfo *,
-a:focus   .bookInfo *{
-  color: @darkText;
-  text-decoration:none; //this isn't working. We only wan the title to get underlined.
-}
+.book {
+    margin-bottom: 15px;
+	margin-top: 18px;
+    float: left;
+    width: 350px;
 
-//There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
-a:hover .bookTitle,
-a:focus  .bookTitle{
-  color: @linkColorHover;
-  text-decoration: underline;
-}
+    a{
+        color:@darkText;
+    }
+    a:hover .bookInfo *,
+    a:focus   .bookInfo *{
+      color: @darkText;
+      text-decoration:none; //this isn't working. We only wan the title to get underlined.
+    }
 
+    //There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
+    a:hover .bookTitle,
+    a:focus  .bookTitle{
+      color: @linkColorHover;
+      text-decoration: underline;
+    }
+}
 
