@@ -1,23 +1,49 @@
-<div class="container">
-    <div class="row">
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <h1>Are you ready for this?</h1>-->
+<!--        <div class="download">You are about to download <span class="downloadTitle">{{book.title}}</span> so that you can use it locally on your computer.</div>-->
+<!--        <div ng-show="isWindows">-->
+<!--            <div class="download">-->
+<!--                For this to work, you'll need a recent version of the-->
+<!--                <a href="#/download">Bloom Desktop Application</a>.-->
+<!---->
+<!--                <div class="download">-->
+<!--                    When you are ready to proceed, click the Download button.-->
+<!--                    Your Browser will ask whether it is OK to have Bloom open a link. Sure it is!-->
+<!--                </div>-->
+<!--                <div class="downloadCheck"><input type="checkbox" ng-model="skipDownloadPage">I get it. Don't show this notice again.</input></div>-->
+<!--            </div>-->
+<!--            <div class="download" ng-hide="isWindows">-->
+<!--                Sorry, the Bloom Desktop program only runs on Windows at the moment. A Linux version is coming very soon.-->
+<!--            </div>-->
+<!--            <div class="downloadButtons">-->
+<!--                <button id="Cancel" type="button" class="btn btn-lg" ng-click="cancel()">Close</button>-->
+<!--                <a ng-href="{{book.bookOrder}}" ng-show="isWindows"><button id="Continue" type="button" class="btn btn-primary btn-lg">Download</button></a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="modal">
+    <div class="modal-body">
         <h1>Are you ready for this?</h1>
         <div class="download">You are about to download <span class="downloadTitle">{{book.title}}</span> so that you can use it locally on your computer.</div>
         <div ng-show="isWindows">
             <div class="download">
                 For this to work, you'll need a recent version of the
-                <a href="http://bloom.palaso.org/download">Bloom Desktop Application</a>.
+                <a href="#/download">Bloom Desktop Application</a>.
 
                 <div class="download">
                     When you are ready to proceed, click the Download button.
                     Your Browser will ask whether it is OK to have Bloom open a link. Sure it is!
                 </div>
-                <div class="downloadCheck"><input type="checkbox" ng-model="skipDownloadPage">I get it. Don't show this notice again.</input></div>
+                <div class="downloadCheck"><input type="checkbox" ng-model="skipDownloadPage">I get it. Don't show me this again.</input></div>
             </div>
             <div class="download" ng-hide="isWindows">
                 Sorry, the Bloom Desktop program only runs on Windows at the moment. A Linux version is coming very soon.
             </div>
-            <div class="downloadButtons">
-                <button id="Cancel" type="button" class="btn btn-lg" ng-click="cancel()">Close</button>
+            <div class="modal-footer">
+                <button id="Cancel" type="button" class="btn btn-lg"  ng-click="cancel()">Close</button>
                 <a ng-href="{{book.bookOrder}}" ng-show="isWindows"><button id="Continue" type="button" class="btn btn-primary btn-lg">Download</button></a>
             </div>
         </div>
