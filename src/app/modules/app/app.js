@@ -4,7 +4,7 @@
 	var BloomLibraryApp = angular.module('BloomLibraryApp',
 				['templates-app', 'templates-common', // Required for ng-boilerplate, to use templates from templates-app.js instead of copying individual files.
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
-					"BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages",
+					"BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages", "BloomLibraryApp.suggestions",
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
 				"ui.bootstrap", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies'])
 
@@ -170,14 +170,6 @@
 			$this.addClass('active');
 		}
 	});
-	
-	//Load the UserVoice widget	
-	var uvOptions = {};
-	(function() {
-		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
-		uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/xoQAlIzNrOFQpMmMnRcg7w.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
-	})();
 
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
