@@ -77,13 +77,12 @@
                 templateUrl: 'modules/static/opensource.tpl.html',
                 controller: 'GoToTop'
             });
-            // This state manages the Suggestions page under More in the menu.
-            // its url looks like #/suggestions.
-            $stateProvider.state('suggestions', {
-                url: "/suggestions",
-                templateUrl: 'modules/static/suggestions.tpl.html',
-                controller: 'GoToTop'
-            });
+			/*
+		(function() {
+			//$(window).load(function(){
+			$(window).load(alert(document.getElementById('releaseIframe')));
+		//})();
+		})();*/
         });
 
 	// All the controller for static pages does is to scroll to the top when the page opens.
