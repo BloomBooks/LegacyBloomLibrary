@@ -77,12 +77,6 @@
                 templateUrl: 'modules/static/opensource.tpl.html',
                 controller: 'GoToTop'
             });
-			/*
-		(function() {
-			//$(window).load(function(){
-			$(window).load(alert(document.getElementById('releaseIframe')));
-		//})();
-		})();*/
         });
 
 	// All the controller for static pages does is to scroll to the top when the page opens.
