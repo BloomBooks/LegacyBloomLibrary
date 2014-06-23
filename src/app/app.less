@@ -14,49 +14,30 @@ a {
   display: none;
 }
 
-.separator { margin-left:14px; visibility:hidden;}
+.separator { margin-left:20px; visibility:hidden;}
 
-div.bookshelves, div.narrowSearch
-{
-  border-style:solid;
-  border-width: 1px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 10px;
-}
-
-div.bookshelves
-{
-  margin-bottom: 20px;
-}
-
-div.activeFilter {
-  font-weight: bold;
-}
-
-/* this group (down to site-footer) are used to implement the sticky footer, using ideas from http://codepen.io/chriscoyier/pen/uwJjr */
+/* this group (down to page-wrap:after) are used to implement the sticky footer, using ideas from http://codepen.io/chriscoyier/pen/uwJjr */
 html, body {
   height: 100%;
 }
 .page-wrap {
   min-height: 100%;
-  /* equal to site-footer height */
+  /* equal to page-wrap:after height */
   margin-bottom: -42px;
 }
 .page-wrap:after {
   content: "";
   display: block;
   clear: both;
-}
-.site-footer, .page-wrap:after {
   /* equal to page-wrap margin-bottom */
   height: 42px;
 }
 
 div.footerLinks {
   float: right;
+}
+div.footerLinks a.active {
+  color: @bloomRed;
 }
 
 div.notices {
@@ -88,8 +69,19 @@ div.container.not-centered {
 .site-header .navbar ul.nav {
   margin: 9px 0px 0px 50px;
 }
-.site-header a {
-  font-size: 18px;
+.dropdown-menu {
+  background-color: @darkGray;
+}
+.dropdown-menu > li > a {
+  color: @lightGray;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a.site-header a {
+  color: @bloomRed;
+  background-color: @darkGray;
+  background-image: none;
+}
+.navbar .nav > li > .dropdown-menu:after {
+  border-bottom-color: @bloomRed;
 }
 .site-header {
   color: @navbarLinkColor;
@@ -98,8 +90,17 @@ div.container.not-centered {
 .site-header .user {
   margin: 15px 35px 0px 0px;
 }
-.site-footer .navbar {
-  margin-bottom: 0;
+.site-header .navbar-inner {
+  border-bottom: 0px;
+}
+.site-footer {
+  padding: 10px 25px 10px 10px;
+}
+.site-footer a {
+  color: @darkGray;
+}
+.site-footer a:hover, .site-footer a:focus {
+  color: @bloomRed;
 }
 
 .carousel {
