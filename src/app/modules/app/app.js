@@ -147,17 +147,31 @@
 		alert(text);
 	};
 	
-	//Keeps the correct nav link active
+	//Sets the correct nav link as active
 	$('.navbar li').click(function(e) {
 		$('.navbar li.active').removeClass('active');
+		$('div.footerLinks a.active').removeClass('active');
 		var $this = $(this);
 		if (!$this.hasClass('active')) {
 			$this.addClass('active');
 		}
 		e.preventDefault();
+	});	
+	$('.navbar a.brand').click(function(e) {
+		$('.navbar li.active').removeClass('active');
+		$('div.footerLinks a.active').removeClass('active');
+		$('.navbar li.home').addClass('active');
+	});
+	$('div.footerLinks a').click(function(e) {
+		$('.navbar li.active').removeClass('active');
+		$('div.footerLinks a.active').removeClass('active');
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			$this.addClass('active');
+		}
 	});
 	
-	//Load the UserVoice widget
+	//Load the UserVoice widget	
 	var uvOptions = {};
 	(function() {
 		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;

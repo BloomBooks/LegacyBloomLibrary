@@ -119,8 +119,9 @@ li .bookInfo{
     -color: lightgray;
 }
 
-body{
-    color: @darkGray;
+body {
+  background-color: @lightGray;
+  color: @darkGray;
 }
 
 .book {
@@ -146,3 +147,58 @@ body{
     }
 }
 
+.book-search {
+  border: 2px solid @darkGray;
+}
+
+.filterBar {
+  background-color: @darkGray;
+  color: @lightGray;
+  margin-top: -20px;
+  padding-top: 20px;
+  position: absolute;
+  bottom: 0;
+  top: 105px;
+  
+  h1,h2,h3,h4,h5,h6 {
+    color: @lightGray;
+    margin-bottom: 0;
+  }
+  a {
+    color: @lightGray;
+  }
+  a:hover {
+    color: @bloomRed;
+  }
+  
+  .clear {
+    visibility: hidden;
+  }
+  div.activeFilter a {
+    color: @bloomRed;
+  }
+  div.activeFilter .clear {
+    visibility: visible;
+  }
+  div.activeFilter a.clear {
+    color: @lightGray;
+  }
+}
+
+.rightContainer {
+  margin-left: 260px;
+}
+
+div.bookshelves, div.narrowSearch
+{
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+div.bookshelves
+{
+  margin-bottom: 20px;
+}
