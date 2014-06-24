@@ -1,6 +1,6 @@
 <div class="container not-centered">
     <div class="row">
-        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar span3">
+        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar col-md-3">
             <div class="bookshelves">
                 <h4>Bookshelves</h4>
                 <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
@@ -16,7 +16,7 @@
                 <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
             </div>
         </div>
-        <div class="rightContainer span9">
+        <div class="rightContainer col-md-9">
             <div class="mainContent">
                 <div>
                     <div class="container">
