@@ -9,7 +9,8 @@
 			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
 			url: "/login",
 			templateUrl: 'modules/login/login.tpl.html',
-			controller: 'LoginCtrl'
+			controller: 'LoginCtrl',
+			title: 'Log In'
 		});
 	})
 ;
