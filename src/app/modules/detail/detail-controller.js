@@ -6,9 +6,7 @@
 		// Tell angular that urls starting with bloom: and mailto: (and http{s}: of course) are OK. (Otherwise it marks them 'unsafe' and Chrome at
 		// least won't follow them.). This is needed for the Open in Bloom button, mailto links. adding bloom is the unusual thing.
 		// This seems to be global...any additions might need to go in other instances as well to make them work.
-		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
-		// For angular 1.2 this should be changed to
-		//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
+		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
 			onEnter: function ($dialog, $state) {
