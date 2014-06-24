@@ -35,11 +35,11 @@
                         </ng-switch>
                     </div>
                     <ul class="nav">
-                        <li class="active home"><a href="#/home">Home</a></li>
-                        <li><a href="#/features">Features</a></li>
-                        <li><a href="#/download">Download</a></li>
-                        <li><a href="#/support">Support</a></li>
-                        <li class="dropdown">
+                        <li ng-class="{active: isActive('/home')}" class="home"><a href="#/home">Home</a></li>
+                        <li ng-class="{active: isActive('/features')}"><a href="#/features">Features</a></li>
+                        <li ng-class="{active: isActive('/download')}"><a href="#/download">Download</a></li>
+                        <li ng-class="{active: isActive('/support')}"><a href="#/support">Support</a></li>
+                        <li ng-class="{active: isActive('/about')||isActive('/opensource')||isActive('/suggestions')}" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#/about">About</a></li>
@@ -49,11 +49,11 @@
                         </li>
                     </ul>
                     <ul ng-cloak class="nav pull-right">
-                        <li class="enlarge"><a href="#/browse">Book Library</a></li>
+                        <li ng-class="{active: isActive('/browse')}" class="enlarge"><a href="#/browse">Book Library</a></li>
                         <ng-switch class="animate-switch-container nav" on="isLoggedIn()">
                             <span ng-switch-when="false" class="animate-switch nav">
-                                <li><a href="#/signup">Sign Up</a></li>
-                                <li><a href="#/login">Log In</a></li>
+                                <li ng-class="{active: isActive('/signup')}"><a href="#/signup">Sign Up</a></li>
+                                <li ng-class="{active: isActive('/login')}"><a href="#/login">Log In</a></li>
                             </span>
                             <span ng-switch-default class="animate-switch nav">
                             <li>
@@ -70,7 +70,7 @@
     </div>
     <div class="site-footer" ng-controller="FooterCtrl">
         <div class="footerLinks">
-            &copy; {{year}} SIL International <span class="separator">|</span><a href="#/terms">Terms of Use</a><span class="separator">|</span><a href="#/privacy">Privacy</a>
+            &copy; {{year}} SIL International <span class="separator">|</span><a ng-class="{active: isActive('/terms')}" href="#/terms">Terms of Use</a><span class="separator">|</span><a ng-class="{active: isActive('/privacy')}" href="#/privacy">Privacy</a>
         </div>
     </div>
   </body>

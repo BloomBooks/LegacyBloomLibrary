@@ -16,7 +16,7 @@
 			//$locationProvider.hashPrefix('!');
 
 			// For any unmatched url, redirect to /state1
-			$urlRouterProvider.otherwise("/browse");
+			$urlRouterProvider.otherwise("/home");
 
            } ])
 
@@ -29,11 +29,21 @@
 		silNoticeService.clear();
 		$state.go('browse');
 	};
+            
+            // Used to determine the active menu item
+            $scope.isActive = function (viewLocation) { 
+                return viewLocation === $location.path();
+            };
 
 	$scope.userName = authService.userName;
 } ])
-        .controller('FooterCtrl', ['$scope', function($scope) {
+        .controller('FooterCtrl', ['$scope', '$location', function($scope, $location) {
             $scope.year = new Date().getFullYear().toString();
+
+            // Used to determine the active link
+            $scope.isActive = function (viewLocation) { 
+                return viewLocation === $location.path();
+            };
         }])
 		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService', 'authService',
             function ($scope, $dialog, $state, $location, $rootScope, bookService, authService) {
@@ -147,29 +157,6 @@
 		alert(text);
 	};
 	
-	//Sets the correct nav link as active
-	$('.navbar li').click(function(e) {
-		$('.navbar li.active').removeClass('active');
-		$('div.footerLinks a.active').removeClass('active');
-		var $this = $(this);
-		if (!$this.hasClass('active')) {
-			$this.addClass('active');
-		}
-		e.preventDefault();
-	});	
-	$('.navbar a.brand').click(function(e) {
-		$('.navbar li.active').removeClass('active');
-		$('div.footerLinks a.active').removeClass('active');
-		$('.navbar li.home').addClass('active');
-	});
-	$('div.footerLinks a').click(function(e) {
-		$('.navbar li.active').removeClass('active');
-		$('div.footerLinks a.active').removeClass('active');
-		var $this = $(this);
-		if (!$this.hasClass('active')) {
-			$this.addClass('active');
-		}
-	});
 
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
