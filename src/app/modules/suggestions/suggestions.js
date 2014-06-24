@@ -9,7 +9,8 @@
             $stateProvider.state('suggestions', {
                 url: "/suggestions",
                 templateUrl: 'modules/suggestions/suggestions.tpl.html',
-                controller: 'IncludeUserVoice'
+                controller: 'IncludeUserVoice',
+                title: 'Suggestions'
             });
         })
         .controller('IncludeUserVoice', ['$scope',

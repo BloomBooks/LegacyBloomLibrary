@@ -6,7 +6,8 @@
 		$stateProvider.state('signup', {
 			url: "/signup",
 			templateUrl: 'modules/signup/signup.tpl.html',
-			controller: 'SignupCtrl'
+			controller: 'SignupCtrl',
+			title: 'Sign Up'
 		});
 	})
 	.directive('ngBlur', ['$parse', function ($parse) {

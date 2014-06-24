@@ -40,42 +40,48 @@
             $stateProvider.state('features', {
                 url: "/features",
                 templateUrl: 'modules/static/features.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'Features'
             });
             // This state manages the Download page in the menu (for downloading the desktop application).
             // its url looks like #/download.
             $stateProvider.state('download', {
                 url: "/download",
                 templateUrl: 'modules/static/downloadapp.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'Download'
             });
             // This state manages the Support page in the menu.
             // its url looks like #/support.
             $stateProvider.state('support', {
                 url: "/support",
                 templateUrl: 'modules/static/support.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'Support'
             });
             // This state manages the Art of Reading page (accessed from Download page).
             // its url looks like #/artofreading.
             $stateProvider.state('artofreading', {
                 url: "/artofreading",
                 templateUrl: 'modules/static/artofreading.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'Art of Reading'
             });
             // This state manages the About page under More in the menu.
             // its url looks like #/about.
             $stateProvider.state('about', {
                 url: "/about",
                 templateUrl: 'modules/static/about.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'About'
             });
             // This state manages the Open Source page under More in the menu.
             // its url looks like #/opensource.
             $stateProvider.state('opensource', {
                 url: "/opensource",
                 templateUrl: 'modules/static/opensource.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'Open Source'
             });
         });
 
