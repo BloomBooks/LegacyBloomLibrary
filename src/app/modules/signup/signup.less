@@ -1,5 +1,6 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
 @myModalWidth: 270px; /* input is 220; well has padding 25+4; need 21 for icons sometimes right of inputs; want even spacing around*/
+@myModalTopMargin: 130px; /* margin for dialog nicer if it clears navbar */
 .signup {
   @signupWidth: @myModalWidth;
   width: @signupWidth; 
@@ -10,12 +11,23 @@
 }
 
 .loginRoot {
-  @loginWidth: @myModalWidth;
-  width: @loginWidth;
-  margin-left: -(@loginWidth / 2);
+  display:block;
 }
 .loginRoot label {
   cursor: auto;
+}
+
+.loginRoot .modal-dialog {
+  @loginWidth: @myModalWidth;
+  width: @loginWidth;
+  margin-top: @myModalTopMargin;
+}
+
+.loginRoot .modal-body {
+  margin-right: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  overflow: hidden;
 }
 
 div.signupButton {
@@ -24,7 +36,7 @@ div.signupButton {
 }
 div.loginButton {
   margin-right: 19px; /* somehow makes it align with inputs */
-  margin-top: 35px;
+  margin-top: 32px;
 }
 div.password {
   margin-bottom: 0px;

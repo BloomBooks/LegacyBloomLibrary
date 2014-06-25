@@ -15,8 +15,8 @@
 ;
 
 	angular.module('BloomLibraryApp.login')
-	.controller('LoginCtrl', ['$scope', '$dialog', '$timeout', 'silNoticeService', 'authService', '$state', 'userService',
-		function ($scope, $dialog, $timeout, silNoticeService, authService, $state, userService) {
+	.controller('LoginCtrl', ['$scope', '$timeout', 'silNoticeService', 'authService', '$state', 'userService',
+		function ($scope, $timeout, silNoticeService, authService, $state, userService) {
 
 			// Handle a bug in angular: it does not see when the browser auto-fills the user name
 			// and so does not update the model.
@@ -51,13 +51,14 @@
 			startTimer();
 
 			$scope.login = function () {
-				// catch autofill values in password field
-				var value = $("#password").val();
+				// catch autofill values in password (or 'shown password') field
+				var value = $("[name~='password']").val();
 				if (value && $scope.password !== value) {
 					$scope.password = value;
 				}
 
-				authService.login($scope.username, $scope.password, function (result) {
+				authService.login($scope.username, $scope.password, function (results) {
+                    var result = results[0];
 				if (result.error) {
 					silNoticeService.replace(silNoticeService.ERROR, result.error);
 				} else {
@@ -90,7 +91,7 @@
 			$scope.resetPassword = function() {
 				//we're using the email for the account name
 				userService.readByUserName($scope.username, function (result) {
-					if (result.results.length === 0) {
+					if (result.length === 0) {
 						silNoticeService.replace(silNoticeService.ERROR,
 							"We don't have an account with this address. Check the spelling and try again. Or you may just need to sign up for a new account.");
 					} else {
