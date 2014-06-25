@@ -20,14 +20,26 @@
 @lightGray: #E5E5E5;
 @darkGray: #333333;
 @bloomRed: #D65649;
-@navbarBackground: @darkGray;
-@navbarBackgroundHighlight: @navbarBackground;
-@navbarLinkColorActive: @bloomRed;
-@navbarLinkColorHover: @navbarLinkColorActive;
-@navbarLinkColor: @lightGray;
-@navbarLinkBackgroundActive: @navbarBackground;
 
-@btnPrimaryBackground: @bloomRed;
+/**
+ * Navbar
+ */
+@navbar-inverse-color: @lightGray;
+@navbar-inverse-bg: @darkGray;
+@navbar-inverse-link-color: @navbar-inverse-color;
+@navbar-inverse-link-hover-color: @bloomRed;
+@navbar-inverse-link-active-bg: @navbar-inverse-bg;
+
+/**
+ * Dropdowns
+ */
+@dropdown-bg: @navbar-inverse-bg;
+@dropdown-link-color: @navbar-inverse-link-color;
+@dropdown-link-hover-color: @navbar-inverse-link-hover-color;
+@dropdown-link-hover-bg: @navbar-inverse-bg;
+
+@btn-primary-bg: @bloomRed;
+
 @darkText: @darkGray;
 @lightText: @darkText;
 @headingsColor:  @darkText;
@@ -35,9 +47,8 @@
 /**
  * Typography-related.
  */
+@body-bg: @lightGray;
+@font-family-sans-serif: 'Roboto', sans-serif;
 
-@sansFontFamily: 'Roboto', sans-serif;
-
-//@linkColor: @darkText;
-
-@linkColorHover: @bloomRed;
+@link-color: @darkText;
+@link-hover-color: @bloomRed;

@@ -115,11 +115,6 @@ li .bookInfo{
     -color: lightgray;
 }
 
-body {
-  background-color: @lightGray;
-  color: @darkGray;
-}
-
 .book {
     margin-bottom: 15px;
 	margin-top: 18px;
@@ -138,7 +133,7 @@ body {
     //There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
     a:hover .bookTitle,
     a:focus  .bookTitle{
-      color: @linkColorHover;
+      color: @link-hover-color;
       text-decoration: underline;
     }
 }
@@ -161,11 +156,11 @@ body {
 .filterBar {
   background-color: @darkGray;
   color: @lightGray;
-  margin-top: -20px;
   padding-top: 20px;
   position: absolute;
   bottom: 0;
-  top: 105px;
+  top: 94px;
+  width: 235px;
   
   h1,h2,h3,h4,h5,h6 {
     color: @lightGray;
