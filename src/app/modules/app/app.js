@@ -8,16 +8,19 @@
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
 				"ui.bootstrap", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies'])
 
-  .config(['$urlRouterProvider', '$stateProvider',
-           function ($urlRouterProvider, $stateProvider) {
+  .config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
+           function ($urlRouterProvider, $stateProvider, $locationProvider) {
 
-			//TODO when we have hosting that can do the url rewriting this requires
-			//$locationProvider.html5Mode(true);
-			//$locationProvider.hashPrefix('!');
+            //review/experiment: note that I'm talkin gto locationProvider here, even though
+            // we are using the alternative system, ui-router.
+            // this may be relevant: http://stackoverflow.com/questions/24087188/ui-routers-urlrouterprovider-otherwise-with-html5-mode
+
+            //on amazon s3, we've done the redirection like that described here: http://stackoverflow.com/a/16877231/723299
+			$locationProvider.html5Mode(true);
+			$locationProvider.hashPrefix('!');
 
 			// For any unmatched url, redirect to /state1
 			$urlRouterProvider.otherwise("/home");
-
            } ])
 
 .controller('HeaderCtrl', ['$scope', 'authService', '$location', '$state', 'silNoticeService', function ($scope, authService, $location, $state, silNoticeService) {
