@@ -45,7 +45,7 @@ div.notices {
 }
 
 div.staticPage {
-  width: 900px;
+  max-width: 900px;
   margin-left: 60px;
   margin-right: 60px;
 }
@@ -58,56 +58,22 @@ div.container.not-centered {
   font-size: 36px;
   margin-top: -5px;
 }
-.navbar .nav > .active > a,
-.navbar .nav > .active > a:hover,
-.navbar .nav > .active > a:focus {
-  box-shadow: none;
-}
-.navbar-inner {
-  .border-top-radius(0);
-  .border-bottom-radius(0);
-  .border-left-radius(0);
-  .border-right-radius(0);}
 .site-header .navbar ul.nav {
   margin: 9px 0px 0px 50px;
 }
-.dropdown-menu {
-  background-color: @darkGray;
-}
-.dropdown-menu > li > a {
-  color: @lightGray;
-}
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a.site-header a {
-  color: @bloomRed;
-  background-color: @darkGray;
-  background-image: none;
-}
-.navbar .nav > li > .dropdown-menu:after {
-  border-bottom-color: @bloomRed;
-}
 .site-header {
-  color: @navbarLinkColor;
+  color: @navbar-inverse-color;
   font-size: 18px;
 }
 .site-header .user {
-  margin: 15px 35px 0px 0px;
+  margin: 15px 15px 0px 0px;
   line-height: 20px;
 }
-.site-header .navbar-header {
-  border-bottom: 0px;
-}
 .site-header .navbar-brand {
-  padding: 10px 20px;
-  height: auto;
+  margin-top: -15px;
 }
 .site-footer {
   padding: 10px 25px 10px 10px;
-}
-.site-footer a {
-  color: @darkGray;
-}
-.site-footer a:hover, .site-footer a:focus {
-  color: @bloomRed;
 }
 
 .carousel {
