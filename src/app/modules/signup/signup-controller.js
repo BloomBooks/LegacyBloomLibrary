@@ -29,7 +29,7 @@
 		var e = document.getElementById("hpot");
 		if (e)
 		{
-			e.parentNode.removeChild(e); // don't want humans to see this, only spambots
+			e.style.display = 'none'; // don't want humans to see this, only spambots
 		}
 
 		$scope.createUser = function (record) {
