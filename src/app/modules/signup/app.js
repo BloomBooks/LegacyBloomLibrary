@@ -19,7 +19,7 @@
 			});
 		};
 	} ])
-	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', function SignupCtrl($scope, userService, notice, $state, auth) {
+	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', '$modal', function SignupCtrl($scope, userService, notice, $state, auth, $modal) {
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;
@@ -72,7 +72,7 @@
 				$scope.userNameLoading = true;
 				userService.readByUserName($scope.record.email, function (result) {
 					$scope.userNameLoading = false;
-					if (result.results.length === 0) {
+					if (result.length === 0) {
 						$scope.userNameOk = true;
 						$scope.userNameExists = false;
 					} else {
