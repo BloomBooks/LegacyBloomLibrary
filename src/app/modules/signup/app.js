@@ -19,7 +19,7 @@
 			});
 		};
 	} ])
-	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', '$dialog', function SignupCtrl($scope, userService, notice, $state, auth, $dialog) {
+	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', function SignupCtrl($scope, userService, notice, $state, auth) {
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;

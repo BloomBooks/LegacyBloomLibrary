@@ -1,28 +1,24 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
 @myModalWidth: 270px; /* input is 220; well has padding 25+4; need 21 for icons sometimes right of inputs; want even spacing around*/
 @myModalTopMargin: 130px; /* margin for dialog nicer if it clears navbar */
-.signup {
-  @signupWidth: @myModalWidth;
-  width: @signupWidth; 
-  margin-left: -(@signupWidth / 2);
-}
+
 .signup label {
   cursor: auto;
 }
 
-.loginRoot {
+.loginRoot, .signup {
   display:block;
 }
 .loginRoot label {
   cursor: auto;
 }
 
-.loginRoot .modal-dialog {
+.loginRoot .modal-dialog, .signup .modal-dialog {
   @loginWidth: @myModalWidth;
   width: @loginWidth;
 }
 
-.loginRoot .modal-body {
+.loginRoot .modal-body, .signup .modal-body {
   margin-right: 15px;
   padding-right: 15px;
   padding-left: 15px;
