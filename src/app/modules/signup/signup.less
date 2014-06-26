@@ -1,23 +1,15 @@
-/*Will be compiled down to a single stylesheet with your sass files*/
+/*Will be compiled down to a single stylesheet with your less files*/
 @myModalWidth: 270px; /* input is 220; well has padding 25+4; need 21 for icons sometimes right of inputs; want even spacing around*/
-@myModalTopMargin: 130px; /* margin for dialog nicer if it clears navbar */
-
-.signup label {
-  cursor: auto;
-}
 
 .loginRoot, .signup {
   display:block;
 }
-.loginRoot label {
+.loginRoot label, .signup label {
   cursor: auto;
 }
-
 .loginRoot .modal-dialog, .signup .modal-dialog {
-  @loginWidth: @myModalWidth;
-  width: @loginWidth;
+  width: @myModalWidth;
 }
-
 .loginRoot .modal-body, .signup .modal-body {
   margin-right: 15px;
   padding-right: 15px;
@@ -25,21 +17,19 @@
   overflow: hidden;
 }
 
+div.loginButton {
+  margin-top: 32px;
+}
 div.signupButton {
-  margin-right: 24px; /* somehow makes it align with inputs */
   margin-top: 10px;
 }
-div.loginButton {
-  margin-right: 19px; /* somehow makes it align with inputs */
-  margin-top: 32px;
+div.loginButton, div.signupButton{
+  margin-right: 20px; /* somehow makes it align with inputs */
 }
 div.password {
   margin-bottom: 0px;
 }
 
-div.resetPw {
-  min-height: 20px;
-}
 div.showPassword {
   margin-right:25px;
   margin-top: 0px;
@@ -65,26 +55,12 @@ button.signupBtn {
   }
 }
 
-input.passwordInput {
-  margin-bottom: 0px;
-  border-bottom-right-radius: 0px;
-}
-
 input.passwordInput, input.userNameInput {
   width: 90%;
-}
-.well {
-  overflow: hidden; /* stretch around button even though it is float: right */
-  padding: 25px;
-  padding-right: 4px; /* reduced to fit 21px icon right of email */
 }
 
 div.agreeTerms {
   margin-top: 30px;
-}
-
-label.passwordLabel {
-  float: none;
 }
 
 .input-wrapper {
