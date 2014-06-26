@@ -38,9 +38,9 @@
             <a ng-href="{{book.baseUrl | makePreviewUrl}}" pdfoverlay>
                 <button type="button" class="btn btn-default"><i class="icon-eye-open"></i> Preview</button></a>
             <a ng-href="{{book.bookOrder}}" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." ng-hide="!skipDownloadPage">
-                <button type="button" class="btn btn-default"><i class="icon-download"></i> Open in Bloom</button></a>
+                <button type="button" class="btn btn-default" ng-click="close()"><i class="icon-download"></i> Open in Bloom</button></a>
             <a ui-sref="downloadBook({bookId: book.objectId})" ng-hide="skipDownloadPage" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book.">
-                <button type="button" class="btn btn-default"><i class="icon-download"></i> Open in Bloom</button></a>
+                <button type="button" class="btn btn-default" ng-click="close()"><i class="icon-download"></i> Open in Bloom</button></a>
             <button id="OK" type="button" class="btn btn-primary" ng-click="close()">Close</button>
             </div>
         </div>

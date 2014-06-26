@@ -18,10 +18,6 @@
 
 	angular.module('BloomLibraryApp.download').controller('DownloadCtrl', ['$scope', '$state', '$stateParams','bookService', '$location', '$cookies',
 
-		// Argument names dialog and $dialog are unfortunately similar here. $dialog is the ui-bootstrap service
-		// we use to launch the cc dialog, and cannot be renamed AFAIK. dialog is the detail view itself, used
-		// for things like closing it. That could possibly be renamed but I don't know whether it is ours or
-		// built into ui-bootstrap.
 		function ($scope, $state, $stateParams, bookService, $location, $cookies) {
 			//get the book for which we're going to show the details
 			bookService.getBookById($stateParams.bookId).then(function (book) {
