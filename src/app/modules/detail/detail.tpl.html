@@ -34,16 +34,15 @@
 %20%20-%20the%20content%20of%20this%20book%20could%20harm%20people%0D%0A%20%20-%20this%20book%20was%20posted%20without%20the%20copyright%20holder's%20permission.%0D%0AThis%20book%20may%20be%20found%20at%20{{location}}."><i tooltip="Report violation of this site's terms of use" tooltip-placement="right" class="abuseIcon"></i></a>
             <a href="" ng-click="showDeleteDialog()"><i tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}"></i></a>
             <a href="" ng-click="chooseBookshelves()"><i tooltip="Add/Remove book from bookshelf" tooltip-placement="right" ng-class="{'icon-folder-open': true, 'icon-hidden':!canSetBookshelf, inBookshelf: isBookFeatured}"></i></a>
+            <div id="bottomRowBigButtons">
             <a ng-href="{{book.baseUrl | makePreviewUrl}}" pdfoverlay>
-
-           <div id="bottomRowBigButtons">
-               <button type="button" class="btn btn-lg"><i class="icon-eye-open"></i>  Preview</button></a>
-                <a ng-href="{{book.bookOrder}}"  tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." ng-hide="!skipDownloadPage">
-                    <button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
-                <a ui-sref="downloadBook({bookId: book.objectId})" ng-hide="skipDownloadPage" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book.">
-                    <button type="button" class="btn btn-lg"><i class="icon-download"></i>  Open in Bloom</button></a>
-                <button id="OK" type="button" class="btn btn-primary btn-lg" ng-click="close()">Close</button>
-           </div>
+                <button type="button" class="btn btn-default"><i class="icon-eye-open"></i> Preview</button></a>
+            <a ng-href="{{book.bookOrder}}" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." ng-hide="!skipDownloadPage">
+                <button type="button" class="btn btn-default"><i class="icon-download"></i> Open in Bloom</button></a>
+            <a ui-sref="downloadBook({bookId: book.objectId})" ng-hide="skipDownloadPage" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book.">
+                <button type="button" class="btn btn-default"><i class="icon-download"></i> Open in Bloom</button></a>
+            <button id="OK" type="button" class="btn btn-primary" ng-click="close()">Close</button>
+            </div>
         </div>
      </div>
 </div>

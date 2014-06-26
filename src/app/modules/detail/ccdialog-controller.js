@@ -51,19 +51,19 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.ccdialog').controller('ccdialog', ['$scope', '$state', '$stateParams', 'dialog', '$dialog','bookService', '$location', 'book',
+	angular.module('BloomLibraryApp.ccdialog').controller('ccdialog', ['$scope', '$state', '$stateParams', 'bookService', '$location', 'book', '$modalInstance',
 
-		function ($scope, $state, $stateParams, dialog, $dialog, bookService, $location, book) {
+		function ($scope, $state, $stateParams, bookService, $location, book, $modalInstance) {
 
 			$scope.book = book;
 
 			$scope.close = function () {
-				dialog.close();
+				$modalInstance.close();
 			};
 
 			// This is so the dialog closes when the back button in the browser is used.
 			$scope.$on('$locationChangeSuccess', function (event) {
-				dialog.close();
+				$modalInstance.close();
 			});
 		} ]);
 } ());  // end wrap-everything function
