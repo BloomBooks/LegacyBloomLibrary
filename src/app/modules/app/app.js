@@ -45,8 +45,8 @@
                 return viewLocation === $location.path();
             };
         }])
-		.controller('LeftSidebar', ['$scope', '$dialog', '$state', '$location', '$rootScope', 'bookService', 'authService',
-            function ($scope, $dialog, $state, $location, $rootScope, bookService, authService) {
+		.controller('LeftSidebar', ['$scope', '$state', '$location', '$rootScope', 'bookService', 'authService',
+            function ($scope, $state, $location, $rootScope, bookService, authService) {
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
@@ -57,17 +57,17 @@
                 $scope.currentShelf = $location.$$search.shelf;
                 $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             });
-			$scope.showInProgress = function() {
-				$dialog.dialog(
-					{
-						backdrop: true,
-						keyboard: true, //make ESC close it
-						backdropClick: true, //make clicking on the backdrop close it
-						templateUrl: 'modules/inProgress/inProgress.tpl.html',
-						controller: 'inProgress',
-						dialogClass: 'modal ccmodal'
-					}).open();
-			};
+            // $scope.showInProgress = function() {
+                // $dialog.dialog(
+                    // {
+                        // backdrop: true,
+                        // keyboard: true, //make ESC close it
+                        // backdropClick: true, //make clicking on the backdrop close it
+                        // templateUrl: 'modules/inProgress/inProgress.tpl.html',
+                        // controller: 'inProgress',
+                        // dialogClass: 'modal ccmodal'
+                    // }).open();
+            // };
             $scope.filterLanguage = function(language) {
                 $state.go('browse', {lang:language}); // keep other params unchanged.
             };

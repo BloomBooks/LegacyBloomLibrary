@@ -36,8 +36,8 @@
 	});
 
 	angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $dialog, $timeout, bookService, $state, $stateParams, bookCountService) {
+	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',
+								function ($scope, $timeout, bookService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
