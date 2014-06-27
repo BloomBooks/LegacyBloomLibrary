@@ -12,7 +12,8 @@
         <P>Sorry, the Bloom Desktop program only runs on Windows at the moment. A Linux version will be available in September 2014.</P>
       </div>
       <div class="modal-footer"><a ng-click="cancel()" class="cancelBookDownload">Cancel</a>
-        <!--TODO: after telling the browser to download this should route us to downloadBookStarted page--><a ng-href="{{book.bookOrder}}" ng-show="isWindows">
+        <!--TODO: after telling the browser to download this should route us to downloadBookStarted page-->
+        <!--a(ng-href='{{book.bookOrder}}', ng-show='isWindows')--><a ng-click="continueDownload()" ng-show="isWindows">
           <button id="Continue" type="button" class="btn btn-primary">Download Book</button></a>
       </div>
     </div>

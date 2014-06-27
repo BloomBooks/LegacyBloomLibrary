@@ -19,5 +19,6 @@
 			.modal-footer
 				a.cancelBookDownload(ng-click='cancel()') Cancel
 				//TODO: after telling the browser to download this should route us to downloadBookStarted page
-				a(ng-href='{{book.bookOrder}}', ng-show='isWindows')
+				//a(ng-href='{{book.bookOrder}}', ng-show='isWindows')
+				a(ng-click="continueDownload()", ng-show='isWindows')
 					button#Continue.btn.btn-primary(type='button') Download Book
