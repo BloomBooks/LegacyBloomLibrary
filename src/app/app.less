@@ -39,9 +39,12 @@ html, body {
 
 div.footerLinks {
   float: right;
-}
-div.footerLinks a.active {
-  color: @bloomRed;
+  a {
+    color: @darkText;
+  }
+  a.active {
+    color: @bloomRed;
+  }
 }
 
 div.notices {
@@ -66,27 +69,56 @@ div.container.not-centered {
   margin-right: 0;
 }
 
+@site-header-font-size: 16px;
 .site-header .navbar {
   border: none;
   border-radius: 0;
 }
-.navbar li.enlarge.active a {
-  font-size: 36px;
-  margin-top: -5px;
+@media (min-width: @grid-float-breakpoint) {
+  .navbar li.enlarge.active a {
+    font-size: @site-header-font-size * 1.75;
+    margin-top: -4px;
+  }
 }
-.site-header .navbar ul.nav {
-  margin: 9px 0px 0px 50px;
+@media (min-width: @grid-float-breakpoint) {
+  .site-header .navbar ul.nav {
+    margin-top: (@navbar-padding-vertical * 2) + 23px;
+  }
 }
 .site-header {
   color: @navbar-inverse-color;
-  font-size: 18px;
+  font-size: @site-header-font-size;
+
+  @media (min-width: @grid-float-breakpoint) {
+    .navbar-collapse {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 }
 .site-header .user {
-  margin: 15px 15px 0px 0px;
-  line-height: 20px;
+  position: absolute; 
+  top: -15px;
+  right: 0;
+  padding-right: 15px;
+  @media (max-width: @grid-float-breakpoint-max) {
+    display: none;
+  }
 }
 .site-header .navbar-brand {
-  margin-top: -15px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.site-header .navbar-brand img {
+  margin: 10px 0px;
+}
+// The following makes a smoother transition when using two collapsible navbars
+@media (max-width: @grid-float-breakpoint-max) {
+  .navbar-nav.navbar-collapse {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 .site-footer {
   padding: 10px 25px 10px 10px;
