@@ -6,11 +6,30 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         var userObjectId = null;
         var saveUserNameTag = 'userName';
         var savePasswordTag = 'password';
-		// These headers are the magic keys for our account at Parse.com
+        restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+            var extractedData;
+            // Restangular expects getList operations to return an array. Parse.com in many cases does not.
+            // This interceptor cleans them up.
+            if (operation === "getList") {
+                if (what == 'login') {
+                    // the actual object we want is returned.
+                    extractedData = [data];
+                }
+                else {
+                    // the data is typically in the results field of the object returned
+                    extractedData = data.results;
+                }
+            } else {
+                extractedData = data;
+            }
+            return extractedData;
+        });
+
+        // These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
         var headers;
-        if (window.location.href.indexOf("books.bloomlibrary.org") < 0) {
+        if (window.location.href.indexOf("bloomlibrary.org") != 0) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             headers = {
                 'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
@@ -133,7 +152,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-        if (window.location.href.indexOf("books.bloomlibrary.org") < 0) {
+        if (window.location.href.indexOf("bloomlibrary.org") != 0) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
         }

@@ -15,10 +15,6 @@ LI
 }
 */
 
-.searchBtn
-{
-	/* this is not enough: background-color: black; */
-}
 .search INPUT
 {
 	/*[disabled]height:inherit;*/
@@ -119,11 +115,6 @@ li .bookInfo{
     -color: lightgray;
 }
 
-body {
-  background-color: @lightGray;
-  color: @darkGray;
-}
-
 .book {
     margin-bottom: 15px;
 	margin-top: 18px;
@@ -142,27 +133,40 @@ body {
     //There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
     a:hover .bookTitle,
     a:focus  .bookTitle{
-      color: @linkColorHover;
+      color: @link-hover-color;
       text-decoration: underline;
     }
 }
 
 .book-search {
   border: 2px solid @darkGray;
+  .searchBtn {
+    height: 30px;
+    width: 40px;
+    color: white;
+    font-size: 20px;
+    background-color: @darkGray;
+    border-style: none;
+    i:hover {
+      color: white;
+    }
+  }
 }
 
 .filterBar {
   background-color: @darkGray;
   color: @lightGray;
-  margin-top: -20px;
   padding-top: 20px;
   position: absolute;
   bottom: 0;
-  top: 105px;
+  top: 94px;
+  width: 235px;
+  line-height: 20px;
   
   h1,h2,h3,h4,h5,h6 {
     color: @lightGray;
     margin-bottom: 0;
+    font-weight: bold;
   }
   a {
     color: @lightGray;
@@ -191,7 +195,6 @@ body {
 
 div.bookshelves, div.narrowSearch
 {
-  margin-left: 10px;
   margin-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;

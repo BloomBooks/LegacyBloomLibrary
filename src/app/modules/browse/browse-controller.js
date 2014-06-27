@@ -8,7 +8,8 @@
 			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
 			url: "/browse?search&shelf&lang&tag",
 			templateUrl: 'modules/browse/browse.tpl.html',
-			controller: 'BrowseCtrl'
+			controller: 'BrowseCtrl',
+			title: 'Book Library'
 		});
 	} ])
 	//we get a json list like ['me','you'] and we return 'me, you'
@@ -36,8 +37,8 @@
 	});
 
 	angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $dialog, $timeout, bookService, $state, $stateParams, bookCountService) {
+	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',
+								function ($scope, $timeout, bookService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];

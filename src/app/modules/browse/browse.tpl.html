@@ -1,6 +1,6 @@
 <div class="container not-centered">
     <div class="row">
-        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar span3">
+        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar col-md-3">
             <div class="bookshelves">
                 <h4>Bookshelves</h4>
                 <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
@@ -16,15 +16,16 @@
                 <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
             </div>
         </div>
-        <div class="rightContainer span9">
+        <div class="rightContainer col-md-9">
             <div class="mainContent">
                 <div>
                     <div class="container">
                         <form class="pull-right" ng-submit="SearchNow()">
-                            <div class="book-search input-append">
-                                <input type="text" ng-keypress="x()" class="searchInput" placeholder="Search title, topic, or tag" ng-model="searchTextRaw" /><button class='btn searchBtn' type='submit'>
-                                    <i class="icon-search"></i>
-                                </button>
+                            <div class="input-group" style="width:200px">
+                                <input type="text" ng-keypress="x()" class="form-control border-inverse" placeholder="Search title or tag" ng-model="searchTextRaw" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-inverse" type="button"><i class="icon-search"></i></button>
+                                </span>
                             </div>
                         </form>
                         <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
@@ -50,8 +51,7 @@
                                             <div class="languages" ng-show="book.langPointers.length">
                                                 <!--Languages:--> <span ng-repeat="lang in book.langPointers">
                                                     <!--<a class="languageName" ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a>-->
-                                                    {{lang.name}}
-                                                    <span ng-hide="$last">, </span>
+                                                    {{lang.name}}<span ng-hide="$last">, </span>
                                                 </span>
                                             </div>
                                             <div class="tags" ng-show="book.tags.length">

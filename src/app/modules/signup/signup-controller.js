@@ -6,7 +6,8 @@
 		$stateProvider.state('signup', {
 			url: "/signup",
 			templateUrl: 'modules/signup/signup.tpl.html',
-			controller: 'SignupCtrl'
+			controller: 'SignupCtrl',
+			title: 'Sign Up'
 		});
 	})
 	.directive('ngBlur', ['$parse', function ($parse) {
@@ -19,7 +20,7 @@
 			});
 		};
 	} ])
-	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', '$dialog', function SignupCtrl($scope, userService, notice, $state, auth, $dialog) {
+	.controller('SignupCtrl', ['$scope', 'userService', 'silNoticeService', '$state', 'authService', '$modal', function SignupCtrl($scope, userService, notice, $state, auth, $modal) {
 		$scope.record = {};
 		$scope.record.id = '';
 		$scope.userRegistered = false;
@@ -29,24 +30,19 @@
 		var e = document.getElementById("hpot");
 		if (e)
 		{
-			e.parentNode.removeChild(e); // don't want humans to see this, only spambots
+			e.style.display = 'none'; // don't want humans to see this, only spambots
 		}
 
 		$scope.createUser = function (record) {
 			if (record.notHuman) {
 				return true; // In theory, only spambots will see and fill in this field, which JavaScript deletes.
 			}
-			if (!$scope.agreeToTerms)
-			{
-				$dialog.dialog(
-					{
-						backdrop: true,
-						keyboard: true, //make ESC close it
-						backdropClick: true, //make clicking on the backdrop close it
-						templateUrl: 'modules/login/mustAgree.tpl.html',
-						controller: 'mustAgree',
-						dialogClass: 'modal ccmodal'
-					}).open();
+			if (!$scope.agreeToTerms) {
+				$modal.open({
+					templateUrl: 'modules/login/mustAgree.tpl.html',
+					controller: 'mustAgree',
+					windowClass: 'ccmodal'
+				});
 				return true; // abort creating user.
 			}
 			if (record.email) {
@@ -77,7 +73,7 @@
 				$scope.userNameLoading = true;
 				userService.readByUserName($scope.record.email, function (result) {
 					$scope.userNameLoading = false;
-					if (result.results.length === 0) {
+					if (result.length === 0) {
 						$scope.userNameOk = true;
 						$scope.userNameExists = false;
 					} else {

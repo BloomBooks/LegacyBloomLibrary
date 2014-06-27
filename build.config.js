@@ -63,22 +63,23 @@ module.exports = {
   vendor_files: {
     js: [
       'vendor/angular/angular.js',
-      'vendor-patches/angular-bootstrap/ui-bootstrap-tpls.min.js',
+      //'vendor-patches/angular-bootstrap/ui-bootstrap-tpls.min.js',
+      'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
       'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
-      'vendor/angular-ui-utils/modules/route/route.js',
-	  'vendor/jquery/jquery.js',
+      'vendor/angular-ui-utils/ui-utils.js',
+	  'vendor/jquery/dist/jquery.js',
 	  'vendor/jquery-ui/ui/jquery-ui.js',
-	  'vendor/angular-route/angular-route.js',
+	  //'vendor/angular-route/angular-route.js',
 	  'vendor/restangular/dist/restangular.js',
 	  'vendor/underscore/underscore.js',
-	  'vendor/angular-ui-router/release/angular-ui-router.js',
+	  //'vendor/angular-ui-router/release/angular-ui-router.js',
 	  'vendor/fancybox/source/jquery.fancybox.js',
-	  'vendor/ng-grid/ng-grid-2.0.7.debug.js',
+	  'vendor/ng-grid/ng-grid-2.0.11.debug.js',
 	  'vendor/angular-cookies/angular-cookies.js',
-      'vendor/bootstrap-modal/js/*.js',
-      'vendor/bootstrap/js/bootstrap-carousel.js',
-      'vendor/bootstrap/js/bootstrap-transition.js'
+      //'vendor/bootstrap-modal/js/*.js',
+      'vendor/bootstrap/js/carousel.js',
+      'vendor/bootstrap/js/transition.js'
     ],
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.
@@ -92,7 +93,7 @@ module.exports = {
     assets: [
 		'vendor/fancybox/source/*.png',
         'vendor/fancybox/source/*.gif',
-         'vendor/bootstrap-css/img/*.png' //for glyphicons-halflings.png
+         'vendor/bootstrap-css/fonts/*.*' //for glyphicons-halflings.*
     ]
   }
 };

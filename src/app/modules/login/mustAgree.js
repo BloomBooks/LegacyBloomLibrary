@@ -1,4 +1,4 @@
-// This module manages the In Progress dialog that comes up when the user clicks something we haven't implemented yet.
+// This module manages the Must Agree modal that comes up when the user tries to create an account without checking the terms checkbox
 (function () { // to wrap use strict
 	'use strict';
 
@@ -6,17 +6,17 @@
 		.config(function config($urlRouterProvider, $stateProvider) {
 		});
 
-	angular.module('BloomLibraryApp.mustAgree').controller('mustAgree', ['$scope', 'dialog',
+	angular.module('BloomLibraryApp.mustAgree').controller('mustAgree', ['$scope', '$modalInstance',
 
-		function ($scope, dialog) {
+		function ($scope, $modalInstance) {
 
 			$scope.close = function () {
-				dialog.close(false);
+				$modalInstance.close(false);
 			};
 
-			// This is so the dialog closes (backdrop removed, etc.) when the back button in the browser is used or a link is followed.
+			// This is so the modal closes (backdrop removed, etc.) when the back button in the browser is used or a link is followed.
 			$scope.$on('$locationChangeSuccess', function (event) {
-				dialog.close();
+				$modalInstance.close();
 			});
 		} ]);
 } ());  // end wrap-everything function
