@@ -6,17 +6,17 @@
 		.config(function config($urlRouterProvider, $stateProvider) {
 		});
 
-	angular.module('BloomLibraryApp.inProgress').controller('inProgress', ['$scope', 'dialog',
+	angular.module('BloomLibraryApp.inProgress').controller('inProgress', ['$scope', '$modalInstance',
 
-		function ($scope, dialog) {
+		function ($scope, $modalInstance) {
 
 			$scope.close = function () {
-				dialog.close(false);
+				$modalInstance.close(false);
 			};
 
 			// This is so the dialog closes (backdrop removed, etc.) when the back button in the browser is used or a link is followed.
 			$scope.$on('$locationChangeSuccess', function (event) {
-				dialog.close();
+				$modalInstance.close();
 			});
 		} ]);
 } ());  // end wrap-everything function

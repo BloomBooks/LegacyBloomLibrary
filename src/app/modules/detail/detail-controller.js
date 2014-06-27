@@ -6,34 +6,29 @@
 		// Tell angular that urls starting with bloom: and mailto: (and http{s}: of course) are OK. (Otherwise it marks them 'unsafe' and Chrome at
 		// least won't follow them.). This is needed for the Open in Bloom button, mailto links. adding bloom is the unusual thing.
 		// This seems to be global...any additions might need to go in other instances as well to make them work.
-		$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
-		// For angular 1.2 this should be changed to
-		//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
+		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
-			onEnter: function ($dialog, $state) {
-
-				$dialog.dialog(
-					{
-						backdrop: true,
-						keyboard: true, //make ESC close it
-						backdropClick: true, //make clicking on the backdrop close it
-						templateUrl: 'modules/detail/detail.tpl.html',
-						controller: 'DetailCtrl'
-					}).open().then(function (result) {
-						// Return to browse view when detail closes. Adding $state.params preserves
-						// any current filter parameters the browser view was using, such as the search string.
-						// The result passed to the call to close() indicates whether we need to force
-						// a reload of the browse view (i.e., when we have deleted a book).
-                        // Currently it seems to work without doing anything different when result is true.
-                        // I'm not sure why.
-                        var params = {};
-                        params.search = $state.params.search;
-                        params.shelf = $state.params.shelf;
-                        params.lang = $state.params.lang;
-                        params.tag = $state.params.tag;
-                        $state.transitionTo("browse", params);
-					});
+			onEnter: function ($state, $modal) {
+				var detailModalInstance = $modal.open({
+					templateUrl: 'modules/detail/detail.tpl.html',
+					controller: 'DetailCtrl'
+				});
+				
+				detailModalInstance.result.then(function () {
+					// Return to browse view when detail closes. Adding $state.params preserves
+					// any current filter parameters the browser view was using, such as the search string.
+					// The result passed to the call to close() indicates whether we need to force
+					// a reload of the browse view (i.e., when we have deleted a book).
+					// Currently it seems to work without doing anything different when result is true.
+					// I'm not sure why.
+					var params = {};
+					params.search = $state.params.search;
+					params.shelf = $state.params.shelf;
+					params.lang = $state.params.lang;
+					params.tag = $state.params.tag;
+					$state.transitionTo("browse", params);
+				});
 			}
 		});
 	})
@@ -90,13 +85,8 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$state', '$stateParams', 'dialog', '$dialog','bookService', '$location', '$cookies', 'bookCountService',
-
-	// Argument names dialog and $dialog are unfortunately similar here. $dialog is the ui-bootstrap service
-	// we use to launch the cc dialog, and cannot be renamed AFAIK. dialog is the detail view itself, used
-	// for things like closing it. That could possibly be renamed but I don't know whether it is ours or
-	// built into ui-bootstrap.
-	function ($scope, authService, $state, $stateParams, dialog, $dialog, bookService, $location, $cookies, bookCountService) {
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$state', '$stateParams', 'bookService', '$location', '$cookies', 'bookCountService', '$modal', '$modalInstance',
+	function ($scope, authService, $state, $stateParams, bookService, $location, $cookies, bookCountService, $modal, $modalInstance) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
 		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
@@ -109,70 +99,68 @@
         if ($scope.canSetBookshelf) {
             // Todo: this is a temporary way to show whether the book is in the shelf, based on the fact that
             // we currently have only one shelf. Hence the name, isBookFeatured.
-            bookService.isBookInShelf($stateParams.bookId,  authService.bookShelves()[0]).then(function(result) {
+            bookService.isBookInShelf($stateParams.bookId, authService.bookShelves()[0]).then(function(result) {
                 $scope.isBookFeatured = result;
             });
         }
 
-
         $scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
 
-			$scope.close = function () {
-			dialog.close();
+		$scope.close = function () {
+			$modalInstance.close();
 		};
+		
+		// This is so the modal closes when the back button in the browser is used.
+		// After upgrading all the libraries (such as from Bootstrap 2 to 3), this is causing
+		// the modal to close as soon as it is open.  We may need to find another solution for this.
+		//$scope.$on('$locationChangeSuccess', function (event) {
+		//	$modalInstance.close();
+		//});
 
 		$scope.showLicense = function() {
-			$dialog.dialog(
-				{
-					backdrop: true,
-					keyboard: true, //make ESC close it (sadly the detail view too)
-					backdropClick: true, //make clicking on the backdrop close it (sadly the detail view too)
-					templateUrl: 'modules/detail/ccdialog.tpl.html',
-					controller: 'ccdialog',
-					dialogClass: 'modal ccmodal',
-					// this defines the value of 'book' as something that is injected into the BloomLibraryApp.ccdialog's
-					// controller, thus giving it access to the book whose license we want details about.
-					resolve: {book: function() {return $scope.book;}}
-				}).open();
+			$modal.open({
+				templateUrl: 'modules/detail/ccdialog.tpl.html',
+				controller: 'ccdialog',
+				windowClass: 'ccmodal',
+				size: 'sm',
+				// this defines the value of 'book' as something that is injected into the BloomLibraryApp.ccdialog's
+				// controller, thus giving it access to the book whose license we want details about.
+				resolve: {book: function() {return $scope.book;}}
+			});
 		};
 		$scope.showPleaseLogIn = function() {
-			$dialog.dialog(
-				{
-					backdrop: true,
-					keyboard: true, //make ESC close it (sadly the detail view too)
-					backdropClick: true, //make clicking on the backdrop close it (sadly the detail view too)
-					templateUrl: 'modules/login/pleaseLogIn.tpl.html',
-					controller: 'pleaseLogIn',
-					dialogClass: 'modal ccmodal'
-				}).open();
+			$modal.open({
+				templateUrl: 'modules/login/pleaseLogIn.tpl.html',
+				controller: 'pleaseLogIn',
+				windowClass: 'ccmodal'
+			});
 		};
 
 		$scope.showDeleteDialog = function () {
-			$dialog.dialog({
-				backdrop: true,
-				keyboard: true,
-				backdropClick: true,
+			var deleteModalInstance = $modal.open({
 				templateUrl: 'modules/detail/deleteDialog.tpl.html',
 				controller: 'deleteDialog',
-				dialogClass: 'modal ccmodal',
-				resolve: {
-					book: function () {
-						return $scope.book;
-					}
+				windowClass: 'ccmodal',
+				size: 'sm',
+				// this defines the value of 'book' as something that is injected into the BloomLibraryApp.deleteDialog's
+				// controller, thus giving it access to the book whose license we want details about.
+				resolve: {book: function() {return $scope.book;}}
+			});
+			
+			deleteModalInstance.result.then(function(result) {
+				if (result) {
+					bookService.deleteBook($scope.book.objectId).then(function() {
+						var counts = bookCountService.getCount();
+						counts.bookCount--;
+						dialog.close(true); // object was deleted.
+					},
+					function(error) {
+						alert(error);
+					});
 				}
-			}).open().then(function(result) {
-					if (result) {
-						bookService.deleteBook($scope.book.objectId).then(function() {
-							var counts = bookCountService.getCount();
-							counts.bookCount--;
-							dialog.close(true); // object was deleted.
-						},
-						function(error) {
-							alert(error);
-						});
-					}
-				});
+			});
 		};
+		
         $scope.chooseBookshelves = function() {
             // Todo: show a popup menu with all bookShelves and ones this book is in checked.
             // Failing that there should at least be some visual indication whether the book is in the shelf.
@@ -180,9 +168,5 @@
             bookService.ToggleBookInShelf($scope.book, shelf);
             $scope.isBookFeatured = !$scope.isBookFeatured;
         };
-		// This is so the dialog closes when the back button in the browser is used.
-		$scope.$on('$locationChangeSuccess', function (event) {
-			dialog.close();
-		});
 	} ]);
 } ());  // end wrap-everything function

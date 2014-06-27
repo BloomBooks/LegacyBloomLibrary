@@ -25,16 +25,14 @@
   <body>
     <div class="page-wrap">
         <div class="site-header" ng-controller="HeaderCtrl">
-            <div class="navbar" bs-navbar>
-                <div class="navbar-inner">
-                    <a class="brand" href="#/home"><img src="assets/bloomNavbarLogo.svg"/></a>
+            <nav class="navbar navbar-inverse" bs-navbar>
+                <div style="padding-right:20px;padding-left:20px">
+                    <a class="navbar-brand" href="#/home"><img src="assets/bloomNavbarLogo.svg"/></a>
                     <div class="user">
                         &nbsp;
-                        <ng-switch on="isLoggedIn()">
-                            <span ng-switch-when="true" class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
-                        </ng-switch>
+                        <span class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
                     </div>
-                    <ul class="nav">
+                    <ul class="nav navbar-nav">
                         <li ng-class="{active: isActive('/home')}" class="home"><a href="#/home">Home</a></li>
                         <li ng-class="{active: isActive('/features')}"><a href="#/features">Features</a></li>
                         <li ng-class="{active: isActive('/download')}"><a href="#/download">Download</a></li>
@@ -48,14 +46,14 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul ng-cloak class="nav pull-right">
+                    <ul ng-cloak class="nav navbar-nav navbar-right">
                         <li ng-class="{active: isActive('/browse')}" class="enlarge"><a href="#/browse">Book Library</a></li>
-                        <ng-switch class="animate-switch-container nav" on="isLoggedIn()">
-                            <span ng-switch-when="false" class="animate-switch nav">
+                        <ng-switch class="animate-switch-container nav navbar-nav" on="isLoggedIn()">
+                            <span ng-switch-when="false" class="animate-switch nav navbar-nav">
                                 <li ng-class="{active: isActive('/signup')}"><a href="#/signup">Sign Up</a></li>
                                 <li ng-class="{active: isActive('/login')}"><a href="#/login">Log In</a></li>
                             </span>
-                            <span ng-switch-default class="animate-switch nav">
+                            <span ng-switch-default class="animate-switch nav navbar-nav">
                             <li>
                                 <a class="logout" ng-click="logout()">Log Out</a>
                             </li>
@@ -63,7 +61,7 @@
                         </ng-switch>
                     </ul>
                 </div>
-            </div>
+            </nav>
         </div>
         <sil-notices></sil-notices>
         <div ui-view></div>

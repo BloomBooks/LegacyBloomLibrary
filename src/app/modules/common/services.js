@@ -6,7 +6,26 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         var userObjectId = null;
         var saveUserNameTag = 'userName';
         var savePasswordTag = 'password';
-		// These headers are the magic keys for our account at Parse.com
+        restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+            var extractedData;
+            // Restangular expects getList operations to return an array. Parse.com in many cases does not.
+            // This interceptor cleans them up.
+            if (operation === "getList") {
+                if (what == 'login') {
+                    // the actual object we want is returned.
+                    extractedData = [data];
+                }
+                else {
+                    // the data is typically in the results field of the object returned
+                    extractedData = data.results;
+                }
+            } else {
+                extractedData = data;
+            }
+            return extractedData;
+        });
+
+        // These headers are the magic keys for our account at Parse.com
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
         var headers;

@@ -8,9 +8,7 @@
 		.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
 			// Tell angular that urls starting with bloom: are OK. (Otherwise it marks them 'unsafe' and Chrome at
 			// least won't follow them.). This is needed for the Continue button.
-			$compileProvider.urlSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
-			// For angular 1.2 this should be changed to
-			//$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom):/);
+			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
 			$stateProvider.state('downloadBook', {
 				url: "/downloadBook/:bookId",
 				templateUrl: 'modules/download/download.tpl.html',
@@ -20,10 +18,6 @@
 
 	angular.module('BloomLibraryApp.download').controller('DownloadCtrl', ['$scope', '$state', '$stateParams','bookService', '$location', '$cookies',
 
-		// Argument names dialog and $dialog are unfortunately similar here. $dialog is the ui-bootstrap service
-		// we use to launch the cc dialog, and cannot be renamed AFAIK. dialog is the detail view itself, used
-		// for things like closing it. That could possibly be renamed but I don't know whether it is ours or
-		// built into ui-bootstrap.
 		function ($scope, $state, $stateParams, bookService, $location, $cookies) {
 			//get the book for which we're going to show the details
 			bookService.getBookById($stateParams.bookId).then(function (book) {

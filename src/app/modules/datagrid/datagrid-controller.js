@@ -18,8 +18,8 @@
 	// The setting scope.visibleData needs to be modified to make the actual fields we want,
 	// and the columnDefs spec should be changed to match, and eventually we need to implement a sortBy for each column.
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$dialog', '$timeout', 'bookService', '$state', '$stateParams', '$location',
-		function ($scope, $dialog, $timeout, bookService, $state, $stateParams, $location) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location',
+		function ($scope, $timeout, bookService, $state, $stateParams, $location) {
 
 			$scope.filterOptions = {
 				filterText: "", // gets updated by user action in ngGrid
