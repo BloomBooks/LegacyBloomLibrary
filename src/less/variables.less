@@ -39,10 +39,16 @@
 @dropdown-link-hover-bg: @navbar-inverse-bg;
 
 @btn-primary-bg: @bloomRed;
+@btn-inverse-color: #fff;
+@btn-inverse-bg: @darkGray;
+@btn-inverse-border: @btn-inverse-bg;
+.btn-inverse {
+  .button-variant(@btn-inverse-color; @btn-inverse-bg; @btn-inverse-border);
+}
 
 @darkText: @darkGray;
 @lightText: @darkText;
-@headingsColor:  @darkText;
+@headingsColor: @darkText;
 
 /**
  * Typography-related.
