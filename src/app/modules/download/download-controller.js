@@ -14,7 +14,12 @@
 				templateUrl: 'modules/download/download.tpl.html',
 				controller: 'DownloadCtrl'
 			});
-		});
+            $stateProvider.state('downloadBookStarted', {
+                url: "/downloadBookStarted/:bookId",
+                templateUrl: 'modules/downloadBookStarted/downloadBookStarted.tpl.html',
+                controller: 'DownloadCtrl'
+            });
+        });
 
 	angular.module('BloomLibraryApp.download').controller('DownloadCtrl', ['$scope', '$state', '$stateParams','bookService', '$location', '$cookies',
 
