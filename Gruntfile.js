@@ -275,8 +275,9 @@ module.exports = function ( grunt ) {
 				yuicompress: false,
 				sourceMap: true,
 				sourceMapFilename: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css.map',
-				sourceMapBasepath: '<%= build_dir %>/assets/'
-			},
+				sourceMapBasepath: '',
+                sourceMapRootpath: '../../'
+            },
         files: {
           '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.less %>'
         }

@@ -30,10 +30,11 @@ angular.module('palaso.ui.notice', ['ui.bootstrap'])
 		SUCCESS: function() { return 'success'; }
 	};
 }])
-.directive('silNotices', ['silNoticeService', '$log', function(noticeService, $log) {
+.directive('silNotices', ['silNoticeService', '$log', '$location', function(noticeService, $log, $location) {
+	
 	return {
 		restrict : 'EA',
-		template : '<div class="notices"><alert ng-repeat="notice in notices()" type="notice.type" close="closeNotice($index)">{{notice.message}}</alert></div>',
+		template : '<div ng-class="{shiftRight: isActive(\'/browse\')}" class="notices"><alert ng-repeat="notice in notices()" type="notice.type" close="closeNotice($index)">{{notice.message}}</alert></div>',
 		replace : true,
 		compile : function(tElement, tAttrs) {
 			return function($scope, $elem, $attr) {
@@ -42,6 +43,9 @@ angular.module('palaso.ui.notice', ['ui.bootstrap'])
 				};
 				$scope.notices = function() {
 					return noticeService.get();
+				};
+				$scope.isActive = function (viewLocation) { 
+					return viewLocation === $location.path();
 				};
 			};
 		}

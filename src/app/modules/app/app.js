@@ -11,13 +11,20 @@
   .config(['$urlRouterProvider', '$stateProvider',
            function ($urlRouterProvider, $stateProvider) {
 
-			//TODO when we have hosting that can do the url rewriting this requires
-			//$locationProvider.html5Mode(true);
-			//$locationProvider.hashPrefix('!');
+            //review/experiment: note that I was talking to locationProvider here, even though
+            // we are using the alternative system, ui-router.
+            // this may be relevant: http://stackoverflow.com/questions/24087188/ui-routers-urlrouterprovider-otherwise-with-html5-mode
+            // For now, I've commented this out
 
-			// For any unmatched url, redirect to /state1
+            //  .config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
+            //       function ($urlRouterProvider, $stateProvider, $locationProvider) {
+
+            //on amazon s3, we've done the redirection like that described here: http://stackoverflow.com/a/16877231/723299
+//			$locationProvider.html5Mode(true);
+//			$locationProvider.hashPrefix('!');
+
+//			// For any unmatched url, redirect to /state1
 			$urlRouterProvider.otherwise("/home");
-
            } ])
 
 .controller('HeaderCtrl', ['$scope', 'authService', '$location', '$state', 'silNoticeService', function ($scope, authService, $location, $state, silNoticeService) {
@@ -149,11 +156,18 @@
 		alert(text);
 	};
 	
+	$rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
+		if (current.title) {
+			$rootScope.pageTitle = "Bloom - " + current.title;
+		} else {
+			$rootScope.pageTitle = "Bloom";
+		}
+    });
 
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
 	// <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
-	// to active whenever 'contacts.list' or one of its decendents is active.
+	// to active whenever 'contacts.list' or one of its descendants is active.
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
    } ]);
