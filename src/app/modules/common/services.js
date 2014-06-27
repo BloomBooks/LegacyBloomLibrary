@@ -29,7 +29,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
         var headers;
-        if (window.location.href.indexOf("bloomlibrary.org") != 0) {
+        if (window.location.href.indexOf("bloomlibrary.org") !== 0) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             headers = {
                 'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
@@ -152,7 +152,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-        if (window.location.href.indexOf("bloomlibrary.org") != 0) {
+        if (window.location.href.indexOf("bloomlibrary.org") !== 0) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
         }
