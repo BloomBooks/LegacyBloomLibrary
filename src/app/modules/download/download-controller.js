@@ -44,8 +44,8 @@
 			};
 			$scope.continueDownload = function () {
                 //NB: currently, we are losing the filter when we eventually return to Browse
-                //but this was true when 
-				$state.go('downloadBookStarted').then(function(){
+                //but this was true when
+				$state.go('downloadBookStarted/').then(function(){
                     window.location.href = $scope.book.bookOrder;
                 });
 			};

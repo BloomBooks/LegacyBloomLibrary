@@ -29,7 +29,8 @@
                             </div>
                         </form>
                         <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
-                        <div ng-show="bookCount==0">Sorry, there are no books that match your search.</div>
+                        <div ng-show="!initialized">Searching...</div>
+                        <div ng-show="initialized && bookCount==0">Sorry, there are no books that match your search.</div>
                         <div ng-hide="bookCount==0">
                             <ul listview class="books" hide-if-empty="true" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
                                 <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
