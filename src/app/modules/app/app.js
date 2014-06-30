@@ -6,7 +6,7 @@
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
 					"BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages", "BloomLibraryApp.suggestions",
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
-				"ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies'])
+				"ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies', 'LocalStorageModule'])
 
   .config(['$urlRouterProvider', '$stateProvider',
            function ($urlRouterProvider, $stateProvider) {
@@ -143,10 +143,8 @@
 
 	//review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
 	BloomLibraryApp.run(
-   ['$rootScope', '$state', '$stateParams',
-   function ($rootScope, $state, $stateParams) {
-
-
+   ['$rootScope', '$state', '$stateParams','$cookies',
+   function ($rootScope, $state, $stateParams, $cookies) {
 	//lets you write ng-click="log('testing')"
 	$rootScope.log = function (variable) {
 		console.log(variable);
