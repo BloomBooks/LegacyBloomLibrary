@@ -14,7 +14,12 @@
 				templateUrl: 'modules/download/download.tpl.html',
 				controller: 'DownloadCtrl'
 			});
-		});
+            $stateProvider.state('downloadBookStarted', {
+                url: "/downloadBookStarted/:bookId",
+                templateUrl: 'modules/download/downloadBookStarted.tpl.html',
+                controller: 'DownloadCtrl'
+            });
+        });
 
 	angular.module('BloomLibraryApp.download').controller('DownloadCtrl', ['$scope', '$state', '$stateParams','bookService', '$location', '$cookies',
 
@@ -37,24 +42,12 @@
 				}
 				$state.go('browse'); //we're done here. Go back home. Review: should we go instead to detail/bookId?
 			};
-			// This function is not currently used. It is intended as a click action for the Download button.
-			// What I would like to do would be to have this button start the download AND navigate back
-			// either to the browse view or maybe the prior detail view. Nothing I have tried has worked yet.
-			// To get it invoked add ng-click="continueDownload() to the Download button in place of ng-href.
 			$scope.continueDownload = function () {
-				// This targets an <a> element which, when manually clicked, successfully starts the download.
-				// Calling click and then navigating does not. The navigation happens but the download doesn't.
-				//         <a id="invokeDownload" ng-href="{{book.bookOrder}}">click me</a>
-				//$("#invokeDownload").click();
-				// This attempts to navigate a hidden frame to the bloom: url. Nothing happens.
-				//         <iframe name="hiddenFrame" src="Javascript:''" style="display:none"></iframe>
-				//window.frames['hiddenFrame'].document.location.href = $scope.book.bookOrder;
-				// Another attempt at the same thing, fails the same way.
-				//window.open($scope.book.bookOrder, "hiddenFrame"); // triggers download because a bloom: url
-				// This almost works: the download is triggered, and then we navigate to the home page.
-				// But somehow all the angularjs magic is disabled in the home page until it is manually refreshed.
-				// window.location = $scope.book.bookOrder;
-				$state.go('browse'); //we're done here. Go back home. Review: should we go instead to detail/bookId?
+                //NB: currently, we are losing the filter when we eventually return to Browse
+                //but this was true when
+				$state.go('downloadBookStarted/').then(function(){
+                    window.location.href = $scope.book.bookOrder;
+                });
 			};
 		} ]);
 } ());  // end wrap-everything function

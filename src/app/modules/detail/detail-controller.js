@@ -92,7 +92,7 @@
 		//get the book for which we're going to show the details
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;
-			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName() == book.uploader.email || authService.isUserAdministrator());
+			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.email.toLowerCase() || authService.isUserAdministrator());
 		});
         $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
         $scope.canSetBookshelf = authService.isLoggedIn() && authService.bookShelves().length > 0;
@@ -140,8 +140,7 @@
 			var deleteModalInstance = $modal.open({
 				templateUrl: 'modules/detail/deleteDialog.tpl.html',
 				controller: 'deleteDialog',
-				windowClass: 'ccmodal',
-				size: 'sm',
+				windowClass: 'ccmodal deleteConfirm',
 				// this defines the value of 'book' as something that is injected into the BloomLibraryApp.deleteDialog's
 				// controller, thus giving it access to the book whose license we want details about.
 				resolve: {book: function() {return $scope.book;}}
@@ -152,7 +151,7 @@
 					bookService.deleteBook($scope.book.objectId).then(function() {
 						var counts = bookCountService.getCount();
 						counts.bookCount--;
-						dialog.close(true); // object was deleted.
+                        $modalInstance.close(true); // object was deleted.
 					},
 					function(error) {
 						alert(error);

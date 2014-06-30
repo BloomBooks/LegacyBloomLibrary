@@ -5,18 +5,18 @@
 		.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
 		});
 
-	angular.module('BloomLibraryApp.pleaseLogIn').controller('pleaseLogIn', ['$scope', 'dialog',
+	angular.module('BloomLibraryApp.pleaseLogIn').controller('pleaseLogIn', ['$scope', '$modalInstance',
 
-		function ($scope, dialog) {
+		function ($scope, $modalInstance) {
 
 			$scope.close = function () {
-				dialog.close(false);
+                $modalInstance.close(false);
 			};
 
 			// This is so the dialog closes (backdrop removed, etc.) when the back button in the browser is used
 			// or the user follows a link in the dialog.
 			$scope.$on('$locationChangeSuccess', function (event) {
-				dialog.close();
+                $modalInstance.close();
 			});
 		} ]);
 } ());  // end wrap-everything function

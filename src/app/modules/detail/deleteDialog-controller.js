@@ -5,7 +5,7 @@
 		.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
 		});
 
-	angular.module('BloomLibraryApp.deleteDialog').controller('deleteDialog', ['$scope', 'dialog', 'book',
+	angular.module('BloomLibraryApp.deleteDialog').controller('deleteDialog', ['$scope', '$modalInstance', 'book',
 
 		function ($scope, dialog, book) {
 
