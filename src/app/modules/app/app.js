@@ -52,12 +52,13 @@
                 return viewLocation === $location.path();
             };
         }])
-		.controller('LeftSidebar', ['$scope', '$state', '$location', '$rootScope', 'bookService', 'authService',
-            function ($scope, $state, $location, $rootScope, bookService, authService) {
+		.controller('LeftSidebar', ['$scope', '$state', '$location', '$rootScope', 'bookService', 'authService', '$modal',
+            function ($scope, $state, $location, $rootScope, bookService, authService, $modal) {
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
             $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
+            $scope.isLoggedIn = authService.isLoggedIn();
             $rootScope.$on('$locationChangeSuccess', function() {
                 $scope.currentLang = $location.$$search.lang;
                 $scope.currentTag = $location.$$search.tag;
