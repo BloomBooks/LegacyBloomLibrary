@@ -78,7 +78,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 // So the user can see the name the way they typed it, we don't lower-case the email address; this also means
                 // that in case, by any chance, they are using an email tool that is case dependent, emails will use the exact case they typed.
 				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username.toLowerCase(), 'password': password })
-					.then(function (result) {
+					.then(function (results) {
+                        if (results.length < 1) {return;}
+                        var result = results[0];
                         userObjectId = result.objectId;
 						isLoggedIn = true;
 						isUserAdministrator = result.administrator;
