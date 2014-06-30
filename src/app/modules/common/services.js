@@ -99,7 +99,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //                        });
                         restangular.withConfig(restangularConfig).all('classes/bookshelf').getList({ 'where':{'owner': {"__type":"Pointer","className":"_User","objectId":result.objectId} }})
                             .then(function (response) {
-                                bookshelves = response.results;
+                                bookshelves = response;
+                                if (!response) {bookshelves = [];}
                             },
                         function(error) {
                             alert(error);
