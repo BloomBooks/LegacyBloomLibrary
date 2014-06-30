@@ -73,8 +73,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			},
 
 			login: function (username, password, successCallback, errorCallback) {
-				// GET: .../login
-				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username, 'password': password })
+				// We don't want login to depend on case, so that the user has to remember the exact case with which they signed up.
+                // So we make sure (here and elsewhere) that the user names we pass to parse.com are all lower case.
+                // So the user can see the name the way they typed it, we don't lower-case the email address; this also means
+                // that in case, by any chance, they are using an email tool that is case dependent, emails will use the exact case they typed.
+				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username.toLowerCase(), 'password': password })
 					.then(function (result) {
                         userObjectId = result.objectId;
 						isLoggedIn = true;
@@ -501,12 +504,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
 		this.register = function (user, callback) {
 			if (!user.mandatoryfield) {
-				return restangular.withConfig(authService.config()).all('users').post(user).then(callback, callback);
+                var user1 = $.extend({}, user);
+                user1.username = user1.username.toLowerCase();
+				return restangular.withConfig(authService.config()).all('users').post(user1).then(callback, callback);
 			}
 		};
 
 		this.readByUserName = function (username, callback) {
-			return restangular.withConfig(authService.config()).all('users').getList({ "where": '{"username": "' + username + '"}' }).then(callback, callback);
+			return restangular.withConfig(authService.config()).all('users').getList({ "where": '{"username": "' + username.toLowerCase() + '"}' }).then(callback, callback);
 		};
 	} ])
 	.service('bookCountService', function () { // service to provide shared access to this object between detail and browse for delete
