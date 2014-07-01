@@ -64,12 +64,11 @@
             // we intercept the state change to preflight, and if we don't want to go there, then we
             // instead go straight to the 'hereItComes' screen.
             $scope.$on('$viewContentLoaded',
-                function(event){
-                    localStorageService.set('skipDownloadPreflight', false);
+                function(event, toState, toParams, fromState, fromParams){
                     if($state.current.name.indexOf('preflight') > -1 &&
-                        localStorageService.get('skipDownloadPreflight')===true){
-                            event.preventDefault();
-                            $state.go("downloadBook.hereItComes");
+                        localStorageService.get('skipDownloadPreflight')==='true') {
+                        event.preventDefault();
+                        $state.go("downloadBook.hereItComes");
                     }
                     if($state.current.name.indexOf('hereItComes') > -1){
                         //get the book for which we're going to show the details asynchronously,
