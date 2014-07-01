@@ -104,8 +104,6 @@
             });
         }
 
-        $scope.skipDownloadPage = $cookies.skipDownloadPage == 'yes';
-
 		$scope.close = function () {
 			$modalInstance.close();
 		};

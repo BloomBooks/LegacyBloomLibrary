@@ -79,7 +79,8 @@ module.exports = {
 	  'vendor/angular-cookies/angular-cookies.js',
       //'vendor/bootstrap-modal/js/*.js',
       'vendor/bootstrap/js/carousel.js',
-      'vendor/bootstrap/js/transition.js'
+      'vendor/bootstrap/js/transition.js',
+      'vendor/angular-local-storage/angular-local-storage.min.js'
     ],
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.
