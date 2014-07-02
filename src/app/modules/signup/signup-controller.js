@@ -53,7 +53,7 @@
 					if (result.data && result.data.error) {
 						notice.push(notice.ERROR, result.data.error);
 					} else if (result.objectId) {
-						notice.push(notice.SUCCESS, "Thank you, " + record.email + ", for registering. You are now logged in.");
+						notice.clear();
 						auth.setUserName(record.email);
 						$state.go('browse');
 						auth.setSession(result.sessionToken);

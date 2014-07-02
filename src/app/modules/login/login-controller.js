@@ -59,7 +59,7 @@
 				}
 
 				authService.login($scope.username, $scope.password, function (result) {
-					silNoticeService.replace(silNoticeService.SUCCESS, "Login Successful");
+					silNoticeService.clear();
 					$state.go('browse'); //we're done here. Go back home
                 }, function (error) {
                     // catch for login credential failure
