@@ -15,6 +15,21 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     // the actual object we want is returned.
                     extractedData = [data];
                 }
+                else if (url === "http://bloomlibrary.org.s3.amazonaws.com?prefix=installers/") { // s3 bucket listing
+                    // the actual object we want is returned.
+                    var json= $.xml2json(data);
+                    extractedData = [];
+                    var items = json.ListBucketResult.Contents;
+                    for(i=0; i<items.length;i++){
+                        var file = {};
+                        file.name = items[i].Key.replace("installers/","");
+                        if(file.name.indexOf(".msi")>-1) {
+                            file.url = "http://bloomlibrary.org.s3.amazonaws.com/" + items[i].Key;
+                            file.date = items[i].LastModified;
+                            extractedData.push(file);
+                        }
+                    }
+                }
                 else {
                     // the data is typically in the results field of the object returned
                     extractedData = data.results;

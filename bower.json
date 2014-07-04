@@ -11,7 +11,8 @@
     "fancybox": "~2.1.5",
     "ng-grid": "2.0.11",
     "jquery": "~1.11.0",
-    "angular-local-storage": "~0.0.5"
+    "angular-local-storage": "~0.0.5",
+    "jquery-xml2json": "~0.0.6"
   },
   "devDependencies": {
     "angular": "~1.2.18",

@@ -80,7 +80,8 @@ module.exports = {
       //'vendor/bootstrap-modal/js/*.js',
       'vendor/bootstrap/js/carousel.js',
       'vendor/bootstrap/js/transition.js',
-      'vendor/angular-local-storage/angular-local-storage.min.js'
+      'vendor/angular-local-storage/angular-local-storage.min.js',
+      'vendor/jquery-xml2json/src/xml2json.js'
     ],
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.
