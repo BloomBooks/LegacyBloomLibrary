@@ -1,6 +1,7 @@
 <div class="container not-centered">
     <div class="row">
         <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar col-md-3">
+            <h1  class="betaStamp" id="beta1">BETA</h1>
             <div class="bookshelves">
                 <h4>Bookshelves</h4>
                 <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
@@ -28,7 +29,9 @@
                                     <button class="btn btn-inverse" type="button" ng-click="SearchNow()"><i class="icon-search"></i></button>
                                 </span>
                             </div>
+                            <h1 class="betaStamp" id="beta2">BETA</h1>
                         </form>
+
                         <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
                         <div ng-show="!initialized">Searching...</div>
                         <div ng-show="initialized && bookCount==0">Sorry, there are no books that match your search.</div>
