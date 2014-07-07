@@ -1,7 +1,7 @@
 (function () { // to wrap use strict
     'use strict';
 
-    var app = angular.module('BloomLibraryApp.installers', ['ui.router','restangular'])
+    var installersApp = angular.module('BloomLibraryApp.installers', ['ui.router','restangular'])
         .config(function config($urlRouterProvider, $stateProvider,RestangularProvider){
             RestangularProvider.setBaseUrl('http://bloomlibrary.org.s3.amazonaws.com?prefix=installers/');
 
@@ -20,14 +20,9 @@
             });
         });
 
-    app.controller('InstallersCtrl',
-
+    installersApp.controller('InstallersCtrl',
         function ($scope,$state, Restangular) {
-           // var x = Restangular.oneUrl('z','http://bloomlibrary.org.s3.amazonaws.com?prefix=installers/');
-            //var y = x.ListBucketResult;
-
-            //review: use get instead of getList and stop wrapping it in services.js?
-
+              //review: use get instead of getList and stop wrapping it in services.js?
             $scope.$on('$viewContentLoaded',
                 function(event, toState, toParams, fromState, fromParams) {
                     if ($state.current.name.indexOf('old') > -1) {
@@ -37,11 +32,6 @@
                         });
                     }
                 });
-            //TODO only do this when in old-installers
-//            Restangular.all('').getList().then(function(r) {
-//                $scope.files = r;
-//                console.log(r);
-//            });
         });
 } ());  // end wrap-everything function
 
