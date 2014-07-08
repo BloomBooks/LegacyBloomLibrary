@@ -1,8 +1,7 @@
-
-<div ng-controller="InstallersCtrl" class="container not-centered">
-  <h1>All Bloom Installers</h1>
+<div ng-controller="InstallersCtrl" class="staticPage">
+  <h3>All Bloom Installers</h3>
   <div ng-repeat="file in files" class="row">
     <div class="col-md-3"><a ng-href="{{file.url}}">{{file.name}}</a></div>
-    <div class="col-md-3">{{file.date | date:'dd/MM/yyyy'}}</div>
+    <div class="col-md-3">{{file.date | date:'dd/MMM/yyyy'}}</div>
   </div>
 </div>
