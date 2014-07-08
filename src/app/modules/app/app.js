@@ -43,6 +43,14 @@
                 return viewLocation === $location.path();
             };
 
+            // When the navbar is open on a small device (i.e. shown vertically),
+            // collapse it when user navigates
+            $(document).on('click','.navbar-collapse.in',function(e) {
+                if( $(e.target).is('a') && !$(e.target).hasClass('dropdown-toggle') ) {
+                    $(this).collapse('hide');
+                }
+            });
+
 	$scope.userName = authService.userName;
 } ])
         .controller('FooterCtrl', ['$scope', '$location', function($scope, $location) {

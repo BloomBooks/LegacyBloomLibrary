@@ -176,12 +176,13 @@ li .bookInfo{
 }
 
 .filterBar {
+  //z-index: -1; //So menu goes on top
   background-color: @darkGray;
   color: @lightGray;
   padding-top: 20px;
   position: absolute;
   bottom: 0;
-  top: 94px;
+  top: @navbar-height;
   width: 235px;
   line-height: 20px;
   

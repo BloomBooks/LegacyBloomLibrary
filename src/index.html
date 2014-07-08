@@ -25,42 +25,46 @@
   <body>
     <div class="page-wrap">
         <div class="site-header" ng-controller="HeaderCtrl">
-            <nav class="navbar navbar-inverse" bs-navbar>
-                <div style="padding-right:20px;padding-left:20px">
-                    <a class="navbar-brand" href="#/home"><img src="assets/bloomNavbarLogo.svg"/></a>
-                    <div class="user">
-                        &nbsp;
-                        <span class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
+            <nav class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-header-navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#/home">
+                            <img src="assets/bloomNavbarLogo.svg"/>
+                        </a>
+                        <div class="user">
+                            &nbsp;
+                            <span class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
+                        </div>
                     </div>
-                    <ul class="nav navbar-nav">
-                        <li ng-class="{active: isActive('/home')}" class="home"><a href="#/home">Home</a></li>
-                        <li ng-class="{active: isActive('/features')}"><a href="#/features">Features</a></li>
-                        <li ng-class="{active: isActive('/download')}"><a href="#/installers">Download</a></li>
-                        <li ng-class="{active: isActive('/support')}"><a href="#/support">Support</a></li>
-                        <li ng-class="{active: isActive('/about')||isActive('/opensource')||isActive('/suggestions')}" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#/about">About</a></li>
-                                <li><a href="#/opensource">Open Source</a></li>
-                                <li><a href="#/suggestions">Suggestions</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul ng-cloak class="nav navbar-nav navbar-right">
-                        <li ng-class="{active: isActive('/browse')}" class="enlarge"><a href="#/browse">Book Library</a></li>
-                        <ng-switch class="animate-switch-container nav navbar-nav" on="isLoggedIn()">
-                            <span ng-switch-when="false" class="animate-switch nav navbar-nav">
-                                <li ng-class="{active: isActive('/signup')}"><a href="#/signup">Sign Up</a></li>
-                                <li ng-class="{active: isActive('/login')}"><a href="#/login">Log In</a></li>
-                            </span>
-                            <span ng-switch-default class="animate-switch nav navbar-nav">
-                            <li>
-                                <a class="logout" ng-click="logout()">Log Out</a>
+                    <div class="collapse navbar-collapse" id="site-header-navbar">
+                        <ul class="nav navbar-nav">
+                            <li ng-class="{active: isActive('/home')}" class="home"><a href="#/home">Home</a></li>
+                            <li ng-class="{active: isActive('/features')}"><a href="#/features">Features</a></li>
+                            <li ng-class="{active: isActive('/download')}"><a href="#/installers">Download</a></li>
+                            <li ng-class="{active: isActive('/support')||isActive('/about')||isActive('/opensource')||isActive('/suggestions')}" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#/support">Support</a></li>
+                                    <li><a href="#/about">About</a></li>
+                                    <li><a href="#/opensource">Open Source</a></li>
+                                    <li><a href="#/suggestions">Suggestions</a></li>
+                                </ul>
                             </li>
-                            </span>
-                        </ng-switch>
-                    </ul>
-                </div>
+                        </ul>
+                        <ul ng-cloak class="nav navbar-nav navbar-right">
+                            <li ng-class="{active: isActive('/browse')}" class="enlarge"><a href="#/browse">Book Library</a></li>
+                            <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="#/signup">Sign Up</a></li>
+                            <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="#/login">Log In</a></li>
+                            <li><a class="logout" ng-click="logout()" ng-if="isLoggedIn()">Log Out</a></li>
+                        </ul>
+                    </div>
+                </div><!-- /.container-fluid -->
             </nav>
         </div>
         <sil-notices></sil-notices>
