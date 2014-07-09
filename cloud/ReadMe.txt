@@ -1,0 +1,1 @@
+This folder contains the cloud code that is deployed on parse.com
