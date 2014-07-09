@@ -1,4 +1,5 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
+@filterBarWidth: 235px;
 /*
 UL
 {
@@ -177,14 +178,8 @@ li .bookInfo{
 }
 
 .filterBar {
-  //z-index: -1; //So menu goes on top
   background-color: @darkGray;
   color: @lightGray;
-  padding-top: 20px;
-  position: absolute;
-  bottom: 0;
-  top: @navbar-height;
-  width: 235px;
   line-height: 20px;
   
   h1,h2,h3,h4,h5,h6 {
@@ -213,10 +208,6 @@ li .bookInfo{
   }
 }
 
-.rightContainer {
-  margin-left: 260px;
-}
-
 div.bookshelves, div.narrowSearch
 {
   margin-bottom: 10px;
@@ -228,4 +219,57 @@ div.bookshelves, div.narrowSearch
 div.bookshelves
 {
   margin-bottom: 20px;
+}
+
+.sidebarToggle .btn:focus {
+  outline: none;
+}
+#sidebarToggleClosed {
+  position: absolute;
+  top: -@navbar-margin-bottom;
+  left: 0;
+  margin: 1px 0px 0px 1px;
+}
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+.row-offcanvas {
+  position: relative;
+  left: 0;
+}
+
+.row-offcanvas
+.sidebar-offcanvas {
+  left: -@filterBarWidth;
+}
+
+@media screen and (min-width: @screen-md) {
+  .row-offcanvas {
+    left: @filterBarWidth;
+  }
+}
+@media screen and (max-width: @screen-sm-max) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all .25s ease-out;
+         -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+  }
+  .row-offcanvas.active {
+    left: @filterBarWidth;
+
+    #sidebarToggleClosed {
+      display: none !important;
+    }
+  }
+}
+
+.sidebar-offcanvas {
+  position: absolute;
+  top: -@navbar-margin-bottom;
+  bottom: 0;
+  padding-top: 10px;
+  width: @filterBarWidth;
 }

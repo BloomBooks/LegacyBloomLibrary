@@ -1,6 +1,9 @@
 <div class="container not-centered">
-    <div class="row">
-        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar col-md-3">
+    <div class="row row-offcanvas">
+        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar col-md-3 sidebar-offcanvas" id="sideBar">
+            <p class="pull-right visible-xs visible-sm sidebarToggle">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">&lt;</button>
+            </p>
             <h1  class="betaStamp" id="beta1">BETA</h1>
             <div class="bookshelves">
                 <h4>Bookshelves</h4>
@@ -19,6 +22,9 @@
             </div>
         </div>
         <div class="rightContainer col-md-9">
+            <p class="pull-left visible-xs visible-sm sidebarToggle" id="sidebarToggleClosed">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Filters &gt;</button>
+            </p>
             <div class="mainContent">
                 <div>
                     <div class="container">
