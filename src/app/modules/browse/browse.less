@@ -1,100 +1,63 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
 @filterBarWidth: 235px;
-/*
-UL
-{
-	margin-left: 0px;
-	padding-left: 0px;
-	padding-top: 16px;
-}
-LI
-{
-	list-style-type: none;
-	margin-bottom: 15px;
-	padding-left: 0px !important;
-	font: 1em Arial;
-}
-*/
-
-#beta1{
+#beta1 {
   top: 60px;
   left: 130px;
 }
-#beta2{
+#beta2 {
   top: 20px;
   left: 270px;
 }
-.betaStamp{
+.betaStamp {
   margin: 0;
   position: absolute;
   .rotate(-30deg);
   color: @bloomRed !important;
   font-weight: bold;
 }
-
-.search INPUT
-{
-	/*[disabled]height:inherit;*/
+BODY {
+  font-size: small !important;
 }
-.search
-{
-	/*[disabled]height:46px;*/
+.search {
+  margin-left: 20px;
 }
-BODY
-{
-	font-size: small !important;
+H3.bookTitle {
+  font-size: 103%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 3px;
+  line-height: 1em;
 }
-.search
-{
-	margin-left: 20px;
+.author {
+  font-weight: 300;
 }
-H3.bookTitle
-{
-	font-size: 103%;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	padding-top: 0px;
-    padding-bottom: 3px;
-	line-height: 1em;
+.secondRowAboutBook {
 }
-.author
-{
-	font-weight: 300;
-}
-.secondRowAboutBook
-{
-}
-
 .filterBar a.disabled {
-  color:GrayText;
+  color: GrayText;
 }
-.data
-{
-	display: table;
+.data {
+  display: table;
 }
-.pages
-{
+.pages {
 }
-.topic
-{
-	float: left;
-	margin-right: 7px;
+.topic {
+  float: left;
+  margin-right: 7px;
 }
-.imageContainer IMG
-{
-	text-align: center;
-	height: 70px; //Bloom version 2 sets all books to this height
+.imageContainer IMG {
+  text-align: center;
+  height: 70px; //Bloom version 2 sets all books to this height
 }
-.unfloat
-{
-	clear: both;
+.unfloat {
+  clear: both;
 }
-.imageContainer
-{
-	text-align: center;
-	position: relative;
-	float: left;
-	margin-right: 10px;
+.imageContainer {
+  text-align: center;
+  position: relative;
+  float: left;
+  margin-right: 10px;
 }
 .books {
   list-style-type: none;
@@ -103,68 +66,57 @@ H3.bookTitle
     outline: none;
   }
 }
-
-.pagination{
-    clear: both;
+.pagination {
+  clear: both;
 }
 SELECT {
-  width:5em;
+  width: 5em;
 }
-
 input.searchInput {
   width: 150px;
   margin: 0px;
   height: 24px;
 }
-
 .tag {
-    -font-style: italic;
-    color: @lightText;
+  -font-style: italic;
+  color: @lightText;
 }
-
 a.languageName {
-    color: @darkText;
+  color: @darkText;
 }
-
-li .bookInfo{
+li .bookInfo {
   font-size: 9pt;
   line-height: 16px;
 }
-
-.icon-tag{
-    -color: lightgray;
+.icon-tag {
+  -color: lightgray;
 }
-
 .book {
     margin-top: 18px;
     max-width: 350px;
-
-    a{
-        color:@darkText;
-    }
-    a:hover .bookInfo *,
-    a:focus   .bookInfo *{
-      color: @darkText;
-      text-decoration:none; //this isn't working. We only wan the title to get underlined.
-    }
-
+  a {
+    color: @darkText;
+  }
+  a:hover .bookInfo *,
+  a:focus .bookInfo * {
+    color: @darkText;
+    text-decoration: none;
+  }
     .bookTitle {
       font-weight: bold;
     }
-    //There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
-    a:hover .bookTitle,
-    a:focus  .bookTitle{
-      color: @link-hover-color;
-      text-decoration: underline;
-    }
+  //There is probably a more elegant way... this is copied from scaffolding.less with the book title added
+  a:hover .bookTitle,
+  a:focus .bookTitle {
+    color: @link-hover-color;
+    text-decoration: underline;
+  }
 }
-
 .filterBar {
   background-color: @darkGray;
   color: @lightGray;
   line-height: 20px;
-  
-  h1,h2,h3,h4,h5,h6 {
+  h1, h2, h3, h4, h5, h6 {
     color: @lightGray;
     margin-bottom: 0;
     font-weight: bold;
@@ -175,7 +127,6 @@ li .bookInfo{
   a:hover {
     color: @bloomRed;
   }
-  
   .clear {
     visibility: hidden;
   }
@@ -189,20 +140,15 @@ li .bookInfo{
     color: @lightGray;
   }
 }
-
-div.bookshelves, div.narrowSearch
-{
+div.bookshelves, div.narrowSearch {
   margin-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 10px;
 }
-
-div.bookshelves
-{
+div.bookshelves {
   margin-bottom: 20px;
 }
-
 .sidebarToggle .btn:focus {
   outline: none;
 }
@@ -221,18 +167,15 @@ div.bookshelves
   position: relative;
   left: 0;
 }
-
-.row-offcanvas
-.sidebar-offcanvas {
+.row-offcanvas .sidebar-offcanvas {
   left: -@filterBarWidth;
 }
-
-@media screen and (min-width: @screen-sm) {
+@media screen and (min-width:@screen-sm) {
   .row-offcanvas {
     left: @filterBarWidth;
   }
 }
-@media screen and (max-width: @screen-xs-max) {
+@media screen and (max-width:@screen-xs-max) {
   .row-offcanvas {
     position: relative;
     -webkit-transition: all .25s ease-out;
@@ -241,13 +184,11 @@ div.bookshelves
   }
   .row-offcanvas.active {
     left: @filterBarWidth;
-
     #sidebarToggleClosed {
       display: none !important;
     }
   }
 }
-
 .sidebar-offcanvas {
   position: absolute;
   top: -@navbar-margin-bottom;

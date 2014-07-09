@@ -1,25 +1,22 @@
 body {
   margin: 0;
 }
-
 a {
   cursor: pointer;
 }
-
 .left {
   float: left;
 }
-
 .right {
   float: right;
 }
-
 .mandatoryfields {
   display: none;
 }
-
-.separator { margin-left:20px; visibility:hidden;}
-
+.separator {
+  margin-left: 20px;
+  visibility: hidden;
+}
 /* this group (down to page-wrap:after) are used to implement the sticky footer, using ideas from http://codepen.io/chriscoyier/pen/uwJjr */
 html, body {
   height: 100%;
@@ -36,7 +33,6 @@ html, body {
   /* equal to page-wrap margin-bottom */
   height: 42px;
 }
-
 div.footerLinks {
   float: right;
   a {
@@ -49,10 +45,8 @@ div.footerLinks {
     color: @bloomRed;
   }
 }
-
 div.notices.active {
   margin: 0px 10px 10px 60px;
-  
   .shiftRight {
     margin-left: 240px;
   }
@@ -60,9 +54,8 @@ div.notices.active {
 div.alert {
   //border: 2px outset @bloomRed;
   padding: 3px 5px;
-  background : lightyellow;
+  background: lightyellow;
 }
-
 div.staticPage {
   max-width: 900px;
   margin-left: 60px;
@@ -72,19 +65,18 @@ div.container.not-centered {
   margin-left: 0;
   margin-right: 0;
 }
-
 @site-header-font-size: 16px;
 .site-header .navbar {
   border: none;
   border-radius: 0;
 }
-@media (min-width: @grid-float-breakpoint) {
+@media (min-width:@grid-float-breakpoint) {
   .navbar li.enlarge.active a {
     font-size: @site-header-font-size * 1.75;
     margin-top: -4px;
   }
 }
-@media (min-width: @grid-float-breakpoint) {
+@media (min-width:@grid-float-breakpoint) {
   .site-header .navbar ul.nav {
     margin-top: (@navbar-padding-vertical * 2) + 23px;
   }
@@ -92,8 +84,7 @@ div.container.not-centered {
 .site-header {
   color: @navbar-inverse-color;
   font-size: @site-header-font-size;
-
-  @media (min-width: @grid-float-breakpoint) {
+  @media (min-width:@grid-float-breakpoint) {
     .navbar-collapse {
       padding-left: 0;
       padding-right: 0;
@@ -101,11 +92,11 @@ div.container.not-centered {
   }
 }
 .site-header .user {
-  position: absolute; 
+  position: absolute;
   top: -15px;
   right: 0;
   padding-right: 15px;
-  @media (max-width: @grid-float-breakpoint-max) {
+  @media (max-width:@grid-float-breakpoint-max) {
     display: none;
   }
 }
@@ -117,7 +108,7 @@ div.container.not-centered {
   margin: 10px 0px;
 }
 // The following makes a smoother transition when using two collapsible navbars
-@media (max-width: @grid-float-breakpoint-max) {
+@media (max-width:@grid-float-breakpoint-max) {
   .navbar-nav.navbar-collapse {
     margin: 0;
     padding-left: 0;
@@ -127,7 +118,6 @@ div.container.not-centered {
 .site-footer {
   padding: 10px 25px 10px 10px;
 }
-
 .carousel {
   background-color: @darkGray;
   width: 860px;
@@ -145,7 +135,6 @@ div.container.not-centered {
 .carousel-indicators li {
   cursor: pointer;
 }
-
 .form-control.border-inverse {
   border-color: @btn-inverse-border;
 }
