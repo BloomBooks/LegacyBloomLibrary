@@ -123,7 +123,12 @@
                 $scope.topTags = [
                     "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
                 ];
-		}])
+
+            // Toggle sidebar
+            $('[data-toggle="offcanvas"]').click(function () {
+                $('.row-offcanvas').toggleClass('active');
+            });
+        }])
         .controller('CarouselCtrl', ['$scope', 
             function ($scope) {
                 $scope.myInterval = 10000;
