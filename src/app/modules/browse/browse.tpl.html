@@ -27,20 +27,22 @@
             </p>
             <div class="mainContent">
                 <div>
-                    <div class="container">
-                        <form class="pull-right" ng-submit="SearchNow()">
-                            <div class="input-group" style="width:200px">
-                                <input type="text" ng-keypress="x()" class="form-control border-inverse" placeholder="Search title or tag" ng-model="searchTextRaw" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-inverse" type="button" ng-click="SearchNow()"><i class="icon-search"></i></button>
-                                </span>
-                            </div>
-                            <h1 class="betaStamp" id="beta2">BETA</h1>
-                        </form>
+                    <div class="container-fluid">
+                        <div class="searchRow">
+                            <form class="pull-right" ng-submit="SearchNow()">
+                                <h1 class="betaStamp" id="beta2">BETA</h1>
+                                <div class="input-group">
+                                    <input type="text" ng-keypress="x()" class="form-control border-inverse" placeholder="Search title or tag" ng-model="searchTextRaw" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-inverse" type="button" ng-click="SearchNow()"><i class="icon-search"></i></button>
+                                    </span>
+                                </div>
+                            </form>
 
-                        <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
-                        <div ng-show="!initialized">Searching...</div>
+                            <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
+                            <div ng-show="!initialized">Searching...</div>
                         <div ng-show="initialized && bookCount==0">Sorry, there are no books that match your search.</div>
+                        </div>
                         <div ng-hide="bookCount==0">
                             <ul listview class="books" hide-if-empty="true" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView">
                                 <!--<li class="col-xs-12 col-sm-4 col-md-2" id="Li2"-->
