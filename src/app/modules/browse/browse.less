@@ -17,20 +17,16 @@ LI
 */
 
 #beta1{
-  position: absolute;
   top: 40px;
   left: 130px;
 }
 #beta2{
-  position: relative;
-  top: 0px;
-  left: 0px;
-  z-index: -1; //without this, search button was partially covered
+  top: -23px;
+  right: 250px;
+  z-index: -1;
 }
 .betaStamp{
  position: absolute;
-  top: 40px;
-  left: 130px;
   .rotate(-30deg);
   color: @bloomRed !important;
 }
@@ -272,4 +268,11 @@ div.bookshelves
   bottom: 0;
   padding-top: 10px;
   width: @filterBarWidth;
+}
+
+.searchRow {
+  height: 34px;
+  .input-group {
+    width: 200px;
+  }
 }
