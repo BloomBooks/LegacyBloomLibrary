@@ -17,22 +17,6 @@ a {
   margin-left: 20px;
   visibility: hidden;
 }
-/* this group (down to page-wrap:after) are used to implement the sticky footer, using ideas from http://codepen.io/chriscoyier/pen/uwJjr */
-html, body {
-  height: 100%;
-}
-.page-wrap {
-  min-height: 100%;
-  /* equal to page-wrap:after height */
-  margin-bottom: -42px;
-}
-.page-wrap:after {
-  content: "";
-  display: block;
-  clear: both;
-  /* equal to page-wrap margin-bottom */
-  height: 42px;
-}
 div.footerLinks {
   float: right;
   a {
@@ -115,9 +99,26 @@ div.container.not-centered {
     padding-right: 0;
   }
 }
+
+/*
+ * Sticky footer
+ */
+@footerHeight: 42px;
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: @footerHeight;
+}
 .site-footer {
   padding: 10px 25px 10px 10px;
+  height: @footerHeight;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
+
 .carousel {
   background-color: @darkGray;
   width: 860px;
