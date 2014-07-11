@@ -17,18 +17,19 @@ LI
 */
 
 #beta1{
-  top: 40px;
+  top: 60px;
   left: 130px;
 }
 #beta2{
-  top: -23px;
-  right: 250px;
-  z-index: -1;
+  top: 20px;
+  left: 270px;
 }
 .betaStamp{
- position: absolute;
+  margin: 0;
+  position: absolute;
   .rotate(-30deg);
   color: @bloomRed !important;
+  font-weight: bold;
 }
 
 .search INPUT
@@ -95,13 +96,12 @@ H3.bookTitle
 	float: left;
 	margin-right: 10px;
 }
-.books
-{
-    width: 700px;
-    list-style-type: none;
-}
-.books a:hover, .books a:focus {
-  text-decoration: none;
+.books {
+  list-style-type: none;
+  a:hover, a:focus {
+    text-decoration: none;
+    outline: none;
+  }
 }
 
 .pagination{
@@ -136,10 +136,8 @@ li .bookInfo{
 }
 
 .book {
-    margin-bottom: 15px;
-	margin-top: 18px;
-    float: left;
-    width: 350px;
+    margin-top: 18px;
+    max-width: 350px;
 
     a{
         color:@darkText;
@@ -150,27 +148,15 @@ li .bookInfo{
       text-decoration:none; //this isn't working. We only wan the title to get underlined.
     }
 
+    .bookTitle {
+      font-weight: bold;
+    }
     //There is probably a more elegant way... this is copied from scaffolding.less with the booktitle added
     a:hover .bookTitle,
     a:focus  .bookTitle{
       color: @link-hover-color;
       text-decoration: underline;
     }
-}
-
-.book-search {
-  border: 2px solid @darkGray;
-  .searchBtn {
-    height: 30px;
-    width: 40px;
-    color: white;
-    font-size: 20px;
-    background-color: @darkGray;
-    border-style: none;
-    i:hover {
-      color: white;
-    }
-  }
 }
 
 .filterBar {
@@ -241,12 +227,12 @@ div.bookshelves
   left: -@filterBarWidth;
 }
 
-@media screen and (min-width: @screen-md) {
+@media screen and (min-width: @screen-sm) {
   .row-offcanvas {
     left: @filterBarWidth;
   }
 }
-@media screen and (max-width: @screen-sm-max) {
+@media screen and (max-width: @screen-xs-max) {
   .row-offcanvas {
     position: relative;
     -webkit-transition: all .25s ease-out;
@@ -271,7 +257,6 @@ div.bookshelves
 }
 
 .searchRow {
-  height: 34px;
   .input-group {
     width: 200px;
   }
