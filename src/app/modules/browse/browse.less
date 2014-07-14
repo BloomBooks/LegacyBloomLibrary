@@ -92,8 +92,7 @@ li .bookInfo {
   -color: lightgray;
 }
 .book {
-    margin-top: 18px;
-    max-width: 350px;
+  margin-top: 18px;
   a {
     color: @darkText;
   }
@@ -102,9 +101,9 @@ li .bookInfo {
     color: @darkText;
     text-decoration: none;
   }
-    .bookTitle {
-      font-weight: bold;
-    }
+  .bookTitle {
+    font-weight: bold;
+  }
   //There is probably a more elegant way... this is copied from scaffolding.less with the book title added
   a:hover .bookTitle,
   a:focus .bookTitle {
@@ -114,6 +113,8 @@ li .bookInfo {
 }
 .filterBar {
   background-color: @darkGray;
+  .border-bottom-radius(10px);
+  .border-left-radius(0px);
   color: @lightGray;
   line-height: 20px;
   h1, h2, h3, h4, h5, h6 {
@@ -158,26 +159,27 @@ div.bookshelves {
   left: 0;
   margin: 1px 0px 0px 1px;
 }
+.sidebarToggle .icon-caret-left {
+  font-size: 24px;
+}
 
 /*
  * Off Canvas
  * --------------------------------------------------
  */
-.row-offcanvas {
-  position: relative;
-  left: 0;
+.sidebar-offcanvas {
+  top: -@navbar-margin-bottom;
+  padding-top: 10px;
+  width: @filterBarWidth;
 }
-.row-offcanvas .sidebar-offcanvas {
-  left: -@filterBarWidth;
-}
-@media screen and (min-width:@screen-sm) {
-  .row-offcanvas {
-    left: @filterBarWidth;
-  }
+// Shouldn't need this, but it isn't working without it for some reason
+.sidebar-offcanvas, .row-offcanvas .rightContainer {
+  float: left;
 }
 @media screen and (max-width:@screen-xs-max) {
   .row-offcanvas {
     position: relative;
+    left: 0;
     -webkit-transition: all .25s ease-out;
          -o-transition: all .25s ease-out;
             transition: all .25s ease-out;
@@ -188,13 +190,10 @@ div.bookshelves {
       display: none !important;
     }
   }
-}
-.sidebar-offcanvas {
-  position: absolute;
-  top: -@navbar-margin-bottom;
-  bottom: 0;
-  padding-top: 10px;
-  width: @filterBarWidth;
+  .sidebar-offcanvas {
+    left: -@filterBarWidth;
+    position: absolute;
+  }
 }
 
 .searchRow {

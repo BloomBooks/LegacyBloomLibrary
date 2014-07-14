@@ -128,6 +128,13 @@
             $('[data-toggle="offcanvas"]').click(function () {
                 $('.row-offcanvas').toggleClass('active');
             });
+
+            // When the sidebar is open on a small device, collapse it when user navigates
+            $(document).on('click','.row-offcanvas',function(e) {
+                if( $(e.target).is('a') ) {
+                    $('.row-offcanvas').removeClass('active');
+                }
+            });
         }])
         .controller('CarouselCtrl', ['$scope', 
             function ($scope) {
