@@ -68,7 +68,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 						// Default to page 1 if undefined
 						sliceStart = 0;
 					}
-					$scope.pageItemsFunction({ first: sliceStart, itemsPerPage: $scope.itemsPerPage });
+					$scope.pageItemsFunction({ first: sliceStart, itemsPerPage: Number($scope.itemsPerPage) });
 
 					// Update the pages index, which depends on currentPage.
 					// Enhance: a separate function would be nicer, but it's tricky to call one
