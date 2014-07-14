@@ -10,8 +10,13 @@
             <li class="next" ng-class="{disabled: currentPage == noOfPages}"><a href ng-click="nextPage()">Next</a></li> <!-- Next page button -->
         </ul>
     </div> <!-- ends page index -->
-    <div class="pagination">Items per page: <select ng-model="itemsPerPage"> <!-- items-per-page control -->
-            <option value="3">3</option><option value="5">5</option><option selected value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option> <!-- the options -->
+    <div class="pagination">Items per page: 
+        <select ng-model="itemsPerPage"> <!-- items-per-page control -->
+            <option value="4">4</option>
+            <option selected value="10">10</option>
+            <option value="24">24</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
         </select>
     </div>
 </div>
