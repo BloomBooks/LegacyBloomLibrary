@@ -88,7 +88,12 @@
                 $state.go('browse', {tag:tagName}); // keep other params unchanged.
             };
             $scope.filterShelf = function(shelfName) {
-                $state.go('browse', {search: '', shelf:shelfName}); // keep other params unchanged.
+                if (shelfName === '') {
+                    // User selected "All Books"
+                    $state.go('browse', {search:'', shelf:shelfName, lang:'', tag:''});
+                } else {
+                    $state.go('browse', {search:'', shelf:shelfName}); // keep other params unchanged.
+                }
             };
             $scope.filterMyUploads = function() {
                 if (authService.isLoggedIn()) {
