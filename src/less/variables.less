@@ -62,3 +62,13 @@
 
 @link-color: @bloomRed;
 @link-hover-color: @bloomRed;
+
+/**
+ * Shortcut so you don't have to use all 4 lines each time
+ */
+.border-radius(@radius){
+  .border-top-radius(@radius);
+  .border-right-radius(@radius);
+  .border-bottom-radius(@radius);
+  .border-left-radius(@radius);
+}
