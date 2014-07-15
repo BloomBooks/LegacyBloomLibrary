@@ -42,6 +42,10 @@
             $scope.isActive = function (viewLocation) { 
                 return viewLocation === $location.path();
             };
+            
+            $scope.isBookLibrary = function () {
+                return $.inArray($location.path(), ['/home','/features','/installers','/installers/old','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
+            };
 
             // When the navbar is open on a small device (i.e. shown vertically),
             // collapse it when user navigates

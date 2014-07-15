@@ -13,6 +13,9 @@ a {
 .right {
   float: right;
 }
+.highlight {
+  color: @bloomRed;
+}
 .mandatoryfields {
   display: none;
 }
@@ -58,7 +61,7 @@ div.container.not-centered {
   border-radius: 0;
 }
 @media (min-width:@grid-float-breakpoint) {
-  .navbar li.enlarge.active a {
+  .navbar li.navbar-lg a {
     font-size: @site-header-font-size * 1.75;
     margin-top: -4px;
   }
@@ -78,12 +81,43 @@ div.container.not-centered {
     }
   }
 }
-.site-header .user {
+#book-library-link-lg {
+  @media (max-width:@grid-float-breakpoint-max) {
+    display: none;
+  }
+}
+#book-library-link-sm {
+  @media (min-width:@grid-float-breakpoint) {
+    display: none;
+  }
+}
+#user-name {
+  line-height: @line-height-computed;
+  padding: 10px 15px;
+}
+.site-header .editor-link {
+  a {
+    color: @lightGray;
+  }
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+  a:hover .hover-highlight, a:focus .hover-highlight {
+    color: @bloomRed;
+    //text-decoration: underline;
+  }
+  font-size: 12px;
+  text-align: right;
   position: absolute;
-  top: -15px;
+  top: -10px;
   right: 0;
   padding-right: 15px;
   @media (max-width:@grid-float-breakpoint-max) {
+    display: none;
+  }
+}
+#editor-link-sm {
+  @media (min-width:@grid-float-breakpoint) {
     display: none;
   }
 }
