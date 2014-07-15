@@ -30,9 +30,8 @@
                 <div class="container-fluid">
                     <div class="searchRow row">
                         <div class="col-md-6" style="padding-bottom:10px">
-                            <div ng-hide="bookCount==0">Found {{bookCount}} books</div>
+                            <div ng-show="initialized">{{bookMessage}}</div>
                             <div ng-show="!initialized">Searching...</div>
-                            <div ng-show="initialized && bookCount==0">Sorry, there are no books that match your search.</div>
                         </div>
                         <div class="col-md-6" style="padding-bottom:10px">
                             <form ng-submit="SearchNow()">

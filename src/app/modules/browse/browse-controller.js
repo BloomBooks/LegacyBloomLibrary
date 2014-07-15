@@ -37,8 +37,8 @@
 	});
 
 	angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $timeout, bookService, $state, $stateParams, bookCountService) {
+	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService',
+								function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
@@ -56,11 +56,63 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
+        
+        function getBookMessage(languages, count) {
+            var message = [];
+            var shelfMessage = $scope.shelfName;
+            if ($scope.shelfName === 'Featured') {
+                shelfMessage = 'Featured';
+            } else if ($scope.shelfName === '$recent') {
+                shelfMessage = 'New Arrival';
+            }
+            if (count === 0) {
+                message = [
+                    "There are no books that match your search for ",
+                    shelfMessage,
+                    " ",
+                    languageService.getDisplayName(languages, $scope.lang),
+                    " books "
+                ];
+            } else {
+                message = [
+                    "Found ",
+                    count,
+                    " ",
+                    shelfMessage,
+                    " ",
+                    languageService.getDisplayName(languages, $scope.lang)
+                ];
+                if (count === 1) {
+                    message.push(" book ");
+                } else {
+                    message.push(" books ");
+                }
+            }
+            if ($scope.tag) {
+                message.push(
+                    " with the ",
+                    tagService.getDisplayName($scope.tag),
+                    " tag"
+                );
+            }
+            if ($scope.searchText) {
+                message.push(
+                    " containing \"",
+                    $scope.searchText,
+                    "\""
+                );
+            }
+            return message.join("");
+        }
 
         $scope.getFilteredBookCount = function() {
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
                 $scope.currentPage = 1;
                 $scope.bookCount = $scope.bookCountObject.bookCount = count;
+                
+                languageService.getLanguages().then(function(languages) {
+                    $scope.bookMessage = getBookMessage(languages, count);
+                });
                 $scope.setPage = function () {
                 };
                 $scope.initialized = true;
