@@ -480,9 +480,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.deleteBook = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
-
+	} ])
+    .service('languageService', ['$rootScope', '$q', '$filter', function($rootScope, $q, $filter) {
         // We want all the languages we know.
-        // Review: should this be in its own service, since it's not particularly related to books?
         this.getLanguages = function () {
             var defer = $q.defer(); // used to implement angularjs-style promise
 
@@ -494,7 +494,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             query.limit(1000); // we want all the languages there are, but this is the most parse will give us.
 
             // query.find returns a parse.com promise, but it is not quite the same api as
-            // as an angularjs promise. Instead, translate its find and error funtions using the
+            // as an angularjs promise. Instead, translate its find and error functions using the
             // angularjs promise.
             query.find({
                 success: function (results) {
@@ -513,7 +513,26 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
             return defer.promise;
         };
+        this.getDisplayName = function(allLanguages, langId) {
+            if (langId) {
+                return $filter('filter')(allLanguages, {isoCode: langId})[0].name;
+            } else {
+                return "";
+            }
+        };
 	} ])
+    .service('tagService', function() {
+        this.getTags = function () {
+            return [            
+                // Replicated from Bloom.Book.RuntimeInformationInjector.AddUISettingsToDom().
+                // Eventually this will be user-extensible and retrieved using a query on some new table.
+                "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
+            ];
+        };
+        this.getDisplayName = function(tagId) {
+            return tagId;
+        };
+    })
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
 		var checkforerror = function (callback) {
 

@@ -61,8 +61,8 @@
                 return viewLocation === $location.path();
             };
         }])
-		.controller('LeftSidebar', ['$scope', '$state', '$location', '$rootScope', 'bookService', 'authService', '$modal',
-            function ($scope, $state, $location, $rootScope, bookService, authService, $modal) {
+		.controller('LeftSidebar', ['$scope', '$state', '$location', '$rootScope', 'bookService', 'languageService', 'tagService', 'authService', '$modal',
+            function ($scope, $state, $location, $rootScope, bookService, languageService, tagService, authService, $modal) {
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
@@ -120,14 +120,10 @@
 //                {isoCode: 'id', name:'Bahasia Indonesia'},
 //                {isoCode: 'fr', name:'French'}
 //            ];
-                bookService.getLanguages().then(function(languages) {
-                    $scope.topLanguages = languages;
-                });
-                // Replicated from Bloom.Book.RuntimeInformationInjector.AddUISettingsToDom().
-                // Eventually this will be user-extensible and retrieved using a query on some new table.
-                $scope.topTags = [
-                    "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
-                ];
+            languageService.getLanguages().then(function(languages) {
+                $scope.topLanguages = languages;
+            });
+            $scope.topTags = tagService.getTags();
 
             // Toggle sidebar
             $('[data-toggle="offcanvas"]').click(function () {
