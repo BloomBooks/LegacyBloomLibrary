@@ -8,7 +8,8 @@
             $stateProvider.state('installers', {
                 url: "/installers",
                 templateUrl: 'modules/installers/installers.tpl.html',
-                controller: 'InstallersCtrl'
+                controller: 'InstallersCtrl',
+                title: 'Download'
             });
 
             //TODO: this should be installers.old, but when set, it becomes unreachable, with no console errors

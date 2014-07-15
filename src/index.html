@@ -25,10 +25,10 @@
   <body>
     <div class="page-wrap">
         <div class="site-header" ng-controller="HeaderCtrl">
-            <nav class="navbar navbar-inverse" role="navigation">
+            <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-header-navbar">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#editor-navbar-elements">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -37,20 +37,16 @@
                         <a class="navbar-brand" href="#/home">
                             <img src="assets/bloomNavbarLogo.svg"/>
                         </a>
-                        <div class="user">
-                            &nbsp;
-                            <span class="pull-right" ng-if="isLoggedIn()">{{userName()}}</span>
-                        </div>
                     </div>
-                    <div class="collapse navbar-collapse" id="site-header-navbar">
+                    <div class="collapse navbar-collapse" id="editor-navbar-elements">
                         <ul class="nav navbar-nav">
                             <li ng-class="{active: isActive('/home')}" class="home"><a href="#/home">Home</a></li>
                             <li ng-class="{active: isActive('/features')}"><a href="#/features">Features</a></li>
                             <li ng-class="{active: isActive('/download')}"><a href="#/installers">Download</a></li>
-                            <li ng-class="{active: isActive('/support')||isActive('/about')||isActive('/opensource')||isActive('/suggestions')}" class="dropdown">
+                            <li ng-class="{active: isActive('/support')}"><a href="#/support">Support</a></li>
+                            <li ng-class="{active: isActive('/about')||isActive('/opensource')||isActive('/suggestions')}" class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#/support">Support</a></li>
                                     <li><a href="#/about">About</a></li>
                                     <li><a href="#/opensource">Open Source</a></li>
                                     <li><a href="#/suggestions">Suggestions</a></li>
@@ -58,10 +54,39 @@
                             </li>
                         </ul>
                         <ul ng-cloak class="nav navbar-nav navbar-right">
-                            <li ng-class="{active: isActive('/browse')}" class="enlarge"><a href="#/browse">Book Library</a></li>
+                            <li><a href="#/browse" id="book-library-link-lg">Check out the Book Library</a></li>
+                            <li><a href="#/browse" id="book-library-link-sm">Book Library</a></li>
+                        </ul>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </nav>
+            <nav ng-show="isBookLibrary()" id="book-library-navbar" class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#book-library-navbar-elements">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#/home">
+                            <img src="assets/bloomNavbarLogo.svg"/>
+                        </a>
+                        <div class="editor-link">
+                            &nbsp;
+                            <a href="#/home"><span class="pull-right">Make these books in <span class="highlight">your language</span><br/>with the <span class="hover-highlight">Bloom Editor</span></span></a>
+                        </div>
+                    </div>
+                    <div class="collapse navbar-collapse" id="book-library-navbar-elements">
+                        <ul ng-cloak class="nav navbar-nav">
+                            <li ng-class="{active: isActive('/browse')}" class="navbar-lg"><a href="#/browse">Book Library</a></li>
+                        </ul>
+                        <ul ng-cloak class="nav navbar-nav navbar-right">
                             <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="#/signup">Sign Up</a></li>
                             <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="#/login">Log In</a></li>
-                            <li><a class="logout" ng-click="logout()" ng-if="isLoggedIn()">Log Out</a></li>
+                            <li id="user-name" ng-if="isLoggedIn()">{{userName()}}</li>
+                            <li ng-if="isLoggedIn()"><a class="logout" ng-click="logout()">Log Out</a></li>
+                            <li><a id="editor-link-sm" href="#/home">Bloom Editor</a></li>
                         </ul>
                     </div>
                 </div><!-- /.container-fluid -->
