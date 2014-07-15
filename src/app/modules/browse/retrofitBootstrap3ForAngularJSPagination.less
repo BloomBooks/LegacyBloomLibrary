@@ -8,9 +8,13 @@ overflow: visible;
 */
 /* make paginator work: see http://stackoverflow.com/a/18004893/723299 */
 
+.pagination {
+  padding-top: 20px;
+  padding-left: 15px;
+}
 .pagination ul{
   display: inline-block;
-  margin: 20px 0;
+  margin: 0;
   border-radius: 4px;
 }
 
@@ -28,6 +32,9 @@ overflow: visible;
   text-decoration: none;
   background-color: #eeeeee;
   border-radius: 1.5em;
+}
+.page-number.first  > a {
+  margin-left: 0px;
 }
 
 .pagination ul> li > span {
