@@ -64,6 +64,10 @@
                 shelfMessage = 'Featured';
             } else if ($scope.shelfName === '$recent') {
                 shelfMessage = 'New Arrival';
+            } else if ($scope.shelfName === '$myUploads') {
+                shelfMessage = '\"My Upload\"';
+            } else {
+                shelfMessage = '';
             }
             if (count === 0) {
                 message = [
