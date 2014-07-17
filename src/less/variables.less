@@ -24,13 +24,15 @@
 /**
  * Navbar
  */
-@grid-float-breakpoint: 950px; //Where the navbar collapses
+@navbar-small-breakpoint: 920px; //Where the navbar goes into our custom "small mode"
+@navbar-small-breakpoint-max: (@navbar-small-breakpoint - 1);
+@grid-float-breakpoint: 600px; //Where the navbar collapses
 @navbar-height: 84px;
 @navbar-inverse-color: @lightGray;
 @navbar-inverse-bg: @darkGray;
 @navbar-inverse-link-color: @navbar-inverse-color;
 @navbar-inverse-link-hover-color: @bloomRed;
-@navbar-inverse-link-active-bg: @navbar-inverse-bg;
+@navbar-inverse-link-active-bg: none;
 @navbar-inverse-toggle-border-color: @navbar-inverse-color;
 @navbar-padding-vertical: 10px;
 

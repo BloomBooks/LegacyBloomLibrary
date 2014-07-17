@@ -61,10 +61,16 @@ div.container.not-centered {
   border: none;
   border-radius: 0;
 }
-@media (min-width:@grid-float-breakpoint) {
+@media (max-width:@navbar-small-breakpoint-max) and (min-width:@grid-float-breakpoint) {
+  .navbar-brand img {
+    height: 35px;
+  }
+}
+@media (min-width:@navbar-small-breakpoint) {
   .navbar li.navbar-lg a {
     font-size: @site-header-font-size * 1.75;
     margin-top: -4px;
+    margin-left: 18px; //Line up the menu item with the books
   }
 }
 @media (min-width:@grid-float-breakpoint) {
@@ -84,19 +90,19 @@ div.container.not-centered {
       padding-right: 0;
     }
   }
-}
-#book-library-menu {
-  @media (min-width:@grid-float-breakpoint) {
-    margin-left: 18px; //Line up the menu item with the books
+  @media (max-width:@navbar-small-breakpoint-max) and (min-width:@grid-float-breakpoint) {
+    .navbar-collapse ul:first-child {
+      margin-left: -140px;
+    }
   }
 }
 #book-library-link-lg {
-  @media (max-width:@grid-float-breakpoint-max) {
+  @media (max-width:@navbar-small-breakpoint-max) {
     display: none;
   }
 }
 #book-library-link-sm {
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width:@navbar-small-breakpoint) {
     display: none;
   }
 }
