@@ -54,6 +54,7 @@
                             </li>
                         </ul>
                         <ul ng-cloak class="nav navbar-nav navbar-right">
+                            <!-- Only one of the following will be shown (based on css) -->
                             <li><a href="#/browse" id="book-library-link-lg">Check out the Book Library</a></li>
                             <li><a href="#/browse" id="book-library-link-sm">Book Library</a></li>
                         </ul>
@@ -72,20 +73,22 @@
                         <a class="navbar-brand" href="#/home">
                             <img src="assets/bloomNavbarLogo.svg"/>
                         </a>
-                        <div class="editor-link">
+                        <!-- CSS ensures either this (editor-link-lg) or the li below (editor-link-sm) will be displayed -->
+                        <div id="editor-link-lg">
                             &nbsp;
                             <a href="#/home"><span class="pull-right">Make these books in <span class="highlight">your language</span><br/>with the <span class="hover-highlight">Bloom Editor</span></span></a>
                         </div>
                     </div>
                     <div class="collapse navbar-collapse" id="book-library-navbar-elements">
-                        <ul ng-cloak class="nav navbar-nav">
+                        <ul id="book-library-menu" ng-cloak class="nav navbar-nav">
                             <li ng-class="{active: isActive('/browse')}" class="navbar-lg"><a href="#/browse">Book Library</a></li>
                         </ul>
-                        <ul ng-cloak class="nav navbar-nav navbar-right">
+                        <ul id="credentials-menu" ng-cloak class="nav navbar-nav navbar-right">
                             <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="#/signup">Sign Up</a></li>
                             <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="#/login">Log In</a></li>
                             <li id="user-name" ng-if="isLoggedIn()">{{userName()}}</li>
                             <li ng-if="isLoggedIn()"><a class="logout" ng-click="logout()">Log Out</a></li>
+                            <!-- CSS ensures either this (editor-link-sm) or the div above (editor-link-lg) will be displayed -->
                             <li><a id="editor-link-sm" href="#/home">Bloom Editor</a></li>
                         </ul>
                     </div>
