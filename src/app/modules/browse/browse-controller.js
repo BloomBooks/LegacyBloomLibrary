@@ -57,7 +57,7 @@
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
         
-        function getBookMessage(languages, count) {
+        function getBookMessage(count) {
             var message = [];
             var shelfMessage = $scope.shelfName;
             if ($scope.shelfName === 'Featured') {
@@ -74,7 +74,7 @@
                     "There are no books that match your search for ",
                     shelfMessage,
                     " ",
-                    languageService.getDisplayName(languages, $scope.lang),
+                    languageService.getDisplayName($scope.lang),
                     " books "
                 ];
             } else {
@@ -84,7 +84,7 @@
                     " ",
                     shelfMessage,
                     " ",
-                    languageService.getDisplayName(languages, $scope.lang)
+                    languageService.getDisplayName($scope.lang)
                 ];
                 if (count === 1) {
                     message.push(" book ");
@@ -113,10 +113,7 @@
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
                 $scope.currentPage = 1;
                 $scope.bookCount = $scope.bookCountObject.bookCount = count;
-                
-                languageService.getLanguages().then(function(languages) {
-                    $scope.bookMessage = getBookMessage(languages, count);
-                });
+                $scope.bookMessage = getBookMessage(count);
                 $scope.setPage = function () {
                 };
                 $scope.initialized = true;
