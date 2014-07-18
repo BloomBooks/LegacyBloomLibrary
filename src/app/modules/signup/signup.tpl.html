@@ -10,7 +10,7 @@
                                     <label>Email Address</label>
                                     <input required type="email" class="userNameInput"
                                            placeholder="Enter your email address" ng-model="record.email"
-                                           name="email" id="email" ng-blur="checkUserAccount()" />
+                                           name="email" id="email" ng-blur="checkUserAccount()" focus-on-load />
                                     <span ng-show="userNameLoading"><img id="userNameLoading" src="assets/loading-small.gif" class="input-icon" /></span>
                                     <span ng-show="userNameOk"><img id="userNameOk" src="assets/tick.png" class="input-icon" title="User name is available!" /></span>
                                     <span ng-show="userNameExists"><img id="userNameExists" src="assets/exclamation.png" class="input-icon" title="User name already exists!" /></span>
