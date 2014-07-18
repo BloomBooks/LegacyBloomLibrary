@@ -7,10 +7,13 @@
 		// least won't follow them.). This is needed for the Open in Bloom button, mailto links. adding bloom is the unusual thing.
 		// This seems to be global...any additions might need to go in other instances as well to make them work.
 		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
+        
+        var detailModalInstance;
+        
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
 			onEnter: function ($state, $modal) {
-				var detailModalInstance = $modal.open({
+				detailModalInstance = $modal.open({
 					templateUrl: 'modules/detail/detail.tpl.html',
 					controller: 'DetailCtrl'
 				});
@@ -29,7 +32,18 @@
 					params.tag = $state.params.tag;
 					$state.transitionTo("browse", params);
 				});
-			}
+			},
+            onExit: function() {
+                // The code below is needed to close the modal when going back in the browser.
+                // The catch is needed because it throws an exception if the modal is 
+                // closed normally (close button, click backdrop, click the x).
+                // Not ideal, but I haven't found a better way.
+                try {
+                    detailModalInstance.close();
+                } catch(err) {
+                    //ignore
+                }
+            }
 		});
 	})
 		//we get a json list like ['me','you'] and we return 'me, you'
@@ -107,13 +121,6 @@
 		$scope.close = function () {
 			$modalInstance.close();
 		};
-		
-		// This is so the modal closes when the back button in the browser is used.
-		// After upgrading all the libraries (such as from Bootstrap 2 to 3), this is causing
-		// the modal to close as soon as it is open.  We may need to find another solution for this.
-		//$scope.$on('$locationChangeSuccess', function (event) {
-		//	$modalInstance.close();
-		//});
 
 		$scope.showLicense = function() {
 			$modal.open({
