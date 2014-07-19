@@ -8,9 +8,13 @@ overflow: visible;
 */
 /* make paginator work: see http://stackoverflow.com/a/18004893/723299 */
 
-.pagination {
-  padding-top: 20px;
+.pagination, .itemsPerPage{
   padding-left: 15px;
+  color: @darkGray;
+
+}
+.pagination {
+  padding-top: 50px;
 }
 .pagination ul{
   display: inline-block;
@@ -25,12 +29,12 @@ overflow: visible;
 .pagination ul> li > a{
   position: relative;
   float: left;
-  color: #808080;
+  color: @darkGray;
   padding: 6px 12px;
   margin-left: 3px;
   line-height: 1.428571429;
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: @lightGray;
   border-radius: 1.5em;
 }
 .page-number.first  > a {
@@ -51,15 +55,20 @@ overflow: visible;
 .pagination ul> li.next > a,
 .pagination ul> li.previous > a
 {
-  background-color: #ffffff;
+  background-color: @lightGray;
   border: none;
 }
-
+select{
+  //color: @darkGray;
+  background-color: @lightGray;
+}
 .pagination ul> li.disabled
 {
   display:none;
 }
-
+.previous{
+  display: none !important;
+}
 .pagination ul> li:first-child > a,
 .pagination ul> li:first-child > span {
   margin-left: 0;
@@ -86,9 +95,10 @@ overflow: visible;
 .pagination ul> .active > a:focus,
 .pagination ul> .active > span:focus {
   z-index: 2;
-  color: #ffffff;
+  color: @darkGray;//#ffffff;
   cursor: default;
-  background-color: #666666;
+  background-color: #cccccc;
+  border-color: @darkGray;
 }
 
 .pagination ul> .disabled > span,
