@@ -84,7 +84,7 @@ div.container.not-centered {
   .navbar li.navbar-lg a {
     font-size: @site-header-font-size * 1.75;
     margin-top: -4px;
-    margin-left: 18px; //Line up the menu item with the books
+    margin-left: 3px; //Line up the menu item with the books
   }
 }
 @media (min-width:@grid-float-breakpoint) {
@@ -134,6 +134,9 @@ div.container.not-centered {
   a:hover .hover-highlight, a:focus .hover-highlight {
     color: @bloomRed;
   }
+  a .hover-highlight {
+    text-decoration: underline;
+  }
   font-size: 12px;
   text-align: right;
   position: absolute;
@@ -154,7 +157,7 @@ div.container.not-centered {
   padding-bottom: 0;
 }
 .site-header .navbar-brand img {
-  margin: 10px 0px;
+  margin: 10px 0px 10px 15px;
 }
 // The following makes a smoother transition when using two collapsible navbars
 @media (max-width:@grid-float-breakpoint-max) {
