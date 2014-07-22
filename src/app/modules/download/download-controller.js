@@ -3,33 +3,31 @@
 
     // This module manages the warning page that comes up when a book is first downloaded.
     // its url looks like download/bookId.
-    // It's Continue button will attempt to download the specified book.
-    angular.module('BloomLibraryApp.download', ['ui.router'])//, "restangular"])
-        .config(function config($urlRouterProvider, $stateProvider){//}, $compileProvider) {
+    angular.module('BloomLibraryApp.download', ['ui.router'])
+    // Its Continue button will attempt to download the specified book.
+        .config(function config($urlRouterProvider, $stateProvider) {
 
-            // REVIEW: is this needed anymore, as we aren't making direct links to the download url?
-
-            // Tell angular that urls starting with bloom: are OK. (Otherwise it marks them 'unsafe' and Chrome at
-            // least won't follow them.). This is needed for the Continue button.
-           // $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
-
-            //we have an abstract parent state that just holds the book id,
-            // and then a child for 'preflighting' new users, and another for
-            // telling them it is coming.
-            $stateProvider.state('downloadBook', {
-                url: "/downloadBook/:bookId",
+            // We have an abstract parent state
+            // and then a child for 'preflighting' new users
+            // and another for telling them it is coming.
+            $stateProvider.state('browse.detail.downloadBook', {
+                url: "/downloadBook",
                 abstract: true,
-                template: '<ui-view/>',
-                controller: 'DownloadCtrl'
+                views: {
+                    '@': {
+                        template: '<ui-view/>',
+                        controller: 'DownloadCtrl'
+                    }
+                }
             });
             // Give the user a few last words about what they need for a successful download.
-            $stateProvider.state('downloadBook.preflight', {
+            $stateProvider.state('browse.detail.downloadBook.preflight', {
                 url: "/preflight",
                 templateUrl: 'modules/download/preflight.tpl.html',
                 controller: 'DownloadCtrl'
             });
             // Downloading happens in this state
-            $stateProvider.state('downloadBook.hereItComes', {
+            $stateProvider.state('browse.detail.downloadBook.hereItComes', {
                 url: "/hereItComes",
                 templateUrl: 'modules/download/hereItComes.tpl.html',
                 controller: 'DownloadCtrl'
@@ -54,7 +52,7 @@
             $scope.isWindows = navigator.platform == "Win32";
 
             $scope.cancel = function () {
-                $state.go('browse'); //we're done here. Go back home. Review: should we go instead to detail/bookId?
+                $state.go('^.^'); //we're done here. Go back to the detail.
             };
 
             // Our state hierarchy has "download", with two children: preflight and hereItComes.
@@ -68,7 +66,7 @@
                     if($state.current.name.indexOf('preflight') > -1 &&
                         localStorageService.get('skipDownloadPreflight')==='true') {
                         event.preventDefault();
-                        $state.go("downloadBook.hereItComes");
+                        $state.go("browse.detail.downloadBook.hereItComes");
                     }
                     if($state.current.name.indexOf('hereItComes') > -1){
                         //get the book for which we're going to show the details asynchronously,

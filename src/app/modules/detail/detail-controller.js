@@ -12,36 +12,10 @@
         
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
-			onEnter: function ($state, $modal) {
-				detailModalInstance = $modal.open({
-					templateUrl: 'modules/detail/detail.tpl.html',
-					controller: 'DetailCtrl'
-				});
-				
-				detailModalInstance.result.then(function () {
-					// Return to browse view when detail closes. Adding $state.params preserves
-					// any current filter parameters the browser view was using, such as the search string.
-					// The result passed to the call to close() indicates whether we need to force
-					// a reload of the browse view (i.e., when we have deleted a book).
-					// Currently it seems to work without doing anything different when result is true.
-					// I'm not sure why.
-					var params = {};
-					params.search = $state.params.search;
-					params.shelf = $state.params.shelf;
-					params.lang = $state.params.lang;
-					params.tag = $state.params.tag;
-					$state.transitionTo("browse", params);
-				});
-			},
-            onExit: function() {
-                // The code below is needed to close the modal when going back in the browser.
-                // The catch is needed because it throws an exception if the modal is 
-                // closed normally (close button, click backdrop, click the x).
-                // Not ideal, but I haven't found a better way.
-                try {
-                    detailModalInstance.close();
-                } catch(err) {
-                    //ignore
+            views: {
+                '@': {
+                    templateUrl: 'modules/detail/detail.tpl.html',
+                    controller: 'DetailCtrl'
                 }
             }
 		});
@@ -99,8 +73,8 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$state', '$stateParams', 'bookService', '$location', '$cookies', 'bookCountService', '$modal', '$modalInstance',
-	function ($scope, authService, $state, $stateParams, bookService, $location, $cookies, bookCountService, $modal, $modalInstance) {
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', '$modal',
+	function ($scope, authService, $stateParams, bookService, bookCountService, $modal) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
 		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
@@ -117,10 +91,6 @@
                 $scope.isBookFeatured = result;
             });
         }
-
-		$scope.close = function () {
-			$modalInstance.close();
-		};
 
 		$scope.showLicense = function() {
 			$modal.open({
