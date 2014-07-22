@@ -2,7 +2,7 @@
     'use strict';
 
     // This module manages the warning page that comes up when a book is first downloaded.
-    // its url looks like download/bookId.
+    // its url looks like downloadBook/bookId.
     angular.module('BloomLibraryApp.download', ['ui.router'])
     // Its Continue button will attempt to download the specified book.
         .config(function config($urlRouterProvider, $stateProvider) {
@@ -37,6 +37,12 @@
     angular.module('BloomLibraryApp.download').controller('DownloadCtrl', ['$scope', '$state', '$stateParams','bookService', '$location', 'localStorageService','$rootScope',
 
         function ($scope, $state, $stateParams, bookService, $location, localStorageService, $rootScope) {
+            // Used to get the book title to display on pre-flight.
+            // Review: Is there a good way to have this only happen for preflight?
+            bookService.getBookById($stateParams.bookId).then(function(book) {
+                $scope.book = book;
+            });
+        
             //when the user clicks this checkbox, store their preference
             $scope.$watch('skipDownloadPreflight', function() {
                 localStorageService.set('skipDownloadPreflight',$scope.skipDownloadPreflight);
