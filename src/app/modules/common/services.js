@@ -482,6 +482,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		};
 	} ])
     .service('languageService', ['$rootScope', '$q', '$filter', function($rootScope, $q, $filter) {
+        var languageList; // Used to cache the list
+    
         // We want all the languages we know.
         this.getLanguages = function () {
             var defer = $q.defer(); // used to implement angularjs-style promise
@@ -502,6 +504,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     for (i = 0; i < results.length; i++) {
                         objects[i] = results[i].toJSON();
                     }
+                    languageList = objects;
                     // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
                     // NOT using it in this context.
                     $rootScope.$apply(function () { defer.resolve(objects); });
@@ -513,11 +516,19 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
             return defer.promise;
         };
-        this.getDisplayName = function(allLanguages, langId) {
-            if (langId) {
-                return $filter('filter')(allLanguages, {isoCode: langId})[0].name;
+        this.getDisplayName = function(langId) {
+            if (languageList) {
+                if (langId) {
+                    return $filter('filter')(languageList, {isoCode: langId})[0].name;
+                } else {
+                    return "";
+                }
             } else {
                 return "";
+                // Just in case we haven't gotten the language list yet.
+                // Theoretically, this shouldn't happen.  The first load will populate languageList, and
+                // we don't need to call getDisplayName until a filter is clicked.
+                // There may be a way to guarantee it is loaded first, but I haven't figured it out.
             }
         };
 	} ])
