@@ -1,5 +1,6 @@
 <div> <!--template must have one top-level element.-->
     <div ng-transclude></div> <!-- pulls in the body of what we are wrapping the list function around, from the caller -->
+    <div class="unfloat"></div>
     <div class="pagination" ng-hide="noOfPages==1"> <!-- The page index is a list inside a div (entirely hidden if only one page) -->
         <ul>
             <li class="previous" ng-class="{disabled: currentPage == 1}"><a href ng-click="prevPage()">Prev</a></li> <!-- the previous page button -->
@@ -10,6 +11,7 @@
             <li class="next" ng-class="{disabled: currentPage == noOfPages}"><a href ng-click="nextPage()">Next</a></li> <!-- Next page button -->
         </ul>
     </div> <!-- ends page index -->
+    <div class="single-page-spacer" ng-hide="noOfPages>1"></div>
     <div class="itemsPerPage">Items per page:
         <select ng-model="itemsPerPage"> <!-- items-per-page control -->
             <option selected value="10">10</option>
