@@ -35,6 +35,8 @@
 	$scope.logout = function () {
 		authService.logout();
 		silNoticeService.clear();
+        // Collapse navbar if in collapsible state.  Needed because logout isn't present when event handler below is attached.
+        $('.navbar-collapse.in').collapse('hide');
 		$state.go('browse');
 	};
             
@@ -153,7 +155,24 @@
                     image: 'assets/shellbook.png',
                     text: 'Bloom keeps things simple and efficient by offering a library of shell books. You just translate from a source language, and print.'
                 });
-        }]);
+        }])
+        // Add this directive to a form element we want to focus on page load.
+        // The code will watch for it, focus it, then stop watching.
+        .directive('focusOnLoad', function($timeout) {
+            return {
+                link: function(scope, element) {
+                    var clearWatch = scope.$watch(
+                        function() { return element; },
+                        function() {
+                            if (element[0]) {
+                                element[0].focus();
+                                clearWatch();
+                            }
+                        }
+                    );
+                }
+            };
+        });
 
 	//Angular provides a "limitTo" filter, this adds "startFrom" filter for use with pagination
 	BloomLibraryApp.filter('startFrom', function () {
