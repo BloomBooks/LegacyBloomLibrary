@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--[if lte IE 9 ]>
+    <meta http-equiv="refresh" content="0;url=assets/unsupportedBrowser.html">
+<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
 <html ng-app="BloomLibraryApp">
   <head>
     <title ng-bind="pageTitle">Bloom</title>
@@ -23,6 +27,14 @@
 
   </head>
   <body>
+    <noscript>
+        <!-- A message displayed when javascript is disabled or not supported.  It covers the whole page. -->
+        <div style="position: fixed; top: 0px; left: 0px; z-index: 3000; height: 100%; width: 100%; background-color: #FFFFFF; padding: 50px">
+        To use the Bloom Web site it is necessary to enable JavaScript.
+        Here are the <a href="http://www.enable-javascript.com/">
+        instructions how to enable JavaScript in your web browser</a>.
+        </div>
+    </noscript>
     <div class="page-wrap">
         <div class="site-header" ng-controller="HeaderCtrl">
             <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse" role="navigation">
@@ -104,3 +116,4 @@
     </div>
   </body>
 </html>
+<!--<![endif]-->
