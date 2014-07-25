@@ -40,8 +40,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return extractedData;
         });
         restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+            // Returning false indicates we wish to prevent any more processing.
+            if (response.data && response.data.error) {
+                // There is a valid message we wish to display to the user.
+                // Let the calling code handle it.
+                return true;
+            }
             errorHandlerService.handleRestangularError();
-            return true;
+            return false;
         });
 
         // These headers are the magic keys for our account at Parse.com
