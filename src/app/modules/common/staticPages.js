@@ -37,12 +37,12 @@
             });
             // This state manages the Features page in the menu.
             // its url looks like #/features.
-            $stateProvider.state('features', {
-                url: "/features",
-                templateUrl: 'modules/static/features.tpl.html',
-                controller: 'GoToTop',
-                title: 'Features'
-            });
+            //            $stateProvider.state('features', {
+            //                url: "/features",
+            //                templateUrl: 'modules/static/features.tpl.html',
+            //                controller: 'GoToTop',
+            //                title: 'Features'
+            //            });
             // This state manages the Download page in the menu (for downloading the desktop application).
             // its url looks like #/download.
             $stateProvider.state('download', {
