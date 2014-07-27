@@ -94,6 +94,9 @@ module.exports = {
          automatically copied to .less, and adding to src/main.less. */
     ],
     assets: [
+        'src/app/modules/static/landing/*.png',
+        'src/app/modules/static/landing/*.jpg',
+        'src/app/modules/static/landing/*.svg',
 		'vendor/fancybox/source/*.png',
         'vendor/fancybox/source/*.gif',
          'vendor/bootstrap-css/fonts/*.*' //for glyphicons-halflings.*

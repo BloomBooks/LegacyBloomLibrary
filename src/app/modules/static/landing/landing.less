@@ -1,0 +1,115 @@
+//@jumbocolor: #D99D2B;//orange
+@bloomBlue: #1D94A4;
+//green @jumbocolor: #779B53;
+//@jumbocolor: #1D94A4;//bloomblue
+@bloomPurple: #96668F; //bloompurple
+@altColor: @bloomLightBlue;//bloomPurple;
+@bloomSalmon: #E48C84;
+@bloomLightBlue: #B0DEE4;
+
+
+.jumbotron{
+  margin-top: -20px;//the navbar has a white bottom margin that we don't want to show
+  background-color: @darkGray;
+  color: @bloomRed;
+
+  h3{
+    line-height: 1.5em;
+  }
+  .verticalCenter{
+    margin-top: 50px;//todo: make this actually centered, not hard-coded
+  }
+  img{
+    height: 250px;
+    width: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.customerQuote{
+  margin-left: 40px;
+//  .personName:before{
+//    content: '-- ';
+//  }
+  .personName{
+    text-align: right;
+    line-height: 5px;
+  }
+}
+.customerQuote:before{
+  content:"\f10d";
+  font-family: "Fontawesome";
+  font-size: 20px;
+  float: left;
+  margin-right: 10px;
+}
+
+.landing
+{
+   font-size:15px;
+
+  .btn {
+    margin-top: 3em;
+    //  margin-left:2em;
+    color: @lightGray;
+    //border-color: @jumbocolor;
+    border-width: 0;
+     background-color: @bloomRed;
+    font-weight: bold;
+    font-size: 14pt;
+    width: 11em;
+  }
+
+  .section:nth-of-type(2n+1){
+    background-color: @lightGray;
+    color: @darkGray;
+  }
+
+  .section:nth-of-type(2n){
+    background-color: @altColor;
+    color: @darkGray;
+
+    a{
+      color: inherit;
+      text-decoration: underline;
+
+      &:hover, &:focus{
+        color: @darkGray;
+      }
+    }
+  }
+  .container {
+    .row{
+      margin-top: 3em;
+      margin-bottom: 3em;
+    }
+    P{
+      line-height: 30px;
+    }
+    img.videoInvitation {
+      margin-top: 20px;
+      height: 200px;
+    }
+    h1{
+      font-size: 35px;
+      text-align: center;
+    }
+
+    .comingSoon, .inThePlan{
+      color: @darkGray;
+    }
+    .comingSoon:after {
+      content: 'coming soon';
+      margin-left: 20px;
+      color: @bloomRed;
+    }
+    .inThePlan:after{
+      content: 'in the plan';
+      margin-left: 20px;
+      color: @bloomRed;
+    }
+
+  }
+
+}

@@ -1,0 +1,116 @@
+﻿mixin simpleSection
+	.section
+		.container
+			.row
+				.col-md-6
+					block
+
+mixin customerQuote
+	.col-md-4.pull-right.customerQuote
+		block
+
+html
+	head
+
+	body
+		.jumbotron
+			.container
+				.row
+					.col-md-6
+						.verticalCenter
+							h1 Let's Grow a Library
+							h3 Bloom makes it easy to create simple materials and  translate these materials into multiple languages.
+							//h3 Bloom is open source software that makes it easy for language groups to quickly produce their own library of books.
+							//.pull-left
+							//	a(href="#/installers")
+							//		button.btn.download-btn.btn-large Visit Book Library
+							//.pull-right
+							//	a(href="#/installers")
+							//		button.btn.download-btn.btn-large Download Bloom
+					.col-md-4.pull-right
+						img(src="assets/huyagirls.jpg")
+
+		.landing
+			.section
+				.container
+					.row
+						.col-md-6
+							H1 Goal: 10x More Books
+							P Here's the problem Bloom adresses: when working in local-language literacy projects, we end up settling for what is practical, instead of what is actually needed. The hope is often that a primer and a handful of books will be enough to open up the joy and power of reading in minority language communities. But realistically, we know that it takes <i>stacks</i> of titles to make reading worthwhile and give the practice needed to develop true literacy. The problem has been who will make all those books? How will we find the time? Where will we get the content? So we settle for the possible and hope for the best.
+						.col-md-4.pull-right
+								a(href="#/installers")
+									button.btn.download-btn.btn-large Visit Book Library
+						.col-md-4.pull-right
+								a(href="#/installers")
+									button.btn.download-btn.btn-large Download Bloom
+						//	img(src="assets/laptop.png").videoInvitation
+						//	a.iconfont-playvideo.play-desktop(data-height="500" data-width="900" data-url="http://www.youtube.com/watch?v=TTQHODxqf4w?rel=0&amp;autoplay=1&amp;controls=1&amp;showinfo=0&amp;color=white" href="http://youtu.be/UpPRxtVsZKI" target="_blank")
+						//	//img(src="assets/editing.png")
+			.section
+				.container
+					.row
+
+						.col-md-6.pull-left
+							H1 Build Local Capacity
+							P Bloom dramatically lowers the bar, so that many more people can get involved in building a large collection of local language books. Bloom was designed with new computer users in mind, and it has special features to guide them in simple book making, so people need far less training than alternatives such as Word, Publisher, or In Design.
+						+customerQuote
+							P This week a new typist joined our workshop, and I spent half an hour showing him Bloom and then left him to it. When I checked on him later in the day, he was doing just fine. I thought, What other program could I have put in front him such that he would be able to use it with just half an hour's orientation?!
+							.personName Prossy Nannyombi
+								P Uganda School Health and Reading Program
+
+			.section
+				.container
+					.row
+						.col-md-6.pull-left
+							H1 Online Source of Shell Books
+							P
+								| Bloom's&nbsp;
+								a(href="http://bloomlibrary.org/books") Book Library&nbsp;
+								| offers books from around the world for you to translate into a local language. With a single click, shell books are downloaded to your computer, ready to use even when you're offline.
+							P Got a book you'd like to share? Just add a major language translation (e.g. English, French, Thai) and then tell Bloom to upload it to the online library.
+						.col-md-3.pull-right
+							a(href="http://bloomlibrary.org/books")
+								img(src='assets/bookLibrarySmallScreenshot.png')
+			.section
+				.container
+					.row
+						.col-md-6.pull-left
+							H1 Power Where You Need It
+							P Bloom users find that it is not only easier to get started, but easy to do things that are difficult or impossible in the alternative tools. Things like:
+							ul
+								li PDF Booklet Creation
+								li Bilingual and trilingual books in a single click
+								li Individual reader to Big Book in a single click
+								li Calendars
+								li Picture Dictionaries
+								li Primers and Teacher's Guides
+								li.comingSoon Complex Non-roman Script Support
+								li.comingSoon Send/Receive Collaboration
+								li.comingSoon Decodable Reader Tool
+								li.comingSoon Leveled Reader Tool
+								li.inThePlan EBooks
+			.section
+				.container
+					.row
+						.col-md-6.pull-left
+							iframe(width='400', height='300', src='http://www.youtube.com/embed/TTQHODxqf4w?vq=hd720', frameborder='0', allowfullscreen='allowfullscreen')
+						.col-md-6
+							iframe.right(src='http://prezi.com/embed/benmszxl212z/?bgcolor=ffffff&lock_to_path=0&autoplay=no&autohide_ctrls=0', width='400', height='300', frameborder='0')
+
+			+simpleSection
+							H1 Limitations
+							P We're not selling anything here, so we're not going to claim that <i>everything</i> is easier in Bloom. Bloom may never be appropriate for things like prose books where you need text to flow from page to page. And the current version only handles simple books unless you get one of us to develop custom templates (this will be changing soon).
+			+simpleSection
+							H1 Getting Started
+							P Bloom currently requires Microsoft Windows, but doesn't require any money, nor an internet connection. If you're using a Mac, you can run it using&nbsp;
+								a(href="http://www.parallels.com/products/desktop/") Parallels
+								|&nbsp;or another&nbsp;
+								a(href="http://lifehacker.com/5714966/five-best-virtual-machine-applications") Virtual Machine
+								| . We're also hard at work on a Linux version.
+						//  li Use page templates or shell books. No fussing around with computers, just quality content.
+								li Intuitively add new illustrations from scanner, camera or existing illustrations from file
+
+
+
+
+

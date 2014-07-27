@@ -25,7 +25,7 @@
 //			$locationProvider.hashPrefix('!');
 
 //			// For any unmatched url, redirect to /state1
-			$urlRouterProvider.otherwise("/home");
+			$urlRouterProvider.otherwise("/landing");
            } ])
 
 .controller('HeaderCtrl', ['$scope', 'authService', '$location', '$state', 'silNoticeService', function ($scope, authService, $location, $state, silNoticeService) {
@@ -46,7 +46,7 @@
             };
             
             $scope.isBookLibrary = function () {
-                return $.inArray($location.path(), ['/home','/features','/installers','/installers/old','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
+                return $.inArray($location.path(), ['/landing','/features','/installers','/installers/old','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
             };
 
             // When the navbar is open on a small device (i.e. shown vertically),

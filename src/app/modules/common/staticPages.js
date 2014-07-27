@@ -30,9 +30,9 @@
             });
             // This state manages the Home page.
             // its url looks like #/home.
-            $stateProvider.state('home', {
-                url: "/home",
-                templateUrl: 'modules/static/home.tpl.html',
+            $stateProvider.state('landing', {
+                url: "/landing",
+                templateUrl: 'modules/static/landing/landing.tpl.html',
                 controller: 'GoToTop'
             });
             // This state manages the Features page in the menu.
