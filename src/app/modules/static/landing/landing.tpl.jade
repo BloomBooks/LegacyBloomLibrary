@@ -37,12 +37,11 @@ html
 						.col-md-6
 							H1 Goal: 10x More Books
 							P Here's the problem Bloom adresses: when working in local-language literacy projects, we end up settling for what is practical, instead of what is actually needed. The hope is often that a primer and a handful of books will be enough to open up the joy and power of reading in minority language communities. But realistically, we know that it takes <i>stacks</i> of titles to make reading worthwhile and give the practice needed to develop true literacy. The problem has been who will make all those books? How will we find the time? Where will we get the content? So we settle for the possible and hope for the best.
-						.col-md-4.pull-right
-								a(href="#/installers")
-									button.btn.download-btn.btn-large Visit Book Library
-						.col-md-4.pull-right
-								a(href="#/installers")
-									button.btn.download-btn.btn-large Download Bloom
+						.col-md-3.pull-right
+							a(href="#/browse")
+								button.btn.download-btn.btn-large Visit Book Library
+							a(href="#/installers")
+								button.btn.download-btn.btn-large Download Bloom
 						//	img(src="assets/laptop.png").videoInvitation
 						//	a.iconfont-playvideo.play-desktop(data-height="500" data-width="900" data-url="http://www.youtube.com/watch?v=TTQHODxqf4w?rel=0&amp;autoplay=1&amp;controls=1&amp;showinfo=0&amp;color=white" href="http://youtu.be/UpPRxtVsZKI" target="_blank")
 						//	//img(src="assets/editing.png")
@@ -72,9 +71,16 @@ html
 							a(href="http://bloomlibrary.org/books")
 								img(src='assets/bookLibrarySmallScreenshot.png')
 			.section
+					.container
+						.row
+							.col-md-12
+								iframe(width='400', height='300', src='http://www.youtube.com/embed/TTQHODxqf4w?vq=hd720', frameborder='0', allowfullscreen='allowfullscreen')
+								iframe.right(src='http://prezi.com/embed/benmszxl212z/?bgcolor=ffffff&lock_to_path=0&autoplay=no&autohide_ctrls=0', width='400', height='300', frameborder='0')
+
+			.section
 				.container
 					.row
-						.col-md-6.pull-left
+						.col-md-6.col-md-offset-3
 							H1 Power Where You Need It
 							P Bloom users find that it is not only easier to get started, but easy to do things that are difficult or impossible in the alternative tools. Things like:
 							ul
@@ -89,25 +95,69 @@ html
 								li.comingSoon Decodable Reader Tool
 								li.comingSoon Leveled Reader Tool
 								li.inThePlan EBooks
+				.container-fluid.centeritems
+					.row
+						.col-sm-6.col-md-4
+							img(src='assets/shellbooks.png', alt='Shell Books')
+							h3 Shell Books
+							p
+								| A growing collection of Creative Commons-licensed shell books help you grow your library quickly.  Just add a book to your vernacular library, then type in translations.
+						.col-sm-6.col-md-4
+							img(src='assets/templatebooks.png', alt='Template Books')
+							h3 Template Books
+							p
+								| Bloom isn't just for
+								em shell
+								| books. To create a brand new book, we use what Bloom calls a
+								em template
+								| . For most books, the "Basic Book" template is enough. It contains templates pages with the most frequently used layouts. There is also a Picture Dictionary template and Wall Calendar template.
+						.col-sm-6.col-md-4
+							img(src='assets/pdfbooklets.png', alt='Effortless PDF Booklets')
+							h3 Effortless PDF Booklets
+							p
+								| Click on Bloom's Publish tab, and voilà! You have a PDF file laid out as a booklet, ready for saving or printing.
+						.clearfix.visible-md.visible-lg
+						.col-sm-6.col-md-4
+							img(src='assets/multilingual.png', alt='Multilingual Books')
+							h3 Multilingual Books
+							p
+								| For each box of text, Bloom stores text in any a number of languages.  You can then tell it to show one, two, or three of those languages to make monolingual, bilingual, or trilingual versions of the publication.
+						.col-sm-6.col-md-4
+							img(src='assets/allbooks.png', alt='All your Books, a Click Away')
+							h3
+								| All your Books,
+								br
+								| a Click Away
+							p
+								| Bloom never asks you to find thing in the computer's file system. It just shows your library and books that you can add to it when you're ready.
+						.col-sm-6.col-md-4
+							img(src='assets/artofreading.png', alt='Pictures from the Art of Reading Collection')
+							h3
+								| Pictures from the
+								br
+								| Art of Reading Collection
+							p
+								| After you install our free Art Of Reading Collection, it's easy to find hand-drawn illustrations from around the world.
+
+
 			.section
 				.container
 					.row
-						.col-md-6.pull-left
-							iframe(width='400', height='300', src='http://www.youtube.com/embed/TTQHODxqf4w?vq=hd720', frameborder='0', allowfullscreen='allowfullscreen')
-						.col-md-6
-							iframe.right(src='http://prezi.com/embed/benmszxl212z/?bgcolor=ffffff&lock_to_path=0&autoplay=no&autohide_ctrls=0', width='400', height='300', frameborder='0')
-
-			+simpleSection
+						.col-md-6.col-md-offset-3
 							H1 Limitations
 							P We're not selling anything here, so we're not going to claim that <i>everything</i> is easier in Bloom. Bloom may never be appropriate for things like prose books where you need text to flow from page to page. And the current version only handles simple books unless you get one of us to develop custom templates (this will be changing soon).
-			+simpleSection
+			.section
+				.container
+					.row
+						.col-md-6.col-md-offset-3
 							H1 Getting Started
-							P Bloom currently requires Microsoft Windows, but doesn't require any money, nor an internet connection. If you're using a Mac, you can run it using&nbsp;
-								a(href="http://www.parallels.com/products/desktop/") Parallels
-								|&nbsp;or another&nbsp;
-								a(href="http://lifehacker.com/5714966/five-best-virtual-machine-applications") Virtual Machine
-								| . We're also hard at work on a Linux version.
-						//  li Use page templates or shell books. No fussing around with computers, just quality content.
+							P To get started making new Books in Bloom, install Bloom on a Windows computer, chose a template, and start adding pages.
+							P If you just want to get started using shellbooks, install Bloom and your computer and then head to the
+								a(href="#/browse") &nbsp;Book Library
+								| &nbsp;for some shellbooks you can translate.
+							P Have some exisiting books you'd like to get into Bloom? The way to do that is to just copy the text and pictures from whatever program they are in now, and paste into pages in Bloom. We expect you'll have questions during this process about templates, copyright, licenses, etc.
+							a(href="#/support") &nbsp;We'd love to talk with you!
+							//  li Use page templates or shell books. No fussing around with computers, just quality content.
 								li Intuitively add new illustrations from scanner, camera or existing illustrations from file
 
 
