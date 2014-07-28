@@ -1,5 +1,5 @@
 angular.module('BloomLibraryApp.services', ['restangular'])
-	.factory('authService', ['Restangular', "$cookies", function (restangular, $cookies) {
+	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", function (restangular, $cookies, errorHandlerService) {
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
@@ -38,6 +38,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 extractedData = data;
             }
             return extractedData;
+        });
+        restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+            // Returning false indicates we wish to prevent any more processing.
+            if (response.data && response.data.error) {
+                // There is a valid message we wish to display to the user.
+                // Let the calling code handle it.
+                return true;
+            }
+            errorHandlerService.handleRestangularError();
+            return false;
         });
 
         // These headers are the magic keys for our account at Parse.com
@@ -104,24 +114,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         // if you close the browser altogether. This is not meant to be high-security.
                         $cookies[saveUserNameTag] = username;
                         $cookies[savePasswordTag] = password;
-                        var query = new Parse.Query('bookshelf');
-                        query.equalTo('owner', result);
-//                        query.find({
-//                            success: function (results) {
-//                                bookshelves = response.results;
-//                            },
-//                            error: function (aError) {
-//                                alert(aError);
-//                            }
-//                        });
+
                         restangular.withConfig(restangularConfig).all('classes/bookshelf').getList({ 'where':{'owner': {"__type":"Pointer","className":"_User","objectId":result.objectId} }})
                             .then(function (response) {
                                 bookshelves = response;
                                 if (!response) {bookshelves = [];}
-                            },
-                        function(error) {
-                            alert(error);
-                        });
+                            });
                         factory.setSession(result.sessionToken); // im not sure this actually works
 						successCallback(result);
 					},
@@ -165,7 +163,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		return factory;
 	} ])
 
-	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', function (restangular, authService, $q, $rootScope) {
+	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', function (restangular, authService, $q, $rootScope, errorHandlerService) {
 		// Initialize Parse.com javascript query module for our project.
 		// Note: we would prefer to do things in this service using the REST API, but it does not currently support
 		// substring matching and other things we need.
@@ -209,6 +207,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     $rootScope.$apply(function () { defer.resolve(results[0]); });
                 },
                 error: function (aError) {
+                    errorHandlerService.handleParseError();
                     defer.reject(aError);
                 }
             });
@@ -235,7 +234,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         }
                     });
                 },
-                error: function(object, error) {
+                error: function(object, error) {                    
+                    errorHandlerService.handleParseError();
                     defer.reject(aError);
                 }
             });
@@ -276,12 +276,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                             });
                         },
                         error: function(object, error) {
-                            alert(error);
+                            errorHandlerService.handleParseError();
                         }
                     });
                 },
                 error: function(object, error) {
-                    alert(error);
+                    errorHandlerService.handleParseError();
                 }
             });
         };
@@ -347,6 +347,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 					$rootScope.$apply(function () { defer.resolve(count); });
 				},
 				error: function (aError) {
+                    errorHandlerService.handleParseError();
 					defer.reject(aError);
 				}
             });
@@ -407,6 +408,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         $rootScope.$apply(function () { defer.resolve(objects); });
                     },
                     error: function(error) {
+                        errorHandlerService.handleParseError();
                         defer.reject(error);
                     }
                 });
@@ -431,7 +433,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				}
 			}
 			// query.find returns a parse.com promise, but it is not quite the same api as
-			// as an angularjs promise. Instead, translate its find and error funtions using the
+			// as an angularjs promise. Instead, translate its find and error functions using the
 			// angularjs promise.
 			query.find({
 				success: function (results) {
@@ -466,6 +468,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 					$rootScope.$apply(function () { defer.resolve(objects); });
 				},
 				error: function (aError) {
+                    errorHandlerService.handleParseError();
 					defer.reject(aError);
 				}
 			});
@@ -481,7 +484,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
 	} ])
-    .service('languageService', ['$rootScope', '$q', '$filter', function($rootScope, $q, $filter) {
+    .service('languageService', ['$rootScope', '$q', '$filter', 'errorHandlerService', function($rootScope, $q, $filter, errorHandlerService) {
         var languageList; // Used to cache the list
     
         // We want all the languages we know.
@@ -510,6 +513,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     $rootScope.$apply(function () { defer.resolve(objects); });
                 },
                 error: function (aError) {
+                    errorHandlerService.handleParseError();
                     defer.reject(aError);
                 }
             });
@@ -569,4 +573,25 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				return bookCountObject;
 			}
 		};
-	});
+	})
+    .service('errorHandlerService', ["$modal", function ($modal) {
+        var mostRecentUserMessage = 0; // a timestamp
+        
+        this.handleParseError = function() {
+            this.showUserErrorMessage();
+        };
+        this.handleRestangularError = function() {
+            this.showUserErrorMessage();
+        };
+        this.showUserErrorMessage = function () {
+            var now = Date.now();
+            // Don't display a message more than once every 30 seconds
+            if (now - mostRecentUserMessage > 30000) {
+                mostRecentUserMessage = now;
+                $modal.open({
+                    templateUrl: 'modules/common/errorMessage.tpl.html',
+                    controller: 'errorMessage'
+                });
+            }
+        };
+    }]);

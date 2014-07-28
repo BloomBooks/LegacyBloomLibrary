@@ -15,8 +15,7 @@
                 abstract: true,
                 views: {
                     '@': {
-                        template: '<ui-view/>',
-                        controller: 'DownloadCtrl'
+                        template: '<ui-view/>'
                     }
                 }
             });
@@ -24,7 +23,7 @@
             $stateProvider.state('browse.detail.downloadBook.preflight', {
                 url: "/preflight",
                 templateUrl: 'modules/download/preflight.tpl.html',
-                controller: 'DownloadCtrl'
+                controller: 'PreflightCtrl'
             });
             // Downloading happens in this state
             $stateProvider.state('browse.detail.downloadBook.hereItComes', {
@@ -34,12 +33,12 @@
             });
         });
 
-    angular.module('BloomLibraryApp.download').controller('DownloadCtrl', ['$scope', '$state', '$stateParams','bookService', '$location', 'localStorageService','$rootScope',
+    angular.module('BloomLibraryApp.download')
+        .controller('PreflightCtrl', ['$scope', '$state', '$stateParams', 'bookService', '$location', 'localStorageService',
 
-        function ($scope, $state, $stateParams, bookService, $location, localStorageService, $rootScope) {
-            // Used to get the book title to display on pre-flight.
-            // Review: Is there a good way to have this only happen for preflight?
-            bookService.getBookById($stateParams.bookId).then(function(book) {
+        function ($scope, $state, $stateParams, bookService, $location, localStorageService) {
+            // Used to display the book title
+            bookService.getBookById($stateParams.bookId).then(function (book) {
                 $scope.book = book;
             });
         
@@ -74,13 +73,12 @@
                         event.preventDefault();
                         $state.go("browse.detail.downloadBook.hereItComes");
                     }
-                    if($state.current.name.indexOf('hereItComes') > -1){
-                        //get the book for which we're going to show the details asynchronously,
-                        //then start the download
-                        bookService.getBookById($stateParams.bookId).then(function (book) {
-                            window.location.href = book.bookOrder;
-                        });
-                    }
                 });
-        } ]);
+        } ])
+        .controller('DownloadCtrl', ['$stateParams', 'bookService', function($stateParams, bookService) {
+            //get the book for which we're going to show the details asynchronously, then start the download
+            bookService.getBookById($stateParams.bookId).then(function (book) {
+                window.location.href = book.bookOrder;
+            });
+        }]);
 } ());  // end wrap-everything function
