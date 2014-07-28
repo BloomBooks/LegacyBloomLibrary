@@ -644,6 +644,8 @@ module.exports = function ( grunt ) {
         });
       }
     });
+    
+    grunt.file.copy('src/favicon.ico', this.data.dir + '/favicon.ico');
   });
 
   /**
