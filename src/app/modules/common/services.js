@@ -1,5 +1,5 @@
 angular.module('BloomLibraryApp.services', ['restangular'])
-	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", function (restangular, $cookies, errorHandlerService) {
+	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", '$analytics', function (restangular, $cookies, errorHandlerService, $analytics) {
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
@@ -46,7 +46,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 // Let the calling code handle it.
                 return true;
             }
-            errorHandlerService.handleRestangularError();
+            errorHandlerService.handleRestangularError(response);
             return false;
         });
 
@@ -114,6 +114,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         // if you close the browser altogether. This is not meant to be high-security.
                         $cookies[saveUserNameTag] = username;
                         $cookies[savePasswordTag] = password;
+                        
+                        $analytics.eventTrack('Log In', {username: username});
 
                         restangular.withConfig(restangularConfig).all('classes/bookshelf').getList({ 'where':{'owner': {"__type":"Pointer","className":"_User","objectId":result.objectId} }})
                             .then(function (response) {
@@ -131,6 +133,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			},
 
 			logout: function () {
+                $analytics.eventTrack('Log Out', {userName: $cookies[saveUserNameTag]});
+                
                 $cookies[saveUserNameTag] = '';
                 $cookies[savePasswordTag] = '';
 
@@ -163,7 +167,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		return factory;
 	} ])
 
-	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', function (restangular, authService, $q, $rootScope, errorHandlerService) {
+	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', function (restangular, authService, $q, $rootScope, errorHandlerService, $analytics) {
 		// Initialize Parse.com javascript query module for our project.
 		// Note: we would prefer to do things in this service using the REST API, but it does not currently support
 		// substring matching and other things we need.
@@ -206,9 +210,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     // Maybe it is NOT needed here; copied logic from getFilteredBookRange
                     $rootScope.$apply(function () { defer.resolve(results[0]); });
                 },
-                error: function (aError) {
-                    errorHandlerService.handleParseError();
-                    defer.reject(aError);
+                error: function (error) {
+                    errorHandlerService.handleParseError('getBookshelf', error);
+                    defer.reject(error);
                 }
             });
             return defer.promise;
@@ -235,8 +239,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     });
                 },
                 error: function(object, error) {                    
-                    errorHandlerService.handleParseError();
-                    defer.reject(aError);
+                    errorHandlerService.handleParseError('isBookInShelf', error);
+                    defer.reject(error);
                 }
             });
             return defer.promise;
@@ -276,12 +280,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                             });
                         },
                         error: function(object, error) {
-                            errorHandlerService.handleParseError();
+                            errorHandlerService.handleParseError('ToggleBookInShelf-book', error);
                         }
                     });
                 },
                 error: function(object, error) {
-                    errorHandlerService.handleParseError();
+                    errorHandlerService.handleParseError('ToggleBookInShelf-shelf', error);
                 }
             });
         };
@@ -333,6 +337,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
 		this.getFilteredBooksCount = function (searchString, shelf, lang, tag) {
+            $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: (shelf && shelf.name) || '', lang: lang || '', tag: tag || ''});
 			var defer = $q.defer();
 
             var query;
@@ -346,9 +351,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				success: function (count) {
 					$rootScope.$apply(function () { defer.resolve(count); });
 				},
-				error: function (aError) {
-                    errorHandlerService.handleParseError();
-					defer.reject(aError);
+				error: function (error) {
+                    errorHandlerService.handleParseError('getFilteredBooksCount', error);
+					defer.reject(error);
 				}
             });
 
@@ -408,7 +413,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         $rootScope.$apply(function () { defer.resolve(objects); });
                     },
                     error: function(error) {
-                        errorHandlerService.handleParseError();
+                        errorHandlerService.handleParseError('getFilteredBookRange-defaultBooks', error);
                         defer.reject(error);
                     }
                 });
@@ -467,9 +472,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 					// should have been after the previous click.
 					$rootScope.$apply(function () { defer.resolve(objects); });
 				},
-				error: function (aError) {
-                    errorHandlerService.handleParseError();
-					defer.reject(aError);
+				error: function (error) {
+                    errorHandlerService.handleParseError('getFilteredBookRange', error);
+					defer.reject(error);
 				}
 			});
 
@@ -512,9 +517,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     // NOT using it in this context.
                     $rootScope.$apply(function () { defer.resolve(objects); });
                 },
-                error: function (aError) {
-                    errorHandlerService.handleParseError();
-                    defer.reject(aError);
+                error: function (error) {
+                    errorHandlerService.handleParseError('getLanguages', error);
+                    defer.reject(error);
                 }
             });
 
@@ -574,13 +579,26 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			}
 		};
 	})
-    .service('errorHandlerService', ["$modal", function ($modal) {
+    .service('errorHandlerService', ['$modal', '$analytics', function ($modal, $analytics) {
         var mostRecentUserMessage = 0; // a timestamp
         
-        this.handleParseError = function() {
+        this.handleParseError = function(call, error) {
+            $analytics.eventTrack('Error - Parse.com', {call: call, error: error});
             this.showUserErrorMessage();
         };
-        this.handleRestangularError = function() {
+        this.handleRestangularError = function(response) {
+            // In a couple instances, passwords are returned to us in the response.
+            // Attempt to scrub them before sending to analytics.
+            // Review: Acceptable risk that the password could be moved to a different location in the json?
+            if (response.config && response.config.data && response.config.data.password) {
+                // Error during Sign Up
+                response.config.data.password = 'SCRUBBED';
+            }
+            if (response.config && response.config.params && response.config.params.password) {
+                // Error during Log In
+                response.config.params.password = 'SCRUBBED';
+            }
+            $analytics.eventTrack('Error - Restangular', {response: response});
             this.showUserErrorMessage();
         };
         this.showUserErrorMessage = function () {
