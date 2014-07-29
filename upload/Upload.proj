@@ -4,6 +4,7 @@
 
   <ItemGroup>
     <Root Include="../bin/index.html" />
+    <Root Include="../bin/favicon.ico" />
     <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg"/>
     <Svg Include="../bin/assets/*.svg"/>
   </ItemGroup>
@@ -22,8 +23,8 @@
       AwsSecretAccessKey ="$(Secret)" />
   </Target>
 
-  <!-- Publish index.html-->
-  <Target Name="Index">
+  <!-- Publish root files (including index.html)-->
+  <Target Name="Root">
     <S3BuildPublisher
       EncryptionContainerName ="$(Key)"
       SourceFiles="@(Root)"
@@ -52,6 +53,6 @@
       ContentType="image/svg+xml"/>
   </Target>
 
-  <Target Name="Upload" DependsOnTargets="Index;Assets;Svg;"></Target>
+  <Target Name="Upload" DependsOnTargets="Root;Assets;Svg;"></Target>
 
 </Project>
