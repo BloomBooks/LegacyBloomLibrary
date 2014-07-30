@@ -201,6 +201,14 @@
 		alert(text);
 	};
 	
+    $rootScope.$on('$locationChangeStart', function (event) {
+        if ($.fancybox.isActive) {
+            // On history navigation, close Preview and stay on detail page
+            $.fancybox.close();
+            event.preventDefault();
+        }
+    });
+
 	$rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
 		if (current.title) {
 			$rootScope.pageTitle = "Bloom - " + current.title;
