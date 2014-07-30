@@ -6,7 +6,7 @@
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
 					"BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages", "BloomLibraryApp.suggestions",
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
-                    "BloomLibraryApp.installers", "BloomLibraryApp.errorMessage",
+                    "BloomLibraryApp.installers", "BloomLibraryApp.errorMessage", "BloomLibraryApp.prefs",
                     "ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies', 'LocalStorageModule',
                     "angulartics", "angulartics.segment.io"])
 
@@ -189,8 +189,8 @@
 
 	//review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
 	BloomLibraryApp.run(
-   ['$rootScope', '$state', '$stateParams', 'sharedService',
-   function ($rootScope, $state, $stateParams, sharedService) {
+   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService',
+   function ($rootScope, $state, $stateParams, sharedService, localStorageService) {
 	//lets you write ng-click="log('testing')"
 	$rootScope.log = function (variable) {
 		console.log(variable);
@@ -215,7 +215,7 @@
     // Once the object is initialized, it runs through the queue.  This prevents script errors during load.
     window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return (a.unshift(t),window.analytics.push(a),window.analytics);};};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key);}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);}},window.analytics.SNIPPET_VERSION="2.0.9",
     // Development: vidljptawu, Production: a6nswpue7x
-    window.analytics.load(!sharedService.isPublicSite ? "vidljptawu" : "a6nswpue7x");
+    window.analytics.load(!sharedService.isPublicSite || localStorageService.get('trackAnalytics') === "false" ? "vidljptawu" : "a6nswpue7x");
 
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
