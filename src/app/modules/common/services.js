@@ -1,5 +1,6 @@
 angular.module('BloomLibraryApp.services', ['restangular'])
-	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", '$analytics', function (restangular, $cookies, errorHandlerService, $analytics) {
+	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", '$analytics', 'sharedService',
+        function (restangular, $cookies, errorHandlerService, $analytics, sharedService) {
 		var isLoggedIn = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
@@ -54,7 +55,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// While someone is logged on, another header gets added (see setSession).
 		// See also the keys below in the Parse.initialize call.
         var headers;
-        if (window.location.host.indexOf("bloomlibrary.org") !== 0) {
+        if (!sharedService.isPublicSite) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             headers = {
                 'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
@@ -167,7 +168,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		return factory;
 	} ])
 
-	.service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', function (restangular, authService, $q, $rootScope, errorHandlerService, $analytics) {
+    .service('sharedService', function() {
+        this.isPublicSite = window.location.host.indexOf("bloomlibrary.org") === 0;
+    })
+
+    .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService',
+        function (restangular, authService, $q, $rootScope, errorHandlerService, $analytics, sharedService) {
 		// Initialize Parse.com javascript query module for our project.
 		// Note: we would prefer to do things in this service using the REST API, but it does not currently support
 		// substring matching and other things we need.
@@ -175,7 +181,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
-        if (window.location.host.indexOf("bloomlibrary.org") !== 0) {
+        if (!sharedService.isPublicSite) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
         }
@@ -583,23 +589,31 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         var mostRecentUserMessage = 0; // a timestamp
         
         this.handleParseError = function(call, error) {
-            $analytics.eventTrack('Error - Parse.com', {call: call, error: error});
-            this.showUserErrorMessage();
+            try {
+                $analytics.eventTrack('Error - Parse.com', {call: call, error: error});
+                this.showUserErrorMessage();
+            } catch (ignored) {
+                console.log('Exception in handleParseError: ' + ignored);
+            }
         };
         this.handleRestangularError = function(response) {
-            // In a couple instances, passwords are returned to us in the response.
-            // Attempt to scrub them before sending to analytics.
-            // Review: Acceptable risk that the password could be moved to a different location in the json?
-            if (response.config && response.config.data && response.config.data.password) {
-                // Error during Sign Up
-                response.config.data.password = 'SCRUBBED';
+            try {
+                // In a couple instances, passwords are returned to us in the response.
+                // Attempt to scrub them before sending to analytics.
+                // Review: Acceptable risk that the password could be moved to a different location in the json?
+                if (response.config && response.config.data && response.config.data.password) {
+                    // Error during Sign Up
+                    response.config.data.password = 'SCRUBBED';
+                }
+                if (response.config && response.config.params && response.config.params.password) {
+                    // Error during Log In
+                    response.config.params.password = 'SCRUBBED';
+                }
+                $analytics.eventTrack('Error - Restangular', {response: response});
+                this.showUserErrorMessage();
+            } catch (ignored) {
+                console.log('Exception in handleRestangularError: ' + ignored);
             }
-            if (response.config && response.config.params && response.config.params.password) {
-                // Error during Log In
-                response.config.params.password = 'SCRUBBED';
-            }
-            $analytics.eventTrack('Error - Restangular', {response: response});
-            this.showUserErrorMessage();
         };
         this.showUserErrorMessage = function () {
             var now = Date.now();
