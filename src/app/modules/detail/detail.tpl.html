@@ -36,7 +36,7 @@
             <a href="" ng-click="showDeleteDialog()"><i tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}"></i></a>
             <a href="" ng-click="chooseBookshelves()"><i tooltip="Add/Remove book from bookshelf" tooltip-placement="right" ng-class="{'icon-folder-open': true, 'icon-hidden':!canSetBookshelf, inBookshelf: isBookFeatured}"></i></a>
             <div class="pull-right">
-            <a ng-href="{{book.baseUrl | makePreviewUrl}}" pdfoverlay>
+            <a ng-href="{{book.baseUrl | makePreviewUrl}}" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}">
                 <button type="button" class="btn btn-default"><i class="icon-eye-open"></i> Preview</button></a>
             <!--<a ng-href="downloadBook{{book.bookOrder}}" tooltip="No-Preflight Download to the Bloom software on your computer, so that you can use it as a shell book." ng-hide="!skipDownloadPreflight">-->
                 <!--<button type="button" class="btn btn-default" ng-click="close()"><i class="icon-download"></i> Open in Bloom</button></a>-->

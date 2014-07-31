@@ -66,16 +66,15 @@
                     if (error.status === 404) {
                         if (error.data.code !== undefined) {
                             if (error.data.code === 101) {
-                                silNoticeService.replace(silNoticeService.ERROR,
-                "Login Unsuccessful. Check your username and password and try again. Also check the Caps Lock key.");
+                                silNoticeService.replace(silNoticeService.ERROR, "Login Unsuccessful. Check your username and password and try again. Also check the Caps Lock key.");
                             } else {
-                                silNoticeService.replace(silNoticeService.ERROR, error);
+                                //silNoticeService.replace(silNoticeService.ERROR, error);
                             }
                         } else {
-                            silNoticeService.replace(silNoticeService.ERROR, error);
+                            //silNoticeService.replace(silNoticeService.ERROR, error);
                         }
                     } else {
-                        silNoticeService.replace(silNoticeService.ERROR, error);
+                        //silNoticeService.replace(silNoticeService.ERROR, error);
                     }
 
                 });
