@@ -15,16 +15,16 @@
 
 	angular.module('BloomLibraryApp.prefs').controller('PrefsCtrl', ['$scope', 'localStorageService',
 		function ($scope, localStorageService) {
-            $scope.isTrackAnalytics = localStorageService.get('trackAnalytics') !== "false";
+            $scope.isTrackLiveAnalytics = localStorageService.get('trackLiveAnalytics') !== "false";
 
             $scope.savePrefs = function (record) {
                 if (!record) { // Shouldn't be, but just in case
                     return true;
                 }
                 $scope.submitting = true;
-                var trackAnalyticsLs = localStorageService.get('trackAnalytics') || "true";
-                localStorageService.set('trackAnalytics', record.trackAnalytics);
-                if ((trackAnalyticsLs === "true") !== record.trackAnalytics) {
+                var trackLiveAnalyticsLs = localStorageService.get('trackLiveAnalytics') || "true";
+                localStorageService.set('trackLiveAnalytics', record.trackLiveAnalytics);
+                if ((trackLiveAnalyticsLs === "true") !== record.trackLiveAnalytics) {
                     alert('You have successfully saved a change to analytics tracking.  However, the change will not take effect until you refresh.');
                 }
                 $scope.submitting = false;

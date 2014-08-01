@@ -3,7 +3,7 @@
 		br
 		.checkbox
 			label
-				input(type='checkbox',ng-model='record.trackAnalytics',ng-checked='isTrackAnalytics')
+				input(type='checkbox',ng-model='record.trackLiveAnalytics',ng-checked='isTrackLiveAnalytics')
 				| &nbsp;Divert normal analytics on the live web site (bloomlibrary.org) to the "development" (sandbox) analytics project
 		br
 		button.btn.btn-primary(type='submit',ng-disabled='submitting || !record') Submit
