@@ -89,12 +89,15 @@
                 });
             };
             $scope.filterLanguage = function(language) {
+                bookService.resetCurrentPage();
                 $state.go('browse', {lang:language}); // keep other params unchanged.
             };
             $scope.filterTag = function(tagName) {
+                bookService.resetCurrentPage();
                 $state.go('browse', {tag:tagName}); // keep other params unchanged.
             };
             $scope.filterShelf = function(shelfName) {
+                bookService.resetCurrentPage();
                 if (shelfName === '') {
                     // User selected "All Books"
                     $state.go('browse', {search:'', shelf:shelfName, lang:'', tag:''});
@@ -103,6 +106,7 @@
                 }
             };
             $scope.filterMyUploads = function() {
+                bookService.resetCurrentPage();
                 if (authService.isLoggedIn()) {
                     $state.go('browse', {search: '', shelf: '$myUploads'}); // keep other params unchanged.
                 } else {

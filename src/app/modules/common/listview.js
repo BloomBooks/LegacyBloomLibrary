@@ -14,13 +14,17 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 				pageItemsFunction: "&" // e.g. html has pageItemsFunction="getBookRange(first, itemsPerPage)"; sets list to show in view.
 			},
 			controller: ["$scope", function ($scope) {
+                var currentPageTag = 'currentpage';
 				$scope.noOfPages = 3;  // TODO: calculate this automatically
-				$scope.currentPage = 1;
 				$scope.maxSize = 5;
 				$scope.itemsPerPage = 10;  // This should match the default value for the selector above
                 var savedIpp = $cookies[$scope.pageCountTag];
                 if (savedIpp && !isNaN(savedIpp)) {
                     $scope.itemsPerPage = Number(savedIpp);
+                }
+                var savedCurPage = $cookies[currentPageTag];
+                if (savedCurPage && !isNaN(savedCurPage)) {
+                    $scope.currentPage = Number(savedCurPage);
                 }
 
 				this.activate = function (item) {
@@ -64,6 +68,7 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					var sliceEnd;
 					if ($scope.currentPage) {
 						sliceStart = ($scope.currentPage - 1) * $scope.itemsPerPage; // currentPage is 1-based
+                        $cookies[currentPageTag] = $scope.currentPage;
 					} else {
 						// Default to page 1 if undefined
 						sliceStart = 0;
@@ -117,20 +122,30 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
 					//					});
 				};
 			} ],
-			link: function (scope, element, attrs, controller) {
-				scope.$watch('currentPage', function () {
-					controller.updateVisibleItems();
-				});
-				scope.$watch('itemsPerPage', function () {
-                    controller.updateItemsPerPage();
-					controller.updatePages();
-					controller.updateVisibleItems();
-				});
-				scope.$watch('itemCount', function () {
-					controller.updatePages();
-					controller.updateVisibleItems();
-				}, true);
-				controller.query();
-			}
+            link: function (scope, element, attrs, controller) {
+                // This comment applies to all three $watch calls below.
+                // The whole idea of $watch is that it is only called when the value changes.
+                // However, it is still called the first time the control is loaded.
+                // We want to prevent that, hence the if statements.
+                scope.$watch('currentPage', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        controller.updateVisibleItems();
+                    }
+                });
+                scope.$watch('itemsPerPage', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        controller.updateItemsPerPage();
+                        controller.updatePages();
+                        controller.updateVisibleItems();
+                    }
+                });
+                scope.$watch('itemCount', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        controller.updatePages();
+                        controller.updateVisibleItems();
+                    }
+                }, true);
+                controller.query();
+            }
 		};
 	} ]);
