@@ -189,8 +189,8 @@
 
 	//review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
 	BloomLibraryApp.run(
-   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService',
-   function ($rootScope, $state, $stateParams, sharedService, localStorageService) {
+   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService', '$location',
+   function ($rootScope, $state, $stateParams, sharedService, localStorageService, $location) {
 	//lets you write ng-click="log('testing')"
 	$rootScope.log = function (variable) {
 		console.log(variable);
@@ -201,11 +201,10 @@
 		alert(text);
 	};
 	
-    $rootScope.$on('$locationChangeStart', function (event) {
-        if ($.fancybox.isActive) {
+    $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
+        if ($.fancybox.isActive && oldUrl.indexOf('preview=true') > 0) {
             // On history navigation, close Preview and stay on detail page
             $.fancybox.close();
-            event.preventDefault();
         }
     });
 
@@ -234,7 +233,7 @@
    } ]);
 
 
-	BloomLibraryApp.directive('pdfoverlay', function () {
+	BloomLibraryApp.directive('pdfoverlay', ['$location', function ($location) {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attrs) {
@@ -243,9 +242,17 @@
 					'type': 'iframe',
 					iframe: {
 						preload: false
-					}
+					},
+                    afterClose: function() {
+                        if ($location.search().preview) {
+                            history.back();
+                        }
+                    }
 				});
+                $(element).on('click', function(e) {
+                    $location.search('preview', 'true');
+                });
 			}
 		};
-	});
+	}]);
 } ());  // end wrap-everything function
