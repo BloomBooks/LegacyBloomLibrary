@@ -18,12 +18,17 @@
   }
   .verticalCenter{
     margin-top: 50px;//todo: make this actually centered, not hard-coded
+    max-width: 450px;
   }
   img{
     height: 250px;
     width: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    float: right;
+    @media (max-width:@screen-xs-max) {
+      float: left;
+    }
   }
 }
 
