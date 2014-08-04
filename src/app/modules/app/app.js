@@ -193,8 +193,8 @@
 
 	//review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
 	BloomLibraryApp.run(
-   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService',
-   function ($rootScope, $state, $stateParams, sharedService, localStorageService) {
+   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService', '$location',
+   function ($rootScope, $state, $stateParams, sharedService, localStorageService, $location) {
 	//lets you write ng-click="log('testing')"
 	$rootScope.log = function (variable) {
 		console.log(variable);
@@ -205,6 +205,14 @@
 		alert(text);
 	};
 	
+    $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
+        // For more info, see comment on pdfoverlay directive (below)
+        if ($.fancybox.isActive && oldUrl.indexOf('preview=true') > 0) {
+            // On history navigation, close Preview and stay on detail page
+            $.fancybox.close();
+        }
+    });
+
 	$rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
 		if (current.title) {
 			$rootScope.pageTitle = "Bloom - " + current.title;
@@ -230,7 +238,13 @@
    } ]);
 
 
-	BloomLibraryApp.directive('pdfoverlay', function () {
+    // The main problem being solved with onClick, afterClose, and $locationChangeStart (above) is ensuring that
+    // whether the user closes the preview or hits the back button, we end up on the detail page with the preview closed.
+    // Clicking preview adds preview=true to the url effectively adding another item to the history stack.
+    // When the user closes the preview, we call history.back to ensure url is the detail page.
+    // If the user clicks back when the preview is open, the $locationChangeStart event (above) is used to close the preview.
+    // preview=true is required to ensure we don't try to perform a duplicate action (closing preview or going back).
+	BloomLibraryApp.directive('pdfoverlay', ['$location', function ($location) {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attrs) {
@@ -239,9 +253,17 @@
 					'type': 'iframe',
 					iframe: {
 						preload: false
-					}
+					},
+                    afterClose: function() {
+                        if ($location.search().preview) {
+                            history.back();
+                        }
+                    }
 				});
+                $(element).on('click', function(e) {
+                    $location.search('preview', 'true');
+                });
 			}
 		};
-	});
+	}]);
 } ());  // end wrap-everything function
