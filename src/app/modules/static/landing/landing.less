@@ -36,13 +36,18 @@
     text-align: right;
     line-height: 5px;
   }
-}
-.customerQuote:before{
-  content:"\f10d";
-  font-family: "Fontawesome";
-  font-size: 20px;
-  float: left;
-  margin-right: 10px;
+  > p:before, > p:after {
+    font-family: "Fontawesome";
+    font-size: 20px;
+  }
+  > p:before {
+    content:"\f10d";
+    margin-right: 10px;
+  }
+  > p:after{
+    content:"\f10e";
+    margin-left: 10px;
+  }
 }
 
 .landing
