@@ -111,7 +111,6 @@
 
         $scope.getFilteredBookCount = function() {
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
-                $scope.currentPage = 1;
                 $scope.bookCount = $scope.bookCountObject.bookCount = count;
                 $scope.bookMessage = getBookMessage(count);
                 $scope.setPage = function () {
@@ -152,23 +151,11 @@
 			});
 		};
 
-		$scope.foo = function (paramOne, paramTwo) {
-			return paramOne + paramTwo;
-		};
-
-
-		$scope.updatePageControl = function () {
-			$scope.currentPage = 1;
-			$scope.setPage = function (pageNo) {
-				$scope.currentPage = pageNo;
-			};
-
-		};
-
 		$scope.SearchNow = function () {
 			// Todo: this needs to run a query on the real database and update bookCount
 			// and do something to make the listview invoke getBookRange (even if the bookCount
 			// does not change).
+            bookService.resetCurrentPage();
 			$scope.searchText = $scope.searchTextRaw;
 			$state.go('.', { search: $scope.searchText, shelf: "" });
 		};

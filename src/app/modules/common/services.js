@@ -172,8 +172,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.isPublicSite = window.location.host.indexOf("bloomlibrary.org") === 0;
     })
 
-    .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService',
-        function (restangular, authService, $q, $rootScope, errorHandlerService, $analytics, sharedService) {
+    .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',
+        function (restangular, authService, $q, $rootScope, errorHandlerService, $analytics, sharedService, $cookies) {
 		// Initialize Parse.com javascript query module for our project.
 		// Note: we would prefer to do things in this service using the REST API, but it does not currently support
 		// substring matching and other things we need.
@@ -494,6 +494,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.deleteBook = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
+
+        this.resetCurrentPage = function () {
+            $cookies["currentpage"] = 1;
+        };
 	} ])
     .service('languageService', ['$rootScope', '$q', '$filter', 'errorHandlerService', function($rootScope, $q, $filter, errorHandlerService) {
         var languageList; // Used to cache the list
