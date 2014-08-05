@@ -82,7 +82,7 @@
                 $timeout(function() {
                     $analytics.eventTrack('Download Book', {book: book.objectId, href: book.bookOrder});
                 });
-                window.location.href = book.bookOrder;
+                window.location.href = book.bookOrder + '&title=' + encodeURIComponent(book.title);
             });
         }]);
 } ());  // end wrap-everything function
