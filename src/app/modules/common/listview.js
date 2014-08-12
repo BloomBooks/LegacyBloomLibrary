@@ -25,6 +25,8 @@ angular.module('palaso.ui.listview', ['ui.bootstrap'])
                 var savedCurPage = $cookies[currentPageTag];
                 if (savedCurPage && !isNaN(savedCurPage)) {
                     $scope.currentPage = Number(savedCurPage);
+                } else {
+                    $scope.currentPage = 1;
                 }
 
 				this.activate = function (item) {
