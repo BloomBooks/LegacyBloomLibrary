@@ -73,8 +73,8 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', '$modal',
-	function ($scope, authService, $stateParams, bookService, bookCountService, $modal) {
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', '$modal', '$window',
+	function ($scope, authService, $stateParams, bookService, bookCountService, $modal, $window) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
 		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
@@ -93,15 +93,20 @@
         }
 
 		$scope.showLicense = function() {
-			$modal.open({
-				templateUrl: 'modules/detail/ccdialog.tpl.html',
-				controller: 'ccdialog',
-				windowClass: 'ccmodal',
-				size: 'sm',
-				// this defines the value of 'book' as something that is injected into the BloomLibraryApp.ccdialog's
-				// controller, thus giving it access to the book whose license we want details about.
-				resolve: {book: function() {return $scope.book;}}
-			});
+            if ($scope.book.license && $scope.book.license.indexOf('cc-') === 0) {
+                var url = 'http://creativecommons.org/licenses/' + $scope.book.license.substring(3) + '/4.0';
+                $window.open(url);
+            } else {
+                $modal.open({
+                    templateUrl: 'modules/detail/ccdialog.tpl.html',
+                    controller: 'ccdialog',
+                    windowClass: 'ccmodal',
+                    size: 'sm',
+                    // this defines the value of 'book' as something that is injected into the BloomLibraryApp.ccdialog's
+                    // controller, thus giving it access to the book whose license we want details about.
+                    resolve: {book: function() {return $scope.book;}}
+                });
+            }
 		};
 		$scope.showPleaseLogIn = function() {
 			$modal.open({
