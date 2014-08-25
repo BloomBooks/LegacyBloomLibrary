@@ -557,7 +557,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 // Replicated from Bloom.Book.RuntimeInformationInjector.AddUISettingsToDom().
                 // Eventually this will be user-extensible and retrieved using a query on some new table.
                 "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Traditional Story"
-            ];
+            ].sort();
         };
         this.getDisplayName = function(tagId) {
             return tagId;
