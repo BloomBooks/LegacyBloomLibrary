@@ -39,10 +39,10 @@
 					return "";
 				}
 				var index = input.lastIndexOf("@");
-				if (index < 0 || index + 3 >= input.length){
+				if (index < 0 || index + 1 >= input.length){
 					return input;
 				}
-				return input.substring(0, index + 3);
+				return input.substring(0, index + 1) + "...";
 			};
 		})
 		// we get a URL for the contents of the book and return the one for the Preview.
