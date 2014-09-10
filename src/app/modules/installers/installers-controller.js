@@ -19,6 +19,13 @@
                 templateUrl: 'modules/installers/oldInstallers.tpl.html',
                 controller: 'InstallersCtrl'
             });
+
+            $stateProvider.state('installersLinux', {
+                url: "/installers/linux",
+                //didn't help parent: 'installers',
+                templateUrl: 'modules/installers/linux.tpl.html',
+                controller: 'InstallersCtrl'
+            });
         });
 
     installersApp.controller('InstallersCtrl',
