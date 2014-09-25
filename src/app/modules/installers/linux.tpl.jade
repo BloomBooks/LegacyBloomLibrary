@@ -1,19 +1,16 @@
 .staticPage
-	h1 Getting Bloom On Linux
-	P Bloom 3 is currently available
+	H2 Getting Bloom On Linux
+	P An
 		strong
-			|&nbsp; for testing
-		| on Ubuntu Precise and Trusty.
+			|  alpha release
+		|  of Bloom 3 is currently available for Ubuntu Precise and Trusty.
 
 	H3 Step 1: Add the SIL experimental repository to your sytem
 	pre
 		| sudo echo have sudo
 		| wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-		| wget -qO - http://linux.lsdev.sil.org/downloads/sil-testing.gpg | sudo apt-key add -
 		| sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc) main"
 		| sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc)-experimental main"
-		| sudo add-apt-repository "deb http://linux.lsdev.sil.org/ubuntu $(lsb_release -sc) main"
-		| sudo add-apt-repository "deb http://linux.lsdev.sil.org/ubuntu $(lsb_release -sc)-experimental main"
 		| sudo apt-get update
 		| sudo apt-get dist-upgrade
 	H3 Step 2: Add Bloom Desktop
