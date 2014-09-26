@@ -4,14 +4,15 @@
     <div class="modal-body">
       <div ng-show="isWindows">
         <h1>Almost there...</h1>
-        <P>You are about to download&nbsp;<span class="downloadTitle">{{book.title}}</span>&nbsp;into the&nbsp;<a href="#/installers">Bloom Desktop Application, Version 2</a>, which you need to already have installed on your computer.</P>
+        <P>You are about to download <span class="downloadTitle">{{book.title}}</span> into the Bloom Desktop Application. You need to have&nbsp;<a href="#/installers">Bloom version 2 or higher</a> already installed on your computer.
+        </P>
         <div ng-show="isWindows"></div>
         <!--P Now, your Browser is going ask whether it is OK to have Bloom open a link. Sure it is!-->
         <input type="checkbox" ng-model="skipDownloadPreflight"/>
         <!--fixme: clicking this doesn't update the checkbox:  a(ng-model='skipDownloadPreflight') I get it. Don't show me this again.-->I get it. Don't show me this again.
       </div>
       <div ng-hide="isWindows">
-        <P>Sorry, the Bloom Desktop program only runs on Windows at the moment. A Linux version will be available in September 2014.</P>
+        <P>Downloading from BloomLibrary.org only works for Windows at the moment. It will work for the Linux version soon.</P>
       </div>
       <div class="modal-footer"><a ng-click="cancel()" class="cancelBookDownload">Cancel</a>
         <!--a(ng-href='{{book.bookOrder}}', ng-show='isWindows')-->
