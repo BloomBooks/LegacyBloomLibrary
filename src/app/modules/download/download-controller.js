@@ -49,13 +49,6 @@
 
             $scope.skipDownloadPreflight = localStorageService.get('skipDownloadPreflight');
 
-            // Set this boolean to a value indicating whether we are running on Windows.
-            // According to
-            // http://stackoverflow.com/questions/19877924/what-is-the-list-of-possible-values-for-navigator-platform-as-of-today
-            // all major browsers currently agree that all versions of Windows after 3.1, even 64-bit ones, are
-            // platform Win32.
-            $scope.isWindows = navigator.platform == "Win32";
-
             $scope.cancel = function () {
                 $state.go('^.^'); //we're done here. Go back to the detail.
             };
