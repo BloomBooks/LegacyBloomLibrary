@@ -58,57 +58,44 @@
 		});
         
         function getBookMessage(count) {
-            var message = [];
-            var shelfMessage = $scope.shelfName;
+            var message = "";
+            var shelfLabel = $scope.shelfName;
             if ($scope.shelfName === 'Featured') {
-                shelfMessage = 'Featured';
+                shelfLabel = 'Featured';
             } else if ($scope.shelfName === '$recent') {
-                shelfMessage = 'New Arrival';
+                shelfLabel = 'New Arrival';
             } else if ($scope.shelfName === '$myUploads') {
-                shelfMessage = '\"My Upload\"';
+                shelfLabel = '\"My Upload\"';
             } else {
-                shelfMessage = '';
+                shelfLabel = '';
             }
+            shelfLabel = _localize(shelfLabel);
+            var booksTranslation = _localize("books");
+            var params = {
+                count: count,
+                shelf: shelfLabel,
+                language: languageService.getDisplayName($scope.lang),
+                bookOrBooks: booksTranslation,
+                tag: tagService.getDisplayName($scope.tag),
+                searchText: $scope.searchText
+            };
+            if (count === 1) {
+                params.bookOrBooks = _localize('book');
+            }
+
             if (count === 0) {
-                message = [
-                    "There are no books that match your search for ",
-                    shelfMessage,
-                    " ",
-                    languageService.getDisplayName($scope.lang),
-                    " books "
-                ];
+                message = _localize('There are no books that match your search for {shelf} {language} books', params);
             } else {
-                message = [
-                    "Found ",
-                    count,
-                    " ",
-                    shelfMessage,
-                    " ",
-                    languageService.getDisplayName($scope.lang)
-                ];
-                if (count === 1) {
-                    message.push(" book ");
-                } else {
-                    message.push(" books ");
-                }
+                message = _localize('Found {count} {shelf} {language} {bookOrBooks}', params);
             }
             if ($scope.tag) {
-                message.push(
-                    " with the ",
-                    tagService.getDisplayName($scope.tag),
-                    " tag"
-                );
+                message = message + " " +_localize('with the {tag} tag', params);
             }
             if ($scope.searchText) {
-                message.push(
-                    " containing \"",
-                    $scope.searchText,
-                    "\""
-                );
+                message = message + " " + _localize('containing "{searchText}"', params);
             }
-            return message.join("");
+            return message;
         }
-
         $scope.getFilteredBookCount = function() {
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
                 $scope.bookCount = $scope.bookCountObject.bookCount = count;

@@ -29,6 +29,22 @@
     <!-- for parse.com queries. Please use ONLY in services.js. -->
     <script src="http://www.parsecdn.com/js/parse-1.2.13.min.js"></script>
 
+    <!-- for transifex.com, localization -->
+    <script type="text/javascript">
+      window.liveSettings = {
+        api_key: "1927b5ee5ee0401baa960991364c4c15",
+        picker: "bottom-right",
+        detectlang: true,
+        dynamic: true,
+        autocollect: true,
+        staging: true
+      };
+    </script>
+    <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
+    <script type="text/javascript">
+      //create an alias for translation of dynamic strings
+      window._localize = Transifex.live.translateText;
+    </script>
   </head>
   <body>
     <noscript>
