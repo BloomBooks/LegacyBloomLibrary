@@ -73,7 +73,7 @@
             bookService.getBookById($stateParams.bookId).then(function (book) {
                 // Without $timeout, setting the href will cancel the analytics request
                 $timeout(function() {
-                    $analytics.eventTrack('Download Book', {book: book.objectId, href: book.bookOrder});
+                    $analytics.eventTrack('Download Book', {book: book.objectId, href: book.bookOrder, bookTitle:book.title});
                 });
                 window.location.href = book.bookOrder + '&title=' + encodeURIComponent(book.title);
             });
