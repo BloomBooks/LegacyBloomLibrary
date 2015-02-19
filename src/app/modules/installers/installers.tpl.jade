@@ -1,31 +1,64 @@
 .staticPage
-	H3 Linux Version
-	a(href='#/installers/linux') Instructions here
-	h2 Windows Version
-	h3 Prerequisites
-	ul
-		li Windows 7 SP1, 8, 8.1
-		li We don't test XP SP3 or Vista SP1 anymore, but they worked last time we did.
-		li
-			a(href='http://www.microsoft.com/en-us/download/details.aspx?id=17718', target='_blank') .Net 4.0
-		li If you're using a Mac, you can run Bloom using&nbsp;
-			a(href="http://www.parallels.com/products/desktop/") Parallels
-			| &nbsp;or another&nbsp;
-			a(href="http://lifehacker.com/5714966/five-best-virtual-machine-applications") Virtual Machine
-		li
-			| (Optional)&nbsp;
-			a(href='#/artofreading') Art Of Reading
-	h3 Installers
-	div
-		iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', height='50', width='100%', frameborder='0', scrolling='no')
-	//div
-		iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', height='50', width='100%', frameborder='0', scrolling='no')
-	.para
-		a(href='#/installers/old') Other Versions
-	h3 Font
-	.para
-		| Bloom comes with SIL's&nbsp;
-		a(href='http://scripts.sil.org/Andika_download', target='_blank') Andika literacy font
-		| . Do you need a version with one or more characters shaped differently to fit how people write in your language? You can also easily&nbsp;
-		a(href='http://scripts.sil.org/ttw/fonts2go.cgi', target='_blank') create your own version
-		| &nbsp;by selecting among alternate character shapes. Of course, you can also change the font of a book collection to something else.
+	html
+		head
+			title Bloom 3 installation instructions
+			meta(content='text/html; charset=UTF-8', http-equiv='content-type')
+		body
+			h1
+				| Installing Bloom 3 and Related Software
+			p
+				| If you have been using Bloom version 1 or 2, or an earlier version of Bloom 3, please uninstall the software before you install version 3. Bloom requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and&nbsp;
+				a(href='http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA')
+					| .NET 4.0
+				| &nbsp;(part of Windows, so you probably already have it). See these instructions for installing on&nbsp;
+				a(href='#') Linux
+				| .
+			h2
+				a
+				| Installing Bloom
+			p
+				| If you are a new Bloom user or have uninstalled an earlier version of Bloom, you can install Bloom by downloading and running this file:
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', height='50', width='100%', frameborder='0', scrolling='no')
+			h2
+				a
+				| The Art of Reading
+			p
+				| We also recommend that you download and install the&nbsp;
+				a(href='http://bloomlibrary.org/#/artofreading')
+					| Art Of Reading
+				| &nbsp;illustration collection. This free collection contains more than 10,000 line drawings suitable for use in reading materials. Bloom is designed to enable you to search and select illustrations from this collection once you have installed it.
+			h2
+				a
+				| Fonts
+			p
+				| Bloom installs SIL&rsquo;s&nbsp;
+				a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=Andika') Andika
+				| &nbsp;font which was designed specifically for easier reading in roman scripts. You can also use a font you already have installed on your computer, but it needs to be a Unicode font. SIL offers free Unicode fonts for a variety of needs:
+			ul
+				li
+					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=Andika_download') Andika
+					| , designed for literacy materials, especially for beginning readers
+				li
+					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=AnnapurnaSIL') Annapurna
+					| , for languages that use Devanagari script
+				li
+					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=Scheherazade') Scheherezade
+					| , an extended Arabic script font
+				li
+					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=AbyssinicaSIL_Download') Abyssinica
+					| , an Ethiopic script font (also sometimes called &ldquo;fidel&rdquo;
+					| script)
+			p
+				| Bloom assumes that you already have a way to type your language. If you need a way to type your language and lack one, you might consider&nbsp;
+				a(href='http://keyman.com/desktop/download.php') Keyman
+				| , available in a free edition.
+			h2
+				a
+				| Help getting started and learning Bloom
+			p
+				| Bloom is easy to use, but you may find it helpful to watch the&nbsp;
+				a(href='https://vimeo.com/channels/bloomlibrary')
+					| Bloom training videos
+				| . Start with&nbsp;
+				a(href='https://vimeo.com/channels/bloomlibrary') Bloom: who is it for?
+				| &nbsp;More videos are being developed.
