@@ -5,8 +5,9 @@
   <ItemGroup>
     <Root Include="../bin/index.html" />
     <Root Include="../bin/favicon.ico" />
-    <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg"/>
+    <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg;../bin/assets/BloomLibrary-0.1.0.js"/>
     <Svg Include="../bin/assets/*.svg"/>
+    <MainJs Include="../bin/assets/BloomLibrary-0.1.0.js"/>
   </ItemGroup>
   <PropertyGroup>
     <AccessKey>AKIAJ24BTPKNQCTQ3WQQ</AccessKey> <!-- This is for JohnThomson, a user who can upload to our libraries; override with /p:AccessKey=; used by ConfigureS3 target-->
@@ -51,6 +52,17 @@
       DestinationFolder="assets"
       PublicRead="true"
       ContentType="image/svg+xml"/>
+  </Target>
+  
+    <!-- Publish Main Javascript file (with content-encoding indicating it is gzipped -->
+  <Target Name="MainJs">
+    <S3BuildPublisher
+      EncryptionContainerName ="$(Key)"
+      SourceFiles="@(MainJs)"
+      DestinationBucket="$(Bucket)"
+      DestinationFolder="assets"
+      PublicRead="true"
+      ContentEncoding="gzip"/>
   </Target>
 
   <Target Name="Upload" DependsOnTargets="Root;Assets;Svg;"></Target>
