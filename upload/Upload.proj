@@ -65,6 +65,6 @@
       ContentEncoding="gzip"/>
   </Target>
 
-  <Target Name="Upload" DependsOnTargets="Root;Assets;Svg;"></Target>
+  <Target Name="Upload" DependsOnTargets="Root;Assets;Svg;MainJs"></Target>
 
 </Project>
