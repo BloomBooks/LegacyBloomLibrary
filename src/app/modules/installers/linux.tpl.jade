@@ -1,18 +1,17 @@
 .staticPage
 	H2 Getting Bloom On Linux
-	P An
+	P A
 		strong
 			|  beta release
 		|  of Bloom 3 is currently available for Ubuntu Precise and Trusty.
 
 	H3 Step 1: Add the SIL experimental repository to your sytem
-	pre
-		| sudo echo have sudo
-		| wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-		| sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc) main"
-		| sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc)-experimental main"
-		| sudo apt-get update
-		| sudo apt-get dist-upgrade
+	pre sudo echo have sudo
+	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc) main"
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc)-experimental main"
+	pre sudo apt-get update
+	pre sudo apt-get dist-upgrade
 	H3 Step 2: Add Bloom Desktop
 	pre
 		| sudo apt-get install bloom-desktop
