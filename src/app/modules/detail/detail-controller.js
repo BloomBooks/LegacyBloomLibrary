@@ -45,6 +45,19 @@
 				return input.substring(0, index + 1) + "...";
 			};
 		})
+		// We get a book and return a list of the languages it contains
+		.filter('previewLangs', function() {
+			return function(book) {
+				if (book.langPointers.length === 0) {
+					return "(unknown)";
+				}
+				var result = book.langPointers[0].name;
+				for (var i = 1; i < book.langPointers.length; i++) {
+					result += ", " + book.langPointers[i].name;
+				}
+				return result;
+			};
+		})
 		// we get a URL for the contents of the book and return the one for the Preview.
 		// input url is .../BookName/
 		// output is .../BookName/BookName.pdf.
