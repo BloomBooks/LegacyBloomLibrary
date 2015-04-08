@@ -469,9 +469,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 						{
                             var fixedArray = [];
                             for (var j = 0; j < langArray.length; j++) {
-                                fixedArray.push(langArray[j].toJSON());
+                                //sometimes we remove a row from the languages table but if this book is still
+                                //pointing at it, we'll get a null in the langArray at that point
+                                if (langArray[j] != null) {
+                                    fixedArray.push(langArray[j].toJSON());
+                                }
                             }
-							results[i].set("langPointers", fixedArray);
 						}
 
 						objects[i] = results[i].toJSON();
