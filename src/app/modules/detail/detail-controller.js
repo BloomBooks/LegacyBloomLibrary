@@ -131,7 +131,7 @@
 					bookService.deleteBook($scope.book.objectId).then(function() {
 						var counts = bookCountService.getCount();
 						counts.bookCount--;
-                        $modalInstance.close(true); // object was deleted.
+						$window.history.back(); // object was deleted, back to browse.
 					},
 					function(error) {
 						alert(error);
