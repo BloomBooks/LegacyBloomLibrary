@@ -39,7 +39,7 @@
             <a href="" ng-click="chooseBookshelves()"><i tooltip="Add/Remove book from bookshelf" tooltip-placement="right" ng-class="{'icon-folder-open': true, 'icon-hidden':!canSetBookshelf, inBookshelf: isBookFeatured}"></i></a>
             <div class="pull-right">
             <!-- I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work -->
-            <a ng-href="{{book.baseUrl | makePreviewUrl}}" title="This book contains the following source languages: [{{book | previewLangs}}].|However the following preview provides a sample using just one of these languages.|Once you load this book in Bloom, you will see the text in the other language(s)." ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}">
+            <a ng-href="{{book.baseUrl | makePreviewUrl}}" title="{{book | previewLangInfo}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}">
                 <button type="button" class="btn btn-default"><i class="notranslate" class="icon-eye-open"></i> Preview</button></a>
             <!--<a ng-href="downloadBook{{book.bookOrder}}" tooltip="No-Preflight Download to the Bloom software on your computer, so that you can use it as a shell book." ng-hide="!skipDownloadPreflight">-->
                 <!--<button type="button" class="btn btn-default" ng-click="close()"><i class="icon-download"></i> Open in Bloom</button></a>-->
