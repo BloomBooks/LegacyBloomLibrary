@@ -45,6 +45,26 @@
 				return input.substring(0, index + 1) + "...";
 			};
 		})
+		// We get a book and return a string describing the languages it contains and
+		// possibly explaining that the preview doesn't show them all.
+		// The string may not contain HTML markup (must be valid for an attribute).
+		// It may contain | for line breaks and [] to mark bold text (as interpreted by
+		// the afterLoad function in the pdfoverlay directive)
+		.filter('previewLangInfo', function() {
+			return function(book) {
+				if (book.langPointers.length === 0) {
+					return "No information is available about the languages of this book.";
+				}
+				var langList = book.langPointers[0].name;
+				for (var i = 1; i < book.langPointers.length; i++) {
+					langList += ", " + book.langPointers[i].name;
+				}
+				if (book.langPointers.length ===1) {
+					return "This book contains just one source language: ["+ langList + "].";
+				}
+				return "This book contains the following source languages: [" + langList + "].|However the following preview provides a sample using just one of these languages.|Once you load this book in Bloom, you will see the text in the other language(s).";
+			};
+		})
 		// we get a URL for the contents of the book and return the one for the Preview.
 		// input url is .../BookName/
 		// output is .../BookName/BookName.pdf.
