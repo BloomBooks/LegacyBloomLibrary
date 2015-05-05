@@ -256,6 +256,9 @@
                     // to put an Info icon in front, interpret [] as requesting bold, and interpret | as line
                     // breaks.
                     afterLoad: function() {
+                        if(!this.title) {
+                            return;  // if it's empty don't insert the icon etc.
+                        }
                         var temp=this.title.replace('[', '<b>').replace(']', '</b>').split('|');
                         var result = '<table><tbody><tr><td><i class="icon-info-sign" style="font-size:5em;margin-right:12px;position:relative;top:-4px"></i></td><td>';
                         for(var i = 0; i < temp.length; i++){
