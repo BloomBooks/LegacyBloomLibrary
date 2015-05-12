@@ -1,33 +1,47 @@
+mixin link(href)
+	| &nbsp;
+	a(href=href)
+		block
+	| &nbsp;
+
 .staticPage
 	html
 		head
-			title Bloom 3 installation instructions
+			title Bloom installation instructions
 			meta(content='text/html; charset=UTF-8', http-equiv='content-type')
 		body
 			h1
-				| Installing Bloom 3 and Related Software
-			p
-				| If you have been using Bloom version 1 or 2, or an earlier version of Bloom 3, please uninstall the software before you install version 3. Bloom requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and&nbsp;
-				a(href='http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA')
-					| .NET 4.0
-				| &nbsp;(part of Windows, so you probably already have it). See these instructions for installing on&nbsp;
-				a(href='#/installers/linux') Linux
-				| .
+				| Installing Bloom and Related Software
+
 			h2
 				a
-				| Installing Bloom
+				| Bloom Installers
+
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', height='30px', width='100%', frameborder='0', scrolling='no')
+			.versionNotes
+				| Requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and
+				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
+				|(part of Windows, so you probably already have it). Uninstall Version 1 or 2 before installing this. Older Windows Versions are
+				+link('#/installers/old') here
+				| , and Linux Installation Instructions are
+				+link('#/installers/linux') here.
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', height='30px', width='100%', frameborder='0', scrolling='no')
+			.versionNotes Not for Windows XP. Requires
+				+link('http://www.microsoft.com/en-us/download/details.aspx?id=40779') .Net 4.5.
+				|Works best when
+				+link('http://get.adobe.com/reader/enterprise/') Adobe Reader
+				| is also installed. Includes the Andika New Basic font. Can be installed alongside Bloom 3.0.
+
+			//H4 Linux 3.1 Beta
+				+link('#/installers/linux') Installation Instructions
+
+
+
+			h2 The Art of Reading
 			p
-				| If you are a new Bloom user or have uninstalled an earlier version of Bloom, you can install Bloom by downloading and running this file:
-			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', height='50', width='100%', frameborder='0', scrolling='no')
-			a(href='#/installers/old') Other Versions
-			h2
-				a
-				| The Art of Reading
-			p
-				| We also recommend that you download and install the&nbsp;
-				a(href='http://bloomlibrary.org/#/artofreading')
-					| Art Of Reading
-				| &nbsp;illustration collection. This free collection contains more than 10,000 line drawings suitable for use in reading materials. Bloom is designed to enable you to search and select illustrations from this collection once you have installed it.
+				| We also recommend that you download and install the
+				+link('http://bloomlibrary.org/#/artofreading') Art Of Reading
+				|illustration collection. This free collection contains more than 10,000 line drawings suitable for use in reading materials. Bloom is designed to enable you to search and select illustrations from this collection once you have installed it.
 			h2
 				a
 				| Fonts
@@ -58,9 +72,11 @@
 				| Help getting started and learning Bloom
 			p
 				| Bloom is easy to use, but you may find it helpful to watch the&nbsp;
-				a(href='https://vimeo.com/channels/bloomlibrary')
+				a(href='http://tiny.cc/bloomVimeo')
 					| Bloom training videos
 				| . Start with&nbsp;
 				a(href='https://vimeo.com/channels/bloomlibrary') Bloom: who is it for?
-				| &nbsp;You can download these videos to your computer so that you can share them with people who don't have cheap internet. The trick to seeing the download button is to click on the link in the lower-left-hand corner, the one that starts with "# vimeo.com".
+			p You can download all the Bloom training videos to your computer so that you can share them with people who don't have good or inexpensive internet connections.
+				a(href='http://tiny.cc/bloomHDVideos') High-resolution videos
+				a(href='http://tiny.cc/bloomSDVideos') Low-resolution videos (smaller files)
 
