@@ -13,7 +13,6 @@ mixin link(href)
 			h2
 				a
 				| Bloom Installers
-
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', height='30px', width='100%', frameborder='0', scrolling='no')
 			.versionNotes
 				| Requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and
@@ -22,7 +21,7 @@ mixin link(href)
 				+link('#/installers/old') here
 				| , and Linux Installation Instructions are
 				+link('#/installers/linux') here.
-			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', height='30px', width='100%', frameborder='0', scrolling='no')
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm')
 			.versionNotes Not for Windows XP. Requires
 				+link('http://www.microsoft.com/en-us/download/details.aspx?id=40779') .Net 4.5.
 				|Works best when
