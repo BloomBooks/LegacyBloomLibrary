@@ -1,0 +1,23 @@
+.versionNotes{
+    color:grey;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-size: 9pt;
+}
+//The following are used by the iframes that bring in the downloadpointers_CHANNELNAME.htm files that the build system creates
+//We can't push styles down into the iframe, but the html itself includes the same css file as the rest of this site.
+.buildInfo {
+    .label {
+        width: 150pt;
+        &:before { content: attr(data-channel-label) ' Version'; }
+    }
+
+    .link {
+        width: 200pt;
+        .linkLabel:before { content: 'Bloom ' attr(data-version-number);}
+    }
+
+    .date {
+        &:before { content: attr(data-channel-label);  }
+    }
+}
