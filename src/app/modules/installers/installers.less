@@ -1,12 +1,12 @@
 .versionNotes{
     color:grey;
-    margin-left: 2em;
+    //margin-left: 2em;
     margin-bottom: 1em;
     font-size: 9pt;
 }
 
 .download-version-frame {
-    height: 20px;
+    height: 15px;
     width:100%;
     border: none;
 }
@@ -16,6 +16,7 @@ body.buildInfo {
     margin-bottom: 0 !important;
     table {
         .label {
+            font-weight: bold;
             width: 150pt;
             &:before {
                 content: attr(data-channel-label) ' Version';
@@ -23,6 +24,7 @@ body.buildInfo {
         }
 
         .link {
+            font-weight: bold;
             width: 200pt;
             .linkLabel:before {
                 content: 'Bloom ' attr(data-version-number) ' ' attr(data-channel-label);
@@ -31,7 +33,7 @@ body.buildInfo {
 
         .date {
             &:before {
-                content: attr(data-channel-label);
+                content: attr(data-date);
             }
         }
     }
