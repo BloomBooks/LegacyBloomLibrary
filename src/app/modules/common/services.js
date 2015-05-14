@@ -379,6 +379,24 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// By that time books will be an array of json-encoded book objects from parse.com.
 		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
+            var fixLangPtrs = function(book) {
+                // Before we convert a book to JSON, we have to convert its langPointers to JSON.
+                // the data we want is included in the results of the book queries, but for some reason
+                // toJSON does not convert the linked objects' extra data.
+                var langArray = book.get("langPointers");
+                if (langArray)
+                {
+                    var fixedArray = [];
+                    for (var j = 0; j < langArray.length; j++) {
+                        //sometimes we remove a row from the languages table but if this book is still
+                        //pointing at it, we'll get a null in the langArray at that point
+                        if (langArray[j] != null) {
+                            fixedArray.push(langArray[j].toJSON());
+                        }
+                    }
+                    book.set("langPointers", fixedArray);
+                }
+            };
             if (!searchString && !shelf && !lang && !tag) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
@@ -397,23 +415,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //						{
 //							results[i].set("uploader", user.toJSON());
 //						}
-                            // Before we convert results[i] to JSON, we have to convert its langPointers to JSON.
-                            // the data we want is included in the results of defaultBooks, but for some reason
-                            // toJSON does not convert the linked objects' extra data.
-                            var langArray = results[i].get("langPointers");
-                            if (langArray)
-                            {
-                                var fixedArray = [];
-                                for (var j = 0; j < langArray.length; j++) {
-                                    //sometimes we remove a row from the languages table but if this book is still
-                                    //pointing at it, we'll get a null in the langArray at that point
-                                  if (langArray[j] != null) {
-                                    fixedArray.push(langArray[j].toJSON());
-                                  }
-                                }
-                                results[i].set("langPointers", fixedArray);
-                            }
-
+                            fixLangPtrs(results[i]);
                             objects[i] = results[i].toJSON();
                         }
                         // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
@@ -461,21 +463,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //						{
 //							results[i].set("uploader", user.toJSON());
 //						}
-                        // Before we convert results[i] to JSON, we have to convert its langPointers to JSON.
-                        // including this data in the query above makes sure it is there, but for some reason
-                        // toJSON does not convert the linked objects' extra data.
-                        var langArray = results[i].get("langPointers");
-						if (langArray)
-						{
-                            var fixedArray = [];
-                            for (var j = 0; j < langArray.length; j++) {
-                                //sometimes we remove a row from the languages table but if this book is still
-                                //pointing at it, we'll get a null in the langArray at that point
-                                if (langArray[j] != null) {
-                                    fixedArray.push(langArray[j].toJSON());
-                                }
-                            }
-						}
+                        fixLangPtrs(results[i]);
 
 						objects[i] = results[i].toJSON();
 					}
