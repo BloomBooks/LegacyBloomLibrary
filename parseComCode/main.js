@@ -131,7 +131,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
 
 // This function is used to set up the fields used in the bloom library.
 // Adding something here should be the ONLY way fields and classes are added to parse.com.
-// After adding one, it is recommended that you first deploy the modified cloud code
+// After adding one, it is recommended that you first deploy the modified cloud code (see ReadMeParseComCloudCode.txt)
 // to our 'test' project, run it, and verify that the result are as expected.
 // Then try on the bloomlibrarysandbox (where you should also develop and test the
 // functionality that uses the new fields).
@@ -201,7 +201,8 @@ Parse.Cloud.define("setupTables", function(request, response) {
             fields: [
                 {name: "ethnologueCode", type:"String"},
                 {name: "isoCode", type:"String"},
-                {name: "name", type:"String"}
+                {name: "name", type:"String"},
+                {name: "englishName", type:"String"}
             ]
         }
     ];

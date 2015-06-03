@@ -133,7 +133,7 @@
             if (!$scope.initialized) {
                 return; // can't do useful query.
             }
-			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (result) {
+			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, "title", true).then(function (result) {
 				$scope.visibleBooks = result;
 			});
 		};
