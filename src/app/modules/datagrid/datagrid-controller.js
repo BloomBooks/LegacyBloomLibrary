@@ -8,7 +8,8 @@
 		$stateProvider.state('datagrid', {
 			url: "/datagrid",
 			templateUrl: 'modules/datagrid/datagrid.tpl.html',
-			controller: 'DataGridCtrl'
+			controller: 'DataGridCtrl',
+			title: 'Book Library'
 		});
 	} ]);
 
@@ -37,7 +38,7 @@
 			$scope.getBookRange = function (count, currentPage, searchText) {
 				var first = (currentPage - 1) * count;
 				var sortField = $scope.sortInfo.fields[0];
-				var sortBy = null;
+				var sortBy = 'title';
 				// Todo: setting sortBy to a complex field like this does not work...no sorting happens.
 				// It appears we will need to put a redundant top-level data field in the record for
 				// anything we want to sort by. This is especially annoying in that it may not actually
@@ -48,16 +49,18 @@
 				// all-lower-case field. Similarly any other sort-key field must somehow be in a form
 				// where a plain binary sort will give the right results.
 				if (sortField == 'title') {
-					sortBy = 'volumeInfo.title';
+					sortBy = 'title';
 				}
 				bookService.getFilteredBookRange(first, count, searchText, "", "", "", sortBy).then(function (result) {
 					$scope.visibleBooks = result;
 					$scope.visibleData = $scope.visibleBooks.map(function (item) {
 						return {
-							title: item.volumeInfo.title,
-							published: item.volumeInfo.publishedDate,
-							publisher: item.volumeInfo.publisher,
-							pages: item.volumeInfo.pageCount
+							title: item.title,
+							created: new Date(item.createdAt).toLocaleDateString(),
+							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
+							license: item.license,
+							modified: new Date(item.updatedAt).toLocaleDateString(),
+							pages: item.pageCount
 						};
 					});
 				});
@@ -70,7 +73,7 @@
 			$scope.getBookCount($scope.filterOptions.filterText); // initialize count
 			$scope.getBookRange($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText); // init
 			$scope.$watch('pagingOptions', function (newVal, oldVal) {
-				if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+				if (newVal !== oldVal) {// && newVal.currentPage !== oldVal.currentPage) {
 					$scope.getBookRange($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
 				}
 			}, true);
@@ -85,7 +88,8 @@
 					$scope.getBookRange($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
 				}
 			}, true);
-			$scope.gridOptions = { data: 'visibleData',
+			$scope.gridOptions = {
+				data: 'visibleData',
 				enableColumnResize: true,
 				//showColumnMenu:true,
 				//showFilter:true,
@@ -97,11 +101,13 @@
 				showColumnMenu: true,
 				filterOptions: $scope.filterOptions,
 				sortInfo: $scope.sortInfo,
-				columnDefs: [{ field: 'title', displayName: 'Title', width: '***' },
-			{ field: 'published', displayName: 'Date', width: 80 },
-			{ field: 'publisher', displayName: 'Copyright', width: '**' },
-			{ field: 'pages', displayName: 'Pages', width: 50 }
-		]
+				columnDefs: [
+					{ field: 'title', displayName: 'Title', width: '***' },
+					{ field: 'created', displayName: 'Created', width: 80 },
+					{ field: 'copyright', displayName: 'Copyright', width: '**' },
+					{ field: 'license', displayName: 'License', width: 80 },
+					{ field: 'modified', displayName: 'Modified', width: 80 },
+					{ field: 'pages', displayName: 'Pages', width: 50 }]
 			};
 			//	$scope.searchText = $stateParams["search"];
 			//	$scope.searchTextRaw = $scope.searchText;
