@@ -73,13 +73,13 @@
             $scope.currentLang = $location.$$search.lang;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
-            $scope.wantLeftBar = true;//$location.$$path.substring(1, 7) == 'browse' || $location.$$path.substring(1, 7) == 'datagrid';
+            $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             $scope.isLoggedIn = authService.isLoggedIn();
             $rootScope.$on('$locationChangeSuccess', function() {
                 $scope.currentLang = $location.$$search.lang;
                 $scope.currentTag = $location.$$search.tag;
                 $scope.currentShelf = $location.$$search.shelf;
-                $scope.wantLeftBar = true;//$location.$$path.substring(1, 7) == 'browse' || $location.$$path.substring(1, 7) == 'datagrid';
+                $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             });
             $scope.showInProgress = function() {
                 $modal.open({

@@ -1,37 +1,7 @@
-<div class="container not-centered">
-    <div class="row row-offcanvas">
-        <div ng-show="wantLeftBar" ng-controller="LeftSidebar" class="filterBar col-md-3 sidebar-offcanvas" id="sideBar">
-            <p class="pull-right visible-xs sidebarToggle">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">&nbsp;<i class="icon-caret-left"></i>&nbsp;&nbsp;</button>
-            </p>
-            <div class="bookshelves">
-                <h4>Bookshelves</h4>
-                <div><a class="bookshelfItem" href="" ng-click="filterShelf('')">All Books</a></div>
-                <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
-                <div><div ng-class="{activeFilter: currentShelf == '$recent'}"><a class="bookshelfItem" href="" ng-click="filterShelf('$recent')">New Arrivals</a></div></div>
-                <div><div ng-class="{activeFilter: currentShelf == '$myUploads'}">
-                    <a class="bookshelfItem" href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}">My Uploads</a></div></div>
-            </div>
-            <div class="narrowSearch">
-                <h4>Narrow Search</h4>
-                <h5>Languages</h5>
-                <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a href="" ng-click="filterLanguage(lang.isoCode)">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
-                <h5>Tags</h5>
-                <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
-            </div>
-        </div>
-        <div class="rightContainer col-md-9">
-            <p class="pull-left visible-xs sidebarToggle" id="sidebarToggleClosed">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Filters <i class="icon-caret-right"></i></button>
-            </p>
-            <div class="mainContent">
-                <div class="container-fluid">
-                    <div>
-                        <input type="text" ng-model="filterOptions.filterText" class="search-query" placeholder="Filter">
-                        <div class="gridStyle" ng-grid="gridOptions"></div>
-                    </div>
-                </div>
-            </div>
+<div class="mainContent">
+    <div class="container-fluid">
+        <div>
+            <div class="gridStyle" ui-grid="gridOptions" ui-grid-pagination></div>
         </div>
     </div>
 </div>
