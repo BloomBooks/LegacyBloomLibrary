@@ -10,7 +10,7 @@
                 <div><div ng-class="{activeFilter: currentShelf == 'Featured'}"><a class="bookshelfItem" href="" ng-click="filterShelf('Featured')">Featured</a></div></div>
                 <div><div ng-class="{activeFilter: currentShelf == '$recent'}"><a class="bookshelfItem" href="" ng-click="filterShelf('$recent')">New Arrivals</a></div></div>
                 <div><div ng-class="{activeFilter: currentShelf == '$myUploads'}">
-                    <a class="bookshelfItem" href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}">My Uploads</a></div></div>
+                    <a class="bookshelfItem" href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-placement="right" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}">My Uploads</a></div></div>
             </div>
             <div class="narrowSearch">
                 <h4>Narrow Search</h4>
