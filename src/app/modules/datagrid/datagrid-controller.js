@@ -2,7 +2,7 @@
 	'use strict';
 
 	// Model declaration for the data grid view (url #/datagrid)
-	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination'])//, 'BloomLibraryApp.detail'])
+	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit'])//, 'BloomLibraryApp.detail'])
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('datagrid', {
@@ -44,28 +44,31 @@
 									output += ' (' + item.englishName + ')';
 								}
 								return output;
-							}).toString() : ''
+							}).toString() : '',
+							librarianNote: item.librarianNote
 						};
 					});
 				});
 			};
 
 			$scope.getBooks();
+
 			$scope.gridOptions = {
 				data: 'booksData',
 				paginationPageSizes: [10, 24, 50, 100],
 				paginationPageSize: 10,
 				enableFiltering: true,
 				columnDefs: [
-					{ field: 'title', displayName: 'Title', width: '***' },
-					{ field: 'createdAt', displayName: 'Created', width: '*' },
-					{ field: 'copyright', displayName: 'Copyright', width: '*' },
-					{ field: 'license', displayName: 'License', width: '*' },
-					{ field: 'updatedAt', displayName: 'Modified', width: '*' },
-					{ field: 'pageCount', displayName: 'Pages', width: '*' },
-					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*' },
-					{ field: 'tags', displayName: 'Tags', width: '*'/*, cellTooltip: true*/ },
-					{ field: 'languages', displayName: 'Languages', width: '*'/*, cellTooltip: true*/ }]
+					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false},
+					{ field: 'createdAt', displayName: 'Created', width: '*', minWidth: 15, enableCellEdit: false },
+					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false },
+					{ field: 'license', displayName: 'License', width: '*', minWidth: 15, enableCellEdit: false },
+					{ field: 'updatedAt', displayName: 'Modified', width: '*', minWidth: 15, enableCellEdit: false },
+					{ field: 'pageCount', displayName: 'Pages', width: '*', minWidth: 15, enableCellEdit: false },
+					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: true },
+					{ field: 'tags', displayName: 'Tags', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false },
+					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false },
+					{ field: 'librarianNote', displayName: 'Notes', width: '**', minWidth: 15, enableCellEdit: true }]
 			};
 		}]);
 } ()); // end wrap-everything function

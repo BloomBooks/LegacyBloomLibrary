@@ -173,6 +173,7 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "isbn", type:"String"},
                 {name: "langPointers", type:"Array"},
                 {name: "languages", type:"Array"},
+                {name: "librarianNote", type:"String"},
                 {name: "license", type:"String"},
                 {name: "licenseNotes", type:"String"},
                 {name: "pageCount", type:"Number"},
