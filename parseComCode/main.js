@@ -69,6 +69,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
     success: function(shelves) {
 		var featuredShelf = shelves[0];
 		var contentQuery = featuredShelf.relation("books").query();
+        contentQuery.containedIn('inCirculation', [true, undefined]);
 		contentQuery.include("langPointers");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
@@ -89,6 +90,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                 // promise fulfilment if more results are needed.
                 var runQuery = function() {
                     var allBooksQuery = new Parse.Query("books");
+                    allBooksQuery.containedIn('inCirculation', [true, undefined]);
 					allBooksQuery.include("langPointers");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got
@@ -170,6 +172,7 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "experimental", type:"Boolean"},
                 {name: "folio", type:"Boolean"},
                 {name: "formatVersion", type:"String"},
+                {name: "inCirculation", type: "Boolean"},
                 {name: "isbn", type:"String"},
                 {name: "langPointers", type:"Array"},
                 {name: "languages", type:"Array"},

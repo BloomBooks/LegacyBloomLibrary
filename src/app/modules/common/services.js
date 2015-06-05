@@ -244,7 +244,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         }
                     });
                 },
-                error: function(object, error) {                    
+                error: function(object, error) {
                     errorHandlerService.handleParseError('isBookInShelf', error);
                     defer.reject(error);
                 }
@@ -377,7 +377,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending, overrideDefault) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending, overrideDefault, showOutOfCirculation) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
             var fixLangPtrs = function(book) {
                 // Before we convert a book to JSON, we have to convert its langPointers to JSON.
@@ -434,6 +434,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
 			var query = this.makeQuery(searchString, shelf, lang, tag);
 
+            //Hide out-of-circulation books
+            if(!showOutOfCirculation) {
+                query.containedIn('inCirculation', [true, undefined]);
+            }
+
             query.skip(first);
             query.limit(count);
             query.include("langPointers");
@@ -489,6 +494,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		this.deleteBook = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
+
+            this.modifyBookField = function(book, field, value) {
+                var rBook = restangular.withConfig(authService.config()).one('classes/books', book.objectId);
+                rBook[field] = value;
+                rBook.put();
+            };
 
         this.resetCurrentPage = function () {
             $cookies["currentpage"] = 1;
