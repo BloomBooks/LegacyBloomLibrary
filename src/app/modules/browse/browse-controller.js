@@ -57,7 +57,7 @@
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
         
-        function setupResultsMessage(count) {
+        function getBookMessage(count) {
             var message = "";
             var shelfLabel = $scope.shelfName;
             if ($scope.shelfName === 'Featured') {
@@ -83,38 +83,23 @@
                 params.bookOrBooks = _localize('book');
             }
 
-            var isFiltered = false;
-
             if (count === 0) {
-                $scope.resultsMessage = _localize('There are no books that match your search', params);
+                message = 'There are no books that match your search for {shelf} {language} books';
             } else {
-                $scope.resultsMessage = _localize('Found {count} {bookOrBooks}', params);
-            }
-            if ($scope.shelfName) {
-                message = message + ' | ' + _localize('bookshelf: {shelf}', params);
-                isFiltered = true;
-            }
-            if (params.language) {
-                message = message + ' | ' + _localize('language: {language}', params);
-                isFiltered = true;
+                message = 'Found {count} {shelf} {language} {bookOrBooks}';
             }
             if ($scope.tag) {
-                message = message + ' | ' +_localize('tag: {tag}', params);
-                isFiltered = true;
+                message = message + ' with the {tag} tag';
             }
             if ($scope.searchText) {
-                message = message + ' | ' + _localize('keyword: "{searchText}"', params);
-                isFiltered = true;
+                message = message + ' containing "{searchText}"';
             }
-            if (isFiltered) {
-                message = message + " |";
-            }
-            $scope.filtersMessage = message;
+            return _localize(message, params);
         }
         $scope.getFilteredBookCount = function() {
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
                 $scope.bookCount = $scope.bookCountObject.bookCount = count;
-                setupResultsMessage(count);
+                $scope.bookMessage = getBookMessage(count);
                 $scope.setPage = function () {
                 };
                 $scope.initialized = true;
