@@ -377,7 +377,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending, overrideDefault) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
             var fixLangPtrs = function(book) {
                 // Before we convert a book to JSON, we have to convert its langPointers to JSON.
@@ -397,7 +397,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     book.set("langPointers", fixedArray);
                 }
             };
-            if (!searchString && !shelf && !lang && !tag) {
+            if (!searchString && !shelf && !lang && !tag && !overrideDefault) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params

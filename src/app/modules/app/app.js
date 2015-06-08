@@ -40,12 +40,12 @@
         $('.navbar-collapse.in').collapse('hide');
 		$state.go('browse');
 	};
-            
+
             // Used to determine the active menu item
-            $scope.isActive = function (viewLocation) { 
+            $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };
-            
+
             $scope.isBookLibrary = function () {
                 return $.inArray($location.path(), ['/landing','/features','/installers','/installers/old','/installers/linux','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
             };
@@ -64,7 +64,7 @@
             $scope.year = new Date().getFullYear().toString();
 
             // Used to determine the active link
-            $scope.isActive = function (viewLocation) { 
+            $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };
         }])
@@ -148,7 +148,7 @@
                 }
             });
         }])
-        .controller('CarouselCtrl', ['$scope', 
+        .controller('CarouselCtrl', ['$scope',
             function ($scope) {
                 $scope.myInterval = 10000;
                 var slides = $scope.slides = [];
@@ -204,7 +204,7 @@
 	$rootScope.alert = function (text) {
 		alert(text);
 	};
-	
+
     $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
         // For more info, see comment on pdfoverlay directive (below)
         if ($.fancybox.isActive && oldUrl.indexOf('preview=true') > 0) {
@@ -220,7 +220,7 @@
 			$rootScope.pageTitle = "Bloom";
 		}
     });
-    
+
     // Set up segment.io analytics
     // The first line is boilerplate stuff from segment.io.  It is only modified to adhere to strict mode.
     // I don't know everything it does, but one thing is it stores up any calls made before the analytics object is fully initialized.

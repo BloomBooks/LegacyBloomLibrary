@@ -165,7 +165,8 @@ module.exports = function ( grunt ) {
                  * so we can successfully import them in main.less.
                  * It would be nicer to make this configurable, with the actual list in build.config.js,
                  * but I haven't figured out how. */
-                {src: ['vendor/fancybox/source/jquery.fancybox.css'], dest: 'vendor/fancybox/source/jquery.fancybox.less'}
+              {src: ['vendor/fancybox/source/jquery.fancybox.css'], dest: 'vendor/fancybox/source/jquery.fancybox.less'},
+              {src: ['vendor/angular-ui-grid/ui-grid.min.css'], dest: 'vendor/angular-ui-grid/ui-grid.min.less'}
             ]
         }
     },
