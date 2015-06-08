@@ -84,17 +84,17 @@
             }
 
             if (count === 0) {
-                message = _localize('There are no books that match your search for {shelf} {language} books', params);
+                message = 'There are no books that match your search for {shelf} {language} books';
             } else {
-                message = _localize('Found {count} {shelf} {language} {bookOrBooks}', params);
+                message = 'Found {count} {shelf} {language} {bookOrBooks}';
             }
             if ($scope.tag) {
-                message = message + " " +_localize('with the {tag} tag', params);
+                message = message + ' with the {tag} tag';
             }
             if ($scope.searchText) {
-                message = message + " " + _localize('containing "{searchText}"', params);
+                message = message + ' containing "{searchText}"';
             }
-            return message;
+            return _localize(message, params);
         }
         $scope.getFilteredBookCount = function() {
             bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
