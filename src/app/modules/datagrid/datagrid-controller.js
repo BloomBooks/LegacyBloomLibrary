@@ -66,10 +66,11 @@
 				data: 'booksData',
 				paginationPageSizes: [10, 24, 50, 100, 1000],
 				paginationPageSize: 100,
+				enableGridMenu: true,
 				enableFiltering: true,
 				columnDefs: [
 					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
-					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false },
 					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'tags', displayName: 'Tags', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
@@ -79,43 +80,50 @@
 						{ id: 'no', show: 'no' }
 					] },
 					{ field: 'librarianNote', displayName: 'Notes', width: '**', minWidth: 15, enableCellEdit: true, enableCellEditOnFocus: true, filter: { condition: uiGridConstants.filter.CONTAINS } },
-					{ field: 'createdAt', displayName: 'Created', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
+					{ field: 'createdAt', displayName: 'Created Date', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
 						filters: [
-						{
-							condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
-							flags: { date: true },
-							placeholder: ' >='
-						},
-						{
-							condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
-							flags: { date: true },
-							placeholder: ' <='
-						}
-					] },
-					{ field: 'updatedAt', displayName: 'Modified', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
+							{
+								condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+								flags: { date: true },
+								placeholder: ' >='
+							},
+							{
+								condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+								flags: { date: true },
+								placeholder: ' <='
+							}
+						],
+						visible: false
+					},
+					{ field: 'updatedAt', displayName: 'Modified Date', width: '*', minWidth: 15, maxWidth: 100, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
 						filters: [
-						{
-							condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
-							flags: { date: true },
-							placeholder: ' >='
-						},
-						{
-							condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
-							flags: { date: true },
-							placeholder: ' <='
-						}
-					] },
+							{
+								condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+								flags: { date: true },
+								placeholder: ' >='
+							},
+							{
+								condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+								flags: { date: true },
+								placeholder: ' <='
+							}
+						],
+						visible: false
+					},
 					{ field: 'pageCount', displayName: 'Pages', width: '*', minWidth: 15, maxWidth: 60, enableCellEdit: false,
 						filters: [
-						{
-							condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
-							placeholder: ' >='
-						},
-						{
-							condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
-							placeholder: ' <='
-						}
-					] }]
+							{
+								condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+								placeholder: ' >='
+							},
+							{
+								condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+								placeholder: ' <='
+							}
+						],
+						visible: false
+					}
+				]
 			};
 
 
