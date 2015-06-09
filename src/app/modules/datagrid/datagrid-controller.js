@@ -19,8 +19,8 @@
 	// The setting scope.visibleData needs to be modified to make the actual fields we want,
 	// and the columnDefs spec should be changed to match, and eventually we need to implement a sortBy for each column.
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location',
-		function ($scope, $timeout, bookService, $state, $stateParams, $location) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants',
+		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants) {
 			$scope.getBooks = function() {
 				var first = 0;
 				var count = bookService.getAllBooksCount();
@@ -32,10 +32,16 @@
 							objectId: item.objectId,
 							inCirculation: item.inCirculation !== false ? 'yes' : 'no',
 							title: item.title,
-							createdAt: new Date(item.createdAt).toLocaleDateString(),
+							createdAt: (function() {
+								var dateWithTime = new Date(item.createdAt);
+								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+							}()),
 							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
 							license: item.license,
-							updatedAt: new Date(item.updatedAt).toLocaleDateString(),
+							updatedAt: (function() {
+								var dateWithTime = new Date(item.updatedAt);
+								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+							}()),
 							pageCount: item.pageCount,
 							//Todo: Get bookshelf
 							tags: item.tags ? item.tags.toString() : '',
@@ -66,16 +72,50 @@
 						{ id: 'yes', show: 'yes' },
 						{ id: 'no', show: 'no' }
 					] },
-					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false },
-					{ field: 'createdAt', displayName: 'Created', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false },
-					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false },
-					{ field: 'license', displayName: 'License', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false },
-					{ field: 'updatedAt', displayName: 'Modified', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false },
-					{ field: 'pageCount', displayName: 'Pages', width: '*', minWidth: 15, maxWidth: 60, enableCellEdit: false },
-					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false },
-					{ field: 'tags', displayName: 'Tags', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false },
-					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false },
-					{ field: 'librarianNote', displayName: 'Notes', width: '**', minWidth: 15, enableCellEdit: true, enableCellEditOnFocus: true }]
+					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'createdAt', displayName: 'Created', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
+						filters: [
+						{
+							condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+							flags: { date: true },
+							placeholder: ' >='
+						},
+						{
+							condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+							flags: { date: true },
+							placeholder: ' <='
+						}
+					] },
+					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'license', displayName: 'License', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'updatedAt', displayName: 'Modified', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
+						filters: [
+						{
+							condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+							flags: { date: true },
+							placeholder: ' >='
+						},
+						{
+							condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+							flags: { date: true },
+							placeholder: ' <='
+						}
+					] },
+					{ field: 'pageCount', displayName: 'Pages', width: '*', minWidth: 15, maxWidth: 60, enableCellEdit: false,
+						filters: [
+						{
+							condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+							placeholder: ' >='
+						},
+						{
+							condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+							placeholder: ' <='
+						}
+					] },
+					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'tags', displayName: 'Tags', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'librarianNote', displayName: 'Notes', width: '**', minWidth: 15, enableCellEdit: true, enableCellEditOnFocus: true, filter: { condition: uiGridConstants.filter.CONTAINS } }]
 			};
 
 
