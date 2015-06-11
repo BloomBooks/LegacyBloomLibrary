@@ -63,13 +63,16 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 Parse.Cloud.define("defaultBooks", function(request, response) {
   var first = request.params.first;
   var count = request.params.count;
+  var includeOutOfCirculation = request.params.includeOutOfCirculation;
   var query = new Parse.Query("bookshelf");
   query.equalTo("name", "Featured");
   query.find({
     success: function(shelves) {
 		var featuredShelf = shelves[0];
 		var contentQuery = featuredShelf.relation("books").query();
-        contentQuery.containedIn('inCirculation', [true, undefined]);
+        var shelfName = featuredShelf.get("name");
+        if (!includeOutOfCirculation)
+            contentQuery.containedIn('inCirculation', [true, undefined]);
 		contentQuery.include("langPointers");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
@@ -80,6 +83,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                 var resultIndex = 0;
                 for (var i = 0; i < shelfBooks.length; i++) {
                     if (resultIndex >= first && resultIndex < first + count) {
+                        shelfBooks[i].attributes.bookshelf = shelfName;
                         results.push(shelfBooks[i]);
                     }
                     resultIndex++;
@@ -90,7 +94,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                 // promise fulfilment if more results are needed.
                 var runQuery = function() {
                     var allBooksQuery = new Parse.Query("books");
-                    allBooksQuery.containedIn('inCirculation', [true, undefined]);
+                    if (!includeOutOfCirculation)
+                        allBooksQuery.containedIn('inCirculation', [true, undefined]);
 					allBooksQuery.include("langPointers");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got

@@ -14,48 +14,45 @@
 	} ]);
 
 	// Controller for the data grid view (url #/datagrid)
-	// Todo: Trello card says Columns of interest: Title, Date, Copyright Holder, License, Modified Date, Workflow Status: {Draft, Edited, Private Published, Web Published}
-	// Most of these are not currently available (or at least not in the sample data).
-	// The setting scope.visibleData needs to be modified to make the actual fields we want,
-	// and the columnDefs spec should be changed to match, and eventually we need to implement a sortBy for each column.
 	angular.module('BloomLibraryApp.datagrid')
 	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants',
 		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants) {
 			$scope.getBooks = function() {
 				var first = 0;
-				var count = bookService.getAllBooksCount();
+				bookService.getFilteredBooksCount('', '', '', '', true).then(function (result) {
+					var count = result;
 
-				bookService.getFilteredBookRange(first, count, '', '', '', '', '', '', true, true).then(function (result) {
-					$scope.booksData = result.map(function (item) {
-						return {
-							//Hidden id
-							objectId: item.objectId,
-							inCirculation: item.inCirculation !== false ? 'yes' : 'no',
-							title: item.title,
-							createdAt: (function() {
-								var dateWithTime = new Date(item.createdAt);
-								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
-							}()),
-							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
-							license: item.license,
-							updatedAt: (function() {
-								var dateWithTime = new Date(item.updatedAt);
-								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
-							}()),
-							pageCount: item.pageCount,
-							//Todo: Get bookshelf
-							tags: item.tags ? item.tags.toString() : '',
-							languages: item.langPointers ? item.langPointers.map(function(item) {
-								var output = '';
-								output += item.name;
-								if(item.englishName && item.name != item.englishName)
-								{
-									output += ' (' + item.englishName + ')';
-								}
-								return output;
-							}).toString() : '',
-							librarianNote: item.librarianNote
-						};
+					bookService.getFilteredBookRange(first, count, '', '', '', '', '', '', true).then(function (result) {
+						$scope.booksData = result.map(function (item) {
+							return {
+								//Hidden id
+								objectId: item.objectId,
+								inCirculation: item.inCirculation !== false ? 'yes' : 'no',
+								title: item.title,
+								createdAt: (function () {
+									var dateWithTime = new Date(item.createdAt);
+									return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+								}()),
+								copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
+								license: item.license,
+								updatedAt: (function () {
+									var dateWithTime = new Date(item.updatedAt);
+									return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+								}()),
+								pageCount: item.pageCount,
+								bookshelf: item.bookshelf,
+								tags: item.tags ? item.tags.toString() : '',
+								languages: item.langPointers ? item.langPointers.map(function (item) {
+									var output = '';
+									output += item.name;
+									if (item.englishName && item.name != item.englishName) {
+										output += ' (' + item.englishName + ')';
+									}
+									return output;
+								}).toString() : '',
+								librarianNote: item.librarianNote
+							};
+						});
 					});
 				});
 			};
@@ -70,7 +67,7 @@
 				enableFiltering: true,
 				columnDefs: [
 					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
-					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false },
+					{ field: 'title', displayName: 'Title', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false, sort: { direction: uiGridConstants.ASC } },
 					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'tags', displayName: 'Tags', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },

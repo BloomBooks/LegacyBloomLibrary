@@ -342,7 +342,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString, shelf, lang, tag) {
+		this.getFilteredBooksCount = function (searchString, shelf, lang, tag, includeOutOfCirculation) {
             $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: (shelf && shelf.name) || '', lang: lang || '', tag: tag || ''});
 			var defer = $q.defer();
 
@@ -351,6 +351,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 query = new Parse.Query('books'); // good enough for count, we just want them all in some order.
             } else {
                 query = this.makeQuery(searchString, shelf, lang, tag);
+            }
+
+            if(!includeOutOfCirculation) {
+                query.containedIn('inCirculation', [true, undefined]);
             }
 
             query.count({
@@ -377,7 +381,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending, overrideDefault, showOutOfCirculation) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending, includeOutOfCirculation) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
             var fixLangPtrs = function(book) {
                 // Before we convert a book to JSON, we have to convert its langPointers to JSON.
@@ -397,12 +401,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     book.set("langPointers", fixedArray);
                 }
             };
-            if (!searchString && !shelf && !lang && !tag && !overrideDefault) {
+            if (!searchString && !shelf && !lang && !tag) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
                 // to the cloud function.
-                Parse.Cloud.run('defaultBooks', { first: first, count: count }, {
+                Parse.Cloud.run('defaultBooks', { first: first, count: count, includeOutOfCirculation: includeOutOfCirculation }, {
                     success: function(results) {
                         // enhance JohnT: a chunk of duplicate code here should be pulled out into a function.
                         var objects = new Array(results.length);
