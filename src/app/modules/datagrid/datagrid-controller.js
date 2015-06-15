@@ -1,15 +1,21 @@
 (function () { // to wrap use strict
 	'use strict';
 
+	//This variable allows both the onExit function of the stateProvider and the controller to access the resizeGrid function
+	var resizeGrid;
+
 	// Model declaration for the data grid view (url #/datagrid)
-	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav'])//, 'BloomLibraryApp.detail'])
+	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav', 'ui.grid.autoResize'])//, 'BloomLibraryApp.detail'])
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('datagrid', {
 			url: "/datagrid",
 			templateUrl: 'modules/datagrid/datagrid.tpl.html',
 			controller: 'DataGridCtrl',
-			title: 'Book Library'
+			title: 'Book Library',
+			onExit: function() {
+				window.removeEventListener("resize", resizeGrid);
+			}
 		});
 	} ]);
 
@@ -17,6 +23,15 @@
 	angular.module('BloomLibraryApp.datagrid')
 	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants',
 		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants) {
+			resizeGrid = function() {
+				var gridContainer = document.getElementsByClassName("gridStyle")[0];
+				var footer = document.getElementsByClassName("site-footer")[0];
+
+				gridContainer.style.height = (window.innerHeight - gridContainer.offsetTop - footer.offsetHeight) + "px";
+			};
+
+			window.addEventListener("resize", resizeGrid);
+
 			$scope.getBooks = function() {
 				var first = 0;
 				bookService.getFilteredBooksCount('', '', '', '', true).then(function (result) {
@@ -125,6 +140,9 @@
 
 
 			$scope.gridOptions.onRegisterApi = function(gridApi){
+				//Initialize grid vertical sizing
+				resizeGrid();
+
 				//set gridApi on scope
 				$scope.gridApi = gridApi;
 				gridApi.edit.on.afterCellEdit($scope,function(rowEntity, colDef, newValue, oldValue) {
