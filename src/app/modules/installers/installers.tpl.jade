@@ -13,7 +13,7 @@ mixin link(href)
 			h2
 				a
 				| Bloom Installers
-			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', height='30px', width='100%', frameborder='0', scrolling='no')
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', frameborder='0', scrolling='no')
 			.versionNotes
 				| Requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and
 				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
@@ -21,7 +21,7 @@ mixin link(href)
 				+link('#/installers/old') here
 				| , and Linux Installation Instructions are
 				+link('#/installers/linux') here.
-			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm')
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', frameborder='0', scrolling='no')
 			.versionNotes Not for Windows XP. Requires
 				+link('http://www.microsoft.com/en-us/download/details.aspx?id=40779') .Net 4.5.
 				|Works best when
@@ -36,7 +36,7 @@ mixin link(href)
 			h2 The Art of Reading
 			p
 				| We also recommend that you download and install the
-				+link('http://bloomlibrary.org/#/artofreading') Art Of Reading
+				+link('#/artofreading') Art Of Reading
 				|illustration collection. This free collection contains more than 10,000 line drawings suitable for use in reading materials. Bloom is designed to enable you to search and select illustrations from this collection once you have installed it.
 			h2
 				a
