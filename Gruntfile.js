@@ -166,7 +166,8 @@ module.exports = function ( grunt ) {
                  * It would be nicer to make this configurable, with the actual list in build.config.js,
                  * but I haven't figured out how. */
               {src: ['vendor/fancybox/source/jquery.fancybox.css'], dest: 'vendor/fancybox/source/jquery.fancybox.less'},
-              {src: ['vendor/angular-ui-grid/ui-grid.min.css'], dest: 'vendor/angular-ui-grid/ui-grid.min.less'}
+              {src: ['vendor/angular-ui-grid/ui-grid.min.css'], dest: 'vendor/angular-ui-grid/ui-grid.min.less'},
+              {src: ['vendor/ng-tags-input/ng-tags-input.min.css'], dest: 'vendor/ng-tags-input/ng-tags-input.min.less'}
             ]
         }
     },

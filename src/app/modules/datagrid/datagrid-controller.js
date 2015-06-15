@@ -5,7 +5,7 @@
 	var resizeGrid;
 
 	// Model declaration for the data grid view (url #/datagrid)
-	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav', 'ui.grid.autoResize'])//, 'BloomLibraryApp.detail'])
+	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav', 'ui.grid.autoResize', 'ngTagsInput'])//, 'BloomLibraryApp.detail'])
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('datagrid', {
@@ -56,7 +56,11 @@
 								}()),
 								pageCount: item.pageCount,
 								bookshelf: item.bookshelf,
-								tags: item.tags ? item.tags.toString() : '',
+								tags: item.tags ? item.tags.map(function(item) {
+									var output = {};
+									output.text = item;
+									return output;
+								}) : '',
 								languages: item.langPointers ? item.langPointers.map(function (item) {
 									var output = '';
 									output += item.name;
@@ -72,7 +76,24 @@
 				});
 			};
 
+			$scope.updateTags = function(row) {
+				var newTags = row.entity.tags.map(function(item) {
+					return item.text;
+				});
+				bookService.modifyBookField(row.entity, "tags", newTags);
+			};
+
 			$scope.getBooks();
+
+			var filterTags = function(searchTerm, cellValue, row, column) {
+				var regex = new RegExp(searchTerm, "i");
+				for(var i = 0; i < cellValue.length; i++) {
+					if(regex.test(cellValue[i].text)) {
+						return true;
+					}
+				}
+				return false;
+			};
 
 			$scope.gridOptions = {
 				data: 'booksData',
@@ -80,11 +101,12 @@
 				paginationPageSize: 100,
 				enableGridMenu: true,
 				enableFiltering: true,
+				rowHeight: 40,
 				columnDefs: [
 					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'title', displayName: 'Title', cellTemplate: '<div class="ui-grid-cell-contents"><a target="_blank" ui-sref="browse.detail({bookId: row.entity.objectId})">{{row.entity.title}}</a></div>', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false, sort: { direction: uiGridConstants.ASC } },
-					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
-					{ field: 'tags', displayName: 'Tags', width: '*', minWidth: 15/*, cellTooltip: true*/, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'tags', displayName: 'Tags', cellTemplate: '<tags-input ng-model="row.entity.tags" replace-spaces-with-dashes="false" on-tag-added="grid.appScope.updateTags(row)" style="margin-top:-5px"></tags-input>', width: '***', minWidth: 15, enableCellEdit: false, allowCellFocus: false, cellFilter: "tagFilter", filter: { condition: filterTags } },
 					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'license', displayName: 'License', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'inCirculation', displayName: 'In Circulation', width: 100, minWidth: 5, editableCellTemplate: 'ui-grid/dropdownEditor', enableCellEdit: true, enableCellEditOnFocus: true, editDropdownValueLabel: 'show', editDropdownOptionsArray: [

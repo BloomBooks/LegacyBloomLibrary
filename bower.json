@@ -12,7 +12,8 @@
     "angular-ui-grid": "~3.0.0",
     "jquery": "~1.11.0",
     "angular-local-storage": "~0.0.5",
-    "jquery-xml2json": "~0.0.6"
+    "jquery-xml2json": "~0.0.6",
+    "ng-tags-input": "~2.3.0"
   },
   "devDependencies": {
     "angular": "~1.2.18",

@@ -84,7 +84,8 @@ module.exports = {
       'vendor/angular-local-storage/angular-local-storage.min.js',
       'vendor/jquery-xml2json/src/xml2json.js',
       'vendor/angulartics/dist/angulartics.min.js',
-      'vendor/angulartics/dist/angulartics-segmentio.min.js'
+      'vendor/angulartics/dist/angulartics-segmentio.min.js',
+        'vendor/ng-tags-input/ng-tags-input.min.js'
     ],
     css: [
         /* most/all of our stylesheets are compiled into on file from less files.
