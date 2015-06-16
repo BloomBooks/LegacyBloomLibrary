@@ -4,6 +4,8 @@
 	//This variable allows both the onExit function of the stateProvider and the controller to access the resizeGrid function
 	var resizeGrid;
 
+	var tagList = [];
+
 	// Model declaration for the data grid view (url #/datagrid)
 	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav', 'ui.grid.autoResize', 'ngTagsInput'])//, 'BloomLibraryApp.detail'])
 	.config(['$stateProvider', function config($stateProvider) {
@@ -19,10 +21,45 @@
 		});
 	} ]);
 
+	angular.module('BloomLibraryApp.datagrid')
+	.service('autoTags', ['tagService', '$q', function(tagService, $q) {
+		//var tags = tagService.getTags();
+
+		this.getTags = function(query) {
+			var deferred = $q.defer();
+			var matches = [];
+			//Match beginning
+			var firstRegex = new RegExp('^' + query, 'i');
+			//Match word starts
+			var wordRegex = new RegExp('\\W' + query, 'i');
+			//Match camel case
+			var capQuery = query.charAt(0).toUpperCase() + query.substr(1, query.length - 1);
+			var camelRegex = new RegExp('[a-z]' + capQuery);
+
+			//This should be replaced by the version below
+			for(var i in tagList) {
+				if(firstRegex.test(i) || wordRegex.test(i) || camelRegex.test(i)) {
+					matches.push({"text": i});
+				}
+			}
+
+			//This is the real version to use when the tagService is straightened out
+//			for(var i = 0; i < tags.length; i++) {
+//				if(firstRegex.test(tags[i]) || wordRegex.test(tags[i])) {
+//					matches.push({"text": tags[i]});
+//				}
+//			}
+
+			deferred.resolve(matches);
+
+			return deferred.promise;
+		};
+	} ]);
+
 	// Controller for the data grid view (url #/datagrid)
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants',
-		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoTags',
+		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoTags) {
 			resizeGrid = function() {
 				var gridContainer = document.getElementsByClassName("gridStyle")[0];
 				var footer = document.getElementsByClassName("site-footer")[0];
@@ -57,6 +94,11 @@
 								pageCount: item.pageCount,
 								bookshelf: item.bookshelf,
 								tags: item.tags ? item.tags.map(function(item) {
+									//Put into tagList; Todo: remove when tagService is updated
+									if(!(item in tagList)) {
+										tagList[item] = true;
+									}
+
 									var output = {};
 									output.text = item;
 									return output;
@@ -74,6 +116,13 @@
 						});
 					});
 				});
+			};
+
+			$scope.tagList = {};
+
+			$scope.autoCompleteTags = function($query) {
+				return autoTags.getTags($query);
+				//var $q;
 			};
 
 			$scope.updateTags = function(row) {
@@ -95,6 +144,22 @@
 				return false;
 			};
 
+			$scope.popOut = function(event) {
+				var container = event.target.parentElement;
+				container.style.overflow = "visible";
+				container.style.position = "relative";
+				container.style.zIndex = "3000";
+			};
+
+			$scope.popIn = function(event) {
+				var container = event.target.parentElement;
+				container.style.overflow = "hidden";
+				container.style.position = "static";
+				container.style.zIndex = "auto";
+			};
+
+			$scope.tagsTemplate = '<tags-input ng-model="row.entity.tags" ng-focus="grid.appScope.popOut($event)" ng-blur="grid.appScope.popIn($event)" class="tagsField" replace-spaces-with-dashes="false" on-tag-added="grid.appScope.updateTags(row)" style="margin-top:-5px"><auto-complete source="grid.appScope.autoCompleteTags($query)" min-length="1" maxResultsToShow="100"></auto-complete></tags-input>';
+
 			$scope.gridOptions = {
 				data: 'booksData',
 				paginationPageSizes: [10, 24, 50, 100, 1000],
@@ -106,7 +171,7 @@
 					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'title', displayName: 'Title', cellTemplate: '<div class="ui-grid-cell-contents"><a target="_blank" ui-sref="browse.detail({bookId: row.entity.objectId})">{{row.entity.title}}</a></div>', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false, sort: { direction: uiGridConstants.ASC } },
 					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
-					{ field: 'tags', displayName: 'Tags', cellTemplate: '<tags-input ng-model="row.entity.tags" replace-spaces-with-dashes="false" on-tag-added="grid.appScope.updateTags(row)" style="margin-top:-5px"></tags-input>', width: '***', minWidth: 15, enableCellEdit: false, allowCellFocus: false, cellFilter: "tagFilter", filter: { condition: filterTags } },
+					{ field: 'tags', displayName: 'Tags', cellTemplate: $scope.tagsTemplate, width: '***', minWidth: 15, enableCellEdit: false, allowCellFocus: false, cellFilter: "tagFilter", filter: { condition: filterTags } },
 					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'license', displayName: 'License', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'inCirculation', displayName: 'In Circulation', width: 100, minWidth: 5, editableCellTemplate: 'ui-grid/dropdownEditor', enableCellEdit: true, enableCellEditOnFocus: true, editDropdownValueLabel: 'show', editDropdownOptionsArray: [

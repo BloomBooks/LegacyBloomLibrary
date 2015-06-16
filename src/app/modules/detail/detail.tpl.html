@@ -27,7 +27,7 @@
                  </span>
             </div>
             <div class="tags" ng-show="book.tags.length">
-                Tags: <span class="notranslate" ng-repeat="tag in book.tags"><i class="notranslate icon-tag"></i>{{tag}} </span>
+                Tags: <span class="notranslate" ng-repeat="tag in book.tags"><i class="notranslate icon-tag"></i>{{interpretTag(tag)}} </span>
             </div>
             <div class="unfloat"></div>
         </div>
