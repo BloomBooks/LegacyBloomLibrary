@@ -32,7 +32,7 @@ Parse.Cloud.job("populateSearch", function(request, status) {
 
 // This job will remove any language records which currently do not have any books which use them.
 // The purpose is to keep BloomLibrary.org from displaying languages with no books.
-// It is scheduled to run every day.
+// It is scheduled to run every day. (parse.com -> Core -> Jobs)
 // It can be run manually using the following from the command line:
 // curl -X POST -H "X-Parse-Application-Id: <insert app ID>"  -H "X-Parse-Master-Key: <insert master key>" -d '{}' https://api.parse.com/1/jobs/removeUnusedLanguages
 // (In theory, the -d '{}' shouldn't be needed because we are not passing any parameters, but it doesn't work without it.)
@@ -41,47 +41,30 @@ Parse.Cloud.job("removeUnusedLanguages", function(request, status) {
     Parse.Cloud.useMasterKey();
 
     var allLangQuery = new Parse.Query('language');
-    allLangQuery.find({
-        success: function(languages) {
-            for (var i = 0; i < languages.length; i++) {
-                var language = languages[i];
+    allLangQuery.find().then(function (languages) {
+        var promise = Parse.Promise.as();
+        for (var i = 0; i < languages.length; i++) {
 
+            // Use IIFE to pass the correct language down
+            (function() {
+                var lang = languages[i];
                 var bookQuery = new Parse.Query('books');
-                bookQuery.equalTo('langPointers', language);
-
-                var languagesProcessed = 0;
-
-                // Use IIFE to pass the correct language to the callback
-                (function() {
-                    var lang = language;
-                    var numLanguages = languages.length;
-                    bookQuery.count({
-                        success: function (count) {
-                            if (count == 0) {
-                                lang.destroy({
-                                    success: function(deletedLanguage) {
-                                        console.log("Language " + deletedLanguage.get('name') + " was deleted because no books use it.");
-                                        if (++languagesProcessed === numLanguages)
-                                            status.success("removeUnusedLanguages completed successfully.");
-                                    },
-                                    error: function (deletedLanguage, error) {
-                                        status.error("Error in removeUnusedLanguages while deleting language " + deletedLanguage.get('name') + ": " + error);
-                                    }
-                                });
-                            } else if (++languagesProcessed === numLanguages) {
-                                status.success("removeUnusedLanguages completed successfully.");
-                            }
-                        },
-                        error: function (error) {
-                            status.error("Error in removeUnusedLanguages: " + error);
+                bookQuery.equalTo('langPointers', lang);
+                promise = promise.then(function () {
+                    return bookQuery.count().then(function (count) {
+                        if (count === 0) {
+                            console.log("Deleting language " + lang.get('name') + " because no books use it.");
+                            lang.destroy();
                         }
                     });
-                } ());
-            }
-        },
-        error: function (error) {
-            status.error("Error in removeUnusedLanguages: " + error);
+                });
+            }());
         }
+        return promise;
+    }).then(function () {
+        status.success("removeUnusedLanguages completed successfully.");
+    }, function (error) {
+        status.error("Error in removeUnusedLanguages: " + error);
     });
 });
 
