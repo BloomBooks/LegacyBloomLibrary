@@ -450,7 +450,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			var query = this.makeQuery(searchString, shelf, lang, tag);
 
             //Hide out-of-circulation books
-            if(!showOutOfCirculation) {
+            if(!includeOutOfCirculation) {
                 query.containedIn('inCirculation', [true, undefined]);
             }
 
