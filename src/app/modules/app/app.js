@@ -13,6 +13,22 @@
   .config(['$urlRouterProvider', '$stateProvider',
            function ($urlRouterProvider, $stateProvider) {
 
+               $stateProvider.state('requireLoginResolution', {
+                   'abstract': true,
+                   resolve: {
+                       login:
+                           ['authService',
+                               function (authService) {
+                                   if (!authService.isLoggedIn()) {
+                                       return authService.tryLogin();
+                                   }
+                                   return;
+                               }
+                           ]
+                   },
+                   template: '<ui-view/>'
+               });
+
             //review/experiment: note that I was talking to locationProvider here, even though
             // we are using the alternative system, ui-router.
             // this may be relevant: http://stackoverflow.com/questions/24087188/ui-routers-urlrouterprovider-otherwise-with-html5-mode

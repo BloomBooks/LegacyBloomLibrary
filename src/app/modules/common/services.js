@@ -1,7 +1,8 @@
 angular.module('BloomLibraryApp.services', ['restangular'])
-	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", '$analytics', 'sharedService',
-        function (restangular, $cookies, errorHandlerService, $analytics, sharedService) {
+	.factory('authService', ['Restangular', "$cookies", "errorHandlerService", '$analytics', 'sharedService', '$q',
+        function (restangular, $cookies, errorHandlerService, $analytics, sharedService, $q) {
 		var isLoggedIn = false;
+		var isUserAdministrator = false;
 		var userNameX = 'unknown';
         var bookshelves = [];
         var userObjectId = null;
@@ -103,7 +104,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 // So we make sure (here and elsewhere) that the user names we pass to parse.com are all lower case.
                 // So the user can see the name the way they typed it, we don't lower-case the email address; this also means
                 // that in case, by any chance, they are using an email tool that is case dependent, emails will use the exact case they typed.
-				restangular.withConfig(restangularConfig).all('login').getList({ 'username': username.toLowerCase(), 'password': password })
+				return restangular.withConfig(restangularConfig).all('login').getList({ 'username': username.toLowerCase(), 'password': password })
 					.then(function (results) {
                         if (results.length < 1) {return;}
                         var result = results[0];
@@ -128,6 +129,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 					},
 				function (result) {
 					isLoggedIn = false;
+					isUserAdministrator = false;
 					userNameX = 'unknown';
 					errorCallback(result);
 				});
@@ -156,14 +158,23 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				// Enhance: is there any need/possibility of detecting errors here?
 				// For example, what if it's not a valid email address we know? Or if the network is down?
 				return restangular.withConfig(restangularConfig).one("requestPasswordReset").post('', {"email":email});
-			}
+			},
+
+            tryLogin: function () {
+                var tryUserName = $cookies[saveUserNameTag];
+                var tryPassword = $cookies[savePasswordTag];
+                if (tryUserName) {
+                    return factory.login(tryUserName, tryPassword, function() {}, function() {});
+                }
+                else
+                {
+                    var deferred = $q.defer();
+                    deferred.resolve();
+                    return deferred.promise;
+                }
+            }
 		};
 
-        var tryUserName = $cookies[saveUserNameTag];
-        var tryPassword = $cookies[savePasswordTag];
-        if (tryUserName) {
-            factory.login(tryUserName, tryPassword, function() {}, function() {});
-        }
 
 		return factory;
 	} ])

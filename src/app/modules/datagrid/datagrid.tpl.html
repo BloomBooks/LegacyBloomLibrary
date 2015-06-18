@@ -1,5 +1,6 @@
 <div class="mainContent">
     <div class="container-fluid">
-        <div class="gridStyle" ui-grid="gridOptions" ui-grid-pagination ui-grid-resize-columns ui-grid-edit ui-grid-cellNav ui-grid-auto-resize></div>
+        <div ng-show="isUserAdministrator" class="gridStyle" ui-grid="gridOptions" ui-grid-pagination ui-grid-resize-columns ui-grid-edit ui-grid-cellNav ui-grid-auto-resize></div>
+        <div ng-hide="isUserAdministrator">This advanced feature is only available to the Bloom librarian.</div>
     </div>
 </div>

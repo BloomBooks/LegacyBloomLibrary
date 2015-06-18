@@ -11,6 +11,7 @@
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('datagrid', {
+			parent: 'requireLoginResolution',
 			url: "/datagrid",
 			templateUrl: 'modules/datagrid/datagrid.tpl.html',
 			controller: 'DataGridCtrl',
@@ -58,8 +59,8 @@
 
 	// Controller for the data grid view (url #/datagrid)
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoTags',
-		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoTags) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoTags', 'authService',
+		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoTags, authService) {
 			resizeGrid = function() {
 				var gridContainer = document.getElementsByClassName("gridStyle")[0];
 				var footer = document.getElementsByClassName("site-footer")[0];
@@ -245,5 +246,7 @@
 				});
 			};
 			//gridApi.edit.on.afterCellEdit(scope,function(rowEntity, colDef){ alert("edited!");});
+
+			$scope.isUserAdministrator = authService.isUserAdministrator();
 		}]);
 } ()); // end wrap-everything function
