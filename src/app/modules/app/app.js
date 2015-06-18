@@ -347,15 +347,20 @@
 				$(element).fancybox({
 					'overlayShow': true,
                     'helpers':{title: { type:'inside', position:'top'}},
-                    // The title comes from a title attribute in the element with the pdfoverlay directive, e.g.,
+                    // The title comes from an overlayTitle attribute in the element with the pdfoverlay directive, e.g.,
                     // in detail.tpl.html for the Preview button. So it can't contain HTML. We insert markup here
                     // to put an Info icon in front, interpret [] as requesting bold, and interpret | as line
                     // breaks.
                     afterLoad: function() {
-                        if(!this.title) {
+                        var title = '';
+                        try {
+                            title = this.element.context.attributes['overlayTitle'].value;
+                        }
+                        catch(_) {}
+                        if(!title) {
                             return;  // if it's empty don't insert the icon etc.
                         }
-                        var temp=this.title.replace('[', '<b>').replace(']', '</b>').split('|');
+                        var temp=title.replace('[', '<b>').replace(']', '</b>').split('|');
                         var result = '<table><tbody><tr><td><i class="icon-info-sign" style="font-size:5em;margin-right:12px;position:relative;top:-4px"></i></td><td>';
                         for(var i = 0; i < temp.length; i++){
                             var after = '';
