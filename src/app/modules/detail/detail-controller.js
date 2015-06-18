@@ -54,6 +54,9 @@
 		// (which triggers suppressing the info message altogether).
 		.filter('previewLangInfo', function() {
 			return function(book) {
+				if (!book) {
+					return "";
+				}
 				if (book.langPointers.length <= 1) {
 					return "";
 				}
