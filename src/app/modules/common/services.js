@@ -340,7 +340,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 query = new Parse.Query('books');
             }
             if (searchString) {
-                query.contains('search', searchString.toLowerCase());
+                var searchWords = searchString.match(/[\w]+/g);
+                for(var i = 0; i < searchWords.length; i++) {
+                    query.contains('search', searchWords[i].toLowerCase());
+                }
             }
             if (lang) {
                 var langQuery = new Parse.Query('language');
