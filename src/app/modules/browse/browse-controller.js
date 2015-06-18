@@ -13,6 +13,12 @@
 			title: 'Book Library'
 		});
 	} ])
+    .filter('interpretTag', ['tagService', function(tagService) {
+        return function(input) {
+            return tagService.getDisplayName(input);
+        };
+    }])
+
 	//we get a json list like ['me','you'] and we return 'me, you'
 	.filter('makeCommaList', function () {
 		return function (input) {
@@ -39,7 +45,7 @@
 
 	angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
+		function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
@@ -57,7 +63,13 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
-        
+
+        $scope.toggleNext = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+
+            $(list).slideToggle();
+        };
+
         function getBookMessage(count) {
             var message = "";
             var shelfLabel = $scope.shelfName;

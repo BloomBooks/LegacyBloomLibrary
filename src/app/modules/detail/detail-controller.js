@@ -20,6 +20,11 @@
             }
 		});
 	})
+		.filter('interpretTag', ['tagService', function(tagService) {
+			return function(input) {
+				return tagService.getDisplayName(input);
+			};
+		}])
 		//we get a json list like ['me','you'] and we return 'me, you'
 		.filter('makeCommaList', function () {
 			return function (input) {
@@ -166,12 +171,5 @@
             bookService.ToggleBookInShelf($scope.book, shelf);
             $scope.isBookFeatured = !$scope.isBookFeatured;
         };
-
-		$scope.interpretTag = function(tag) {
-			var prefixRegex = /[a-z]+\./;
-			var camelRegex = /([a-z])([A-Z])/g;
-
-			return tag.replace(prefixRegex, "").replace(camelRegex, function(match, p1, p2) { return p1 + ' ' + p2; });
-		};
 	} ]);
 } ());  // end wrap-everything function

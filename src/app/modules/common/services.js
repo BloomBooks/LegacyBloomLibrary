@@ -61,6 +61,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             headers = {
                 'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
                 'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
+            //test site
+//                'X-Parse-Application-Id': 'llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv',
+//                'X-Parse-REST-API-Key': 'ZklnIdWBqDUwZo9dR3tp7EAFWOEOU4O5rdv9NLfj'
             };
         }
         else {
@@ -195,6 +198,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         if (!sharedService.isPublicSite) {
             // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
             Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
+            //test site
+            //Parse.initialize('llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv', 'fFumVaz2kanqGHNXE6GXyVheGcDo9xdnYrUtfC2G');
         }
         else {
             // we're live! Use the real silbloomlibrary api strings.
@@ -530,8 +535,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
             var query = new Parse.Query('language');
             // Configure the query to give the results we want.
-            // Enhance: we'd really like to sort by number of books containing it.
-            query.ascending("name");
+            query.descending("usageCount");
             query.limit(1000); // we want all the languages there are, but this is the most parse will give us.
 
             // query.find returns a parse.com promise, but it is not quite the same api as
@@ -572,18 +576,62 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
         };
 	} ])
-    .service('tagService', function() {
-        this.getTags = function () {
-            return [            
-                // Replicated from Bloom.Book.RuntimeInformationInjector.AddUISettingsToDom().
-                // Eventually this will be user-extensible and retrieved using a query on some new table.
-                "Agriculture", "Animal Stories", "Business", "Culture", "Community Living", "Dictionary", "Environment", "Fiction", "Health", "How To", "Math", "Non Fiction", "Spiritual", "Personal Development", "Primer", "Science", "Story Book", "Traditional Story"
-            ].sort();
+    .service('parseAngularService', ['$rootScope', '$q', '$filter', 'errorHandlerService', function($rootScope, $q, $filter, errorHandlerService) {
+        this.parsePromiseToAngular = function(parsePromise, functionRef) {
+            // query.find and other queries return a parse.com promise, but it is not quite the same api as
+            // as an angularjs promise. Instead, translate its find and error functions using the
+            // angularjs promise.
+
+            var defer = $q.defer(); // used to implement angularjs-style promise
+
+            parsePromise.then(function(results) {
+                var objects = new Array(results.length);
+                for (i = 0; i < results.length; i++) {
+                    objects[i] = results[i].toJSON();
+                }
+                // languageList = objects;
+                // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
+                // NOT using it in this context.
+                $rootScope.$apply(function () { defer.resolve(objects); });
+            },
+            function (error) {
+                errorHandlerService.handleParseError(functionRef || 'unspecified', error);
+                defer.reject(error);
+            });
+
+            return defer.promise;
         };
-        this.getDisplayName = function(tagId) {
-            return tagId;
+    }])
+    .service('tagService', ['parseAngularService', function(parseAngularService) {
+        this.getTags = function (category) {
+            var tagQuery = new Parse.Query('tag');
+            tagQuery.descending("usageCount");
+            tagQuery.limit(1000);
+
+            //If a category is specified, only get tags of that category
+            if(category) {
+                tagQuery.startsWith('name', category + '.');
+            }
+
+            var parsePromise =  tagQuery.find();
+            return parseAngularService.parsePromiseToAngular(parsePromise, 'getTags');
         };
-    })
+        //Remove category (i.e. 'category.') and put spaces before camel-case type
+        this.getDisplayName = function(tag) {
+            try {
+                var prefixRegex = /[a-z]+\./;
+                var camelRegex = /([a-z])([A-Z])/g;
+
+                var ret = tag.replace(prefixRegex, "").replace(camelRegex, function (match, p1, p2) {
+                    return p1 + ' ' + p2;
+                });
+                return ret;
+            }
+            catch(error) {
+                return tag;
+            }
+        };
+    }])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
 		var checkforerror = function (callback) {
 

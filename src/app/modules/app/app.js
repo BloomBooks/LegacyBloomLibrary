@@ -139,18 +139,98 @@
                 });
             };
 
-                // At some point, we may manually control topLanguages, and have a 'more' link to show them all.
-//            $scope.topLanguages = [
-//                {isoCode: 'en', name:'English'},
-//                {isoCode: 'tpi', name:'Tok Pisin'},
-//                {isoCode: 'th', name:'Thai'},
-//                {isoCode: 'id', name:'Bahasia Indonesia'},
-//                {isoCode: 'fr', name:'French'}
-//            ];
             languageService.getLanguages().then(function(languages) {
-                $scope.topLanguages = languages;
+                //This is the number of displayed languages on the browse sidebar before (n more...)
+                var numberOfTopLanguages = 4;
+
+                function compareLang(a, b) {
+                    return a.name < b.name ? -1 : 1;
+                }
+
+                //If all languages can be held in the top list, just fill the top list
+                if(languages.length <= numberOfTopLanguages) {
+                    $scope.topLanguages = languages.sort(compareLang);
+                    $scope.otherLanguages = [];
+                }
+                else {
+                    //Split the list of languages into top and other, and sort the lists alphabetically
+                    $scope.topLanguages = languages.slice(0, numberOfTopLanguages).sort(compareLang);
+                    $scope.otherLanguages = languages.slice(numberOfTopLanguages, languages.length).sort(compareLang);
+                }
             });
-            $scope.topTags = tagService.getTags();
+
+                //This is the global list of all categories of tags
+                //The tags are separated out by these categories on the sidebar of the browse view
+                //id is the usage in the tag (e.g. "region.MyRegion") and displayName is the header
+                $scope.tagCategories = [
+                    {id: 'topic', displayName: 'Topics'},
+                    {id: 'region', displayName: 'Regions'},
+                    {id: 'level', displayName: 'Reading Levels'}
+                ];
+
+                //This is the object which will hold all of the tag names
+                $scope.tags = {topic: {top: [], other: []}};
+
+                tagService.getTags().then(function(tags) {
+                    //Get the names out of the tags; we don't care about the other properties
+                    var tagNames = tags.map(function(item) {
+                        return item.name;
+                    });
+
+                    //This is the number of tags that will be shown in each category of tag before the (n more...)
+                    var numberOfTopTags = 4;
+
+                    var i, j, cat;
+                    var categoryRegex = {};
+
+                    //Set up objects and regexes to save processing time
+                    for(i = 0; i < $scope.tagCategories.length; i++) {
+                        cat = $scope.tagCategories[i].id;
+                        $scope.tags[cat] = {top: [], other: []};
+                        categoryRegex[cat] = new RegExp('^' + cat + '\\.');
+                    }
+
+                    //Loop through tags
+                    for(i = 0; i < tagNames.length; i++) {
+                        var isPartOfCategory = false;
+
+                        //Check if tag belongs to a category
+                        for(j = 0; j < $scope.tagCategories.length; j++) {
+                            cat = $scope.tagCategories[j].id;
+                            if(categoryRegex[cat].test(tagNames[i])) {
+                                isPartOfCategory = true;
+
+                                //If we have more room in the top list, add to top list; otherwise, add to other list
+                                if($scope.tags[cat].top.length < numberOfTopTags) {
+                                    $scope.tags[cat].top.push(tagNames[i]);
+                                }
+                                else {
+                                    $scope.tags[cat].other.push(tagNames[i]);
+                                }
+                                break;
+                            }
+                        }
+                        if(!isPartOfCategory) {
+                            //Default is the first-listed category
+                            cat = $scope.tagCategories[0].id;
+
+                            //If we have more room in the top list, add to top list; otherwise, add to other list
+                            if($scope.tags[cat].top.length < numberOfTopTags) {
+                                $scope.tags[cat].top.push(tagNames[i]);
+                            }
+                            else {
+                                $scope.tags[cat].other.push(tagNames[i]);
+                            }
+                        }
+                    }
+
+                    //Sort all tag lists alphabetically (previously sorted by usage counts
+                    for(i in $scope.tags) {
+                        for(j in $scope.tags[i]) {
+                            $scope.tags[i][j].sort();
+                        }
+                    }
+                });
 
             // Toggle sidebar
             $('[data-toggle="offcanvas"]').click(function () {
