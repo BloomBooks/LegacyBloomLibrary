@@ -17,8 +17,7 @@
                 <h5>Languages</h5>
                 <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
                 <div ng-show="otherLanguages.length">
-                    <div style="height:5px;"></div>
-                    <a href="" ng-click="toggleNext($event)">({{otherLanguages.length}} more...)</a>
+                    <a href="" ng-click="toggleNext($event)">{{otherLanguages.length}} more...</a>
                     <div style="display:none">
                         <div ng-repeat="lang in otherLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
                     </div>
@@ -28,8 +27,7 @@
                         <h5>{{category.displayName}}</h5>
                         <div ng-repeat="tag in tags[category.id].top"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag | interpretTag}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
                         <div ng-show="tags[category.id].other.length">
-                            <div style="height:5px;"></div>
-                            <a href="" ng-click="toggleNext($event)">({{tags[category.id].other.length}} more...)</a>
+                            <a href="" ng-click="toggleNext($event)">{{tags[category.id].other.length}} more...</a>
                             <div style="display:none">
                                 <div ng-repeat="tag in tags[category.id].other"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag | interpretTag}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
                             </div>

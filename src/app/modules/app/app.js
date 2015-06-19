@@ -157,6 +157,14 @@
                     $scope.topLanguages = languages.slice(0, numberOfTopLanguages).sort(compareLang);
                     $scope.otherLanguages = languages.slice(numberOfTopLanguages, languages.length).sort(compareLang);
                 }
+
+                for(var i = 0; i < $scope.otherLanguages.length; i++) {
+                    if($scope.otherLanguages[i].isoCode == $scope.currentLang) {
+                        $scope.topLanguages.unshift($scope.otherLanguages.splice(i, 1)[0]);
+                        $scope.topLanguages.sort(compareLang);
+                        i = $scope.otherLanguages.length;
+                    }
+                }
             });
 
                 //This is the global list of all categories of tags
@@ -178,7 +186,7 @@
                     });
 
                     //This is the number of tags that will be shown in each category of tag before the (n more...)
-                    var numberOfTopTags = 4;
+                    var numberOfTopTags = 100;
 
                     var i, j, cat;
                     var categoryRegex = {};
