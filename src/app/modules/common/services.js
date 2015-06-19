@@ -630,6 +630,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return tag;
             }
         };
+
+        this.isSystemTag = function(tag) {
+            var regex = new RegExp('^system\\.');
+            return regex.test(tag);
+        };
     }])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {
 		var checkforerror = function (callback) {

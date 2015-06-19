@@ -210,8 +210,8 @@
                                 break;
                             }
                         }
-                        //If we didn't find a category tag belongs to
-                        if(iCat >= $scope.tagCategories.length) {
+                        //If we didn't find a category tag belongs to and tag is not a system tag
+                        if(iCat >= $scope.tagCategories.length && !tagService.isSystemTag(tagNames[iTag])) {
                             //Default is the first-listed category
                             cat = $scope.tagCategories[0].id;
                         }

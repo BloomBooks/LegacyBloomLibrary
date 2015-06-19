@@ -100,12 +100,21 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', '$modal', '$window',
-	function ($scope, authService, $stateParams, bookService, bookCountService, $modal, $window) {
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', 'tagService', '$modal', '$window',
+	function ($scope, authService, $stateParams, bookService, bookCountService, tagService, $modal, $window) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
 		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
 		bookService.getBookById($stateParams.bookId).then(function (book) {
+			if(book.tags) {
+				for (var j = 0; j < book.tags.length; j++) {
+					var tag = book.tags[j];
+					if (tagService.isSystemTag(tag)) {
+						book.tags.splice(j, 1);
+						j--;
+					}
+				}
+			}
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.email.toLowerCase() || authService.isUserAdministrator());
 		});

@@ -162,6 +162,19 @@
                 return; // can't do useful query.
             }
 			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, "title", true).then(function (result) {
+                //Remove system tags
+                for(var i = 0; i < result.length; i++) {
+                    var book = result[i];
+                    if(book.tags) {
+                        for (var j = 0; j < book.tags.length; j++) {
+                            var tag = book.tags[j];
+                            if (tagService.isSystemTag(tag)) {
+                                book.tags.splice(j, 1);
+                                j--;
+                            }
+                        }
+                    }
+                }
 				$scope.visibleBooks = result;
 			});
 		};
