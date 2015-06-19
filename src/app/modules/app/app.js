@@ -186,6 +186,11 @@
                     //Currently this is set at 100 to prevent "other" list from showing
                     var numberOfTopTags = 100;
 
+                    //Convert tag to object with database name and localized name
+                    function makeTagObject(tagName) {
+                        return {id: tagName, displayName: _localize(tagService.getDisplayName(tagName))};
+                    }
+
                     //Get the names out of the tags; we don't care about the other properties
                     var tagNames = tags.map(function(item) {
                         return item.name;
@@ -218,17 +223,21 @@
 
                         //If we have more room in the top list, add to top list; otherwise, add to other list
                         if($scope.tags[cat].top.length < numberOfTopTags) {
-                            $scope.tags[cat].top.push(tagNames[iTag]);
+                                $scope.tags[cat].top.push(makeTagObject(tagNames[iTag]));
                         }
                         else {
-                            $scope.tags[cat].other.push(tagNames[iTag]);
+                                $scope.tags[cat].other.push(makeTagObject(tagNames[iTag]));
                         }
+                    }
+
+                    function compareTagObjects(a, b) {
+                        return a.displayName < b.displayName ? -1 : 1;
                     }
 
                     //Sort all tag lists alphabetically (previously sorted by usage counts)
                     for(cat in $scope.tags) {
                         for(var list in $scope.tags[cat]) {
-                            $scope.tags[cat][list].sort();
+                            $scope.tags[cat][list].sort(compareTagObjects);
                         }
                     }
                 });
