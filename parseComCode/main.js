@@ -63,6 +63,7 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 Parse.Cloud.define("defaultBooks", function(request, response) {
   var first = request.params.first;
   var count = request.params.count;
+  var allLicenses = request.params.allLicenses === "true";
   var query = new Parse.Query("bookshelf");
   query.equalTo("name", "Featured");
   query.find({
@@ -70,6 +71,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
 		var featuredShelf = shelves[0];
 		var contentQuery = featuredShelf.relation("books").query();
 		contentQuery.include("langPointers");
+        if (!allLicenses)
+            contentQuery.startsWith("license", "cc-");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
 		contentQuery.find({
@@ -90,6 +93,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                 var runQuery = function() {
                     var allBooksQuery = new Parse.Query("books");
 					allBooksQuery.include("langPointers");
+                    if (!allLicenses)
+                        allBooksQuery.startsWith("license", "cc-");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got
                     allBooksQuery.find({

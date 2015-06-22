@@ -301,7 +301,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         // and whose languages list includes the specified language, if any
         // and whose tags include the specified tag, if any;
         // or, if shelf is specified, return exactly the books in that shelf, ignoring other params.
-        this.makeQuery = function(searchString, shelf, lang, tag) {
+        this.makeQuery = function(searchString, shelf, lang, tag, allLicenses) {
             var query;
             if (shelf) {
                 if (shelf.name == "$recent") {
@@ -334,6 +334,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             if (tag) {
                 query.equalTo("tags", tag);
             }
+            if (!allLicenses) {
+                query.startsWith('license', 'cc-');
+            }
             return query;
         };
 
@@ -342,15 +345,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString, shelf, lang, tag) {
-            $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: (shelf && shelf.name) || '', lang: lang || '', tag: tag || ''});
+		this.getFilteredBooksCount = function (searchString, shelf, lang, tag, allLicenses) {
+            $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: (shelf && shelf.name) || '', lang: lang || '', tag: tag || '', allLicenses: allLicenses || ''});
 			var defer = $q.defer();
 
             var query;
-            if (!searchString && !shelf && !lang && !tag) {
+            if (!searchString && !shelf && !lang && !tag && allLicenses) {
                 query = new Parse.Query('books'); // good enough for count, we just want them all in some order.
             } else {
-                query = this.makeQuery(searchString, shelf, lang, tag);
+                query = this.makeQuery(searchString, shelf, lang, tag, allLicenses);
             }
 
             query.count({
@@ -377,7 +380,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, sortBy, ascending) {
+		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, allLicenses, sortBy, ascending) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
             var fixLangPtrs = function(book) {
                 // Before we convert a book to JSON, we have to convert its langPointers to JSON.
@@ -402,7 +405,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
                 // to the cloud function.
-                Parse.Cloud.run('defaultBooks', { first: first, count: count }, {
+                Parse.Cloud.run('defaultBooks', { first: first, count: count, allLicenses: allLicenses }, {
                     success: function(results) {
                         // enhance JohnT: a chunk of duplicate code here should be pulled out into a function.
                         var objects = new Array(results.length);
@@ -432,7 +435,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return defer.promise;
             }
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
-			var query = this.makeQuery(searchString, shelf, lang, tag);
+			var query = this.makeQuery(searchString, shelf, lang, tag, allLicenses);
 
             query.skip(first);
             query.limit(count);
