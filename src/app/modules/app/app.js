@@ -202,7 +202,7 @@
                     }
 
                     //Loop through tags
-                    for(iTag = 0; iTag < tagNames.length; i++) {
+                    for(iTag = 0; iTag < tagNames.length; iTag++) {
                         //Check if tag belongs to a category
                         for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
                             cat = $scope.tagCategories[iCat].id;
@@ -227,7 +227,7 @@
 
                     //Sort all tag lists alphabetically (previously sorted by usage counts)
                     for(cat in $scope.tags) {
-                        for(var list in $scope.tags[i]) {
+                        for(var list in $scope.tags[cat]) {
                             $scope.tags[cat][list].sort();
                         }
                     }
