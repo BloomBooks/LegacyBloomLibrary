@@ -13,7 +13,7 @@
 			title: 'Book Library'
 		});
 	} ])
-    .filter('interpretTag', ['tagService', function(tagService) {
+    .filter('getDisplayName', ['tagService', function(tagService) {
         return function(input) {
             return tagService.getDisplayName(input);
         };
