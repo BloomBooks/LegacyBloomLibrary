@@ -64,7 +64,7 @@
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
 
-        $scope.toggleNext = function(event) {
+        $scope.toggleVisibilityOfNextSibling = function(event) {
             var list = event.currentTarget.nextElementSibling;
 
             $(list).slideToggle();
