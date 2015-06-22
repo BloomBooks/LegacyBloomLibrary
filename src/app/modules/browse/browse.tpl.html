@@ -44,7 +44,12 @@
                 <div class="container-fluid">
                     <div class="searchRow row">
                         <div class="col-md-6" style="padding-bottom:10px">
-                            <div ng-show="initialized">{{bookMessage}}</div>
+                            <div ng-show="initialized">
+                                <div>{{bookMessage}}</div>
+                                <div class="space-after-book-message"></div>
+                                <div ng-show="numHiddenBooks">Hiding {{numHiddenBooks}} other books because they have restricted/unknown licenses. <a href="" ng-click="toggleAllLicenses()">Show them</a></div>
+                                <div ng-show="allLicenses"><a href="" ng-click="toggleAllLicenses()">Hide</a> books with restricted/unknown licenses.</div>
+                            </div>
                             <div ng-show="!initialized">Searching...</div>
                         </div>
                         <div class="col-md-6" style="padding-bottom:10px">

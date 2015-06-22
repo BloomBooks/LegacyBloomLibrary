@@ -273,6 +273,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
   var first = request.params.first;
   var count = request.params.count;
   var includeOutOfCirculation = request.params.includeOutOfCirculation;
+  var allLicenses = request.params.allLicenses == true;
   var query = new Parse.Query("bookshelf");
   query.equalTo("name", "Featured");
   query.find({
@@ -283,6 +284,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
         if (!includeOutOfCirculation)
             contentQuery.containedIn('inCirculation', [true, undefined]);
 		contentQuery.include("langPointers");
+        if (!allLicenses)
+            contentQuery.startsWith("license", "cc-");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
 		contentQuery.find({
@@ -306,6 +309,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                     if (!includeOutOfCirculation)
                         allBooksQuery.containedIn('inCirculation', [true, undefined]);
 					allBooksQuery.include("langPointers");
+                    if (!allLicenses)
+                        allBooksQuery.startsWith("license", "cc-");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got
                     allBooksQuery.find({
