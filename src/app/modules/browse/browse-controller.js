@@ -70,6 +70,10 @@
             $(list).slideToggle();
         };
 
+        $scope.localizeMore = function(count) {
+            return _localize("{count} more...", {count:count});
+        };
+
         function getBookMessage(count) {
             var message = "";
             var shelfLabel = $scope.shelfName;
