@@ -31,6 +31,13 @@ Parse.Cloud.job("populateSearch", function(request, status) {
 });
 
 //A background job to populate usageCounts for languages and tags
+//To schedule this job on parse.com, go to Core > Jobs > Schedule a Job
+//In that menu, 1) enter an arbitrary description, 2) select the job name "populateCounts",
+//and 3) set repeat to either every day at some time or every so many minutes/hours.
+//Click "Schedule Job." The job will henceforth be run at the specified interval.
+//To run the job a single time, either click "Run Now" on the scheduled populateCounts job on the parse.com Jobs menu,
+//or run this command from the command line:
+//curl -X POST -H "X-Parse-Application-Id: <insert ID>"  -H "X-Parse-Master-Key: <insert Master key>" -d "{}" https://api.parse.com/1/jobs/populateCounts
 Parse.Cloud.job("populateCounts", function(request, status) {
     Parse.Cloud.useMasterKey();
 
