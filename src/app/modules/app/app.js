@@ -140,6 +140,12 @@
             };
 
             languageService.getLanguages().then(function(languages) {
+                //Go ahead and localize languages so that they sort properly
+                languages = languages.map(function(lang) {
+                    lang.name = _localize(lang.name);
+                    return lang;
+                });
+
                 //This is the number of displayed languages on the browse sidebar before (n more...)
                 var numberOfTopLanguages = 4;
 
@@ -223,10 +229,10 @@
 
                         //If we have more room in the top list, add to top list; otherwise, add to other list
                         if($scope.tags[cat].top.length < numberOfTopTags) {
-                                $scope.tags[cat].top.push(makeTagObject(tagNames[iTag]));
+                            $scope.tags[cat].top.push(makeTagObject(tagNames[iTag]));
                         }
                         else {
-                                $scope.tags[cat].other.push(makeTagObject(tagNames[iTag]));
+                            $scope.tags[cat].other.push(makeTagObject(tagNames[iTag]));
                         }
                     }
 
