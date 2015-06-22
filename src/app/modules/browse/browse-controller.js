@@ -6,7 +6,7 @@
 		$stateProvider.state('browse', {
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
 			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
-			url: "/browse?search&shelf&lang&tag",
+			url: "/browse?search&shelf&lang&tag&allLicenses",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl',
 			title: 'Book Library'
@@ -38,12 +38,14 @@
 
 	angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
+    function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
         $scope.lang = $stateParams["lang"];
         $scope.tag = $stateParams["tag"];
+        $scope.allLicenses = $stateParams["allLicenses"] === "true";
+        $scope.numHiddenBooks = 0;
         $scope.searchTextRaw = $scope.searchText;
 		// if the service book count changes (e.g., because detailView deletes a book),
 		// update our scope's bookCount so the list view which is watching it will reload its page.
@@ -96,14 +98,26 @@
             }
             return _localize(message, params);
         }
+        function afterCount(count) {
+            $scope.bookCount = $scope.bookCountObject.bookCount = count;
+            $scope.bookMessage = getBookMessage(count);
+            $scope.setPage = function () {};
+            $scope.initialized = true;
+        }
         $scope.getFilteredBookCount = function() {
-            bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
-                $scope.bookCount = $scope.bookCountObject.bookCount = count;
-                $scope.bookMessage = getBookMessage(count);
-                $scope.setPage = function () {
-                };
-                $scope.initialized = true;
-            });
+            var promise = bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, true);
+            if ($scope.allLicenses) {
+                promise.then(function (count) {
+                    afterCount(count);
+                });
+            } else {
+                promise.then(function (fullCount) {
+                    bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, false).then(function (ccCount) {
+                        $scope.numHiddenBooks = fullCount - ccCount;
+                        afterCount(ccCount);
+                    });
+                });
+            }
         };
         // Every path in this 'if' should eventually call getFilteredBookCount(). We can't just move outside
         // because in at least one path we have to wait to call it after a promise is fulfilled.
@@ -133,7 +147,7 @@
             if (!$scope.initialized) {
                 return; // can't do useful query.
             }
-			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, "title", true).then(function (result) {
+			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, $scope.allLicenses, "title", true).then(function (result) {
 				$scope.visibleBooks = result;
 			});
 		};
@@ -146,5 +160,10 @@
 			$scope.searchText = $scope.searchTextRaw;
 			$state.go('.', { search: $scope.searchText, shelf: "" });
 		};
+
+        $scope.toggleAllLicenses = function() {
+            $scope.allLicenses = !$scope.allLicenses;
+            $state.go($state.current, { allLicenses: $scope.allLicenses } );
+        };
 	} ]);
 } ());   // end wrap-everything function
