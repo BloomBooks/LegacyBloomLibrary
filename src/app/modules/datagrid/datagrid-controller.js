@@ -4,7 +4,7 @@
 	//This variable allows both the onExit function of the stateProvider and the controller to access the resizeGrid function
 	var resizeGrid;
 
-	var tagList = [];
+	var tagList = {};
 
 	// Model declaration for the data grid view (url #/datagrid)
 	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav', 'ui.grid.autoResize', 'ngTagsInput'])//, 'BloomLibraryApp.detail'])
@@ -23,7 +23,8 @@
 	} ]);
 
 	angular.module('BloomLibraryApp.datagrid')
-	.service('autoTags', ['tagService', '$q', function(tagService, $q) {
+	.service('autoCompleteTags', ['tagService', '$q', function(tagService, $q) {
+		//Use as cache for tags if/when datagrid uses server-side paging
 		//var tags = tagService.getTags();
 
 		this.getTags = function(query) {
@@ -37,14 +38,14 @@
 			var capQuery = query.charAt(0).toUpperCase() + query.substr(1, query.length - 1);
 			var camelRegex = new RegExp('[a-z]' + capQuery);
 
-			//This should be replaced by the version below
+			//This should be replaced by the version below if/when datagrid uses server-side paging
 			for(var i in tagList) {
 				if(firstRegex.test(i) || wordRegex.test(i) || camelRegex.test(i)) {
 					matches.push({"text": i});
 				}
 			}
 
-			//This is the real version to use when the tagService is straightened out
+			//This is the real version to use when datagrid uses sever-side paging
 //			for(var i = 0; i < tags.length; i++) {
 //				if(firstRegex.test(tags[i]) || wordRegex.test(tags[i])) {
 //					matches.push({"text": tags[i]});
@@ -59,8 +60,8 @@
 
 	// Controller for the data grid view (url #/datagrid)
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoTags', 'authService',
-		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoTags, authService) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoCompleteTags', 'authService',
+		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoCompleteTags, authService) {
 			resizeGrid = function() {
 				var gridContainer = document.getElementsByClassName("gridStyle")[0];
 				var footer = document.getElementsByClassName("site-footer")[0];
@@ -72,49 +73,48 @@
 
 			$scope.getBooks = function() {
 				var first = 0;
-				bookService.getFilteredBooksCount('', '', '', '', true).then(function (result) {
-					var count = result;
+				//We want all books, but there is a limit at some point
+				var count = 1000;
+				bookService.getFilteredBookRange(first, count, '', '', '', '', '', '', true).then(function (result) {
+					$scope.booksData = result.map(function (item) {
+						return {
+							//Hidden id
+							objectId: item.objectId,
+							inCirculation: item.inCirculation !== false ? 'yes' : 'no',
+							title: item.title,
+							createdAt: (function () {
+								var dateWithTime = new Date(item.createdAt);
+								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+							}()),
+							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
+							license: item.license,
+							updatedAt: (function () {
+								var dateWithTime = new Date(item.updatedAt);
+								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+							}()),
+							pageCount: item.pageCount,
+							bookshelf: item.bookshelf,
+							tags: item.tags ? item.tags.map(function(item) {
+								//Put into tagList
+								//Remove if/when datagrid is moved to server-side paging
+								if(!(item in tagList)) {
+									tagList[item] = true;
+								}
 
-					bookService.getFilteredBookRange(first, count, '', '', '', '', '', '', true).then(function (result) {
-						$scope.booksData = result.map(function (item) {
-							return {
-								//Hidden id
-								objectId: item.objectId,
-								inCirculation: item.inCirculation !== false ? 'yes' : 'no',
-								title: item.title,
-								createdAt: (function () {
-									var dateWithTime = new Date(item.createdAt);
-									return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
-								}()),
-								copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
-								license: item.license,
-								updatedAt: (function () {
-									var dateWithTime = new Date(item.updatedAt);
-									return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
-								}()),
-								pageCount: item.pageCount,
-								bookshelf: item.bookshelf,
-								tags: item.tags ? item.tags.map(function(item) {
-									//Put into tagList; Todo: remove when tagService is updated
-									if(!(item in tagList)) {
-										tagList[item] = true;
-									}
-
-									var output = {};
-									output.text = item;
-									return output;
-								}) : '',
-								languages: item.langPointers ? item.langPointers.map(function (item) {
-									var output = '';
-									output += item.name;
-									if (item.englishName && item.name != item.englishName) {
-										output += ' (' + item.englishName + ')';
-									}
-									return output;
-								}).toString() : '',
-								librarianNote: item.librarianNote
-							};
-						});
+								var output = {};
+								output.text = item;
+								return output;
+							}) : '',
+							languages: item.langPointers ? item.langPointers.map(function (item) {
+								var output = '';
+								output += item.name;
+								if (item.englishName && item.name != item.englishName) {
+									output += ' (' + item.englishName + ')';
+								}
+								return output;
+							}).toString() : '',
+							librarianNote: item.librarianNote
+						};
 					});
 				});
 			};
@@ -122,7 +122,7 @@
 			$scope.tagList = {};
 
 			$scope.autoCompleteTags = function($query) {
-				return autoTags.getTags($query);
+				return autoCompleteTags.getTags($query);
 				//var $q;
 			};
 
@@ -131,6 +131,13 @@
 					return item.text;
 				});
 				bookService.modifyBookField(row.entity, "tags", newTags);
+
+				//Put brand-new tags into tagList
+				for(var i = 0; i < newTags.length; i++) {
+					if(!(newTags[i] in tagList)) {
+						tagList[newTags[i]] = true;
+					}
+				}
 			};
 
 			$scope.getBooks();
