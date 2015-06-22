@@ -198,7 +198,7 @@
                     for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
                         cat = $scope.tagCategories[iCat].id;
                         $scope.tags[cat] = {top: [], other: []};
-                        categoryRegex[cat] = new RegExp('^' + cat + '\\.');
+                        categoryRegex[cat] = new RegExp('^' + cat + ':');
                     }
 
                     //Loop through tags

@@ -622,13 +622,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         //Remove category (i.e. 'category.') and put spaces before camel-case type
         this.getDisplayName = function(tag) {
             try {
-                var prefixRegex = /[a-z]+\./;
-                var camelRegex = /([a-z])([A-Z])/g;
+                var prefixRegex = /[a-z]+:/;
 
-                var ret = tag.replace(prefixRegex, "").replace(camelRegex, function (match, p1, p2) {
-                    return p1 + ' ' + p2;
-                });
-                return ret;
+                return tag.replace(prefixRegex, "");
             }
             catch(error) {
                 return tag;
