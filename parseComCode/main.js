@@ -169,6 +169,8 @@ Parse.Cloud.job("populateCounts", function(request, status) {
         });
     }).then(function() {
         status.success("Tag and Language usage counts updated!");
+    }, function(error) {
+        status.error("populateCounts terminated unsuccessfully with error: " + error);
     });
 });
 
