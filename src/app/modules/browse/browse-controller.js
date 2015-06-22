@@ -101,9 +101,20 @@
             }
 
             if (count === 0) {
-                message = 'There are no books that match your search for {shelf} {language} books';
+                message = 'There are no books that match your search for ';
             } else {
-                message = 'Found {count} {shelf} {language} {bookOrBooks}';
+                message = 'Found {count} ';
+            }
+            if (params.shelf !== '') {
+                message += '{shelf} ';
+            }
+            if (params.language !== '') {
+                message += '{language} ';
+            }
+            if (count === 0) {
+                message += 'books';
+            } else {
+                message += '{bookOrBooks}';
             }
             if ($scope.tag) {
                 message = message + ' with the {tag} tag';
