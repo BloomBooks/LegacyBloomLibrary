@@ -4,9 +4,9 @@
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('browse', {
-            parent: 'requireLoginResolution',
+			parent: 'requireLoginResolution',
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
-			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
+			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@':
 			url: "/browse?search&shelf&lang&tag",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl',
