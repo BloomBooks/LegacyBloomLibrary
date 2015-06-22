@@ -158,11 +158,13 @@
                     $scope.otherLanguages = languages.slice(numberOfTopLanguages, languages.length).sort(compareLang);
                 }
 
+                //Search through otherLanguages
                 for(var i = 0; i < $scope.otherLanguages.length; i++) {
+                    //If the currentLang is in the other list, add it to the top (visible) list
                     if($scope.otherLanguages[i].isoCode == $scope.currentLang) {
                         $scope.topLanguages.unshift($scope.otherLanguages.splice(i, 1)[0]);
                         $scope.topLanguages.sort(compareLang);
-                        i = $scope.otherLanguages.length;
+                        break;
                     }
                 }
             });
@@ -180,62 +182,53 @@
                 $scope.tags = {topic: {top: [], other: []}};
 
                 tagService.getTags().then(function(tags) {
+                    //This is the number of tags that will be shown in each category of tag before the (n more...)
+                    //Currently this is set at 100 to prevent "other" list from showing
+                    var numberOfTopTags = 100;
+
                     //Get the names out of the tags; we don't care about the other properties
                     var tagNames = tags.map(function(item) {
                         return item.name;
                     });
 
-                    //This is the number of tags that will be shown in each category of tag before the (n more...)
-                    var numberOfTopTags = 100;
-
-                    var i, j, cat;
+                    var iTag, iCat, cat;
                     var categoryRegex = {};
 
                     //Set up objects and regexes to save processing time
-                    for(i = 0; i < $scope.tagCategories.length; i++) {
-                        cat = $scope.tagCategories[i].id;
+                    for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
+                        cat = $scope.tagCategories[iCat].id;
                         $scope.tags[cat] = {top: [], other: []};
                         categoryRegex[cat] = new RegExp('^' + cat + '\\.');
                     }
 
                     //Loop through tags
-                    for(i = 0; i < tagNames.length; i++) {
-                        var isPartOfCategory = false;
-
+                    for(iTag = 0; iTag < tagNames.length; i++) {
                         //Check if tag belongs to a category
-                        for(j = 0; j < $scope.tagCategories.length; j++) {
-                            cat = $scope.tagCategories[j].id;
-                            if(categoryRegex[cat].test(tagNames[i])) {
-                                isPartOfCategory = true;
-
-                                //If we have more room in the top list, add to top list; otherwise, add to other list
-                                if($scope.tags[cat].top.length < numberOfTopTags) {
-                                    $scope.tags[cat].top.push(tagNames[i]);
-                                }
-                                else {
-                                    $scope.tags[cat].other.push(tagNames[i]);
-                                }
+                        for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
+                            cat = $scope.tagCategories[iCat].id;
+                            if(categoryRegex[cat].test(tagNames[iTag])) {
                                 break;
                             }
                         }
-                        if(!isPartOfCategory) {
+                        //If we didn't find a category tag belongs to
+                        if(iCat >= $scope.tagCategories.length) {
                             //Default is the first-listed category
                             cat = $scope.tagCategories[0].id;
+                        }
 
-                            //If we have more room in the top list, add to top list; otherwise, add to other list
-                            if($scope.tags[cat].top.length < numberOfTopTags) {
-                                $scope.tags[cat].top.push(tagNames[i]);
-                            }
-                            else {
-                                $scope.tags[cat].other.push(tagNames[i]);
-                            }
+                        //If we have more room in the top list, add to top list; otherwise, add to other list
+                        if($scope.tags[cat].top.length < numberOfTopTags) {
+                            $scope.tags[cat].top.push(tagNames[iTag]);
+                        }
+                        else {
+                            $scope.tags[cat].other.push(tagNames[iTag]);
                         }
                     }
 
-                    //Sort all tag lists alphabetically (previously sorted by usage counts
-                    for(i in $scope.tags) {
-                        for(j in $scope.tags[i]) {
-                            $scope.tags[i][j].sort();
+                    //Sort all tag lists alphabetically (previously sorted by usage counts)
+                    for(cat in $scope.tags) {
+                        for(var list in $scope.tags[i]) {
+                            $scope.tags[cat][list].sort();
                         }
                     }
                 });
