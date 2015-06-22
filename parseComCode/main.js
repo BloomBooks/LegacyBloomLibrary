@@ -54,7 +54,7 @@ Parse.Cloud.job("removeUnusedLanguages", function(request, status) {
                     return bookQuery.count().then(function (count) {
                         if (count === 0) {
                             console.log("Deleting language " + lang.get('name') + " because no books use it.");
-                            lang.destroy();
+                            return lang.destroy();
                         }
                     });
                 });
