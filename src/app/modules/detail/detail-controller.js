@@ -108,6 +108,14 @@
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.email.toLowerCase() || authService.isUserAdministrator());
+			//Get related books
+			bookService.getRelatedBooks($stateParams.bookId).then(function(results) {
+				if(results.length > 0) {
+					$scope.book.relatedBooks = results[0].books.filter(function(relBook) {
+						return relBook.objectId != $stateParams.bookId;
+					});
+				}
+			});
 		});
         $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
         $scope.canSetBookshelf = authService.isLoggedIn() && authService.bookShelves().length > 0;

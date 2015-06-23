@@ -274,6 +274,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
         if (!includeOutOfCirculation)
             contentQuery.containedIn('inCirculation', [true, undefined]);
 		contentQuery.include("langPointers");
+        contentQuery.include("uploader");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
 		contentQuery.find({
@@ -297,6 +298,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                     if (!includeOutOfCirculation)
                         allBooksQuery.containedIn('inCirculation', [true, undefined]);
 					allBooksQuery.include("langPointers");
+                    allBooksQuery.include("uploader");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got
                     allBooksQuery.find({
@@ -431,6 +433,12 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "name", type: "String"},
                 //Usage count determined daily per Parse.com job
                 {name: "usageCount", type: "Number"}
+            ]
+        },
+        {
+            name: "relatedBooks",
+            fields: [
+                {name: "books", type:"Array"}
             ]
         }
     ];

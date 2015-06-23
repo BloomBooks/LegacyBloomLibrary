@@ -29,6 +29,9 @@
             <div class="tags" ng-show="book.tags.length">
                 <span class="fori18n">Tags:</span> <span ng-repeat="tag in book.tags"><i class="icon-tag" tx-content="exclude"></i><span tx-content="include">{{tag | getDisplayName}}</span> </span>
             </div>
+            <div class="relatedBooks" ng-show="book.relatedBooks">
+                Related Books: <span ng-repeat="relBook in book.relatedBooks"><a ui-sref="browse.detail({bookId: relBook.objectId})">{{relBook.title}}</a><span ng-hide="$last">, </span></span>
+            </div>
             <div class="unfloat"></div>
         </div>
         <div class="actions">

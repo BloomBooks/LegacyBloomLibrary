@@ -60,8 +60,8 @@
 
 	// Controller for the data grid view (url #/datagrid)
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoCompleteTags', 'authService',
-		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoCompleteTags, authService) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoCompleteTags', 'authService', '$modal',
+		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoCompleteTags, authService, $modal) {
 			resizeGrid = function() {
 				var gridContainer = document.getElementsByClassName("gridStyle")[0];
 				var footer = document.getElementsByClassName("site-footer")[0];
@@ -76,6 +76,7 @@
 				//We want all books, but there is a limit at some point
 				var count = 1000;
 				bookService.getFilteredBookRange(first, count, '', '', '', '', '', '', true).then(function (result) {
+						$scope.booksCache = result;
 					$scope.booksData = result.map(function (item) {
 						return {
 							//Hidden id
@@ -167,6 +168,18 @@
 				container.style.zIndex = "auto";
 			};
 
+			$scope.openRelatedBooksModal = function(book) {
+				$modal.open({
+					templateUrl: 'modules/datagrid/relatedbooks.tpl.html',
+					controller: 'relatedbooks',
+					windowClass: 'relatedBooksModal',
+					size: 'lg',
+					// this defines the value of 'book' as something that is injected into the BloomLibraryApp.ccdialog's
+					// controller, thus giving it access to the book whose license we want details about.
+					resolve: {book: function() {return book;}, booksData: function() { return $scope.booksCache; }}
+				});
+			};
+
 			$scope.tagsTemplate = '<tags-input ng-model="row.entity.tags" ng-focus="grid.appScope.popOut($event)" ng-blur="grid.appScope.popIn($event)" class="tagsField" replace-spaces-with-dashes="false" on-tag-added="grid.appScope.updateTags(row)" on-tag-removed="grid.appScope.updateTags(row)" style="margin-top:-5px"><auto-complete source="grid.appScope.autoCompleteTags($query)" min-length="1" max-results-to-show="100" select-first-match="false"></auto-complete></tags-input>';
 
 			$scope.gridOptions = {
@@ -243,7 +256,8 @@
 							}
 						],
 						visible: false
-					}
+					},
+					{ field: 'relateBooks', displayName: 'Relate Books', cellTemplate: '<div class="ui-grid-cell-contents"><a ng-click="grid.appScope.openRelatedBooksModal(row.entity)">Relate</a></div>', width: '*', minWidth: 30, maxWidth: 70, enableCellEdit: false }
 				]
 			};
 

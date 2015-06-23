@@ -119,7 +119,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         // if you close the browser altogether. This is not meant to be high-security.
                         $cookies[saveUserNameTag] = username;
                         $cookies[savePasswordTag] = password;
-                        
+
                         $analytics.eventTrack('Log In', {username: username});
 
                         restangular.withConfig(restangularConfig).all('classes/bookshelf').getList({ 'where':{'owner': {"__type":"Pointer","className":"_User","objectId":result.objectId} }})
@@ -140,7 +140,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
 			logout: function () {
                 $analytics.eventTrack('Log Out', {userName: $cookies[saveUserNameTag]});
-                
+
                 $cookies[saveUserNameTag] = '';
                 $cookies[savePasswordTag] = '';
 
@@ -432,12 +432,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         for (i = 0; i < results.length; i++) {
                         // If we need the contents (more than objectID) of the uploader field, we will need
                         // something like this...probably some changes to the defaultBooks cloud code, too.
-//						// without this the extra fields downloaded by include("uploader") don't get copied to objects.
-//						var user = results[i].get("uploader");
-//						if (user)
-//						{
-//							results[i].set("uploader", user.toJSON());
-//						}
+                        // without this the extra fields downloaded by include("uploader") don't get copied to objects.
+                        var user = results[i].get("uploader");
+                        if (user)
+                        {
+                            results[i].set("uploader", user.toJSON());
+                        }
                             fixLangPtrs(results[i]);
                             objects[i] = results[i].toJSON();
                         }
@@ -465,7 +465,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             query.skip(first);
             query.limit(count);
             query.include("langPointers");
-            //query.include("uploader"); // reinstate this and code below if we need contents of uploader
+            query.include("uploader"); // reinstate this and code below if we need contents of uploader
 			// Sorting probably works only for top-level complete fields.
 			// It does not work for e.g. (obsolete) volumeInfo.title.
             // The $recent shelf is implemented as a special sort, so we need to disable any other for that.
@@ -485,12 +485,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 					var objects = new Array(results.length);
 					for (i = 0; i < results.length; i++) {
 						// reinstate this and the line above if we need the contents (more than objectID) of the uploader field.
-//						// without this the extra fields downloaded by include("uploader") don't get copied to objects.
-//						var user = results[i].get("uploader");
-//						if (user)
-//						{
-//							results[i].set("uploader", user.toJSON());
-//						}
+						// without this the extra fields downloaded by include("uploader") don't get copied to objects.
+						var user = results[i].get("uploader");
+						if (user)
+						{
+							results[i].set("uploader", user.toJSON());
+						}
                         fixLangPtrs(results[i]);
 
 						objects[i] = results[i].toJSON();
@@ -514,6 +514,20 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			return restangular.withConfig(authService.config()).one('classes/books', id).get({include:"uploader,langPointers"});
 		};
 
+		this.getRelatedBooks = function(id) {
+			var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
+
+			return baseRelatedBooks.getList({
+				'where': {
+					'books': {
+						"__type": "Pointer",
+						"className": "books",
+						"objectId": id
+					}
+				}, 'include': "books"
+			});
+		};
+
 		this.deleteBook = function (id) {
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
@@ -523,6 +537,60 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 rBook[field] = value;
                 rBook.put();
             };
+
+        this.relateBooksById = function() {
+            var relatedBooks = [];
+
+            var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
+
+            var i = 0;
+
+            function handleOneId() {
+                //The when we get to the promises, the original context of arguments is lost
+                var args = arguments;
+
+                //Base case, out of arguments
+                if(i >= arguments.length) {
+                    //Only create new relationship if two or more books are involved
+                    if(relatedBooks.length > 1) {
+                        //Create new entry with relationship
+                        baseRelatedBooks.post({"books": relatedBooks});
+                    }
+                }
+                else {
+                    //Add this book pointer to the queue
+                    relatedBooks.push({
+                        "__type": "Pointer",
+                        "className": "books",
+                        "objectId": arguments[i]
+                    });
+                    baseRelatedBooks.getList({
+                        'where': {
+                            'books': {
+                                "__type": "Pointer",
+                                "className": "books",
+                                "objectId": arguments[i]
+                            }
+                        }
+                    }).then(function (results) {
+                        if (results.length > 0) {
+                            //For some reason, I was unable to use results[0].remove()
+                            restangular.withConfig(authService.config()).one('classes/relatedBooks', results[0].objectId).remove().then(function () {
+                                i++;
+                                handleOneId.apply(this, args);
+                            });
+                        }
+                        else {
+                            i++;
+                            handleOneId.apply(this, args);
+                        }
+                    });
+                }
+            }
+
+            //Begin recursion
+            handleOneId.apply(this, arguments);
+        };
 
         this.resetCurrentPage = function () {
             $cookies["currentpage"] = 1;
@@ -545,7 +613,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
     }])
     .service('languageService', ['$rootScope', '$q', '$filter', 'errorHandlerService', function($rootScope, $q, $filter, errorHandlerService) {
         var languageList; // Used to cache the list
-    
+
         // We want all the languages we know.
         this.getLanguages = function () {
             var defer = $q.defer(); // used to implement angularjs-style promise
@@ -674,7 +742,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	})
     .service('errorHandlerService', ['$modal', '$analytics', function ($modal, $analytics) {
         var mostRecentUserMessage = 0; // a timestamp
-        
+
         this.handleParseError = function(call, error) {
             try {
                 $analytics.eventTrack('Error - Parse.com', {call: call, error: error});
