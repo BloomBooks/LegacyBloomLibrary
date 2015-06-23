@@ -143,13 +143,20 @@
 			$scope.getBooks();
 
 			var filterTags = function(searchTerm, cellValue, row, column) {
-				var regex = new RegExp(searchTerm, "i");
-				for(var i = 0; i < cellValue.length; i++) {
-					if(regex.test(cellValue[i].text)) {
-						return true;
+				var searchWords = searchTerm.match(/[\w]+/g);
+				for(var i = 0; i < searchWords.length; i++) {
+					var regex = new RegExp(searchWords[i], 'i');
+					var wordMatches = false;
+					for(var j = 0; j < cellValue.length; j++) {
+						if(regex.test(cellValue[j].text)) {
+							wordMatches = true;
+						}
+					}
+					if(!wordMatches) {
+						return false;
 					}
 				}
-				return false;
+				return true;
 			};
 
 			$scope.popOut = function(event) {
@@ -173,6 +180,17 @@
 				paginationPageSizes: [10, 24, 50, 100, 1000],
 				paginationPageSize: 100,
 				enableGridMenu: true,
+				gridMenuCustomItems: [
+					{
+						title: 'Filter to Incoming',
+						action: function ($event) {
+							this.grid.clearAllFilters();
+							var colDef = this.grid.getColDef('tags');
+							colDef.filter.term = "system:Incoming";
+						},
+						order: 1
+					}
+				],
 				enableFiltering: true,
 				rowHeight: 40,
 				columnDefs: [
