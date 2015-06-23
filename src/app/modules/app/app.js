@@ -150,7 +150,7 @@
                 var numberOfTopLanguages = 4;
 
                 function compareLang(a, b) {
-                    return a.name < b.name ? -1 : 1;
+                    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
                 }
 
                 //If all languages can be held in the top list, just fill the top list
@@ -237,7 +237,7 @@
                     }
 
                     function compareTagObjects(a, b) {
-                        return a.displayName < b.displayName ? -1 : 1;
+                        return a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase());
                     }
 
                     //Sort all tag lists alphabetically (previously sorted by usage counts)
