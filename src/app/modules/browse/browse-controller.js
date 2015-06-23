@@ -4,14 +4,21 @@
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('browse', {
+			parent: 'requireLoginResolution',
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
-			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
+			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@':
 			url: "/browse?search&shelf&lang&tag",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl',
 			title: 'Book Library'
 		});
 	} ])
+    .filter('getDisplayName', ['tagService', function(tagService) {
+        return function(input) {
+            return tagService.getDisplayName(input);
+        };
+    }])
+
 	//we get a json list like ['me','you'] and we return 'me, you'
 	.filter('makeCommaList', function () {
 		return function (input) {
@@ -38,7 +45,7 @@
 
 	angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
+		function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
@@ -56,7 +63,17 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
-        
+
+        $scope.toggleVisibilityOfNextSibling = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+
+            $(list).slideToggle();
+        };
+
+        $scope.localizeMore = function(count) {
+            return _localize("{count} more...", {count:count});
+        };
+
         function getBookMessage(count) {
             var message = "";
             var shelfLabel = $scope.shelfName;

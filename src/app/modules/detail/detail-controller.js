@@ -20,6 +20,11 @@
             }
 		});
 	})
+		.filter('getDisplayName', ['tagService', function(tagService) {
+			return function(input) {
+				return tagService.getDisplayName(input);
+			};
+		}])
 		//we get a json list like ['me','you'] and we return 'me, you'
 		.filter('makeCommaList', function () {
 			return function (input) {
