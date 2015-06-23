@@ -632,8 +632,21 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         };
 
         this.isSystemTag = function(tag) {
-            var regex = new RegExp('^system\\.');
+            var regex = new RegExp('^system:');
             return regex.test(tag);
+        };
+
+        this.hideSystemTags = function(book) {
+            if(book.tags) {
+                for (var i = 0; i < book.tags.length; i++) {
+                    var tag = book.tags[i];
+                    if (this.isSystemTag(tag)) {
+                        book.tags.splice(i, 1);
+                        //Since we spliced out a tag, re-check that index
+                        i--;
+                    }
+                }
+            }
         };
     }])
 	.service('userService', ['Restangular', 'authService', function (restangular, authService) {

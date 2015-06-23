@@ -186,7 +186,7 @@
 						action: function ($event) {
 							this.grid.clearAllFilters();
 							var colDef = this.grid.getColDef('tags');
-							colDef.filter.term = "system.Incoming";
+							colDef.filter.term = "system:Incoming";
 						},
 						order: 1
 					}
