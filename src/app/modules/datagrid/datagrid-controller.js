@@ -130,7 +130,7 @@
 				var newTags = row.entity.tags.map(function(item) {
 					return item.text;
 				});
-				bookService.modifyBookField(row.entity, "tags", newTags);
+				bookService.modifyBookField(row.entity, "tags", newTags, "datagrid");
 
 				//Put brand-new tags into tagList
 				for(var i = 0; i < newTags.length; i++) {
@@ -142,7 +142,9 @@
 
 			$scope.getBooks();
 
-			var filterTags = function(searchTerm, cellValue, row, column) {
+			// A custom column filter which allows the user to filter by more than one tag at the same time
+			// In this case, cellValue is an array of tag objects (which display the "text" property)
+			var filterTags = function(searchTerm, cellValue) {
 				var searchWords = searchTerm.match(/[\w]+/g);
 				for(var i = 0; i < searchWords.length; i++) {
 					var regex = new RegExp(searchWords[i], 'i');
@@ -264,9 +266,9 @@
 						if(newValue == 'no') {
 							inCirculation = false;
 						}
-						bookService.modifyBookField(rowEntity, colDef.field, inCirculation);
+						bookService.modifyBookField(rowEntity, colDef.field, inCirculation, "datagrid");
 					} else {
-						bookService.modifyBookField(rowEntity, colDef.field, newValue);
+						bookService.modifyBookField(rowEntity, colDef.field, newValue, "datagrid");
 					}
 				});
 			};

@@ -518,10 +518,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
 
-            this.modifyBookField = function(book, field, value) {
+            this.modifyBookField = function(book, field, value, updateSource) {
                 var rBook = restangular.withConfig(authService.config()).one('classes/books', book.objectId);
                 rBook[field] = value;
-                rBook['updateSource'] = 'web';
+                if (authService.isUserAdministrator()) {
+                    updateSource += ' (admin)';
+                }
+                rBook['updateSource'] = updateSource;
                 rBook.put();
             };
 
@@ -639,12 +642,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
         this.hideSystemTags = function(book) {
             if(book.tags) {
-                for (var i = 0; i < book.tags.length; i++) {
+                for (var i = book.tags.length-1; i >= 0; i--) {
                     var tag = book.tags[i];
                     if (this.isSystemTag(tag)) {
                         book.tags.splice(i, 1);
-                        //Since we spliced out a tag, re-check that index
-                        i--;
                     }
                 }
             }
