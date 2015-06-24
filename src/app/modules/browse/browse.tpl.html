@@ -25,11 +25,11 @@
                 <div ng-repeat="category in tagCategories">
                     <div ng-show="tags[category.id].top.length">
                         <h5>{{category.displayName}}</h5>
-                        <div ng-repeat="tag in tags[category.id].top"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag | getDisplayName}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
+                        <div ng-repeat="tag in tags[category.id].top"><div ng-class="{activeFilter: currentTag == tag.id}"><a class="tagItem" href="" ng-click="filterTag(tag.id)">{{tag.displayName}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
                         <div ng-show="tags[category.id].other.length">
                             <a href="" ng-click="toggleVisibilityOfNextSibling($event)">{{localizeMore(tags[category.id].other.length)}}</a>
                             <div style="display:none">
-                                <div ng-repeat="tag in tags[category.id].other"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag | getDisplayName}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
+                                <div ng-repeat="tag in tags[category.id].other"><div ng-class="{activeFilter: currentTag == tag.id}"><a class="tagItem" href="" ng-click="filterTag(tag.id)">{{tag.displayName}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
                             </div>
                         </div>
                     </div>
