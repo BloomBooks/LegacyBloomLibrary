@@ -9,25 +9,25 @@
         <img ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}" />
         <div class="detailCol2">
             <div class="title notranslate">{{book.title}}</div>
-            <div class="summary" ng-hide="!book.summary">Summary: <span class="notranslate">{{book.summary}}</span></div>
-            <div class="detailPages">Pages: <span class="notranslate">{{book.pageCount}}</span></div>
+            <div class="summary" ng-hide="!book.summary"><span class="fori18n">Summary:</span> <span class="notranslate">{{book.summary}}</span></div>
+            <div class="detailPages"><span class="fori18n">Pages:</span> <span class="notranslate">{{book.pageCount}}</span></div>
             <div class="languages" ng-show="book.langPointers.length">
-                <span>Languages:</span> <span ng-repeat="lang in book.langPointers"><a ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
+                <span class="fori18n">Languages:</span> <span ng-repeat="lang in book.langPointers"><a ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank">{{lang.name}}</a><span ng-hide="$last">, </span></span>
             </div>
             <div class="copyright">{{book.copyright}}</div>
             <div class="license">
-                License: <span class="notranslate"> <a href="javascript:void(null);" ng-click="showLicense()">{{book.license}}</a><span ng-hide="!book.licenseNotes">. (</span>{{book.licenseNotes}}<span ng-hide="!book.licenseNotes">)</span></span>
+                <span class="fori18n">License:</span> <span class="notranslate"> <a href="javascript:void(null);" ng-click="showLicense()">{{book.license}}</a><span ng-hide="!book.licenseNotes">. (</span>{{book.licenseNotes}}<span ng-hide="!book.licenseNotes">)</span></span>
             </div>
             <!--div class="credits">{{book.credits  }}</div-->
             <div class="status">
-                Uploaded: <span class="notranslate">{{book.updatedAt | cleanDate}}</span> by
+                <span class="fori18n">Uploaded:</span> <span class="notranslate">{{book.updatedAt | cleanDate}}</span> <span class="fori18n">by</span>
                 <span class="notranslate">
                     <a ng-show="canReportViolation" href="mailto:{{book.uploader.email}}?subject=A%20request%20about%20a%20book%20you%20contributed%20to%20bloomlibrary.org:%20{{book.title}}%20({{book.objectId}})&body=This%20book%20may%20be%20found%20at%20{{location}}.">{{book.uploader.email | obfuscate}}</a>
                     <a ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()">{{book.uploader.email | obfuscate}}</a>
                  </span>
             </div>
             <div class="tags" ng-show="book.tags.length">
-                Tags: <span class="notranslate" ng-repeat="tag in book.tags"><i class="notranslate icon-tag"></i>{{tag | getDisplayName}} </span>
+                <span class="fori18n">Tags:</span> <span ng-repeat="tag in book.tags"><i class="icon-tag" tx-content="exclude"></i><span tx-content="include">{{tag | getDisplayName}}</span> </span>
             </div>
             <div class="unfloat"></div>
         </div>
