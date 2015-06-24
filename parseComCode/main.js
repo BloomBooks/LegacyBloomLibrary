@@ -215,6 +215,15 @@ Parse.Cloud.job("populateCounts", function(request, status) {
 // Makes new and updated books have the right search string and ACL.
 Parse.Cloud.beforeSave("books", function(request, response) {
 	var book = request.object;
+
+	// If updateSource is not set, the new/updated record came from the desktop application
+	var updateSource = request.object.get("updateSource");
+	if (!updateSource) {
+		book.addUnique("tags", "system:Incoming");
+	} else {
+		request.object.unset("updateSource");
+	}
+
 	var tags = book.get("tags");
 	var search = book.get("title").toLowerCase();
 	var index;
@@ -376,6 +385,7 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "thumbnail", type:"String"},
                 {name: "title", type:"String"},
                 {name: "tools", type:"Array"},
+                {name: "updateSource", type:"String"},
                 {name: "uploader", type:"Pointer<_User>"}
             ]
         },

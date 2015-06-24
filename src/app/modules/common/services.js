@@ -521,6 +521,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             this.modifyBookField = function(book, field, value) {
                 var rBook = restangular.withConfig(authService.config()).one('classes/books', book.objectId);
                 rBook[field] = value;
+                rBook['updateSource'] = 'web';
                 rBook.put();
             };
 
