@@ -7,11 +7,11 @@
     <div class="modal-body">
         <div>A relationship already exists between the selected book and others.</div>
         <div>The following books are related: </div>
-        <div ng-repeat="book in books"><b><i>{{book.title}}</i></b> by {{book.uploader}}</div>
+        <div class="notranslate" ng-repeat="book in books"><b><i>{{book.title}}</i></b> by {{book.uploader}}</div>
         <br>
         <div>If you want to incorporate all of these books into the current relationship, click "Continue."</div>
-        <div class="actions right delete-actions">
-            <button type="button" class="btn btn-primary" ng-click="deleteBook()">Continue</button>
+        <div class="actions right">
+            <button type="button" class="btn btn-primary" ng-click="relateBooks()">Continue</button>
             <button type="button" class="btn" ng-click="close()">Cancel</button>
         </div>
     </div>

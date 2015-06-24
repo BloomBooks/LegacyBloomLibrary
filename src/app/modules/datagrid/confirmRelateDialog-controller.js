@@ -15,7 +15,7 @@
 				dialog.close(false);
 			};
 
-			$scope.deleteBook = function () {
+			$scope.relateBooks = function () {
 				dialog.close(true);
 			};
 

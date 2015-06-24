@@ -6,30 +6,32 @@
         <div class="title">Relate Books</div>
         <div class="license">All books listed in the box below are related to each other. Adding or removing books from the box will change the relationship.</div>
         <br>
-        <tags-input ng-model="books"
-                    placeholder="Add Related Book"
-                    template="book-info-tag-template"
-                    replace-spaces-with-dashes="false"
-                    on-tag-added="onTagAdded($tag)" on-tag-removed="saveCurrentRelationship()"
-                    add-from-autocomplete-only="true">
-            <auto-complete source="autoCompleteBook($query)"
-                           min-length="0"
-                           load-on-focus="true"
-                           load-on-empty="true"
-                           max-results-to-show="100" style="z-index: 2000"
-                           select-first-match="true" template="book-info-autocomplete-template"></auto-complete>
-        </tags-input>
-        <script type="text/ng-template" id="book-info-tag-template">
-            <span tooltip-html="true" tooltip-html-unsafe="Author: {{data.uploader}}<br>Languages: {{data.languages}}<br>{{data.copyright}}">{{data.title}}</span>
-            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-        </script>
-        <script type="text/ng-template" id="book-info-autocomplete-template">
-            <img ng-src="{{data.imgUrl}}" height="70" width="49" style="width:49px; height:70px;"/>
-            <span><b><i>{{data.title}}</i></b> by {{data.uploader}}</span>
-            <br>
-            <span>Languages: {{data.languages}}</span>
-            <br>
-            <span>{{data.copyright}}</span>
-        </script>
+        <div class="notranslate">
+            <tags-input ng-model="books"
+                        placeholder="Add Related Book"
+                        template="book-info-tag-template"
+                        replace-spaces-with-dashes="false"
+                        on-tag-added="onTagAdded($tag)" on-tag-removed="saveCurrentRelationship()"
+                        add-from-autocomplete-only="true">
+                <auto-complete source="autoCompleteBook($query)"
+                               min-length="0"
+                               load-on-focus="true"
+                               load-on-empty="true"
+                               max-results-to-show="100" style="z-index: 2000"
+                               select-first-match="true" template="book-info-autocomplete-template"></auto-complete>
+            </tags-input>
+            <script type="text/ng-template" id="book-info-tag-template">
+                <span tooltip-html="true" tooltip-html-unsafe="Author: {{data.uploader}}<br>Languages: {{data.languages}}<br>{{data.copyright}}">{{data.title}}</span>
+                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+            </script>
+            <script type="text/ng-template" id="book-info-autocomplete-template">
+                <img ng-src="{{data.imgUrl}}" height="70" width="49" style="width:49px; height:70px;"/>
+                <span><b><i>{{data.title}}</i></b> by {{data.uploader}}</span>
+                <br>
+                <span>Languages: {{data.languages}}</span>
+                <br>
+                <span>{{data.copyright}}</span>
+            </script>
+        </div>
     </div>
 </div>
