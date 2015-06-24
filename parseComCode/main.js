@@ -239,6 +239,24 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 	response.success();
 });
 
+Parse.Cloud.afterSave("downloadHistory", function(request) {
+    Parse.Cloud.useMasterKey();
+
+    var entry = request.object;
+    var bookId = entry.get('bookId');
+
+    var booksClass = Parse.Object.extend('books');
+    var query = new Parse.Query(booksClass);
+
+    query.get(bookId, {success: function(book) {
+        var currentDownloadCount = book.get('downloadCount') || 0;
+        book.set('downloadCount', currentDownloadCount + 1);
+        book.save();
+    }, error: function(object, error) {
+        console.log("get error: " + error);
+    }});
+});
+
 // Return the books that should be shown in the default browse view.
 // Currently this is those in the Featured bookshelf, followed by all the others.
 // Each group is sorted alphabetically by title.
@@ -355,6 +373,7 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "copyright", type:"String"},
                 {name: "credits", type:"String"},
                 {name: "currentTool", type:"String"},
+                {name: "downloadCount", type:"Number"},
                 {name: "downloadSource", type:"String"},
                 {name: "experimental", type:"Boolean"},
                 {name: "folio", type:"Boolean"},
@@ -385,6 +404,14 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "name", type:"String"},
                 {name: "books", type:"Relation<books>"},
                 {name: "owner", type:"Pointer<_User>"}
+            ]
+        },
+        {
+            name: "downloadHistory",
+            fields: [
+                {name: "bookId", type: "String"},
+                {name: "userIp", type: "String"},
+                {name: "userName", type: "String"}
             ]
         },
         {

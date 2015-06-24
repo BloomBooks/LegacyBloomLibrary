@@ -87,6 +87,7 @@
 								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
 							}()),
 							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
+							downloadCount: item.downloadCount || 0,
 							license: item.license,
 							updatedAt: (function () {
 								var dateWithTime = new Date(item.updatedAt);
@@ -218,6 +219,19 @@
 						visible: false
 					},
 					{ field: 'pageCount', displayName: 'Pages', width: '*', minWidth: 15, maxWidth: 60, enableCellEdit: false,
+						filters: [
+							{
+								condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
+								placeholder: ' >='
+							},
+							{
+								condition: uiGridConstants.filter.LESS_THAN_OR_EQUAL,
+								placeholder: ' <='
+							}
+						],
+						visible: false
+					},
+					{ field: 'downloadCount', displayName: 'Downloads', width: '*', minWidth: 15, maxWidth: 60, enableCellEdit: false,
 						filters: [
 							{
 								condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,

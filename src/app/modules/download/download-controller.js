@@ -68,12 +68,14 @@
                     }
                 });
         } ])
-        .controller('DownloadCtrl', ['$stateParams', 'bookService', '$timeout', '$analytics', function($stateParams, bookService, $timeout, $analytics) {
+        .controller('DownloadCtrl', ['$stateParams', 'bookService', '$timeout', '$analytics', 'downloadHistoryService', function($stateParams, bookService, $timeout, $analytics, downloadHistoryService) {
             //get the book for which we're going to show the details asynchronously, then start the download
             bookService.getBookById($stateParams.bookId).then(function (book) {
                 // Without $timeout, setting the href will cancel the analytics request
                 $timeout(function() {
                     $analytics.eventTrack('Download Book', {book: book.objectId, href: book.bookOrder, bookTitle:book.title});
+
+                    downloadHistoryService.logDownload(book.objectId);
                 });
                 window.location.href = book.bookOrder + '&title=' + encodeURIComponent(book.title);
             });
