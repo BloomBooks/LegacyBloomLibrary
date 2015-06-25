@@ -46,9 +46,11 @@
                         <div class="col-md-6" style="padding-bottom:10px">
                             <div ng-show="initialized">
                                 <div>{{bookMessage}}</div>
-                                <div class="space-after-book-message"></div>
-                                <div ng-show="numHiddenBooks">Hiding {{numHiddenBooks}} other books because they have restricted/unknown licenses. <a href="" ng-click="toggleAllLicenses()">Show them</a></div>
-                                <div ng-show="allLicenses"><a href="" ng-click="toggleAllLicenses()">Hide</a> books with restricted/unknown licenses.</div>
+                                <div ng-show="numHiddenBooks || bookCount!=0">
+                                    <div class="space-after-book-message"></div>
+                                    <div ng-show="numHiddenBooks">Hiding {{numHiddenBooks}} other books because they have restricted/unknown licenses. <a href="" ng-click="toggleAllLicenses()">Show them</a></div>
+                                    <div ng-show="allLicenses"><a href="" ng-click="toggleAllLicenses()">Hide</a> books with restricted/unknown licenses.</div>
+                                </div>
                             </div>
                             <div ng-show="!initialized">Searching...</div>
                         </div>

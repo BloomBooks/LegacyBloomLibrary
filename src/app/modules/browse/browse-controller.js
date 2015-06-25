@@ -133,6 +133,7 @@
             $scope.initialized = true;
         }
         $scope.getFilteredBookCount = function() {
+            $scope.numHiddenBooks = 0;
             var promise = bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, false, true);
             if ($scope.allLicenses) {
                 promise.then(function (count) {
