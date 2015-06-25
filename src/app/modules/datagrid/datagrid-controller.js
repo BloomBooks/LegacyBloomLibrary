@@ -131,7 +131,7 @@
 				var newTags = row.entity.tags.map(function(item) {
 					return item.text;
 				});
-				bookService.modifyBookField(row.entity, "tags", newTags);
+				bookService.modifyBookField(row.entity, "tags", newTags, "datagrid");
 
 				//Put brand-new tags into tagList
 				for(var i = 0; i < newTags.length; i++) {
@@ -143,14 +143,23 @@
 
 			$scope.getBooks();
 
-			var filterTags = function(searchTerm, cellValue, row, column) {
-				var regex = new RegExp(searchTerm, "i");
-				for(var i = 0; i < cellValue.length; i++) {
-					if(regex.test(cellValue[i].text)) {
-						return true;
+			// A custom column filter which allows the user to filter by more than one tag at the same time
+			// In this case, cellValue is an array of tag objects (which display the "text" property)
+			var filterTags = function(searchTerm, cellValue) {
+				var searchWords = searchTerm.match(/[\w]+/g);
+				for(var i = 0; i < searchWords.length; i++) {
+					var regex = new RegExp(searchWords[i], 'i');
+					var wordMatches = false;
+					for(var j = 0; j < cellValue.length; j++) {
+						if(regex.test(cellValue[j].text)) {
+							wordMatches = true;
+						}
+					}
+					if(!wordMatches) {
+						return false;
 					}
 				}
-				return false;
+				return true;
 			};
 
 			$scope.popOut = function(event) {
@@ -174,6 +183,17 @@
 				paginationPageSizes: [10, 24, 50, 100, 1000],
 				paginationPageSize: 100,
 				enableGridMenu: true,
+				gridMenuCustomItems: [
+					{
+						title: 'Filter to Incoming',
+						action: function ($event) {
+							this.grid.clearAllFilters();
+							var colDef = this.grid.getColDef('tags');
+							colDef.filter.term = "system:Incoming";
+						},
+						order: 1
+					}
+				],
 				enableFiltering: true,
 				rowHeight: 40,
 				columnDefs: [
@@ -260,9 +280,9 @@
 						if(newValue == 'no') {
 							inCirculation = false;
 						}
-						bookService.modifyBookField(rowEntity, colDef.field, inCirculation);
+						bookService.modifyBookField(rowEntity, colDef.field, inCirculation, "datagrid");
 					} else {
-						bookService.modifyBookField(rowEntity, colDef.field, newValue);
+						bookService.modifyBookField(rowEntity, colDef.field, newValue, "datagrid");
 					}
 				});
 			};

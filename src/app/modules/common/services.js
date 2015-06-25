@@ -518,9 +518,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			return restangular.withConfig(authService.config()).one('classes/books', id).remove();
 		};
 
-            this.modifyBookField = function(book, field, value) {
+            this.modifyBookField = function(book, field, value, updateSource) {
                 var rBook = restangular.withConfig(authService.config()).one('classes/books', book.objectId);
                 rBook[field] = value;
+                if (authService.isUserAdministrator()) {
+                    updateSource += ' (admin)';
+                }
+                rBook['updateSource'] = updateSource;
                 rBook.put();
             };
 
@@ -643,6 +647,22 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
             catch(error) {
                 return tag;
+            }
+        };
+
+        this.isSystemTag = function(tag) {
+            var regex = new RegExp('^system:');
+            return regex.test(tag);
+        };
+
+        this.hideSystemTags = function(book) {
+            if(book.tags) {
+                for (var i = book.tags.length-1; i >= 0; i--) {
+                    var tag = book.tags[i];
+                    if (this.isSystemTag(tag)) {
+                        book.tags.splice(i, 1);
+                    }
+                }
             }
         };
     }])
