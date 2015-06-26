@@ -215,6 +215,15 @@ Parse.Cloud.job("populateCounts", function(request, status) {
 // Makes new and updated books have the right search string and ACL.
 Parse.Cloud.beforeSave("books", function(request, response) {
 	var book = request.object;
+
+	// If updateSource is not set, the new/updated record came from the desktop application
+	var updateSource = request.object.get("updateSource");
+	if (!updateSource) {
+		book.addUnique("tags", "system:Incoming");
+	} else {
+		request.object.unset("updateSource");
+	}
+
 	var tags = book.get("tags");
 	var search = book.get("title").toLowerCase();
 	var index;
@@ -264,6 +273,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
   var first = request.params.first;
   var count = request.params.count;
   var includeOutOfCirculation = request.params.includeOutOfCirculation;
+  var allLicenses = request.params.allLicenses == true;
   var query = new Parse.Query("bookshelf");
   query.equalTo("name", "Featured");
   query.find({
@@ -273,8 +283,10 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
         var shelfName = featuredShelf.get("name");
         if (!includeOutOfCirculation)
             contentQuery.containedIn('inCirculation', [true, undefined]);
-		contentQuery.include("langPointers");
+        contentQuery.include("langPointers");
         contentQuery.include("uploader");
+        if (!allLicenses)
+            contentQuery.startsWith("license", "cc-");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
 		contentQuery.find({
@@ -297,8 +309,10 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                     var allBooksQuery = new Parse.Query("books");
                     if (!includeOutOfCirculation)
                         allBooksQuery.containedIn('inCirculation', [true, undefined]);
-					allBooksQuery.include("langPointers");
+                    allBooksQuery.include("langPointers");
                     allBooksQuery.include("uploader");
+                    if (!allLicenses)
+                        allBooksQuery.startsWith("license", "cc-");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got
                     allBooksQuery.find({
@@ -397,6 +411,7 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "thumbnail", type:"String"},
                 {name: "title", type:"String"},
                 {name: "tools", type:"Array"},
+                {name: "updateSource", type:"String"},
                 {name: "uploader", type:"Pointer<_User>"}
             ]
         },
