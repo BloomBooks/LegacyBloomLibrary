@@ -3,7 +3,7 @@
 	P A
 		strong
 			|  beta release
-		|  of Bloom 3 is currently available for Ubuntu Precise and Trusty.
+		|  of Bloom 3.1 is currently available for Ubuntu Precise and Trusty.
 
 	H3 Step 1: Add the SIL experimental repository to your system
 	pre sudo echo have sudo
@@ -12,7 +12,7 @@
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc)-experimental main"
 	pre sudo apt-get update
 	pre sudo apt-get dist-upgrade
-	H3 Step 2: Add Bloom Desktop
-	pre
-		| sudo apt-get install bloom-desktop
-
+	H3 Step 2: Add Bloom Desktop Unstable (the Beta)
+	pre sudo apt-get install bloom-desktop-unstable
+	H3 Step 3: Launch the Application from the Application Dashboard or from a Terminal window.
+	pre bloom
