@@ -75,7 +75,7 @@
 				var first = 0;
 				//We want all books, but there is a limit at some point
 				var count = 1000;
-				bookService.getFilteredBookRange(first, count, '', '', '', '', '', '', true).then(function (result) {
+				bookService.getFilteredBookRange(first, count, '', '', '', '', true, '', '', true).then(function (result) {
 					$scope.booksData = result.map(function (item) {
 						return {
 							//Hidden id
