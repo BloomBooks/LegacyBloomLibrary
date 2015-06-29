@@ -1,12 +1,11 @@
 <div class="confirmRelateDialog">
     <div class="modal-header">
-        This Book Is Already Related To Other Books!
+        <b><i>{{mainBook.title}}</i></b> Is Already Related To Other Books!
         <!--<a href="#" class="close" ng-click="close()>x</a>-->
         <div class="close" ng-click="close()">x</div>
     </div>
     <div class="modal-body">
-        <div>A relationship already exists between the selected book and others.</div>
-        <div>The following books are related: </div>
+        <div>A relationship already exists between <b><i>{{mainBook.title}}</i></b> and these other books:</div>
         <div class="notranslate" ng-repeat="book in books"><b><i>{{book.title}}</i></b> by {{book.uploader}}</div>
         <br>
         <div>If you want to incorporate all of these books into the current relationship, click "Continue."</div>

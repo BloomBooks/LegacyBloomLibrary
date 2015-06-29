@@ -5,11 +5,14 @@
 		.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
 		});
 
-	angular.module('BloomLibraryApp.confirmRelateDialog').controller('confirmRelateDialog', ['$scope', '$modalInstance', 'relatedBooks',
+	angular.module('BloomLibraryApp.confirmRelateDialog').controller('confirmRelateDialog', ['$scope', '$modalInstance', 'book', 'relatedBooks',
 
-		function ($scope, dialog, relatedBooks) {
+		function ($scope, dialog, book, relatedBooks) {
 
-			$scope.books = relatedBooks;
+			$scope.mainBook = book;
+			$scope.books = relatedBooks.filter(function(item) {
+				return item.objectId != book.objectId;
+			});
 
 			$scope.close = function () {
 				dialog.close(false);

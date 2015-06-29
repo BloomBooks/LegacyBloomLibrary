@@ -216,6 +216,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			});
 		};
 
+            this.getAllBookRelationships = function() {
+                var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
+
+                return baseRelatedBooks.getList({ 'include': "books" });
+            };
+
         this.getBookshelf = function(shelfName) {
             // This version retrieves a version of the data and is shorter. But we use this object in ways that require
             // it to be an actual parse.com API bookshelf object.
@@ -546,57 +552,62 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             };
 
         this.relateBooksById = function() {
-            var relatedBooks = [];
+            //Context of arguments is lost going into IIFE
+            var tArgs = arguments;
 
-            var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
+            //Since, it might be possible for the user to click a second book
+            //faster than the server can process the request, I'm using an IIFE
+            (function() {
+                var args = tArgs;
+                var relatedBooks = [];
 
-            var i = 0;
+                var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
 
-            function handleOneId() {
-                //The when we get to the promises, the original context of arguments is lost
-                var args = arguments;
+                var i = 0;
 
-                //Base case, out of arguments
-                if(i >= arguments.length) {
-                    //Only create new relationship if two or more books are involved
-                    if(relatedBooks.length > 1) {
-                        //Create new entry with relationship
-                        baseRelatedBooks.post({"books": relatedBooks});
+                function handleOneId() {
+                    //Base case, out of arguments
+                    if(i >= args.length) {
+                        //Only create new relationship if two or more books are involved
+                        if(relatedBooks.length > 1) {
+                            //Create new entry with relationship
+                            baseRelatedBooks.post({"books": relatedBooks});
+                        }
+                    }
+                    else {
+                        //Add this book pointer to the queue
+                        relatedBooks.push({
+                            "__type": "Pointer",
+                            "className": "books",
+                            "objectId": args[i]
+                        });
+                        baseRelatedBooks.getList({
+                            'where': {
+                                'books': {
+                                    "__type": "Pointer",
+                                    "className": "books",
+                                    "objectId": args[i]
+                                }
+                            }
+                        }).then(function (results) {
+                            if (results.length > 0) {
+                                //For some reason, I was unable to use results[0].remove()
+                                restangular.withConfig(authService.config()).one('classes/relatedBooks', results[0].objectId).remove().then(function () {
+                                    i++;
+                                    handleOneId();
+                                });
+                            }
+                            else {
+                                i++;
+                                handleOneId();
+                            }
+                        });
                     }
                 }
-                else {
-                    //Add this book pointer to the queue
-                    relatedBooks.push({
-                        "__type": "Pointer",
-                        "className": "books",
-                        "objectId": arguments[i]
-                    });
-                    baseRelatedBooks.getList({
-                        'where': {
-                            'books': {
-                                "__type": "Pointer",
-                                "className": "books",
-                                "objectId": arguments[i]
-                            }
-                        }
-                    }).then(function (results) {
-                        if (results.length > 0) {
-                            //For some reason, I was unable to use results[0].remove()
-                            restangular.withConfig(authService.config()).one('classes/relatedBooks', results[0].objectId).remove().then(function () {
-                                i++;
-                                handleOneId.apply(this, args);
-                            });
-                        }
-                        else {
-                            i++;
-                            handleOneId.apply(this, args);
-                        }
-                    });
-                }
-            }
 
-            //Begin recursion
-            handleOneId.apply(this, arguments);
+                //Begin recursion
+                handleOneId();
+            } ());
         };
 
         this.resetCurrentPage = function () {
