@@ -3,16 +3,27 @@
 	P A
 		strong
 			|  beta release
-		|  of Bloom 3.1 is currently available for Ubuntu Precise and Trusty.
+		|  of Bloom 3.1 is currently available for Ubuntu Precise and Trusty.  It can also be installed on Wasta12 or Wasta14. You are welcome to try other versions but we cannot promise to support them.
 
 	H3 Step 1: Add the SIL experimental repository to your system
+	H4 (for precise or wasta12):
 	pre sudo echo have sudo
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc) main"
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu $(lsb_release -sc)-experimental main"
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise-experimental main"
+	pre sudo apt-get update
+	pre sudo apt-get dist-upgrade
+	H4 (for trusty or wasta14):
+	pre sudo echo have sudo
+	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
 	pre sudo apt-get dist-upgrade
 	H3 Step 2: Add Bloom Desktop Unstable (the Beta)
-	pre sudo apt-get install bloom-desktop-unstable
+	pre
+		| sudo apt-get install bloom-desktop-unstable
 	H3 Step 3: Launch the Application from the Application Dashboard or from a Terminal window.
-	pre bloom
+	pre
+		| bloom
+
