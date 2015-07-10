@@ -15,9 +15,9 @@ mixin link(href)
 				| Bloom Installers
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', frameborder='0', scrolling='no')
 			.versionNotes
-				| Requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and
-				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
-				|(part of Windows, so you probably already have it). Uninstall Version 1 or 2 before installing this. Older Windows Versions are
+				| Requires Windows Vista SP1, 7 SP1, 8, or 8.1 and
+				+link('http://www.microsoft.com/en-us/download/details.aspx?id=40779') .NET 4.5
+				|(part of Windows, so you probably already have it). NOT usable on Windows XP (but you can still use 3.0, see below.) Uninstall Version 1, 2, or 3.0 of Bloom before installing this. Older Windows Versions are
 				+link('#/installers/old') here.
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', frameborder='0', scrolling='no')
 			.versionNotes Not for Windows XP. Requires
@@ -27,6 +27,11 @@ mixin link(href)
 				| is also installed. Includes the Andika New Basic font. Windows version (only) can be installed alongside Bloom 3.0.
 			.versionNotes Linux Installation Instructions (for 3.1 beta) are
 				+link('#/installers/linux') here.
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_XP.htm', frameborder='0', scrolling='no')
+			.versionNotes
+				| This older version can still be used on Windows XP SP3 with
+				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
+				|(part of Windows, so you probably already have it). Uninstall Version 1 or 2 before installing this.
 			//H4 Linux 3.1 Beta
 				+link('#/installers/linux') Installation Instructions
 
