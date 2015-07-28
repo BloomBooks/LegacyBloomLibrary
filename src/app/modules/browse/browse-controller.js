@@ -53,6 +53,8 @@
         $scope.tag = $stateParams["tag"];
         $scope.allLicenses = $stateParams["allLicenses"] === "true";
         $scope.numHiddenBooks = 0;
+        $scope.otherLanguagesHidden = true;
+        $scope.otherTopicsHidden = true;
         $scope.searchTextRaw = $scope.searchText;
 		// if the service book count changes (e.g., because detailView deletes a book),
 		// update our scope's bookCount so the list view which is watching it will reload its page.
@@ -66,14 +68,26 @@
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
 
-        $scope.toggleVisibilityOfNextSibling = function(event) {
+        $scope.toggleVisibilityOfOtherLanguages = function(event) {
             var list = event.currentTarget.nextElementSibling;
 
             $(list).slideToggle();
+            $scope.otherLanguagesHidden = !$scope.otherLanguagesHidden;
         };
 
-        $scope.localizeMore = function(count) {
-            return _localize("{count} more...", {count:count});
+        $scope.toggleVisibilityOfOtherTopics = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+
+            $(list).slideToggle();
+            $scope.otherTopicsHidden = !$scope.otherTopicsHidden;
+        };
+
+        $scope.localizeMore = function(count,hidden) {
+            if (hidden) {
+                return _localize("{count} more...", {count:count});
+            } else {
+                return _localize("{count} more:", {count:count});
+            }
         };
 
         function getBookMessage(count) {
