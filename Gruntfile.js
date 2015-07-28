@@ -648,6 +648,8 @@ module.exports = function ( grunt ) {
     });
     
     grunt.file.copy('src/favicon.ico', this.data.dir + '/favicon.ico');
+    grunt.file.copy('src/robots.txt', this.data.dir + '/robots.txt');
+    grunt.file.copy('src/sitemap.xml', this.data.dir + '/sitemap.xml');
   });
 
   /**

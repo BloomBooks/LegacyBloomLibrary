@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is referenced from robots.txt and serves the purpose of helping robots know what to index
+     and how often the content is expected to change. -->
+<urlset
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    <url>
+        <loc>http://bloomlibrary.org/</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/landing</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/support</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/installers</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/about</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/opensource</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/suggestions</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/browse</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/terms</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/privacy</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/artofreading</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>http://bloomlibrary.org/#/installers/linux</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+</urlset>
