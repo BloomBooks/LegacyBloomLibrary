@@ -16,8 +16,24 @@
                 <h4>Narrow Search</h4>
                 <h5>Languages</h5>
                 <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
-                <h5>Tags</h5>
-                <div ng-repeat="tag in topTags"><div ng-class="{activeFilter: currentTag == tag}"><a class="tagItem" href="" ng-click="filterTag(tag)">{{tag}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
+                <div ng-show="otherLanguages.length">
+                    <a href="" ng-click="toggleVisibilityOfOtherLanguages($event)">{{localizeMore(otherLanguages.length,otherLanguagesHidden)}}</a>
+                    <div style="display:none">
+                        <div ng-repeat="lang in otherLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
+                    </div>
+                </div>
+                <div ng-repeat="category in tagCategories">
+                    <div ng-show="tags[category.id].top.length">
+                        <h5>{{category.displayName}}</h5>
+                        <div ng-repeat="tag in tags[category.id].top"><div ng-class="{activeFilter: currentTag == tag.id}"><a class="tagItem" href="" ng-click="filterTag(tag.id)">{{tag.displayName}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
+                        <div ng-show="tags[category.id].other.length">
+                            <a href="" ng-click="toggleVisibilityOfOtherTopics($event)">{{localizeMore(tags[category.id].other.length,otherTopicsHidden)}}</a>
+                            <div style="display:none">
+                                <div ng-repeat="tag in tags[category.id].other"><div ng-class="{activeFilter: currentTag == tag.id}"><a class="tagItem" href="" ng-click="filterTag(tag.id)">{{tag.displayName}}</a><a class="clear right" href="" ng-click="filterTag('')">Clear</a></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="rightContainer col-md-9">
@@ -28,7 +44,14 @@
                 <div class="container-fluid">
                     <div class="searchRow row">
                         <div class="col-md-6" style="padding-bottom:10px">
-                            <div ng-show="initialized">{{bookMessage}}</div>
+                            <div ng-show="initialized">
+                                <div>{{bookMessage}}</div>
+                                <div ng-show="numHiddenBooks || bookCount!=0">
+                                    <div class="space-after-book-message"></div>
+                                    <div ng-show="numHiddenBooks">Hiding {{numHiddenBooks}} other books because they have restricted/unknown licenses. <a href="" ng-click="toggleAllLicenses()">Show them</a></div>
+                                    <div ng-show="allLicenses"><a href="" ng-click="toggleAllLicenses()">Hide</a> books with restricted/unknown licenses.</div>
+                                </div>
+                            </div>
                             <div ng-show="!initialized">Searching...</div>
                         </div>
                         <div class="col-md-6" style="padding-bottom:10px">
@@ -54,7 +77,7 @@
                                     </div>
                                     <div class="bookInfo">
                                         <!-- <a ui-sref="browse.detail({bookId: book.objectId})">-->
-                                        <h3 class="bookTitle">{{book.title}}</h3>
+                                        <h3 class="bookTitle notranslate">{{book.title}}</h3>
                                         <!--</a>-->
                                         <!--<div class="secondRowAboutBook">
                                         <div class="pages">{{book.pageCount}} pages</div>
@@ -66,7 +89,7 @@
                                             </span>
                                         </div>
                                         <div class="tags" ng-show="book.tags.length">
-                                            <span class="tag" ng-repeat="tag in book.tags"><!--<i class="icon-tags"></i>-->{{tag}} </span>
+                                            <span class="tag" ng-repeat="tag in book.tags">{{tag | getDisplayName}}<span ng-hide="$last">, </span></span>
                                         </div>
                                     </div>
                                     <div class="unfloat"></div>
@@ -74,8 +97,6 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- temporary affordance for trying out the new datagrid. Not the final design -->
-                    <!--form action="#datagrid"><input type="submit" value="Grid view"></form-->
                 </div>
             </div>
         </div>

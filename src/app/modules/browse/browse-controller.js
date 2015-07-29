@@ -4,14 +4,21 @@
 	.config(['$stateProvider', function config($stateProvider) {
 
 		$stateProvider.state('browse', {
+			parent: 'requireLoginResolution',
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
-			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
-			url: "/browse?search&shelf&lang&tag",
+			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@':
+			url: "/browse?search&shelf&lang&tag&allLicenses",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl',
 			title: 'Book Library'
 		});
 	} ])
+    .filter('getDisplayName', ['tagService', function(tagService) {
+        return function(input) {
+            return tagService.getDisplayName(input);
+        };
+    }])
+
 	//we get a json list like ['me','you'] and we return 'me, you'
 	.filter('makeCommaList', function () {
 		return function (input) {
@@ -38,12 +45,16 @@
 
 	angular.module('BloomLibraryApp.browse')
 	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService',
-								function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
+		function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
         $scope.lang = $stateParams["lang"];
         $scope.tag = $stateParams["tag"];
+        $scope.allLicenses = $stateParams["allLicenses"] === "true";
+        $scope.numHiddenBooks = 0;
+        $scope.otherLanguagesHidden = true;
+        $scope.otherTopicsHidden = true;
         $scope.searchTextRaw = $scope.searchText;
 		// if the service book count changes (e.g., because detailView deletes a book),
 		// update our scope's bookCount so the list view which is watching it will reload its page.
@@ -56,7 +67,29 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
-        
+
+        $scope.toggleVisibilityOfOtherLanguages = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+
+            $(list).slideToggle();
+            $scope.otherLanguagesHidden = !$scope.otherLanguagesHidden;
+        };
+
+        $scope.toggleVisibilityOfOtherTopics = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+
+            $(list).slideToggle();
+            $scope.otherTopicsHidden = !$scope.otherTopicsHidden;
+        };
+
+        $scope.localizeMore = function(count,hidden) {
+            if (hidden) {
+                return _localize("{count} more...", {count:count});
+            } else {
+                return _localize("{count} more:", {count:count});
+            }
+        };
+
         function getBookMessage(count) {
             var message = "";
             var shelfLabel = $scope.shelfName;
@@ -84,9 +117,20 @@
             }
 
             if (count === 0) {
-                message = 'There are no books that match your search for {shelf} {language} books';
+                message = 'There are no books that match your search for ';
             } else {
-                message = 'Found {count} {shelf} {language} {bookOrBooks}';
+                message = 'Found {count} ';
+            }
+            if (params.shelf !== '') {
+                message += '{shelf} ';
+            }
+            if (params.language !== '') {
+                message += '{language} ';
+            }
+            if (count === 0) {
+                message += 'books';
+            } else {
+                message += '{bookOrBooks}';
             }
             if ($scope.tag) {
                 message = message + ' with the {tag} tag';
@@ -96,14 +140,27 @@
             }
             return _localize(message, params);
         }
+        function afterCount(count) {
+            $scope.bookCount = $scope.bookCountObject.bookCount = count;
+            $scope.bookMessage = getBookMessage(count);
+            $scope.setPage = function () {};
+            $scope.initialized = true;
+        }
         $scope.getFilteredBookCount = function() {
-            bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag).then(function (count) {
-                $scope.bookCount = $scope.bookCountObject.bookCount = count;
-                $scope.bookMessage = getBookMessage(count);
-                $scope.setPage = function () {
-                };
-                $scope.initialized = true;
-            });
+            $scope.numHiddenBooks = 0;
+            var promise = bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, false, true);
+            if ($scope.allLicenses) {
+                promise.then(function (count) {
+                    afterCount(count);
+                });
+            } else {
+                promise.then(function (fullCount) {
+                    bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, false, false).then(function (ccCount) {
+                        $scope.numHiddenBooks = fullCount - ccCount;
+                        afterCount(ccCount);
+                    });
+                });
+            }
         };
         // Every path in this 'if' should eventually call getFilteredBookCount(). We can't just move outside
         // because in at least one path we have to wait to call it after a promise is fulfilled.
@@ -133,7 +190,12 @@
             if (!$scope.initialized) {
                 return; // can't do useful query.
             }
-			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, "title", true).then(function (result) {
+			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, $scope.allLicenses, "title", true).then(function (result) {
+				//Remove system tags
+				for(var iBook = 0; iBook < result.length; iBook++) {
+					var book = result[iBook];
+					tagService.hideSystemTags(book);
+				}
 				$scope.visibleBooks = result;
 			});
 		};
@@ -146,5 +208,10 @@
 			$scope.searchText = $scope.searchTextRaw;
 			$state.go('.', { search: $scope.searchText, shelf: "" });
 		};
+
+        $scope.toggleAllLicenses = function() {
+            $scope.allLicenses = !$scope.allLicenses;
+            $state.go($state.current, { allLicenses: $scope.allLicenses } );
+        };
 	} ]);
 } ());   // end wrap-everything function

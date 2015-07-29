@@ -20,6 +20,11 @@
             }
 		});
 	})
+		.filter('getDisplayName', ['tagService', function(tagService) {
+			return function(input) {
+				return tagService.getDisplayName(input);
+			};
+		}])
 		//we get a json list like ['me','you'] and we return 'me, you'
 		.filter('makeCommaList', function () {
 			return function (input) {
@@ -54,6 +59,9 @@
 		// (which triggers suppressing the info message altogether).
 		.filter('previewLangInfo', function() {
 			return function(book) {
+				if (!book) {
+					return "";
+				}
 				if (book.langPointers.length <= 1) {
 					return "";
 				}
@@ -92,12 +100,13 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', '$modal', '$window',
-	function ($scope, authService, $stateParams, bookService, bookCountService, $modal, $window) {
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', 'tagService', '$modal', '$window',
+	function ($scope, authService, $stateParams, bookService, bookCountService, tagService, $modal, $window) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
 		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
 		bookService.getBookById($stateParams.bookId).then(function (book) {
+			tagService.hideSystemTags(book);
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.email.toLowerCase() || authService.isUserAdministrator());
 		});

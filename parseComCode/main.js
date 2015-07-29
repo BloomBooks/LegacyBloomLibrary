@@ -30,9 +30,200 @@ Parse.Cloud.job("populateSearch", function(request, status) {
   });
 });
 
+// This job will remove any language records which currently do not have any books which use them.
+// The purpose is to keep BloomLibrary.org from displaying languages with no books.
+// It is scheduled to run every day. (parse.com -> Core -> Jobs)
+// It can be run manually using the following from the command line:
+// curl -X POST -H "X-Parse-Application-Id: <insert app ID>"  -H "X-Parse-Master-Key: <insert master key>" -d '{}' https://api.parse.com/1/jobs/removeUnusedLanguages
+// (In theory, the -d '{}' shouldn't be needed because we are not passing any parameters, but it doesn't work without it.)
+Parse.Cloud.job("removeUnusedLanguages", function(request, status) {
+    // Set up to modify data
+    Parse.Cloud.useMasterKey();
+
+    var allLangQuery = new Parse.Query('language');
+    allLangQuery.find().then(function (languages) {
+        var promise = Parse.Promise.as();
+        for (var i = 0; i < languages.length; i++) {
+
+            // Use IIFE to pass the correct language down
+            (function() {
+                var lang = languages[i];
+                var bookQuery = new Parse.Query('books');
+                bookQuery.equalTo('langPointers', lang);
+                promise = promise.then(function () {
+                    return bookQuery.count().then(function (count) {
+                        if (count === 0) {
+                            console.log("Deleting language " + lang.get('name') + " because no books use it.");
+                            return lang.destroy();
+                        }
+                    });
+                });
+            }());
+        }
+        return promise;
+    }).then(function () {
+        status.success("removeUnusedLanguages completed successfully.");
+    }, function (error) {
+        status.error("Error in removeUnusedLanguages: " + error);
+    });
+});
+
+//A background job to populate usageCounts for languages and tags
+//To schedule this job on parse.com, go to Core > Jobs > Schedule a Job
+//In that menu, 1) enter an arbitrary description, 2) select the job name "populateCounts",
+//and 3) set repeat to either every day at some time or every so many minutes/hours.
+//Click "Schedule Job." The job will henceforth be run at the specified interval.
+//To run the job a single time, either click "Run Now" on the scheduled populateCounts job on the parse.com Jobs menu,
+//or run this command from the command line:
+//curl -X POST -H "X-Parse-Application-Id: <insert ID>"  -H "X-Parse-Master-Key: <insert Master key>" -d "{}" https://api.parse.com/1/jobs/populateCounts
+Parse.Cloud.job("populateCounts", function(request, status) {
+    Parse.Cloud.useMasterKey();
+
+    var counters = { language: {}, tag: {}};
+
+    //Query each tag
+    var tagQuery = new Parse.Query('tag');
+    tagQuery.each(function(tag) {
+        //Initial tag counters are 0
+        counters.tag[tag.get('name')] = 0;
+    }).then(function() {
+        //Create a book query
+        var bookQuery = new Parse.Query('books');
+
+        //Analyze a book's tags and languages and increment proper counts
+        function incrementBookUsageCounts(books, index) {
+            //If we finished all the books, return resolved promise
+            if(index >= books.length) {
+                return Parse.Promise.as();
+            }
+
+            var book = books[index];
+
+            //Increment book's languages' counts
+            //Since we shouldn't worry about invalid languages,
+            //this process needs no requests to the server and may be iterative
+            var langPtrs = book.get("langPointers");
+            for (var i = 0; i < langPtrs.length; i++) {
+                var onePtr = langPtrs[i];
+                var id = onePtr.id;
+                if (!(id in counters.language)) {
+                    counters.language[id] = 0;
+                }
+                counters.language[id]++;
+            }
+
+            var tags = book.get('tags');
+            if(tags) {
+                //Recursively increment book's tags' counts
+                return incrementTagUsageCount(tags, 0).then(function() {
+                    //Next book
+                    return incrementBookUsageCounts(books, index + 1);
+                });
+            }
+
+            //Next book (when no tags)
+            return incrementBookUsageCounts(books, index + 1);
+        }
+
+        //Increment a given tag's count
+        function incrementTagUsageCount(tags, index) {
+            if(index >= tags.length) { //Base case
+                //Resolved promise
+                return Parse.Promise.as();
+            }
+            else if(tags[index] in counters.tag) {
+                counters.tag[tags[index]]++;
+                //Next tag
+                return incrementTagUsageCount(tags, index + 1);
+            }
+            else {
+                //If tag is not one already in the database, add the tag to the database
+                counters.tag[tags[index]] = 1;
+                var parseClass = Parse.Object.extend('tag');
+                var newTag = new parseClass();
+                newTag.set("name", tags[index]);
+                return newTag.save().then(function() {
+                    //Next tag
+                    return incrementTagUsageCount(tags, index + 1);
+                });
+            }
+        }
+
+        //Make query, then initialize recursive book analysis; return promise for next then in promise chain
+        return bookQuery.find().then(function (results) {
+            return incrementBookUsageCounts(results, 0);
+        });
+    }).then(function () {
+        function setLangUsageCount(data, index) {
+            //When done, return resolved promise
+            if(index >= data.length) {
+                return Parse.Promise.as();
+            }
+
+            var item = data[index];
+            item.set("usageCount", counters.language[item.id] || 0);
+            return item.save().then(function () {
+                //Next language
+                return setLangUsageCount(data, index + 1);
+            })
+        }
+
+        var langQuery = new Parse.Query('language');
+
+        //Cycle through languages, assigning usage counts
+        return langQuery.find().then(function (results) {
+            //Start recursion
+            return setLangUsageCount(results, 0);
+        });
+    }).then(function() {
+        function setTagUsageCount(data, index) {
+            //Return resolved promise when done
+            if(index >= data.length) {
+                return Parse.Promise.as();
+            }
+
+            var item = data[index];
+            var count = counters.tag[item.get('name')];
+            if(count > 0) {
+                item.set("usageCount", count);
+                return item.save().then(function () {
+                    return setTagUsageCount(data, index + 1);
+                });
+            }
+            else {
+                //Destroy tag with count of 0
+                return item.destroy().then(function() {
+                    return setTagUsageCount(data, index + 1);
+                });
+            }
+        }
+
+        var tagQuery2 = new Parse.Query('tag');
+
+        //Cycle through tags in database
+        return tagQuery2.find().then(function(results) {
+            //Begin recursion
+            return setTagUsageCount(results, 0);
+        });
+    }).then(function() {
+        status.success("Tag and Language usage counts updated!");
+    }, function(error) {
+        status.error("populateCounts terminated unsuccessfully with error: " + error);
+    });
+});
+
 // Makes new and updated books have the right search string and ACL.
 Parse.Cloud.beforeSave("books", function(request, response) {
 	var book = request.object;
+
+	// If updateSource is not set, the new/updated record came from the desktop application
+	var updateSource = request.object.get("updateSource");
+	if (!updateSource) {
+		book.addUnique("tags", "system:Incoming");
+	} else {
+		request.object.unset("updateSource");
+	}
+
 	var tags = book.get("tags");
 	var search = book.get("title").toLowerCase();
 	var index;
@@ -57,19 +248,44 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 	response.success();
 });
 
+Parse.Cloud.afterSave("downloadHistory", function(request) {
+    Parse.Cloud.useMasterKey();
+
+    var entry = request.object;
+    var bookId = entry.get('bookId');
+
+    var booksClass = Parse.Object.extend('books');
+    var query = new Parse.Query(booksClass);
+
+    query.get(bookId, {success: function(book) {
+        var currentDownloadCount = book.get('downloadCount') || 0;
+        book.set('downloadCount', currentDownloadCount + 1);
+        book.save();
+    }, error: function(object, error) {
+        console.log("get error: " + error);
+    }});
+});
+
 // Return the books that should be shown in the default browse view.
 // Currently this is those in the Featured bookshelf, followed by all the others.
 // Each group is sorted alphabetically by title.
 Parse.Cloud.define("defaultBooks", function(request, response) {
   var first = request.params.first;
   var count = request.params.count;
+  var includeOutOfCirculation = request.params.includeOutOfCirculation;
+  var allLicenses = request.params.allLicenses == true;
   var query = new Parse.Query("bookshelf");
   query.equalTo("name", "Featured");
   query.find({
     success: function(shelves) {
 		var featuredShelf = shelves[0];
 		var contentQuery = featuredShelf.relation("books").query();
+        var shelfName = featuredShelf.get("name");
+        if (!includeOutOfCirculation)
+            contentQuery.containedIn('inCirculation', [true, undefined]);
 		contentQuery.include("langPointers");
+        if (!allLicenses)
+            contentQuery.startsWith("license", "cc-");
         contentQuery.ascending("title");
         contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
 		contentQuery.find({
@@ -79,6 +295,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                 var resultIndex = 0;
                 for (var i = 0; i < shelfBooks.length; i++) {
                     if (resultIndex >= first && resultIndex < first + count) {
+                        shelfBooks[i].attributes.bookshelf = shelfName;
                         results.push(shelfBooks[i]);
                     }
                     resultIndex++;
@@ -89,7 +306,11 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                 // promise fulfilment if more results are needed.
                 var runQuery = function() {
                     var allBooksQuery = new Parse.Query("books");
+                    if (!includeOutOfCirculation)
+                        allBooksQuery.containedIn('inCirculation', [true, undefined]);
 					allBooksQuery.include("langPointers");
+                    if (!allLicenses)
+                        allBooksQuery.startsWith("license", "cc-");
                     allBooksQuery.ascending("title");
                     allBooksQuery.skip(skip); // skip the ones we already got
                     allBooksQuery.find({
@@ -166,13 +387,16 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "copyright", type:"String"},
                 {name: "credits", type:"String"},
                 {name: "currentTool", type:"String"},
+                {name: "downloadCount", type:"Number"},
                 {name: "downloadSource", type:"String"},
                 {name: "experimental", type:"Boolean"},
                 {name: "folio", type:"Boolean"},
                 {name: "formatVersion", type:"String"},
+                {name: "inCirculation", type: "Boolean"},
                 {name: "isbn", type:"String"},
                 {name: "langPointers", type:"Array"},
                 {name: "languages", type:"Array"},
+                {name: "librarianNote", type:"String"},
                 {name: "license", type:"String"},
                 {name: "licenseNotes", type:"String"},
                 {name: "pageCount", type:"Number"},
@@ -185,6 +409,7 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "thumbnail", type:"String"},
                 {name: "title", type:"String"},
                 {name: "tools", type:"Array"},
+                {name: "updateSource", type:"String"},
                 {name: "uploader", type:"Pointer<_User>"}
             ]
         },
@@ -197,12 +422,30 @@ Parse.Cloud.define("setupTables", function(request, response) {
             ]
         },
         {
+            name: "downloadHistory",
+            fields: [
+                {name: "bookId", type: "String"},
+                {name: "userIp", type: "String"},
+                {name: "userName", type: "String"}
+            ]
+        },
+        {
             name: "language",
             fields: [
-                {name: "ethnologueCode", type:"String"},
-                {name: "isoCode", type:"String"},
-                {name: "name", type:"String"},
-                {name: "englishName", type:"String"}
+                {name: "ethnologueCode", type: "String"},
+                {name: "isoCode", type: "String"},
+                {name: "name", type: "String"},
+                {name: "englishName", type: "String"},
+                //Usage count determined daily per Parse.com job
+                {name: "usageCount", type: "Number"}
+            ]
+        },
+        {
+            name: "tag",
+            fields: [
+                {name: "name", type: "String"},
+                //Usage count determined daily per Parse.com job
+                {name: "usageCount", type: "Number"}
             ]
         }
     ];
