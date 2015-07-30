@@ -87,12 +87,14 @@
 		.controller('LeftSidebar', ['$scope', '$state', '$location', '$rootScope', 'bookService', 'languageService', 'tagService', 'authService', '$modal',
             function ($scope, $state, $location, $rootScope, bookService, languageService, tagService, authService, $modal) {
             $scope.currentLang = $location.$$search.lang;
+            $scope.currentLangName = $location.$$search.langname;
             $scope.currentTag = $location.$$search.tag;
             $scope.currentShelf = $location.$$search.shelf;
             $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             $scope.isLoggedIn = authService.isLoggedIn();
             $rootScope.$on('$locationChangeSuccess', function() {
                 $scope.currentLang = $location.$$search.lang;
+                $scope.currentLangName = $location.$$search.langname;
                 $scope.currentTag = $location.$$search.tag;
                 $scope.currentShelf = $location.$$search.shelf;
                 $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
@@ -104,9 +106,9 @@
                     windowClass: 'ccmodal'
                 });
             };
-            $scope.filterLanguage = function(language) {
+            $scope.filterLanguage = function(language,languageName) {
                 bookService.resetCurrentPage();
-                $state.go('browse', {lang:language}); // keep other params unchanged.
+                $state.go('browse', {lang:language, langname:languageName}); // keep other params unchanged.
             };
             $scope.filterTag = function(tagName) {
                 bookService.resetCurrentPage();
@@ -116,7 +118,7 @@
                 bookService.resetCurrentPage();
                 if (shelfName === '') {
                     // User selected "All Books"
-                    $state.go('browse', {search:'', shelf:shelfName, lang:'', tag:''});
+                    $state.go('browse', {search:'', shelf:shelfName, lang:'', langname:'', tag:''});
                 } else {
                     $state.go('browse', {search:'', shelf:shelfName}); // keep other params unchanged.
                 }
@@ -167,7 +169,8 @@
                 //Search through otherLanguages
                 for(var i = 0; i < $scope.otherLanguages.length; i++) {
                     //If the currentLang is in the other list, add it to the top (visible) list
-                    if($scope.otherLanguages[i].isoCode == $scope.currentLang) {
+                    if ($scope.otherLanguages[i].isoCode == $scope.currentLang &&
+                        (!$scope.currentLangName || ($scope.otherLanguages[i].name == $scope.currentLangName))) {
                         $scope.topLanguages.unshift($scope.otherLanguages.splice(i, 1)[0]);
                         $scope.topLanguages.sort(compareLang);
                         break;
