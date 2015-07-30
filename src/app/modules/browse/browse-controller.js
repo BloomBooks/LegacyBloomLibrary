@@ -140,9 +140,29 @@
             }
             return _localize(message, params);
         }
+        function setHiddenBooksMessages() {
+            if ($scope.allLicenses) {
+                // None of the books are hidden, so we don't have a count to display.
+                $scope.hiddenBooksMessage = _localize("Some of these books may have a restricted/unknown license.");
+                $scope.hiddenBooksToggleMessage = _localize("Hide them.");
+            } else {
+                var hiddenCount = $scope.numHiddenBooks;
+                var params = {
+                    count: hiddenCount
+                };
+                if (hiddenCount === 1) {
+                    $scope.hiddenBooksMessage = _localize("Hiding 1 other book because it has a restricted/unknown license.");
+                    $scope.hiddenBooksToggleMessage = _localize("Show it.");
+                } else {
+                    $scope.hiddenBooksMessage = _localize("Hiding {count} other books because they have restricted/unknown licenses.", params);
+                    $scope.hiddenBooksToggleMessage = _localize("Show them.");
+                }
+            }
+        }
         function afterCount(count) {
             $scope.bookCount = $scope.bookCountObject.bookCount = count;
             $scope.bookMessage = getBookMessage(count);
+            setHiddenBooksMessages();
             $scope.setPage = function () {};
             $scope.initialized = true;
         }
