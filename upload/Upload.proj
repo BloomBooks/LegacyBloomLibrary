@@ -5,6 +5,8 @@
   <ItemGroup>
     <Root Include="../bin/index.html" />
     <Root Include="../bin/favicon.ico" />
+	<Root Include="../bin/robots.txt" />
+	<Root Include="../bin/sitemap.xml" />
     <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg;../bin/assets/BloomLibrary-0.1.0.js"/>
     <Svg Include="../bin/assets/*.svg"/>
     <MainJs Include="../bin/assets/BloomLibrary-0.1.0.js"/>
