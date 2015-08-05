@@ -543,12 +543,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
             this.modifyBookField = function(book, field, value, updateSource) {
                 var rBook = restangular.withConfig(authService.config()).one('classes/books', book.objectId);
-                rBook[field] = value;
                 if (authService.isUserAdministrator()) {
                     updateSource += ' (admin)';
                 }
-                rBook['updateSource'] = updateSource;
-                rBook.put();
+
+                var putParams = {};
+                putParams[field] = value;
+                putParams['updateSource'] = updateSource;
+
+                // Have to do customPUT so it doesn't try to send "id" as a field
+                rBook.customPUT(putParams);
             };
 
         this.relateBooksById = function() {
