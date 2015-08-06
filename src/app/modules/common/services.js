@@ -324,7 +324,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     // Special query for recently modified books ("New Arrivals", currently defined as
                     // all books, but sorted to show most recently modified first).
                     query = new Parse.Query('books');
-                    query.descending('updatedAt');
+                    query.descending('createdAt');
                 } else if (shelf.name == "$myUploads") {
                     query = new Parse.Query('books');
                     query.equalTo('uploader', {
