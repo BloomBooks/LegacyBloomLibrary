@@ -4,50 +4,57 @@ mixin link(href)
 		block
 	| &nbsp;
 
+mixin currentVersionNotes
+	.versionNotes
+		| Requires Windows Vista SP1, 7 SP1, 8, 8.1, or 10 and
+		+link('http://www.microsoft.com/en-us/download/details.aspx?id=40779') .NET 4.5
+		| (part of Windows, so you probably already have it). NOT usable on Windows XP (but you can still use 3.0, see below.) Uninstall Version 1, 2, or 3.0 of Bloom before installing this. Older Windows Versions are
+		+link('#/installers/old') here.
+		block content
+
 .staticPage
 	html
 		head
 			title Bloom installation instructions
 			meta(content='text/html; charset=UTF-8', http-equiv='content-type')
 		body
-			h2
-				a
-				| Bloom Installers
+			h2 Bloom Installers
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', frameborder='0', scrolling='no')
-			.versionNotes
-				| Requires Windows XP SP3, Vista SP1, 7 SP1, 8, or 8.1 and
-				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
-				|(part of Windows, so you probably already have it). Uninstall Version 1 or 2 before installing this. Older Windows Versions are
-				+link('#/installers/old') here.
+			+currentVersionNotes
+
+			p
+
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', frameborder='0', scrolling='no')
-			.versionNotes Not for Windows XP. Requires
-				+link('http://www.microsoft.com/en-us/download/details.aspx?id=40779') .Net 4.5.
-				|Works best when
-				+link('http://get.adobe.com/reader/enterprise/') Adobe Reader
-				| is also installed. Includes the Andika New Basic font. Windows version (only) can be installed alongside Bloom 3.0.
-			.versionNotes Linux Installation Instructions (for 3.1 beta) are
-				+link('#/installers/linux') here.
-			//H4 Linux 3.1 Beta
-				+link('#/installers/linux') Installation Instructions
+			+currentVersionNotes
+				p Can be installed alongside the Release version, for testing purposes.
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_XP.htm', frameborder='0', scrolling='no')
+			.versionNotes
+				| This older version can still be used on Windows XP SP3 with
+				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
+				|(part of Windows, so you probably already have it). Uninstall Version 1 or 2 before installing this.
 
-
-
+			.linux
+				.label Linux
+				.versionNotes Installation Instructions
+					+link('#/installers/linux') here.
+			p
 			h2 The Art of Reading
 			p
 				| We also recommend that you download and install the
 				+link('#/artofreading') Art Of Reading
 				|illustration collection. This free collection contains more than 10,000 line drawings suitable for use in reading materials. Bloom is designed to enable you to search and select illustrations from this collection once you have installed it.
 			h2
-				a
 				| Fonts
 			p
 				| Bloom installs SIL&rsquo;s&nbsp;
-				a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=Andika') Andika
-				| &nbsp;font which was designed specifically for easier reading in roman scripts. You can also use a font you already have installed on your computer, but it needs to be a Unicode font. SIL offers free Unicode fonts for a variety of needs:
+				a(href='http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=Andika_New_Basic') Andika New Basic
+				| &nbsp;font which was designed specifically for easier reading in roman scripts.
+			p You can also use a font you already have installed on your computer, but it needs to be a Unicode font. Note that some fonts don't have built-in italics or bold faces. These will look fine on screen, but will not show bold or italics in print or in PDFs.
+			p SIL offers free Unicode fonts for a variety of needs:
 			ul
 				li
 					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=Andika_download') Andika
-					| , designed for literacy materials, especially for beginning readers
+					| , designed for literacy materials, especially for beginning readers. Will not show bold or italics in print or PDF.
 				li
 					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=AnnapurnaSIL') Annapurna
 					| , for languages that use Devanagari script
@@ -58,8 +65,14 @@ mixin link(href)
 					a(href='http://scripts.sil.org/cms/scripts/page.php?item_id=AbyssinicaSIL_Download') Abyssinica
 					| , an Ethiopic script font (also sometimes called &ldquo;fidel&rdquo;
 					| script)
+			p If you're having trouble finding a font for your language, check out
+				+link("http://scriptsource.org/") ScriptSource.
+
+			h2 Typing
 			p
-				| Bloom assumes that you already have a way to type your language. If you need a way to type your language and lack one, you might consider&nbsp;
+				| Bloom assumes that you already have a way to type your language on your computer. If you need a way to type your language and lack one, check out
+				+link("http://scriptsource.org") ScriptSource
+				| . On Windows you might consider&nbsp;
 				a(href='http://keyman.com/desktop/download.php') Keyman
 				| , available in a free edition.
 			h2
