@@ -10,7 +10,8 @@
 			$stateProvider.state('terms', {
 				url: "/terms",
 				templateUrl: 'modules/terms/terms.tpl.html',
-				controller: 'GoToTop'
+				controller: 'GoToTop',
+        title: 'Bloom Book Making Software from SIL International'
 			});
             // This state manages the privacy page that comes up when the user clicks the Privacy link in the header
             // or in the Terms page.
@@ -33,7 +34,8 @@
             $stateProvider.state('landing', {
                 url: "/landing",
                 templateUrl: 'modules/static/landing/landing.tpl.html',
-                controller: 'GoToTop'
+                controller: 'GoToTop',
+                title: 'Bloom Book Making Software from SIL International'
             });
             // This state manages the Features page in the menu.
             // its url looks like #/features.

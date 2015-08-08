@@ -10,7 +10,7 @@
 			url: "/browse?search&shelf&lang&tag&allLicenses",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl',
-			title: 'Book Library'
+			title: 'Book Library of Free Shell Books'
 		});
 	} ])
     .filter('getDisplayName', ['tagService', function(tagService) {
