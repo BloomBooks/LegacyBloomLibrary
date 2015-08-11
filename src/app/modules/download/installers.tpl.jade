@@ -1,7 +1,0 @@
-.container.not-centered(ng-controller='InstallersCtrl')
-	h1 All Bloom Installers
-	.row(ng-repeat='file in files')
-		.col-md-3
-			a(ng-href='{{file.url}}') {{file.name}}
-		.col-md-3
-			| {{file.date | date:'dd/MM/yyyy'}}
