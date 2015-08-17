@@ -7,7 +7,7 @@
 			parent: 'requireLoginResolution',
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
 			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@':
-			url: "/browse?search&shelf&lang&tag&allLicenses",
+			url: "/browse?search&shelf&lang&langname&tag&allLicenses",
 			templateUrl: 'modules/browse/browse.tpl.html',
 			controller: 'BrowseCtrl',
 			title: 'Book Library of Free Shell Books'
@@ -50,6 +50,7 @@
 		$scope.searchText = $stateParams["search"];
         $scope.shelfName = $stateParams["shelf"];
         $scope.lang = $stateParams["lang"];
+        $scope.langName = $stateParams["langname"];
         $scope.tag = $stateParams["tag"];
         $scope.allLicenses = $stateParams["allLicenses"] === "true";
         $scope.numHiddenBooks = 0;
@@ -107,7 +108,7 @@
             var params = {
                 count: count,
                 shelf: shelfLabel,
-                language: languageService.getDisplayName($scope.lang),
+                language: $scope.langName ? $scope.langName : languageService.getDisplayName($scope.lang),
                 bookOrBooks: booksTranslation,
                 tag: tagService.getDisplayName($scope.tag),
                 searchText: $scope.searchText

@@ -15,11 +15,11 @@
             <div class="narrowSearch">
                 <h4>Narrow Search</h4>
                 <h5>Languages</h5>
-                <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
+                <div ng-repeat="lang in topLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('','')">Clear</a></div></div>
                 <div ng-show="otherLanguages.length">
                     <a href="" ng-click="toggleVisibilityOfOtherLanguages($event)">{{localizeMore(otherLanguages.length,otherLanguagesHidden)}}</a>
                     <div style="display:none">
-                        <div ng-repeat="lang in otherLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('')">Clear</a></div></div>
+                        <div ng-repeat="lang in otherLanguages"><div ng-class="{activeFilter: currentLang == lang.isoCode}"><a class="languageItem" href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}">{{lang.name}}</a><a class="clear right" href="" ng-click="filterLanguage('','')">Clear</a></div></div>
                     </div>
                 </div>
                 <div ng-repeat="category in tagCategories">
