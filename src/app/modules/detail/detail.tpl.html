@@ -20,6 +20,7 @@
             </div>
             <!--div class="credits">{{book.credits  }}</div-->
             <div class="status">
+                <!-- Don't use updatedAt here because it is changed by things other than uploading, for example, when the librarian adds a tag (BL-2737). -->
                 <span class="fori18n">Uploaded:</span> <span class="notranslate">{{book.createdAt | cleanDate}}</span> <span class="fori18n">by</span>
                 <span class="notranslate">
                     <a ng-show="canReportViolation" href="mailto:{{book.uploader.email}}?subject=A%20request%20about%20a%20book%20you%20contributed%20to%20bloomlibrary.org:%20{{book.title}}%20({{book.objectId}})&body=This%20book%20may%20be%20found%20at%20{{location}}.">{{book.uploader.email | obfuscate}}</a>
