@@ -6,7 +6,7 @@
 
 	var tagList = {};
 
-	// Model declaration for the data grid view (url #/datagrid)
+	// Model declaration for the data grid view (url /datagrid)
 	angular.module('BloomLibraryApp.datagrid', ['ui.router', 'restangular', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.edit', 'ui.grid.cellNav', 'ui.grid.autoResize', 'ngTagsInput'])//, 'BloomLibraryApp.detail'])
 	.config(['$stateProvider', function config($stateProvider) {
 
@@ -58,7 +58,7 @@
 		};
 	} ]);
 
-	// Controller for the data grid view (url #/datagrid)
+	// Controller for the data grid view (url /datagrid)
 	angular.module('BloomLibraryApp.datagrid')
 	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoCompleteTags', 'authService',
 		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoCompleteTags, authService) {

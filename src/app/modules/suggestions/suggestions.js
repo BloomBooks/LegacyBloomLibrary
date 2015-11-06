@@ -5,7 +5,7 @@
     angular.module('BloomLibraryApp.suggestions', ['ui.router'])
         .config(function config($urlRouterProvider, $stateProvider) {
             // This state manages the Suggestions page under More in the menu.
-            // its url looks like #/suggestions.
+            // its url looks like /suggestions.
             $stateProvider.state('suggestions', {
                 url: "/suggestions",
                 templateUrl: 'modules/suggestions/suggestions.tpl.html',

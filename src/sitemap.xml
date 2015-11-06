@@ -11,47 +11,47 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/landing</loc>
+        <loc>http://bloomlibrary.org/landing</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/support</loc>
+        <loc>http://bloomlibrary.org/support</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/installers</loc>
+        <loc>http://bloomlibrary.org/installers</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/about</loc>
+        <loc>http://bloomlibrary.org/about</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/opensource</loc>
+        <loc>http://bloomlibrary.org/opensource</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/suggestions</loc>
+        <loc>http://bloomlibrary.org/suggestions</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/browse</loc>
+        <loc>http://bloomlibrary.org/browse</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/terms</loc>
+        <loc>http://bloomlibrary.org/terms</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/privacy</loc>
+        <loc>http://bloomlibrary.org/privacy</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/artofreading</loc>
+        <loc>http://bloomlibrary.org/artofreading</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/#/installers/linux</loc>
+        <loc>http://bloomlibrary.org/installers/linux</loc>
         <changefreq>weekly</changefreq>
     </url>
 </urlset>
