@@ -10,8 +10,8 @@
                     "ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies', 'LocalStorageModule',
                     "angulartics", "angulartics.segment.io"])
 
-  .config(['$urlRouterProvider', '$stateProvider',
-           function ($urlRouterProvider, $stateProvider) {
+  .config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
+           function ($urlRouterProvider, $stateProvider, $locationProvider) {
 
                $stateProvider.state('requireLoginResolution', {
                    'abstract': true,
@@ -38,7 +38,7 @@
             //       function ($urlRouterProvider, $stateProvider, $locationProvider) {
 
             //on amazon s3, we've done the redirection like that described here: http://stackoverflow.com/a/16877231/723299
-//			$locationProvider.html5Mode(true);
+			$locationProvider.html5Mode(true);
 //			$locationProvider.hashPrefix('!');
 
 //			// For any unmatched url, redirect to /state1

@@ -4,7 +4,7 @@
 	angular.module('BloomLibraryApp.prefs', ['ui.router', "restangular"])
 		.config(function config($urlRouterProvider, $stateProvider, $compileProvider) {
             // This state manages the Preferences page which is only accessed directly by url.
-            // its url looks like #/prefs.
+            // its url looks like /prefs.
             $stateProvider.state('prefs', {
                 url: "/prefs",
                 templateUrl: 'modules/prefs/prefs.tpl.html',
