@@ -30,7 +30,7 @@
                 controller: 'GoToTop'
             });
             // This state manages the Home page.
-            // its url looks like /home.
+            // its url looks like /landing.
             $stateProvider.state('landing', {
                 url: "/landing",
                 templateUrl: 'modules/static/landing/landing.tpl.html',
