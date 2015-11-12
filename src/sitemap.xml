@@ -19,7 +19,7 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/installers</loc>
+        <loc>http://bloomlibrary.org/downloadInstallers</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
@@ -51,7 +51,7 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/installers/linux</loc>
+        <loc>http://bloomlibrary.org/downloadInstallers/linux</loc>
         <changefreq>weekly</changefreq>
     </url>
 </urlset>
