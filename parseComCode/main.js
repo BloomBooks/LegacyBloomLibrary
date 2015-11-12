@@ -89,6 +89,7 @@ Parse.Cloud.job("populateCounts", function(request, status) {
     }).then(function() {
         //Create a book query
         var bookQuery = new Parse.Query('books');
+        bookQuery.limit(1000); // default 100; unfortunately cannot set higher than 1000; need to do repeat queries to handle.
 
         //Analyze a book's tags and languages and increment proper counts
         function incrementBookUsageCounts(books, index) {
@@ -143,6 +144,7 @@ Parse.Cloud.job("populateCounts", function(request, status) {
                 var newTag = new parseClass();
                 newTag.set("name", tags[index]);
                 return newTag.save().then(function() {
+                    console.log("created tag " + tags[index]);
                     //Next tag
                     return incrementTagUsageCount(tags, index + 1);
                 });
