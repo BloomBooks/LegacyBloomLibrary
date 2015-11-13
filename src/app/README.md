@@ -92,3 +92,9 @@ One of the design philosophies of `ngBoilerplate` is that tests should exist
 alongside the code they test and that the build system should be smart enough to
 know the difference and react accordingly. As such, the unit test for `app.js`
 is `app.spec.js`, though it is quite minimal.
+
+### Search Engine Optimization
+
+A problem with the current approach is that Google and other web crawlers
+don't see anything more than our home page. This is discussed at length
+at https://docs.google.com/document/d/1XAJRmQoJHYkwkf4CVW_OWiBkRT1jqufKF2rJajcnxIw/edit?usp=sharing.
