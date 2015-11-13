@@ -6,7 +6,7 @@
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
 					"BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages", "BloomLibraryApp.suggestions",
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
-                    "BloomLibraryApp.downloadInstallers", "BloomLibraryApp.errorMessage", "BloomLibraryApp.prefs",
+                    "BloomLibraryApp.installers", "BloomLibraryApp.errorMessage", "BloomLibraryApp.prefs",
                     "ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies', 'LocalStorageModule',
                     "angulartics", "angulartics.segment.io"])
 
@@ -63,7 +63,7 @@
             };
 
             $scope.isBookLibrary = function () {
-                return $.inArray($location.path(), ['/landing','/features','/downloadInstallers','/downloadInstallers/old','/downloadInstallers/linux','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
+                return $.inArray($location.path(), ['/landing','/features','/installers','/installers/old','/installers/linux','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
             };
 
             // When the navbar is open on a small device (i.e. shown vertically),
