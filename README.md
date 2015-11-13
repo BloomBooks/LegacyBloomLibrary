@@ -52,6 +52,12 @@ see https://trello.com/b/eO6j48sf/bloom-library
 Books may be contributed to the website once we have it working. Code contributions are welcome also.
 We recommend interacting through the Trello board to be sure we're on the same track.
 
+### Search Engine Optimization
+
+A problem with the current approach is that Google and other web crawlers
+don't see anything more than our home page. This is discussed at length
+at https://docs.google.com/document/d/1XAJRmQoJHYkwkf4CVW_OWiBkRT1jqufKF2rJajcnxIw/edit?usp=sharing.
+
 Copyright and License
 =======
 Copyright 2013-2014 [SIL International](http://sil.org)
