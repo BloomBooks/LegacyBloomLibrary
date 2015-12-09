@@ -6,6 +6,10 @@ mixin SIL(name, rolls)
 		| ) :&nbsp;
 		=rolls
 
+mixin link(display, url)
+	a(href=url)
+		=display
+
 .staticPage
 	h3 Team
 	| Our team is constantly changing, with each version created by a slightly different group. Here are all the people that have ever worked on Bloom:
@@ -56,12 +60,24 @@ mixin SIL(name, rolls)
 			a(href="http://webfx.eae.net/") WebFX
 		li
 			a(href="https://github.com/KevinSheedy/jquery.alphanum") jquery.alphanum
+		li
+			+link("longpress","https://github.com/quentint/long-press")
+			| : Quentint
+		li
+			+link("squirrel","https://github.com/squirrel/squirrel.windows") : Paul Betts
+		li
+			+link("Readium","https://github.com/readium/readium-js")
+		li
+			+link("toastr","https://github.com/CodeSeven/toastr")
 
 	h3 Thanks
-	p Paul Frank&nbsp(
-		a(href="http://www.sil-lead.org/") SIL LEAD)
-	p Glenys Waters
-	p Michael Cochran, Cambell Prince, Jon Coombs, David Coward, Hannes Hirzel
+	p To our colleagues who invested time in giving feedback and encouragement <em>before</em> Bloom became famous :-) Michael Cochran, Jon Coombs, David Coward, Paul Frank(
+		+link("SIL LEAD","http://www.sil-lead.org/")
+		|), Suzanne Hatton, Hannes Hirzel, Cambell Prince, Glenys Waters
+
+	+link("BrowserStack","http://BrowserStack.com")
+	| , for a free open-source subscription to their <strong>amazing</strong> multi-browser, multi-platform testing service.
+	p
 	p JetBrains for free open-source license for&nbsp;
 		a(href='http://www.jetbrains.com/resharper/') Resharper
 		| , which keeps our c# code clean and agile,&nbsp;
@@ -71,7 +87,6 @@ mixin SIL(name, rolls)
 		| , for editing html and javascript, and&nbsp;
 		a(href='https://www.jetbrains.com/youtrack/') YouTrack
 		| , where we keep bug reports.
-	p Microsoft, for donated licenses of Visual Studio.
-	p Rally/Flowdock, for free open-source license for&nbsp;
+	p Rally/Flowdock, for a free open-source license for&nbsp;
 		a(href='https://www.flowdock.com') FlowDock
 		| , where we keep in touch all day even though we are distributed all over.
