@@ -285,7 +285,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
         var shelfName = featuredShelf.get("name");
         if (!includeOutOfCirculation)
             contentQuery.containedIn('inCirculation', [true, undefined]);
-		contentQuery.include("langPointers");
+        contentQuery.include("langPointers");
+        contentQuery.include("uploader");
         if (!allLicenses)
             contentQuery.startsWith("license", "cc-");
         contentQuery.ascending("title");
@@ -310,7 +311,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
                     var allBooksQuery = new Parse.Query("books");
                     if (!includeOutOfCirculation)
                         allBooksQuery.containedIn('inCirculation', [true, undefined]);
-					allBooksQuery.include("langPointers");
+                    allBooksQuery.include("langPointers");
+                    allBooksQuery.include("uploader");
                     if (!allLicenses)
                         allBooksQuery.startsWith("license", "cc-");
                     allBooksQuery.ascending("title");
@@ -448,6 +450,12 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "name", type: "String"},
                 //Usage count determined daily per Parse.com job
                 {name: "usageCount", type: "Number"}
+            ]
+        },
+        {
+            name: "relatedBooks",
+            fields: [
+                {name: "books", type:"Array"}
             ]
         }
     ];

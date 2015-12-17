@@ -60,8 +60,8 @@
 
 	// Controller for the data grid view (url /datagrid)
 	angular.module('BloomLibraryApp.datagrid')
-	.controller('DataGridCtrl', ['$scope', '$timeout', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoCompleteTags', 'authService',
-		function ($scope, $timeout, bookService, $state, $stateParams, $location, uiGridConstants, autoCompleteTags, authService) {
+	.controller('DataGridCtrl', ['$scope', '$timeout', '$q', 'bookService', '$state', '$stateParams', '$location', 'uiGridConstants', 'autoCompleteTags', 'authService', '$modal',
+		function ($scope, $timeout, $q, bookService, $state, $stateParams, $location, uiGridConstants, autoCompleteTags, authService, $modal) {
 			resizeGrid = function() {
 				var gridContainer = document.getElementsByClassName("gridStyle")[0];
 				var footer = document.getElementsByClassName("site-footer")[0];
@@ -71,13 +71,95 @@
 
 			window.addEventListener("resize", resizeGrid);
 
+			$scope.autoCompleteBook = function(query, rowBook) {
+				var deferred = $q.defer();
+				var regex = new RegExp(query, 'i');
+				var matches = $scope.booksData.filter(function(book) {
+					for(var prop in book) {
+						if(regex.test(book[prop]) && book != rowBook) {
+							return true;
+						}
+					}
+					return false;
+				});
+				deferred.resolve(matches);
+				return deferred.promise;
+			};
+
+			$scope.onRelatedBookAdded = function(addedBook, rowBook) {
+				//Since, it might be possible for the user to click a second book
+				//faster than the server can process the request, I'm using an IIFE
+				bookService.getRelatedBooks(addedBook.objectId).then((function() {
+					var newBook = addedBook;
+					var currentBook = rowBook;
+					return function (results) {
+						if (results.length > 0) {
+							var relatedBooks = results[0].books.map(function (item) {
+								return $scope.booksCache[item.objectId];//getArrayMemberByProperty($scope.reducedBooksData, 'objectId', item.objectId);
+							});
+							$scope.showConfirmRelateDialog(addedBook, relatedBooks, rowBook);
+						}
+						else {
+							$scope.saveBookRowRelationship(rowBook);
+						}
+					};
+				}()));
+			};
+
+			function addBooksRelatedTo(id, rowBook) {
+				var isNewRelationship = rowBook.relBooks.length === 0;
+				return bookService.getRelatedBooks(id).then(function (results) {
+					if (results.length > 0) {
+						var relatedBooks = results[0].books;
+						for (var i = 0; i < relatedBooks.length; i++) {
+							//Don't add this book
+							if(id != relatedBooks[i].objectId) {
+								rowBook.relBooks.push($scope.booksCache[relatedBooks[i].objectId]);
+							}
+						}
+					}
+					if(!isNewRelationship) {
+						$scope.saveBookRowRelationship(rowBook);
+					}
+				}, function(error) { console.log("error with addBooksRelatedTo" + error); });
+			}
+
+			$scope.showConfirmRelateDialog = function (addedBook, relatedBooks, rowBook) {
+				var confirmModalInstance = $modal.open({
+					templateUrl: 'modules/datagrid/confirmRelateDialog.tpl.html',
+					controller: 'confirmRelateDialog',
+					// this defines the value of 'book' as something that is injected into the BloomLibraryApp.confirmRelateDialog's
+					// controller, thus giving it access to the book whose related books we want details about.
+					resolve: {book: function() { return addedBook; }, relatedBooks: function() {return relatedBooks;}}
+				});
+
+				confirmModalInstance.result.then(function(result) {
+					if (result) {
+						addBooksRelatedTo(addedBook.objectId, rowBook);
+					}
+					else {
+						rowBook.relBooks.length--;
+					}
+				});
+			};
+
+			$scope.saveBookRowRelationship = function(rowBook) {
+				bookService.relateBooksById.apply(this, rowBook.relBooks.concat(rowBook).sort(function (a, b) {
+					return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+				}).map(function (item) {
+					return item.objectId;
+				}));
+			};
+
 			$scope.getBooks = function() {
 				var first = 0;
 				//We want all books, but there is a limit at some point
 				var count = 1000;
+
 				bookService.getFilteredBookRange(first, count, '', '', '', '', true, '', '', true).then(function (result) {
+					$scope.booksCache = {};
 					$scope.booksData = result.map(function (item) {
-						return {
+						$scope.booksCache[item.objectId] = {
 							//Hidden id
 							objectId: item.objectId,
 							inCirculation: item.inCirculation !== false ? 'yes' : 'no',
@@ -88,6 +170,7 @@
 							}()),
 							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
 							downloadCount: item.downloadCount || 0,
+							imgUrl: item.baseUrl + "thumbnail-70.png",
 							license: item.license,
 							updatedAt: (function () {
 								var dateWithTime = new Date(item.updatedAt);
@@ -113,11 +196,38 @@
 									output += ' (' + item.englishName + ')';
 								}
 								return output;
-							}).toString() : '',
-							librarianNote: item.librarianNote
+							}).join(', ') : '',
+							librarianNote: item.librarianNote,
+							relBooks: [],
+							uploader: item.uploader.email,
+							text: item.objectId
 						};
+
+						return $scope.booksCache[item.objectId];
 					});
+
+					return bookService.getAllBookRelationships();
+				}).then(function(results) {
+					var currentBook;
+					function doesNotEqualCurrentBook(item) {
+						return item != currentBook;
+					}
+
+					function getBooksCacheBook(parseBook) {
+						return $scope.booksCache[parseBook.objectId];
+					}
+
+					for(var iRel = 0; iRel < results.length; iRel++) {
+						var currentRel = results[iRel].books.map(getBooksCacheBook);
+						var currentRelBooks = [];
+						for(var iBook = 0; iBook < currentRel.length; iBook++) {
+							var currentBookId = currentRel[iBook].objectId;
+							currentBook = $scope.booksCache[currentBookId];
+							currentBook.relBooks = currentRel.filter(doesNotEqualCurrentBook);
+						}
+					}
 				});
+
 			};
 
 			$scope.tagList = {};
@@ -162,15 +272,27 @@
 				return true;
 			};
 
+			$scope.getParentByClassName = function(element, className) {
+				var currentParent = element;
+				for(var iLevel = 0; iLevel < 10; iLevel++) {
+					currentParent = currentParent.parentElement;
+					for(var iClass = 0; iClass < currentParent.classList.length; iClass++) {
+						if(currentParent.classList.item(iClass) == className) {
+							return currentParent;
+						}
+					}
+				}
+			};
+
 			$scope.popOut = function(event) {
-				var container = event.target.parentElement;
+				var container = $scope.getParentByClassName(event.target, 'ui-grid-cell');//event.target.parentElement;
 				container.style.overflow = "visible";
 				container.style.position = "relative";
 				container.style.zIndex = "3000";
 			};
 
 			$scope.popIn = function(event) {
-				var container = event.target.parentElement;
+				var container = $scope.getParentByClassName(event.target, 'ui-grid-cell');//event.target.parentElement;
 				container.style.overflow = "hidden";
 				container.style.position = "static";
 				container.style.zIndex = "auto";
@@ -263,7 +385,8 @@
 							}
 						],
 						visible: false
-					}
+					},
+					{ field: 'relateBooks', displayName: 'Relate Books', cellTemplate: 'related-books-template', width: '***', minWidth: 300, maxWidth: 700, enableCellEdit: false, allowCellFocus: false }
 				]
 			};
 
