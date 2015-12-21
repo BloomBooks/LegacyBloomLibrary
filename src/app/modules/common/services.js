@@ -387,7 +387,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
             query.count({
 				success: function (count) {
-					$rootScope.$apply(function () { defer.resolve(count); });
+                    // Generally we return the count as returned by the query. As a special case the New Arrivals list
+                    // is limited to a maximum of 50 results.
+					$rootScope.$apply(function () { defer.resolve(shelf.name == "$recent" && count > 50 ? 50 : count); });
 				},
 				error: function (error) {
                     errorHandlerService.handleParseError('getFilteredBooksCount', error);
