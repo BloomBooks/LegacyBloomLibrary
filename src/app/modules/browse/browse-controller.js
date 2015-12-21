@@ -211,6 +211,10 @@
             if (!$scope.initialized) {
                 return; // can't do useful query.
             }
+            // In the case of new arrivals, it's possible that an unmodified request would find more books
+            // than are supposed to be in the list (e.g., with number of results set to 24, not an even divisor
+            // of 50)
+            if (first + count > $scope.bookCount) {count = $scope.bookCount - first;}
 			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, $scope.allLicenses, "title", true).then(function (result) {
 				//Remove system tags
 				for(var iBook = 0; iBook < result.length; iBook++) {
