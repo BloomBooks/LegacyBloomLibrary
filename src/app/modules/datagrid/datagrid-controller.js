@@ -144,7 +144,7 @@
 			};
 
 			$scope.saveBookRowRelationship = function(rowBook) {
-				bookService.relateBooksById.apply(this, rowBook.relBooks.concat(rowBook).sort(function (a, b) {
+				bookService.relateBooksById(rowBook.relBooks.concat(rowBook).sort(function (a, b) {
 					return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
 				}).map(function (item) {
 					return item.objectId;
@@ -158,6 +158,9 @@
 
 				bookService.getFilteredBookRange(first, count, '', '', '', '', true, '', '', true).then(function (result) {
 					$scope.booksCache = {};
+					// Here for each book $scope.booksCache[objectId] is set to an object that is a more user-friendly
+					// representation of the book data, suitable for the grid; and $scope.booksData becomes the array
+					// of these objects.
 					$scope.booksData = result.map(function (item) {
 						$scope.booksCache[item.objectId] = {
 							//Hidden id
@@ -198,16 +201,19 @@
 								return output;
 							}).join(', ') : '',
 							librarianNote: item.librarianNote,
-							relBooks: [],
+							relBooks: [], // filled in later (see next then)
 							uploader: item.uploader.email,
 							text: item.objectId
 						};
 
-						return $scope.booksCache[item.objectId];
+						return $scope.booksCache[item.objectId]; // output of map for current book, one item in $scope.booksData
 					});
 
-					return bookService.getAllBookRelationships();
+					return bookService.getAllBookRelationships(); // a promise, which when resolved fires up the next 'then'
 				}).then(function(results) {
+					// here results is the resolution of whatever the function passed to the first 'then' returned,
+					// hence it is the results of bookService.getAllBookRelationships().
+					// This function now fills in the relBooks fields for the objects created in the first 'then'.
 					var currentBook;
 					function doesNotEqualCurrentBook(item) {
 						return item != currentBook;
@@ -317,7 +323,10 @@
 					}
 				],
 				enableFiltering: true,
-				rowHeight: 40,
+				// a bit more than one row of buttons in tags and related books, so the user can see when there are more.
+				// The package we are using for grids does not support variable-height rows, so we have made those
+				// cells expand when clicked in.
+				rowHeight: 50,
 				columnDefs: [
 					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'title', displayName: 'Title', cellTemplate: '<div class="ui-grid-cell-contents"><a target="_blank" ui-sref="browse.detail({bookId: row.entity.objectId})">{{row.entity.title}}</a></div>', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false, sort: { direction: uiGridConstants.ASC } },
