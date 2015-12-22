@@ -323,6 +323,9 @@
 					}
 				],
 				enableFiltering: true,
+				// a bit more than one row of buttons in tags and related books, so the user can see when there are more.
+				// The package we are using for grids does not support variable-height rows, so we have made those
+				// cells expand when clicked in.
 				rowHeight: 50,
 				columnDefs: [
 					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
