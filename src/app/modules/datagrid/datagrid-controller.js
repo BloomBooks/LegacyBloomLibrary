@@ -304,7 +304,20 @@
 				container.style.zIndex = "auto";
 			};
 
-			$scope.tagsTemplate = '<tags-input ng-model="row.entity.tags" ng-focus="grid.appScope.popOut($event)" ng-blur="grid.appScope.popIn($event)" class="tagsField" replace-spaces-with-dashes="false" on-tag-added="grid.appScope.updateTags(row)" on-tag-removed="grid.appScope.updateTags(row)" style="margin-top:-5px"><auto-complete source="grid.appScope.autoCompleteTags($query)" min-length="1" max-results-to-show="100" select-first-match="false"></auto-complete></tags-input>';
+			$scope.isUserAdministrator = authService.isUserAdministrator();
+
+			// Choose the appropriate way of displaying the tags and related books lists.
+			// If the user is an administrator we use a tags-input directive which supports editing by type-ahead.
+			// (The related books one is defined in a script in datagrid.tpl.html.)
+			// If not, we just display a list of the items.
+			if ($scope.isUserAdministrator) {
+				$scope.tagsTemplate = '<tags-input ng-model="row.entity.tags" ng-focus="grid.appScope.popOut($event)" ng-blur="grid.appScope.popIn($event)" class="tagsField" replace-spaces-with-dashes="false" on-tag-added="grid.appScope.updateTags(row)" on-tag-removed="grid.appScope.updateTags(row)" style="margin-top:-5px"><auto-complete source="grid.appScope.autoCompleteTags($query)" min-length="1" max-results-to-show="100" select-first-match="false"></auto-complete></tags-input>';
+				$scope.relatedBooksTemplate = 'related-books-template';
+			}
+			else {
+				$scope.tagsTemplate = '<div class = "grid-list"><span class="grid-list-item" ng-repeat="tag in row.entity.tags">{{tag.text}} </span></div>';
+				$scope.relatedBooksTemplate = '<div class = "grid-list"><span tooltip-html="true" tooltip-placement="bottom" tooltip-html-unsafe="Uploader: {{book.uploader}}<br>Languages: {{book.languages}}<br>{{book.copyright}}" class="grid-list-item" ng-repeat="book in row.entity.relBooks">{{book.title}} </span></div>';
+			}
 
 			$scope.gridOptions = {
 				data: 'booksData',
@@ -334,11 +347,11 @@
 					{ field: 'tags', displayName: 'Tags', cellTemplate: $scope.tagsTemplate, width: '***', minWidth: 15, enableCellEdit: false, allowCellFocus: false, enableSorting: false, cellFilter: "tagFilter", filter: { condition: filterTags } },
 					{ field: 'copyright', displayName: 'Copyright', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'license', displayName: 'License', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
-					{ field: 'inCirculation', displayName: 'In Circulation', width: 100, minWidth: 5, editableCellTemplate: 'ui-grid/dropdownEditor', enableCellEdit: true, enableCellEditOnFocus: true, editDropdownValueLabel: 'show', editDropdownOptionsArray: [
+					{ field: 'inCirculation', displayName: 'In Circulation', width: 100, minWidth: 5, editableCellTemplate: 'ui-grid/dropdownEditor', enableCellEdit: $scope.isUserAdministrator, enableCellEditOnFocus: true, editDropdownValueLabel: 'show', editDropdownOptionsArray: [
 						{ id: 'yes', show: 'yes' },
 						{ id: 'no', show: 'no' }
 					] },
-					{ field: 'librarianNote', displayName: 'Notes', width: '**', minWidth: 15, enableCellEdit: true, enableCellEditOnFocus: true, filter: { condition: uiGridConstants.filter.CONTAINS } },
+					{ field: 'librarianNote', displayName: 'Notes', width: '**', minWidth: 15, enableCellEdit: $scope.isUserAdministrator, enableCellEditOnFocus: $scope.isUserAdministrator, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'createdAt', displayName: 'Created Date', width: '*', minWidth: 15, maxWidth: 90, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
 						filters: [
 							{
@@ -395,7 +408,7 @@
 						],
 						visible: false
 					},
-					{ field: 'relateBooks', displayName: 'Relate Books', cellTemplate: 'related-books-template', width: '***', minWidth: 300, maxWidth: 700, enableCellEdit: false, allowCellFocus: false }
+					{ field: 'relateBooks', displayName: 'Relate Books', cellTemplate: $scope.relatedBooksTemplate, width: '***', minWidth: 300, maxWidth: 700, enableCellEdit: false, allowCellFocus: false }
 				]
 			};
 
@@ -419,7 +432,5 @@
 				});
 			};
 			//gridApi.edit.on.afterCellEdit(scope,function(rowEntity, colDef){ alert("edited!");});
-
-			$scope.isUserAdministrator = authService.isUserAdministrator();
 		}]);
 } ()); // end wrap-everything function
