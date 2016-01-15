@@ -304,6 +304,18 @@
 				container.style.zIndex = "auto";
 			};
 
+			$scope.toggleReadOnlyPopOut = function(event) {
+				var target = $scope.getParentByClassName(event.target, 'grid-list');
+				if (target.style.backgroundColor == "lightyellow") {
+					target.style.backgroundColor = "";
+					$scope.popIn(event);
+				}
+				else {
+					target.style.backgroundColor = "lightyellow";
+					$scope.popOut(event);
+				}
+			};
+
 			$scope.isUserAdministrator = authService.isUserAdministrator();
 
 			// Choose the appropriate way of displaying the tags and related books lists.
@@ -315,8 +327,8 @@
 				$scope.relatedBooksTemplate = 'related-books-template';
 			}
 			else {
-				$scope.tagsTemplate = '<div class = "grid-list"><span class="grid-list-item" ng-repeat="tag in row.entity.tags">{{tag.text}} </span></div>';
-				$scope.relatedBooksTemplate = '<div class = "grid-list"><span tooltip-html="true" tooltip-placement="bottom" tooltip-html-unsafe="Uploader: {{book.uploader}}<br>Languages: {{book.languages}}<br>{{book.copyright}}" class="grid-list-item" ng-repeat="book in row.entity.relBooks">{{book.title}} </span></div>';
+				$scope.tagsTemplate = '<div class = "grid-list" ng-click="grid.appScope.toggleReadOnlyPopOut($event)"><span class="grid-list-item" ng-repeat="tag in row.entity.tags">{{tag.text}} </span></div>';
+				$scope.relatedBooksTemplate = '<div class = "grid-list" ng-click="grid.appScope.toggleReadOnlyPopOut($event)"><span tooltip-html="true" tooltip-placement="bottom" tooltip-html-unsafe="Uploader: {{book.uploader}}<br>Languages: {{book.languages}}<br>{{book.copyright}}" class="grid-list-item" ng-repeat="book in row.entity.relBooks">{{book.title}} </span></div>';
 			}
 
 			$scope.gridOptions = {
