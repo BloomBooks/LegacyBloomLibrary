@@ -420,7 +420,7 @@
 						],
 						visible: false
 					},
-					{ field: 'relateBooks', displayName: 'Relate Books', cellTemplate: $scope.relatedBooksTemplate, width: '***', minWidth: 300, maxWidth: 700, enableCellEdit: false, allowCellFocus: false }
+					{ field: 'relateBooks', displayName: 'Related Books', cellTemplate: $scope.relatedBooksTemplate, width: '***', minWidth: 300, maxWidth: 700, enableCellEdit: false, allowCellFocus: false }
 				]
 			};
 
