@@ -3,27 +3,48 @@
 	P A
 		strong
 			|  beta release
-		|  of Bloom 3.1 is currently available for Ubuntu Precise and Trusty.  It can also be installed on Wasta12 or Wasta14. You are welcome to try other versions but we cannot promise to support them.
+		|  of Bloom 3.4 is currently available for Ubuntu Precise and Trusty.  It can also be installed on Wasta12 or Wasta14. You are welcome to try other versions of Linux but we cannot promise to support them.  (Once Bloom 3.7 is ready for beta testing, it will be supported on Ubuntu Xenial and Wasta16 as well as Ubuntu Trusty and Wasta14.)
 
-	H3 Step 1: Add the SIL experimental repository to your system
+	H3 Step 1: Try to get the beta release of the Bloom Desktop program
+	pre
+		| sudo apt-get install bloom-desktop-beta
+	P If this succeeds, you can skip to step 5 below (and you are living as a permanent beta tester of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
+	H3 Step 2: Add the SIL experimental repository to your system
 	H4 (for precise or wasta12):
-	pre sudo echo have sudo
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise-experimental main"
 	pre sudo apt-get update
-	pre sudo apt-get dist-upgrade
 	H4 (for trusty or wasta14):
-	pre sudo echo have sudo
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
-	pre sudo apt-get dist-upgrade
-	H3 Step 2: Add Bloom Desktop Unstable (the Beta)
+	H4 (for xenial or wasta16 in the future)
+	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial-experimental main"
+	pre sudo apt-get update
+	H3 Step 3: Get the beta release of the  Bloom Desktop program
 	pre
-		| sudo apt-get install bloom-desktop-unstable
-	H3 Step 3: Launch the Application from the Application Dashboard or from a Terminal window.
+		| sudo apt-get install bloom-desktop-beta
+	H3 Step 4: Remove the experimental repository from your system
+	H4 (for precise)
+	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu precise-experimental main"
+	pre sudo apt-get update
+	H4 (for trusty)
+	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu trusty-experimental main"
+	pre sudo apt-get update
+	H4 (for xenial or wasta16)
+	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu xenial-experimental main"
+	pre sudo apt-get update
+	H4 (for wasta12 or wasta14)
+	pre synaptic
+	P Using the graphical user interface, open the Settings / Repository dialog, then find and remove any entries in "Additional repositories" that include precise-experimental or trusty-experimental in the fine print.
+	H3 Step 5: Copy the desktop launcher to your local area
+	pre cp -i /usr/share/applications/bloom.desktop ~/Desktop
+	pre chmod +x ~/Desktop/bloom.desktop
+	H3 Step 6: Launch the Application
+	H4 (mouse)
+	P Double click the desktop launcher icon
+	H4 (keyboard)
+	P Type the name of the program in a command window or into the dashboard or startup menu
 	pre
 		| bloom
-
