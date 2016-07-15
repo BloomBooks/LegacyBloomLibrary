@@ -230,7 +230,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //            });
             var defer = $q.defer();
             var query = new Parse.Query('bookshelf');
-                query.equalTo("name", shelfName);
+            query.equalTo("englishName", shelfName);
             query.find({
                 success: function (results) {
                     // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
@@ -340,7 +340,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     });
                 }
                 else {
-                    query = shelf.relation("books").query();
+                    query = new Parse.Query('books');
+                    query.equalTo("tags", "bookshelf:"+shelf.attributes.key);
                 }
             } else {
                 query = new Parse.Query('books');

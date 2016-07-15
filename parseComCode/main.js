@@ -277,12 +277,13 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
   var includeOutOfCirculation = request.params.includeOutOfCirculation;
   var allLicenses = request.params.allLicenses == true;
   var query = new Parse.Query("bookshelf");
-  query.equalTo("name", "Featured");
+  query.equalTo("key", "Featured");
   query.find({
     success: function(shelves) {
 		var featuredShelf = shelves[0];
-		var contentQuery = featuredShelf.relation("books").query();
-        var shelfName = featuredShelf.get("name");
+		var contentQuery = new Parse.Query("books");
+        contentQuery.equalTo("tags", "bookshelf:Featured");
+        var shelfName = featuredShelf.get("englishName");
         if (!includeOutOfCirculation)
             contentQuery.containedIn('inCirculation', [true, undefined]);
         contentQuery.include("langPointers");
@@ -421,8 +422,9 @@ Parse.Cloud.define("setupTables", function(request, response) {
         {
             name: "bookshelf",
             fields: [
-                {name: "name", type:"String"},
-                {name: "books", type:"Relation<books>"},
+                {name: "englishName", type:"String"},
+                {name: "key", type:"String"},
+                {name: "normallyVisible", type:"Boolean"},
                 {name: "owner", type:"Pointer<_User>"}
             ]
         },

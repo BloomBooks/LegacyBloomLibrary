@@ -180,7 +180,6 @@
 								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
 							}()),
 							pageCount: item.pageCount,
-							bookshelf: item.bookshelf,
 							tags: item.tags ? item.tags.map(function(item) {
 								//Put into tagList
 								//Remove if/when datagrid is moved to server-side paging
@@ -353,7 +352,6 @@
 				// cells expand when clicked in.
 				rowHeight: 50,
 				columnDefs: [
-					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'title', displayName: 'Title', cellTemplate: '<div class="ui-grid-cell-contents"><a target="_blank" ui-sref="browse.detail({bookId: row.entity.objectId})">{{row.entity.title}}</a></div>', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false, sort: { direction: uiGridConstants.ASC } },
 					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'tags', displayName: 'Tags', cellTemplate: $scope.tagsTemplate, width: '***', minWidth: 15, enableCellEdit: false, allowCellFocus: false, enableSorting: false, cellFilter: "tagFilter", filter: { condition: filterTags } },
