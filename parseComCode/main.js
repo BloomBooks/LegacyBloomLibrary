@@ -372,7 +372,8 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
 Parse.Cloud.define("setupTables", function(request, response) {
     // Required BloomLibrary classes/fields
     // Note: code below currently requires that 'books' is first.
-    // Current code supports only String, Boolean, Number, Array, Pointer<_User>, and Relation<books>.
+    // Current code supports only String, Boolean, Number, Array, Pointer<_User/Book/appDetailsInLanguage>,
+    // and Relation<books/appDetailsInLanguage>.
     // It would be easy to generalize the pointer/relation code provided we can organize so that classes that are
     // the target of relations or pointers occur before the fields targeting them.
     // This is because the way we 'create' a field is to create an instance of the class that has that field.
@@ -457,11 +458,43 @@ Parse.Cloud.define("setupTables", function(request, response) {
             fields: [
                 {name: "books", type:"Array"}
             ]
+        },
+        {
+            name: "appDetailsInLanguage",
+            fields: [
+                {name: "androidStoreLanguageIso", type:"String"},
+                {name: "title", type:"String"},
+                {name: "shortDescription", type:"String"},
+                {name: "fullDescription", type:"String"}
+            ]
+        },
+        {
+            name: "appSpecification",
+            fields: [
+                {name: "bookVernacularLanguageIso", type:"String"},
+                {name: "defaultStoreLanguageIso", type:"String"},
+                {name: "buildEngineJobId", type:"String"},
+                {name: "colorScheme", type:"String"},
+                {name: "icon1024x1024", type:"String"},
+                {name: "featureGraphic1024x500", type:"String"},
+                {name: "details", type:"Relation<appDetailsInLanguage>"}
+            ]
+        },
+        { // must come after the classes it references
+            name: "booksInApp",
+            fields: [
+                {name: "app", type:"Pointer<appSpecification>"},
+                {name: "book", type:"Pointer<books>"},
+                {name: "index", type:"Integer"}
+            ]
         }
     ];
 
     var ic = 0;
     var aUser = null;
+    var aBook = null;
+    var anApp = null;
+    var aDetail = null;
     // If we're updating a 'live' table, typically we will have locked it down so
     // only with the master key can we add fields or classes.
     Parse.Cloud.useMasterKey();
@@ -491,9 +524,21 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 case "Pointer<_User>":
                     instance.set(fieldName, aUser);
                     break;
+                case "Pointer<books>":
+                    // This and next could be generalized if we get a couple more. User would remain special.
+                    instance.set(fieldName, aBook);
+                    break;
+                case "Pointer<appSpecification>":
+                    instance.set(fieldName, anApp);
+                    break;
                 case "Relation<books>":
-                    // This could be generalized if we have other kinds of relation one day.
-                    var target = classes[0].parseObject;
+                    // This and next could be generalized if we have other kinds of relation one day.
+                    var target = aBook;
+                    var relation = instance.relation(fieldName);
+                    relation.add(target);
+                    break;
+                case "Relation<appDetailsInLanguage>":
+                    var target = aDetail;
                     var relation = instance.relation(fieldName);
                     relation.add(target);
                     break;
@@ -503,6 +548,16 @@ Parse.Cloud.define("setupTables", function(request, response) {
             success: function (newObj) {
                 // remember the new object so we can destroy it later, or use it as a relation target.
                 classes[ic].parseObject = newObj;
+                // if the class is one of the ones we reference in pointers or relations,
+                // remember the appropriate instance for use in creating a sample.
+                if (classes[ic].name == 'books') {
+                    aBook = newObj;
+                }
+                else if (classes[ic].name == 'appSpecification') {
+                    anApp = newObj;
+                } else if (classes[ic].name == 'appDetailsInLanguage') {
+                    aDetail = newObj;
+                }
                 ic++;
                 if (ic < classes.length) {
                     doOne(); // recursive call to the main method to loop
