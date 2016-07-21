@@ -222,15 +222,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return baseRelatedBooks.getList({ 'include': "books" });
             };
 
-        this.getBookshelf = function(shelfName) {
+        this.getBookshelf = function(shelfKey) {
             // This version retrieves a version of the data and is shorter. But we use this object in ways that require
             // it to be an actual parse.com API bookshelf object.
-//            return restangular.withConfig(authService.config()).all('classes/bookshelf').getList({ "name": shelfName }).then(function (resultWithWrapper) {
+//            return restangular.withConfig(authService.config()).all('classes/bookshelf').getList({ "key": shelfKey }).then(function (resultWithWrapper) {
 //                return resultWithWrapper.results[0];
 //            });
             var defer = $q.defer();
-            var query = new Parse.Query('bookshelf');
-                query.equalTo("name", shelfName);
+            var bookshelf = Parse.Object.extend("bookshelf");
+            var query = new Parse.Query(bookshelf);
+            query.equalTo("key", shelfKey);
             query.find({
                 success: function (results) {
                     // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
@@ -255,9 +256,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             var query = new Parse.Query(bookshelf);
             query.get(shelf.objectId, {
                 success: function(javaShelf) {
-                    var relation = javaShelf.relation("books");
-                    var presentQuery = relation.query();
+                    var presentQuery = new Parse.Query("books");
                     presentQuery.equalTo("objectId", bookId);
+                    presentQuery.equalTo("tags", "bookshelf" + javaShelf.key);
                     presentQuery.find({
                         success:function(list) {
                             // Without the $rootScope.$apply, the promise action doesn't happen
@@ -292,20 +293,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     var bookQuery = new Parse.Query(books);
                     bookQuery.get(book.objectId, {
                         success: function(javaBook) {
-                            var relation = javaShelf.relation("books");
-                            var presentQuery = relation.query();
-                            presentQuery.equalTo("objectId", book.objectId);
-                            presentQuery.find({
-                                success:function(list) {
-                                    if (list.length > 0) {
-                                        relation.remove(javaBook);
-                                    }
-                                    else {
-                                        relation.add(javaBook);
-                                    }
-                                    javaShelf.save();
-                                }
-                            });
+                            var tag = "bookshelf:" + javaShelf.key;
+                            var tags = javaBook.get("tags");
+                            var tagIndex = tags.indexOf(tag);
+                            if(tagIndex > -1){
+                                tags.splice(tagIndex, 1);
+                            }else{
+                                tags.push(tag);
+                            }
+                            javaShelf.set("tags", tags);
+                            javaShelf.save();
                         },
                         error: function(object, error) {
                             errorHandlerService.handleParseError('ToggleBookInShelf-book', error);
@@ -323,15 +320,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         // and whose languages list includes the specified language, if any
         // and whose tags include the specified tag, if any;
         // or, if shelf is specified, return exactly the books in that shelf, ignoring other params.
-        this.makeQuery = function(searchString, shelf, lang, tag, allLicenses) {
+        this.makeQuery = function(searchString, shelfKey, lang, tag, allLicenses) {
             var query;
-            if (shelf) {
-                if (shelf.name == "$recent") {
+            if (shelfKey) {
+                if (shelfKey == "$recent") {
                     // Special query for recently modified books ("New Arrivals", currently defined as
                     // all books, but sorted to show most recently modified first).
                     query = new Parse.Query('books');
                     query.descending('createdAt');
-                } else if (shelf.name == "$myUploads") {
+                } else if (shelfKey == "$myUploads") {
                     query = new Parse.Query('books');
                     query.equalTo('uploader', {
                         __type: 'Pointer',
@@ -340,7 +337,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     });
                 }
                 else {
-                    query = shelf.relation("books").query();
+                    query = new Parse.Query('books');
+                    query.equalTo("tags", "bookshelf:"+ shelfKey);
                 }
             } else {
                 query = new Parse.Query('books');
@@ -370,15 +368,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString, shelf, lang, tag, includeOutOfCirculation, allLicenses) {
-            $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: (shelf && shelf.name) || '', lang: lang || '', tag: tag || '', allLicenses: allLicenses || ''});
+		this.getFilteredBooksCount = function (searchString, shelfKey, lang, tag, includeOutOfCirculation, allLicenses) {
+            $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: shelfKey || '', lang: lang || '', tag: tag || '', allLicenses: allLicenses || ''});
 			var defer = $q.defer();
 
             var query;
-            if (!searchString && !shelf && !lang && !tag && allLicenses) {
+            if (!searchString && !shelfKey && !lang && !tag && allLicenses) {
                 query = new Parse.Query('books'); // good enough for count, we just want them all in some order.
             } else {
-                query = this.makeQuery(searchString, shelf, lang, tag, allLicenses);
+                query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses);
             }
 
             if(!includeOutOfCirculation) {
@@ -389,7 +387,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				success: function (count) {
                     // Generally we return the count as returned by the query. As a special case the New Arrivals list
                     // is limited to a maximum of 50 results.
-					$rootScope.$apply(function () { defer.resolve(shelf && shelf.name == "$recent" && count > 50 ? 50 : count); });
+					$rootScope.$apply(function () { defer.resolve(shelfKey == "$recent" && count > 50 ? 50 : count); });
 				},
 				error: function (error) {
                     errorHandlerService.handleParseError('getFilteredBooksCount', error);
@@ -411,7 +409,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelf, lang, tag, allLicenses, sortBy, ascending, includeOutOfCirculation) {
+		this.getFilteredBookRange = function (first, count, searchString, shelfKey, lang, tag, allLicenses, sortBy, ascending, includeOutOfCirculation) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
             var fixLangPtrs = function(book) {
                 // Before we convert a book to JSON, we have to convert its langPointers to JSON.
@@ -431,7 +429,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     book.set("langPointers", fixedArray);
                 }
             };
-            if (!searchString && !shelf && !lang && !tag) {
+            if (!searchString && !shelfKey && !lang && !tag) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
@@ -466,7 +464,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return defer.promise;
             }
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
-			var query = this.makeQuery(searchString, shelf, lang, tag, allLicenses);
+			var query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses);
 
             //Hide out-of-circulation books
             if(!includeOutOfCirculation) {
@@ -480,7 +478,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			// Sorting probably works only for top-level complete fields.
 			// It does not work for e.g. (obsolete) volumeInfo.title.
             // The $recent shelf is implemented as a special sort, so we need to disable any other for that.
-			if (sortBy && (!shelf || shelf.name != '$recent')) {
+			if (sortBy && (shelfKey != '$recent')) {
 				if (ascending) {
 					query.ascending(sortBy);
 				}
