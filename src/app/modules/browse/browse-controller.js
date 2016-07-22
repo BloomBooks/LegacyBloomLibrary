@@ -54,6 +54,7 @@
         $scope.tag = $stateParams["tag"];
         $scope.allLicenses = $stateParams["allLicenses"] === "true";
         $scope.numHiddenBooks = 0;
+        $scope.otherBookshelvesHidden = true;
         $scope.otherLanguagesHidden = true;
         $scope.otherTopicsHidden = true;
         $scope.searchTextRaw = $scope.searchText;
@@ -68,6 +69,12 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
+
+        $scope.toggleVisibilityOfOtherBookshelves = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+            $(list).slideToggle();
+            $scope.otherBookshelvesHidden = !$scope.otherBookshelvesHidden;
+        };
 
         $scope.toggleVisibilityOfOtherLanguages = function(event) {
             var list = event.currentTarget.nextElementSibling;
@@ -94,12 +101,12 @@
         function getBookMessage(count) {
             var message = "";
             var shelfLabel = $scope.shelfKey;
-            if ($scope.shelfKey === 'Featured') {
-                shelfLabel = 'Featured';
-            } else if ($scope.shelfKey === '$recent') {
+            if ($scope.shelfKey === '$recent') {
                 shelfLabel = 'New Arrival';
             } else if ($scope.shelfKey === '$myUploads') {
                 shelfLabel = '\"My Upload\"';
+            } else if ($scope.shelfKey) {
+                shelfLabel = $scope.shelfKey;
             } else {
                 shelfLabel = '';
             }
@@ -236,5 +243,5 @@
             $scope.allLicenses = !$scope.allLicenses;
             $state.go($state.current, { allLicenses: $scope.allLicenses } );
         };
-	} ]);
+	}]);
 } ());   // end wrap-everything function

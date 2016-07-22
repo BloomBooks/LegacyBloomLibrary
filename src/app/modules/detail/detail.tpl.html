@@ -40,7 +40,6 @@
             <a ng-show="canReportViolation" href="mailto:abuse@bloomlibrary.org?subject=Reporting%20a%20violation%20of%20bloomlibrary.org%20terms%20of%20use%20for%20the%20book:%20{{book.title}}%20({{book.objectId}})&body=Please%20edit%20this%20message%20and%20explain%20clearly%20how%20this%20book%20violates%20the%20bloomlibrary.org%20terms%20of%20use.%0D%0AFor%20example:%0D%0A
 %20%20-%20the%20content%20of%20this%20book%20could%20harm%20people%0D%0A%20%20-%20this%20book%20was%20posted%20without%20the%20copyright%20holder's%20permission.%0D%0AThis%20book%20may%20be%20found%20at%20{{location}}."><i tooltip="Report violation of this site's terms of use" tooltip-placement="right" class="abuseIcon"></i></a>
             <a href="" ng-click="showDeleteDialog()"><i tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}"></i></a>
-            <a href="" ng-click="chooseBookshelves()"><i tooltip="Add/Remove book from bookshelf" tooltip-placement="right" ng-class="{'icon-folder-open': true, 'icon-hidden':!canSetBookshelf, inBookshelf: isBookFeatured}"></i></a>
             <div class="pull-right">
             <!-- I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work -->
             <a ng-href="{{book.baseUrl | makePreviewUrl}}" overlayTitle="{{book | previewLangInfo}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}">
