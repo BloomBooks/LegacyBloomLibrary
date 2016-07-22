@@ -89,14 +89,14 @@
             $scope.currentLang = $location.$$search.lang;
             $scope.currentLangName = $location.$$search.langname;
             $scope.currentTag = $location.$$search.tag;
-            $scope.currentShelf = $location.$$search.shelf;
+            $scope.currentShelfKey = $location.$$search.shelf;
             $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             $scope.isLoggedIn = authService.isLoggedIn();
             $rootScope.$on('$locationChangeSuccess', function() {
                 $scope.currentLang = $location.$$search.lang;
                 $scope.currentLangName = $location.$$search.langname;
                 $scope.currentTag = $location.$$search.tag;
-                $scope.currentShelf = $location.$$search.shelf;
+                $scope.currentShelfKey = $location.$$search.shelf;
                 $scope.wantLeftBar = $location.$$path.substring(1, 7) == 'browse';
             });
             $scope.showInProgress = function() {
@@ -173,6 +173,29 @@
                         (!$scope.currentLangName || ($scope.otherLanguages[i].name == $scope.currentLangName))) {
                         $scope.topLanguages.unshift($scope.otherLanguages.splice(i, 1)[0]);
                         $scope.topLanguages.sort(compareLang);
+                        break;
+                    }
+                }
+            });
+
+            bookService.getBookshelves().then(function(bookshelves) {
+                bookshelves = bookshelves.map(function(bookshelf) {
+                    bookshelf.englishName = _localize(bookshelf.englishName);
+                    return bookshelf;
+                });
+
+                $scope.visibleBookshelves = bookshelves.filter(function(bookshelf) {
+                    return bookshelf.normallyVisible;
+                });
+                $scope.otherBookshelves = bookshelves.filter(function(bookshelf) {
+                    return !bookshelf.normallyVisible;
+                });
+
+                //Search through otherBookshelves
+                for(var i = 0; i < $scope.otherBookshelves.length; i++) {
+                    //If the currentLang is in the other list, add it to the top (visible) list
+                    if ($scope.otherBookshelves[i].key == $scope.currentShelfKey) {
+                        $scope.visibleBookshelves.unshift($scope.otherBookshelves.splice(i, 1)[0]);
                         break;
                     }
                 }

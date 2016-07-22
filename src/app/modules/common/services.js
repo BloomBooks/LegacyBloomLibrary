@@ -216,11 +216,40 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			});
 		};
 
-            this.getAllBookRelationships = function() {
-                var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
+        this.getAllBookRelationships = function() {
+             var baseRelatedBooks = restangular.withConfig(authService.config()).all('classes/relatedBooks');
+            return baseRelatedBooks.getList({ 'include': "books" });
+        };
 
-                return baseRelatedBooks.getList({ 'include': "books" });
-            };
+        this.getBookshelves = function() {
+            defer = $q.defer(); // used to implement angularjs-style promise
+
+            var Bookshelf = Parse.Object.extend("bookshelf");
+            var query = new Parse.Query(Bookshelf);
+            query.descending("englishName");
+            query.limit(1000); // we want all the bookshelves there are, but this is the most parse will give us.
+
+            // query.find returns a parse.com promise, but it is not quite the same api as
+            // as an angularjs promise. Instead, translate its find and error functions using the
+            // angularjs promise.
+            query.find({
+                success: function (results) {
+                    var objects = new Array(results.length);
+                    for (i = 0; i < results.length; i++) {
+                        objects[i] = results[i].toJSON();
+                    }
+                    // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
+                    // NOT using it in this context.
+                    $rootScope.$apply(function () { defer.resolve(objects); });
+                },
+                error: function (error) {
+                    errorHandlerService.handleParseError('getBookshelves', error);
+                    defer.reject(error);
+                }
+            });
+
+            return defer.promise;
+        };
 
         this.getBookshelf = function(shelfKey) {
             // This version retrieves a version of the data and is shorter. But we use this object in ways that require
@@ -338,7 +367,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 }
                 else {
                     query = new Parse.Query('books');
-                    query.equalTo("tags", "bookshelf:"+ shelfKey);
+                    if (!tag) {
+                        query.equalTo("tags", "bookshelf:"+ shelfKey);
+                    }
                 }
             } else {
                 query = new Parse.Query('books');
@@ -355,7 +386,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 query.matchesQuery('langPointers', langQuery);
             }
             if (tag) {
-                query.equalTo("tags", tag);
+                if (shelfKey) {
+                    query.containsAll("tags", ["bookshelf:" + shelfKey, tag]);
+                }else{
+                    query.equalTo("tags", tag);
+                }
             }
             if (!allLicenses) {
                 query.startsWith('license', 'cc-');
