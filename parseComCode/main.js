@@ -250,6 +250,34 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 	response.success();
 });
 
+Parse.Cloud.afterSave("books", function(request) {
+    var book = request.object;
+    book.get("tags").filter(function(element) {
+        return element.indexOf("bookshelf:") > -1;
+    }).map(function(element) {
+        return element.substr(10);
+    }).forEach(function(key) {
+        var Bookshelf = Parse.Object.extend("bookshelf");
+        var query = new Parse.Query(Bookshelf);
+        query.equalTo("key", key);
+        query.count({
+            success: function(count) {
+                if(count == 0) {
+                    //Create a new bookshelf to contain this book with default properties
+                    var bookshelf = new Bookshelf();
+                    bookshelf.set("key", key);
+                    bookshelf.set("englishName", key);
+                    bookshelf.set("normallyVisible", false);
+                    bookshelf.save();
+                }
+            },
+            error: function(error) {
+                console.log("get error: " + error);
+            }
+        })
+    });
+})
+
 Parse.Cloud.afterSave("downloadHistory", function(request) {
     Parse.Cloud.useMasterKey();
 
