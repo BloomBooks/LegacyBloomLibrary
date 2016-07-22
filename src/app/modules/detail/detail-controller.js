@@ -119,14 +119,6 @@
 			});
 		});
         $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
-        $scope.canSetBookshelf = authService.isLoggedIn() && authService.bookShelves().length > 0;
-        if ($scope.canSetBookshelf) {
-            // Todo: this is a temporary way to show whether the book is in the shelf, based on the fact that
-            // we currently have only one shelf. Hence the name, isBookFeatured.
-            bookService.isBookInShelf($stateParams.bookId, authService.bookShelves()[0]).then(function(result) {
-                $scope.isBookFeatured = result;
-            });
-        }
 
 		$scope.showLicense = function() {
             if ($scope.book.license && $scope.book.license.indexOf('cc-') === 0) {
@@ -174,14 +166,6 @@
 					});
 				}
 			});
-		};
-		
-        $scope.chooseBookshelves = function() {
-            // Todo: show a popup menu with all bookShelves and ones this book is in checked.
-            // Failing that there should at least be some visual indication whether the book is in the shelf.
-            var shelf = authService.bookShelves()[0];
-            bookService.ToggleBookInShelf($scope.book, shelf);
-            $scope.isBookFeatured = !$scope.isBookFeatured;
-        };
+		};		
 	} ]);
 } ());  // end wrap-everything function

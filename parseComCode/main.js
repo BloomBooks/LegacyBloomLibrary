@@ -251,11 +251,12 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 });
 
 Parse.Cloud.afterSave("books", function(request) {
+    const bookshelfPrefix = "bookshelf:";
     var book = request.object;
     book.get("tags").filter(function(element) {
-        return element.indexOf("bookshelf:") > -1;
+        return element.indexOf(bookshelfPrefix) > -1;
     }).map(function(element) {
-        return element.substr(10);
+        return element.substr(bookshelfPrefix.length);
     }).forEach(function(key) {
         var Bookshelf = Parse.Object.extend("bookshelf");
         var query = new Parse.Query(Bookshelf);
