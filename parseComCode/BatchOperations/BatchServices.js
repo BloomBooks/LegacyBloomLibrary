@@ -1,17 +1,7 @@
 var https = require('https');
 
 var hostname = "api.parse.com";
-var headers = {
-    //  test
-    'X-Parse-Application-Id': 'llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv',
-    'X-Parse-REST-API-Key': 'ZklnIdWBqDUwZo9dR3tp7EAFWOEOU4O5rdv9NLfj',
-    //  silbloomlibrarysandbox
-    //'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
-    //'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj',        
-    //  silbloomlibrary
-    //'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
-    //'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx',
-};
+var headers = { };
 
 module.exports = {
     //Pass in a readline object, and optionally a username and password
@@ -21,7 +11,7 @@ module.exports = {
             if (username) {
                 resolve(username);
        	    } else {
-                console.log("To update object(s) requires a logged in user that has permissions to modify the object, if in doubt, check the ACL and CLP.");
+                console.log("To update object(s) requires a logged in user that has permissions to modify the object. If in doubt, check the ACL and CLP.");
                 rl.question("Username: ", function (answer) {
                     resolve(answer);
                 });
@@ -41,6 +31,12 @@ module.exports = {
                             case "\u0004":
                                 break;
                             default:
+                                //This is manually clearing the line of the password entry and writing the prompt again.
+                                //Essentially disconnecting the visible input from what we are receiving.
+                                //This is using ANSI escape codes. \033[ is the Control Sequence Introducer
+                                //2K erases in line, the entire line, but doesn't move the cursor. 
+                                //200D moves the cursor back n spaces, stopping at the edge of the screen
+                                //Assumes prompts are less than 200 characters long
                                 process.stdout.write("\033[2K\033[200D" + query);
                                 break;
                         }
@@ -48,7 +44,6 @@ module.exports = {
                     process.stdin.on("data", concealHandler);
 
                     rl.question(query, function (passwd) {
-                        resolve(passwd);
                         process.stdin.removeListener('data', concealHandler);
                         resolve({"username": name, "password": passwd});
                     });
@@ -57,9 +52,20 @@ module.exports = {
         });
     },
 
-    //Pass in the value obtained from getCredentials
+    //Pass in the value obtained from getCredentials and the BloomLibrary environment to login to (test, sandbox, prod)
     //Will authenticate all future requests as the logged in user
-    loginUser: function (creds) {
+    loginUser: function (creds, environment) {
+        if (environment == "test") {
+            headers['X-Parse-Application-Id'] = 'llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv';
+            headers['X-Parse-REST-API-Key'] = 'ZklnIdWBqDUwZo9dR3tp7EAFWOEOU4O5rdv9NLfj';
+        } else if (environment == "sandbox") {
+            headers['X-Parse-Application-Id'] = 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR';
+            headers['X-Parse-REST-API-Key'] = 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj';
+        } else if (environment == "prod") {
+            headers['X-Parse-Application-Id'] = 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5';
+            headers['X-Parse-REST-API-Key'] = 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx';
+        }
+
         return new Promise(function (resolve, reject) {
             var options = {
                 host: hostname,

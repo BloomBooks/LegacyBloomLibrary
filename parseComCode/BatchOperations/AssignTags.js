@@ -12,9 +12,9 @@ const rl = readline.createInterface({
 //This is basically all the footwork to getting the arguments parsed, nothing fancy
 var programName = process.argv[1].replace(/\\/g, "/").split("/").pop();
 exitWithUsage = function() {
-    console.log('usage: node ' + programName + ' -i <attr> <regex> <tag> [-u <username>] [-p <password>]');
-    console.log('       node ' + programName + ' -l <attr> <regex> <tag> [-u <username>] [-p <password>]');
-    console.log('       node ' + programName + ' -f <attr> <regex> <tag> [-u <username>] [-p <password>]');
+    console.log('usage: node ' + programName + ' -i <attr> <regex> <tag> [-u <username>] [-p <passwd>] [-e env]');
+    console.log('       node ' + programName + ' -l <attr> <regex> <tag> [-u <username>] [-p <passwd>] [-e env]');
+    console.log('       node ' + programName + ' -f <attr> <regex> <tag> [-u <username>] [-p <passwd>] [-e env]');
     process.exit(1);
 }
 
@@ -26,7 +26,7 @@ if (mode != "-i" && mode != "-l" && mode != "-f") {
     exitWithUsage();
 }
 
-var attribute, regex, tag, username, password;
+var attribute, regex, tag, username, password, environment = "test";
 for (var i=3; i<process.argv.length; i++) {
     var arg = process.argv[i];
     if (arg == "-u") {
@@ -43,11 +43,18 @@ for (var i=3; i<process.argv.length; i++) {
         } else {
             exitWithUsage();
         }
-    }else if (!attribute) {
+    } else if (arg == "-e") {
+        if (process.argv.length > i+1) {
+            environment = process.argv[i+1];
+            i++;
+        } else {
+            exitWithUsage();
+        }
+    } else if (!attribute) {
         attribute = arg;
-    }else if (!regex) {
+    } else if (!regex) {
         regex = arg;
-    }else if (!tag) {
+    } else if (!tag) {
         tag = arg;
     }
 }
@@ -67,7 +74,7 @@ if (!attribute || !regex || !tag) {
     Batch update the fetched books with the tag
 */
 services.getCredentials(rl, username, password).then(function (credentials) {
-    return services.loginUser(credentials);
+    return services.loginUser(credentials, environment);
 }).then(function () {
     return services.findBooks(attribute, regex);
 }).then(function (books) {
