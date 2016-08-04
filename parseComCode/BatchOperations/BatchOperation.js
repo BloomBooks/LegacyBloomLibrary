@@ -144,7 +144,7 @@ batchUpdate = function (objects, tag) {
 findObjects = function (attr, regex) {
     return new Promise(function (resolve, reject) {
         var params = {};
-        params[attribute] = { "$regex": regex };
+        params[attr] = { "$regex": regex };
         var options = {
             host: hostname,
             path: "/1/classes/" + module.exports.classBeingBatchUpdated + "?where=" + encodeURIComponent(JSON.stringify(params)),
@@ -282,7 +282,9 @@ batchOperation = function (args) {
             //Resolving an empty array of changes
             return Promise.resolve([]);
         } else {
-            return batchUpdate(objects, remainingArgs);
+            return module.exports.prepareForOperation(remainingArgs).then(function (){
+                return batchUpdate(objects, remainingArgs);
+            });
         }
     }).then(function (batches) {
         var count = 0;
@@ -310,18 +312,30 @@ batchOperation = function (args) {
 
 
 module.exports = {
+    //These properties and functions should be replaced with the correct values for the desired operation
     usageAddendum: '',
     classBeingBatchUpdated: '',
+    classAttributesToPreview: [],
 
+    //Verify necessary arguments for the final operation (e.g. adding a tag)
     verifyRemainingArguments: function (args) {
         return true;
     },
 
-    //Unused arguments are passed to this function for use in updating the fetched objects
+    //If there are changes that should be made before performing a batch operation, do them here
+    prepareForOperation: function(args) {
+        return Promise.resolve();
+    },
+
+    //The remaining are passed to this function for use in updating the fetched objects
     updateBodyForObject: function (object, args) {
 
     },
 
     //Call to perform the operation, takes an argument list directly from process.argv
-    batchOperationWithArgs: batchOperation
+    batchOperationWithArgs: batchOperation,
+
+    //Exposed for preparing for a batch operation
+    host: hostname,
+    headers: headers,
 };
