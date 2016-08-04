@@ -433,7 +433,8 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "title", type:"String"},
                 {name: "tools", type:"Array"},
                 {name: "updateSource", type:"String"},
-                {name: "uploader", type:"Pointer<_User>"}
+                {name: "uploader", type:"Pointer<_User>"},
+                {name: "lastUploaded", type:"Date"}
             ]
         },
         {
@@ -531,6 +532,9 @@ Parse.Cloud.define("setupTables", function(request, response) {
             switch (fieldType) {
                 case "String":
                     instance.set(fieldName, "someString");
+                    break;
+                case "Date":
+                    instance.set(fieldName, {"__type":"Date","iso":"2015-02-15T00:00:00.000Z"});
                     break;
                 case "Boolean":
                     instance.set(fieldName, true);
