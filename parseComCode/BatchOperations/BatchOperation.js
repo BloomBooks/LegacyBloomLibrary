@@ -310,14 +310,17 @@ batchOperation = function (args) {
 
 
 module.exports = {
+    //These properties and functions should be replaced with the correct values for the desired operation
     usageAddendum: '',
     classBeingBatchUpdated: '',
+    classAttributesToPreview: [],
 
+    //Verify necessary arguments for the final operation (e.g. adding a tag)
     verifyRemainingArguments: function (args) {
         return true;
     },
 
-    //Unused arguments are passed to this function for use in updating the fetched objects
+    //The remaining are passed to this function for use in updating the fetched objects
     updateBodyForObject: function (object, args) {
 
     },
