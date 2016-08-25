@@ -17,13 +17,7 @@ bower install
 grunt watch
 ```
 
-(Currently bower asks you to choose between several versions of angular js,
-you should choose 1.0.8 which is typically choice 1.
-Also between versions of jquery...choose 2.0.3.
-Some specific versions are required because source files that our program
-references change locations or the name includes the version.)
-
-Finally, open `file:///path/to/bloomlibrary/build/index.html` in your browser.
+You will need to develop using a local web server (see [Setting Up Your Development Environment -> Server](https://github.com/BloomBooks/BloomLibrary/wiki/Setting-Up-your-Development-Environment#server)).
 
 After pulling new releases, you may need to update various libraries. Do that with
 
@@ -49,7 +43,7 @@ see https://trello.com/b/eO6j48sf/bloom-library
 
 ### Contributing
 
-Books may be contributed to the website once we have it working. Code contributions are welcome also.
+Books may be contributed to the [website](http://www.bloomlibrary.org). Code contributions are welcome also.
 We recommend interacting through the Trello board to be sure we're on the same track.
 
 ### Search Engine Optimization
@@ -60,7 +54,7 @@ at https://docs.google.com/document/d/1XAJRmQoJHYkwkf4CVW_OWiBkRT1jqufKF2rJajcnx
 
 Copyright and License
 =======
-Copyright 2013-2014 [SIL International](http://sil.org)
+Copyright 2013-2016 [SIL International](http://sil.org)
 [MIT/X11](http://sil.mit-license.org/)
 
 
