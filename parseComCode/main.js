@@ -250,6 +250,35 @@ Parse.Cloud.beforeSave("books", function(request, response) {
 	response.success();
 });
 
+Parse.Cloud.afterSave("books", function(request) {
+    const bookshelfPrefix = "bookshelf:";
+    var book = request.object;
+    book.get("tags").filter(function(element) {
+        return element.indexOf(bookshelfPrefix) > -1;
+    }).map(function(element) {
+        return element.substr(bookshelfPrefix.length);
+    }).forEach(function(key) {
+        var Bookshelf = Parse.Object.extend("bookshelf");
+        var query = new Parse.Query(Bookshelf);
+        query.equalTo("key", key);
+        query.count({
+            success: function(count) {
+                if(count == 0) {
+                    //Create a new bookshelf to contain this book with default properties
+                    var bookshelf = new Bookshelf();
+                    bookshelf.set("key", key);
+                    bookshelf.set("englishName", key);
+                    bookshelf.set("normallyVisible", false);
+                    bookshelf.save();
+                }
+            },
+            error: function(error) {
+                console.log("get error: " + error);
+            }
+        })
+    });
+})
+
 Parse.Cloud.afterSave("downloadHistory", function(request) {
     Parse.Cloud.useMasterKey();
 
@@ -272,85 +301,74 @@ Parse.Cloud.afterSave("downloadHistory", function(request) {
 // Currently this is those in the Featured bookshelf, followed by all the others.
 // Each group is sorted alphabetically by title.
 Parse.Cloud.define("defaultBooks", function(request, response) {
-  var first = request.params.first;
-  var count = request.params.count;
-  var includeOutOfCirculation = request.params.includeOutOfCirculation;
-  var allLicenses = request.params.allLicenses == true;
-  var query = new Parse.Query("bookshelf");
-  query.equalTo("name", "Featured");
-  query.find({
-    success: function(shelves) {
-		var featuredShelf = shelves[0];
-		var contentQuery = featuredShelf.relation("books").query();
-        var shelfName = featuredShelf.get("name");
-        if (!includeOutOfCirculation)
-            contentQuery.containedIn('inCirculation', [true, undefined]);
-        contentQuery.include("langPointers");
-        contentQuery.include("uploader");
-        if (!allLicenses)
-            contentQuery.startsWith("license", "cc-");
-        contentQuery.ascending("title");
-        contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
-		contentQuery.find({
-			success: function(shelfBooks) {
-                var results = [];
-                var shelfIds = Object.create(null); // create an object with no properties to be a set
-                var resultIndex = 0;
-                for (var i = 0; i < shelfBooks.length; i++) {
-                    if (resultIndex >= first && resultIndex < first + count) {
-                        shelfBooks[i].attributes.bookshelf = shelfName;
-                        results.push(shelfBooks[i]);
-                    }
-                    resultIndex++;
-                    shelfIds[shelfBooks[i].id] = true; // put in set
+    var first = request.params.first;
+    var count = request.params.count;
+    var includeOutOfCirculation = request.params.includeOutOfCirculation;
+    var allLicenses = request.params.allLicenses == true;
+    var contentQuery = new Parse.Query("books");
+    contentQuery.equalTo("tags", "bookshelf:Featured");
+    if (!includeOutOfCirculation)
+        contentQuery.containedIn('inCirculation', [true, undefined]);
+    contentQuery.include("langPointers");
+    contentQuery.include("uploader");
+    if (!allLicenses)
+        contentQuery.startsWith("license", "cc-");
+    contentQuery.ascending("title");
+    contentQuery.limit(1000); // max allowed...hoping no more than 1000 books in shelf??
+    contentQuery.find({
+        success: function(shelfBooks) {
+            var results = [];
+            var shelfIds = Object.create(null); // create an object with no properties to be a set
+            var resultIndex = 0;
+            for (var i = 0; i < shelfBooks.length; i++) {
+                if (resultIndex >= first && resultIndex < first + count) {
+                    results.push(shelfBooks[i]);
                 }
-                var skip = 0;
-                // This function implements a query loop by calling itself inside each
-                // promise fulfilment if more results are needed.
-                var runQuery = function() {
-                    var allBooksQuery = new Parse.Query("books");
-                    if (!includeOutOfCirculation)
-                        allBooksQuery.containedIn('inCirculation', [true, undefined]);
-                    allBooksQuery.include("langPointers");
-                    allBooksQuery.include("uploader");
-                    if (!allLicenses)
-                        allBooksQuery.startsWith("license", "cc-");
-                    allBooksQuery.ascending("title");
-                    allBooksQuery.skip(skip); // skip the ones we already got
-                    allBooksQuery.find({
-                        success: function (allBooks) {
-                            skip += allBooks.length; // skip these ones next iteration
-                            for (var i = 0; i < allBooks.length && resultIndex < first + count; i++) {
-                                if (!(allBooks[i].id in shelfIds)) {
-                                    if (resultIndex >= first) {
-                                        results.push(allBooks[i]);
-                                    }
-                                    resultIndex++;
+                resultIndex++;
+                shelfIds[shelfBooks[i].id] = true; // put in set
+            }
+            var skip = 0;
+            // This function implements a query loop by calling itself inside each
+            // promise fulfilment if more results are needed.
+            var runQuery = function() {
+                var allBooksQuery = new Parse.Query("books");
+                if (!includeOutOfCirculation)
+                    allBooksQuery.containedIn('inCirculation', [true, undefined]);
+                allBooksQuery.include("langPointers");
+                allBooksQuery.include("uploader");
+                if (!allLicenses)
+                    allBooksQuery.startsWith("license", "cc-");
+                allBooksQuery.ascending("title");
+                allBooksQuery.skip(skip); // skip the ones we already got
+                allBooksQuery.find({
+                    success: function (allBooks) {
+                        skip += allBooks.length; // skip these ones next iteration
+                        for (var i = 0; i < allBooks.length && resultIndex < first + count; i++) {
+                            if (!(allBooks[i].id in shelfIds)) {
+                                if (resultIndex >= first) {
+                                    results.push(allBooks[i]);
                                 }
+                                resultIndex++;
                             }
-                            if (allBooks.length == 0 || resultIndex >= first + count) {
-                                // either we can't get any more, or we got all we need.
-                                response.success(results);
-                                return;
-                            }
-                            runQuery(); // launch another iteration.
-                        },
-                        error: function () {
-                            response.error("failed to find all books");
                         }
-                    });
-                }
-                runQuery(); // start the recursive loop.
-			},
-			error: function() {
-			  response.error("failed to find books of featured shelf");
-			}
-		})
-    },
-    error: function() {
-      response.error("failed to find featured shelf");
-    }
-  });
+                        if (allBooks.length == 0 || resultIndex >= first + count) {
+                            // either we can't get any more, or we got all we need.
+                            response.success(results);
+                            return;
+                        }
+                        runQuery(); // launch another iteration.
+                    },
+                    error: function () {
+                        response.error("failed to find all books");
+                    }
+                });
+            }
+            runQuery(); // start the recursive loop.
+        },
+        error: function() {
+            response.error("failed to find books of featured shelf");
+        }
+    })
 });
 
 
@@ -372,7 +390,7 @@ Parse.Cloud.define("defaultBooks", function(request, response) {
 Parse.Cloud.define("setupTables", function(request, response) {
     // Required BloomLibrary classes/fields
     // Note: code below currently requires that 'books' is first.
-    // Current code supports only String, Boolean, Number, Array, Pointer<_User/Book/appDetailsInLanguage>,
+    // Current code supports only String, Boolean, Number, Date, Array, Pointer<_User/Book/appDetailsInLanguage>,
     // and Relation<books/appDetailsInLanguage>.
     // It would be easy to generalize the pointer/relation code provided we can organize so that classes that are
     // the target of relations or pointers occur before the fields targeting them.
@@ -415,7 +433,8 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "title", type:"String"},
                 {name: "tools", type:"Array"},
                 {name: "updateSource", type:"String"},
-                {name: "uploader", type:"Pointer<_User>"}
+                {name: "uploader", type:"Pointer<_User>"},
+                {name: "lastUploaded", type:"Date"}
             ]
         },
         {
@@ -478,7 +497,8 @@ Parse.Cloud.define("setupTables", function(request, response) {
                 {name: "colorScheme", type:"String"},
                 {name: "icon1024x1024", type:"String"},
                 {name: "featureGraphic1024x500", type:"String"},
-                {name: "details", type:"Relation<appDetailsInLanguage>"}
+                {name: "details", type:"Relation<appDetailsInLanguage>"},
+                {name: "owner", type:"Pointer<_User>"}
             ]
         },
         { // must come after the classes it references
@@ -512,6 +532,9 @@ Parse.Cloud.define("setupTables", function(request, response) {
             switch (fieldType) {
                 case "String":
                     instance.set(fieldName, "someString");
+                    break;
+                case "Date":
+                    instance.set(fieldName, {"__type":"Date","iso":"2015-02-15T00:00:00.000Z"});
                     break;
                 case "Boolean":
                     instance.set(fieldName, true);

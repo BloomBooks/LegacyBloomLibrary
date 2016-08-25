@@ -48,12 +48,13 @@
 		function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
 
 		$scope.searchText = $stateParams["search"];
-        $scope.shelfName = $stateParams["shelf"];
+        $scope.shelfKey = $stateParams["shelf"];
         $scope.lang = $stateParams["lang"];
         $scope.langName = $stateParams["langname"];
         $scope.tag = $stateParams["tag"];
         $scope.allLicenses = $stateParams["allLicenses"] === "true";
         $scope.numHiddenBooks = 0;
+        $scope.otherBookshelvesHidden = true;
         $scope.otherLanguagesHidden = true;
         $scope.otherTopicsHidden = true;
         $scope.searchTextRaw = $scope.searchText;
@@ -68,6 +69,12 @@
 		$scope.$watch('bookCountObject.bookCount', function() {
 			$scope.bookCount = $scope.bookCountObject.bookCount;
 		});
+
+        $scope.toggleVisibilityOfOtherBookshelves = function(event) {
+            var list = event.currentTarget.nextElementSibling;
+            $(list).slideToggle();
+            $scope.otherBookshelvesHidden = !$scope.otherBookshelvesHidden;
+        };
 
         $scope.toggleVisibilityOfOtherLanguages = function(event) {
             var list = event.currentTarget.nextElementSibling;
@@ -93,13 +100,13 @@
 
         function getBookMessage(count) {
             var message = "";
-            var shelfLabel = $scope.shelfName;
-            if ($scope.shelfName === 'Featured') {
-                shelfLabel = 'Featured';
-            } else if ($scope.shelfName === '$recent') {
+            var shelfLabel = $scope.shelfKey;
+            if ($scope.shelfKey === '$recent') {
                 shelfLabel = 'New Arrival';
-            } else if ($scope.shelfName === '$myUploads') {
+            } else if ($scope.shelfKey === '$myUploads') {
                 shelfLabel = '\"My Upload\"';
+            } else if ($scope.shelfKey) {
+                shelfLabel = $scope.shelfKey;
             } else {
                 shelfLabel = '';
             }
@@ -169,14 +176,14 @@
         }
         $scope.getFilteredBookCount = function() {
             $scope.numHiddenBooks = 0;
-            var promise = bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, false, true);
+            var promise = bookService.getFilteredBooksCount($scope.searchText, $scope.shelfKey, $scope.lang, $scope.tag, false, true);
             if ($scope.allLicenses) {
                 promise.then(function (count) {
                     afterCount(count);
                 });
             } else {
                 promise.then(function (fullCount) {
-                    bookService.getFilteredBooksCount($scope.searchText, $scope.shelf, $scope.lang, $scope.tag, false, false).then(function (ccCount) {
+                    bookService.getFilteredBooksCount($scope.searchText, $scope.shelfKey, $scope.lang, $scope.tag, false, false).then(function (ccCount) {
                         $scope.numHiddenBooks = fullCount - ccCount;
                         afterCount(ccCount);
                     });
@@ -185,18 +192,16 @@
         };
         // Every path in this 'if' should eventually call getFilteredBookCount(). We can't just move outside
         // because in at least one path we have to wait to call it after a promise is fulfilled.
-        if ($scope.shelfName) {
-            if ($scope.shelfName.substring(0,1) =='$')
+        if ($scope.shelfKey) {
+            if ($scope.shelfKey.substring(0,1) =='$')
             {
                 // Not a real shelf, triggers a special query
-                $scope.shelf = {name: $scope.shelfName};
                 $scope.getFilteredBookCount();
             }
             else {
                 // We need to retrieve the shelf object, and we can't run the query to get the count
                 // until we get the result.
-                bookService.getBookshelf($scope.shelfName).then(function (shelf) {
-                    $scope.shelf = shelf;
+                bookService.getBookshelf($scope.shelfKey).then(function (shelf) {
                     $scope.getFilteredBookCount();
                 });
                 // Todo: what if no such shelf??
@@ -215,7 +220,7 @@
             // than are supposed to be in the list (e.g., with number of results set to 24, not an even divisor
             // of 50)
             if (first + count > $scope.bookCount) {count = $scope.bookCount - first;}
-			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelf, $scope.lang, $scope.tag, $scope.allLicenses, "title", true).then(function (result) {
+			bookService.getFilteredBookRange(first, count, $scope.searchText, $scope.shelfKey, $scope.lang, $scope.tag, $scope.allLicenses, "title", true).then(function (result) {
 				//Remove system tags
 				for(var iBook = 0; iBook < result.length; iBook++) {
 					var book = result[iBook];
@@ -238,5 +243,5 @@
             $scope.allLicenses = !$scope.allLicenses;
             $state.go($state.current, { allLicenses: $scope.allLicenses } );
         };
-	} ]);
+	}]);
 } ());   // end wrap-everything function

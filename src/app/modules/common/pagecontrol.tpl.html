@@ -12,7 +12,9 @@
         </ul>
     </div> <!-- ends page index -->
     <div class="single-page-spacer" ng-hide="noOfPages>1"></div>
-    <div class="itemsPerPage">Items per page:
+    <div class="itemsPerPage">
+        <!-- If the text is not wrapped in a span, the entire contents will be replaced when transifex translates it. This breaks the ng-model binding. -->
+        <span>Items per page:</span>
         <select class="notranslate" ng-model="itemsPerPage"> <!-- items-per-page control -->
             <option selected value="10">10</option>
             <option value="24">24</option>

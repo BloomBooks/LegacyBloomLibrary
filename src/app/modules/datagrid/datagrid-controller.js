@@ -175,12 +175,15 @@
 							downloadCount: item.downloadCount || 0,
 							imgUrl: item.baseUrl + "thumbnail-70.png",
 							license: item.license,
-							updatedAt: (function () {
-								var dateWithTime = new Date(item.updatedAt);
-								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+							lastUploaded: (function () {
+								if (item.lastUploaded !== undefined) {
+									var dateWithTime = new Date(item.lastUploaded.iso);
+									return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
+								} else {
+									return "";
+								}
 							}()),
 							pageCount: item.pageCount,
-							bookshelf: item.bookshelf,
 							tags: item.tags ? item.tags.map(function(item) {
 								//Put into tagList
 								//Remove if/when datagrid is moved to server-side paging
@@ -353,7 +356,6 @@
 				// cells expand when clicked in.
 				rowHeight: 50,
 				columnDefs: [
-					{ field: 'bookshelf', displayName: 'Bookshelf', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'title', displayName: 'Title', cellTemplate: '<div class="ui-grid-cell-contents"><a target="_blank" ui-sref="browse.detail({bookId: row.entity.objectId})">{{row.entity.title}}</a></div>', width: '***', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }, enableHiding: false, sort: { direction: uiGridConstants.ASC } },
 					{ field: 'languages', displayName: 'Languages', width: '*', minWidth: 15, enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS } },
 					{ field: 'tags', displayName: 'Tags', cellTemplate: $scope.tagsTemplate, width: '***', minWidth: 15, enableCellEdit: false, allowCellFocus: false, enableSorting: false, cellFilter: "tagFilter", filter: { condition: filterTags } },
@@ -379,7 +381,8 @@
 						],
 						visible: false
 					},
-					{ field: 'updatedAt', displayName: 'Modified Date', width: '*', minWidth: 15, maxWidth: 100, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
+					{ field: 'uploader', displayName: 'Uploader', width: '**', minWidth: 15, enableCellEdit: false, cellFilter: '', type: '', filter: { condition: uiGridConstants.filter.CONTAINS }, visible: false },
+					{ field: 'lastUploaded', displayName: 'Last Uploaded', width: '*', minWidth: 15, maxWidth: 100, enableCellEdit: false, cellFilter: 'date: "MM/dd/yyyy"', type: 'date',
 						filters: [
 							{
 								condition: uiGridConstants.filter.GREATER_THAN_OR_EQUAL,
