@@ -70,7 +70,7 @@
                                 <div>{{bookMessage}}</div>
                                 <div ng-show="numHiddenBooks || bookCount!=0">
                                     <div class="space-after-book-message"></div>
-				    <div ng-show="numHiddenBooks">{{hiddenBooksMessage}}  <a href="" ng-click="toggleAllLicenses()">{{hiddenBooksToggleMessage}}</a></div>
+				    <div ng-show="numHiddenBooks"><span>{{hiddenBooksMessage}}</span>  <a href="" ng-click="toggleAllLicenses()"><span>{{hiddenBooksToggleMessage}}</span></a></div>
                                 </div>
                             </div>
                             <div ng-show="!initialized">Searching...</div>
