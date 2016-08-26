@@ -201,13 +201,18 @@
                 }
             });
 
+                var DO_NOT_DISPLAY = 'DO_NOT_DISPLAY';
+
                 //This is the global list of all categories of tags
                 //The tags are separated out by these categories on the sidebar of the browse view
                 //id is the usage in the tag (e.g. "region.MyRegion") and displayName is the header
                 $scope.tagCategories = [
                     {id: 'topic', displayName: 'Topics'},
                     {id: 'region', displayName: 'Regions'},
-                    {id: 'level', displayName: 'Reading Levels'}
+                    {id: 'level', displayName: 'Reading Levels'},
+                    // Bookshelves are handled with different code, but we need to handle them
+                    // here else they end up in the Topics list.
+                    {id: 'bookshelf', displayName: DO_NOT_DISPLAY}
                 ];
 
                 //This is the object which will hold all of the tag names
@@ -240,13 +245,22 @@
 
                     //Loop through tags
                     for(iTag = 0; iTag < tagNames.length; iTag++) {
+                        var includeTag = true;
+
                         //Check if tag belongs to a category
                         for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
                             cat = $scope.tagCategories[iCat].id;
                             if(categoryRegex[cat].test(tagNames[iTag])) {
+                                if ($scope.tagCategories[iCat].displayName == DO_NOT_DISPLAY) {
+                                    includeTag = false;
+                                }
                                 break;
                             }
                         }
+                        if (!includeTag) {
+                            continue;
+                        }
+
                         //If we didn't find a category tag belongs to
                         if(iCat >= $scope.tagCategories.length) {
                             //Default is the first-listed category
