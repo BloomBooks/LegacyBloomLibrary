@@ -144,10 +144,11 @@ batchUpdate = function (objects, tag) {
 findObjects = function (attr, regex) {
     return new Promise(function (resolve, reject) {
         var params = {};
+        //TODO: this could be enhanced to handle regex options with this syntax: where={"name":{"$regex":"myregex","$options":"i"}}
         params[attr] = { "$regex": regex };
         var options = {
             host: hostname,
-            path: "/1/classes/" + module.exports.classBeingBatchUpdated + "?where=" + encodeURIComponent(JSON.stringify(params)),
+            path: "/1/classes/" + module.exports.classBeingBatchUpdated + "?limit=1000&where=" + encodeURIComponent(JSON.stringify(params)),
             headers: headers
         };
 
@@ -182,8 +183,10 @@ previewObjects = function (objects) {
             attributes.forEach(function(attr) {
                 console.log(attr + ": " + object[attr]);
             });
-            console.log() //A little helpful spacing to group object info
+            console.log(); //A little helpful spacing to group object info
         });
+        console.log("Total: " + objects.length);
+        console.log();
     }
 };
 
