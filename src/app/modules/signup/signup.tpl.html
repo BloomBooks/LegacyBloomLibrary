@@ -29,9 +29,9 @@
                                     <input class="passwordInput" placeholder="Choose your password" required type="password"
                                            ng-model="record.password" name="password" ng-show="!showPassword" />
                                 </div>
-                                <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword"><span>Show password</span></div></div>
+                                <div class="showPassword"><div class="showPassInput"><input type="checkbox" ng-model="showPassword"><span class="needed-for-localization">Show password</span></div></div>
                             </div>
-                            <div class="agreeTerms"><input type="checkbox" name="agree" ng-model="agreeToTerms"><span>I agree to the Bloom Library's <a href="/terms" target="_blank">Terms of Use</a>.</span></div>
+                            <div class="agreeTerms"><input type="checkbox" name="agree" ng-model="agreeToTerms"><span class="needed-for-localization">I agree to the Bloom Library's <a href="/terms" target="_blank">Terms of Use</a>.</span></div>
                             <div id="hpot">
                                 <label for="notHuman">Leave this field blank</label>
                                 <input type="text" name="notHuman" id="notHuman" ng-model="record.notHuman">
