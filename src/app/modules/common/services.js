@@ -65,8 +65,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 //                'X-Parse-Application-Id': 'llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv',
 //                'X-Parse-REST-API-Key': 'ZklnIdWBqDUwZo9dR3tp7EAFWOEOU4O5rdv9NLfj'
             };
-        }
-        else {
+        } else {
             // we're live! Use the real silbloomlibrary api strings.
             headers = {
                 'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
@@ -74,7 +73,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             };
         }
 		restangularConfig = function (restangularConfigurer) {
-			restangularConfigurer.setBaseUrl('https://api.parse.com/1'); // 1/indicates rev 1 of parse.com API
+			if (!sharedService.isPublicSite) {
+				restangularConfigurer.setBaseUrl(sharedService.sandboxUrl);
+			} else {
+				restangularConfigurer.setBaseUrl(sharedService.prodUrl);
+			}
 			restangularConfigurer.setDefaultHeaders(headers);
 		};
 
@@ -184,6 +187,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
     .service('sharedService', function() {
         this.isPublicSite = window.location.host.indexOf("bloomlibrary.org") === 0;
+        
+        this.prodUrl = "https://api.parse.com/1"; // 1/indicates rev 1 of parse.com API
+        this.sandboxUrl = "http://bloomparseserverebsandbox-env.us-east-1.elasticbeanstalk.com/parse";
     })
 
     .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',
@@ -200,10 +206,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
             //test site
             //Parse.initialize('llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv', 'fFumVaz2kanqGHNXE6GXyVheGcDo9xdnYrUtfC2G');
-        }
-        else {
+            Parse.serverURL = sharedService.sandboxUrl;
+        } else {
             // we're live! Use the real silbloomlibrary api strings.
             Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
+            Parse.serverURL = sharedService.prodUrl;
         }
 		this.getAllBooks = function () {
 			return restangular.withConfig(authService.config()).all('classes/books').getList({ "limit": 50 }).then(function (resultWithWrapper) {
@@ -446,24 +453,6 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// By that time books will be an array of json-encoded book objects from parse.com.
 		this.getFilteredBookRange = function (first, count, searchString, shelfKey, lang, tag, allLicenses, sortBy, ascending, includeOutOfCirculation) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
-            var fixLangPtrs = function(book) {
-                // Before we convert a book to JSON, we have to convert its langPointers to JSON.
-                // the data we want is included in the results of the book queries, but for some reason
-                // toJSON does not convert the linked objects' extra data.
-                var langArray = book.get("langPointers");
-                if (langArray)
-                {
-                    var fixedArray = [];
-                    for (var j = 0; j < langArray.length; j++) {
-                        //sometimes we remove a row from the languages table but if this book is still
-                        //pointing at it, we'll get a null in the langArray at that point
-                        if (langArray[j] != null) {
-                            fixedArray.push(langArray[j].toJSON());
-                        }
-                    }
-                    book.set("langPointers", fixedArray);
-                }
-            };
             if (!searchString && !shelfKey && !lang && !tag) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
@@ -474,16 +463,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         // enhance JohnT: a chunk of duplicate code here should be pulled out into a function.
                         var objects = new Array(results.length);
                         for (i = 0; i < results.length; i++) {
-                        // If we need the contents (more than objectID) of the uploader field, we will need
-                        // something like this...probably some changes to the defaultBooks cloud code, too.
-                        // without this the extra fields downloaded by include("uploader") don't get copied to objects.
-                        var user = results[i].get("uploader");
-                        if (user)
-                        {
-                            results[i].set("uploader", user.toJSON());
-                        }
-                            fixLangPtrs(results[i]);
-                            objects[i] = results[i].toJSON();
+                            //Technically, we probably shouldn't use the private function here, but toJSON does not jsonize the objects' objects
+                            objects[i] = results[i]._toFullJSON();
                         }
                         // I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
                         // There is further discussion at http://stackoverflow.com/questions/17426413/deferred-resolve-in-angularjs.
@@ -528,16 +509,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 				success: function (results) {
 					var objects = new Array(results.length);
 					for (i = 0; i < results.length; i++) {
-						// reinstate this and the line above if we need the contents (more than objectID) of the uploader field.
-						// without this the extra fields downloaded by include("uploader") don't get copied to objects.
-						var user = results[i].get("uploader");
-						if (user)
-						{
-							results[i].set("uploader", user.toJSON());
-						}
-                        fixLangPtrs(results[i]);
-
-						objects[i] = results[i].toJSON();
+                        //Technically, we probably shouldn't use the private function here, but toJSON does not jsonize the objects' objects
+						objects[i] = results[i]._toFullJSON();
 					}
 					// I am not clear why the $apply is needed. I got the idea from http://jsfiddle.net/Lmvjh/3/.
 					// There is further discussion at http://stackoverflow.com/questions/17426413/deferred-resolve-in-angularjs.
