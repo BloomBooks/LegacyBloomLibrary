@@ -636,6 +636,17 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.resetCurrentPage = function () {
             $cookies["currentpage"] = 1;
         };
+
+        this.getBookshelfDisplayName = function(shelfKey) {
+            for (i = 0; i < $rootScope.bookshelves.length; i++) {
+                var shelf = $rootScope.bookshelves[i];
+                if (shelfKey == shelf.key)
+                {
+                    return shelf.englishName;
+                }
+            }
+            return null;
+        };
 	} ])
     .service('downloadHistoryService', ['Restangular', '$http', 'authService', function(restangular, $http, authService) {
         this.logDownload = function(bookId) {
@@ -729,7 +740,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return defer.promise;
         };
     }])
-    .service('tagService', ['parseAngularService', function(parseAngularService) {
+    .service('tagService', ['parseAngularService', 'bookService', function(parseAngularService, bookService) {
         this.getTags = function (category) {
             var tagQuery = new Parse.Query('tag');
             tagQuery.descending("usageCount");
@@ -743,11 +754,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             var parsePromise =  tagQuery.find();
             return parseAngularService.parsePromiseToAngular(parsePromise, 'getTags');
         };
-        //Remove category (i.e. 'category.') and put spaces before camel-case type
+        //Remove category (e.g. 'region:')
         this.getDisplayName = function(tag) {
             try {
                 var prefixRegex = /[a-z]+:/;
-
+                var prefix = tag.match(prefixRegex);
+                if (prefix == 'bookshelf:') {
+                    return bookService.getBookshelfDisplayName(tag.replace(prefixRegex, ""));
+                }
                 return tag.replace(prefixRegex, "");
             }
             catch(error) {
