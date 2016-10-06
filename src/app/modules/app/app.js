@@ -179,7 +179,7 @@
             });
 
             bookService.getBookshelves().then(function(bookshelves) {
-                bookshelves = bookshelves.map(function(bookshelf) {
+                $rootScope.bookshelves = bookshelves.map(function(bookshelf) {
                     bookshelf.englishName = _localize(bookshelf.englishName);
                     return bookshelf;
                 });
