@@ -106,7 +106,12 @@
             } else if ($scope.shelfKey === '$myUploads') {
                 shelfLabel = '\"My Upload\"';
             } else if ($scope.shelfKey) {
-                shelfLabel = $scope.shelfKey;
+                var displayName = bookService.getBookshelfDisplayName($scope.shelfKey);
+                if (displayName) {
+                    shelfLabel = displayName;
+                } else {
+                    shelfLabel = $scope.shelfKey;
+                }
             } else {
                 shelfLabel = '';
             }
