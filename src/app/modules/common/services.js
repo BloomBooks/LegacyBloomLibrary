@@ -637,15 +637,30 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             $cookies["currentpage"] = 1;
         };
 
+        var cachedBookshelves;
         this.getBookshelfDisplayName = function(shelfKey) {
-            for (i = 0; i < $rootScope.bookshelves.length; i++) {
-                var shelf = $rootScope.bookshelves[i];
-                if (shelfKey == shelf.key)
-                {
+            if (cachedBookshelves) {                
+                return getBookshelfDisplayNameInternal(shelfKey, cachedBookshelves);
+            } else if ($rootScope.bookshelves) {
+                return getBookshelfDisplayNameInternal(shelfKey, $rootScope.bookshelves);
+            } else {
+                this.getBookshelves().then(function(bookshelves) {
+                    cachedBookshelves = bookshelves.map(function(bookshelf) {
+                        bookshelf.englishName = _localize(bookshelf.englishName);
+                        return bookshelf;
+                    });
+                    return getBookshelfDisplayNameInternal(shelfKey, bookshelves);
+                });
+            }            
+        };
+        getBookshelfDisplayNameInternal = function(shelfKey, bookshelves) {
+            for (i = 0; i < bookshelves.length; i++) {
+                var shelf = bookshelves[i];
+                if (shelfKey == shelf.key) {
                     return shelf.englishName;
                 }
             }
-            return null;
+            return shelfKey;
         };
 	} ])
     .service('downloadHistoryService', ['Restangular', '$http', 'authService', function(restangular, $http, authService) {
