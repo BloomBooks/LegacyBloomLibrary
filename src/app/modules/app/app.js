@@ -179,10 +179,8 @@
             });
 
             bookService.getBookshelves().then(function(bookshelves) {
-                $rootScope.bookshelves = bookshelves.map(function(bookshelf) {
-                    bookshelf.englishName = _localize(bookshelf.englishName);
-                    return bookshelf;
-                });
+                // The call to getBookshelves() populates $rootScope.cachedAndLocalizedBookshelves
+                bookshelves = $rootScope.cachedAndLocalizedBookshelves;
 
                 $scope.visibleBookshelves = bookshelves.filter(function(bookshelf) {
                     return bookshelf.normallyVisible;
