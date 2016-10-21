@@ -187,7 +187,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
     .service('sharedService', function() {
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
-        
+
         this.productionUrl = "https://api.parse.com/1"; // 1/indicates rev 1 of parse.com API
         this.sandboxUrl = "http://bloomparseserverebsandbox-env.us-east-1.elasticbeanstalk.com/parse";
     })
@@ -241,13 +241,17 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             // angularjs promise.
             query.find({
                 success: function (results) {
-                    var objects = new Array(results.length);
+                    var bookshelves = new Array(results.length);
                     for (i = 0; i < results.length; i++) {
-                        objects[i] = results[i].toJSON();
+                        bookshelves[i] = results[i].toJSON();
                     }
-                    // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
-                    // NOT using it in this context.
-                    $rootScope.$apply(function () { defer.resolve(objects); });
+
+                    $rootScope.cachedAndLocalizedBookshelves = bookshelves.map(function(bookshelf) {
+                        bookshelf.englishName = _localize(bookshelf.englishName);
+                        return bookshelf;
+                    });
+
+                    defer.resolve();
                 },
                 error: function (error) {
                     errorHandlerService.handleParseError('getBookshelves', error);
@@ -638,14 +642,30 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         };
 
         this.getBookshelfDisplayName = function(shelfKey) {
-            for (i = 0; i < $rootScope.bookshelves.length; i++) {
-                var shelf = $rootScope.bookshelves[i];
-                if (shelfKey == shelf.key)
-                {
+            // Not saying I'm proud of this, but it works.
+            // Some scenarios (can't remember currently) need to return this immediately, so we can't make
+            // the asyncronous call to getBookshelves().
+            // But some scenarios haven't yet populated $rootScope.cachedAndLocalizedBookshelves. Those
+            // cases seem to work okay with the asyncronous call. (though I would think maybe this causes a 
+            // race condition? Or, hopefully, in that case we are actually replacing it as soon as we obtain it.
+            // Spent too much time on this for now...)
+            if ($rootScope.cachedAndLocalizedBookshelves) {
+                return getBookshelfDisplayNameInternal(shelfKey, $rootScope.cachedAndLocalizedBookshelves);
+            } else {
+                // The call to getBookshelves() populates $rootScope.cachedAndLocalizedBookshelves
+                this.getBookshelves().then(function() {
+                    return getBookshelfDisplayNameInternal(shelfKey, $rootScope.cachedAndLocalizedBookshelves);
+                });
+            }
+        };
+        getBookshelfDisplayNameInternal = function(shelfKey, bookshelves) {
+            for (i = 0; i < bookshelves.length; i++) {
+                var shelf = bookshelves[i];
+                if (shelfKey == shelf.key) {
                     return shelf.englishName;
                 }
             }
-            return null;
+            return shelfKey;
         };
 	} ])
     .service('downloadHistoryService', ['Restangular', '$http', 'authService', function(restangular, $http, authService) {
