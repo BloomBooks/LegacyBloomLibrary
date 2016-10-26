@@ -153,8 +153,10 @@
 
 			$scope.getBooks = function() {
 				var first = 0;
-				//We want all books, but there is a limit at some point
-				var count = 1000;
+				// Parse.com used to limit us to 1000 on any query, so count was a required parameter, and here we sent 1000.
+				// However, now that limitation has been removed, but we haven't changed the cloud code, yet. (And that
+				// is beyond the scope of this change.) So for now, just set to an arbitrarily high number.
+				var count = 100000;
 
 				bookService.getFilteredBookRange(first, count, '', '', '', '', true, '', '', true).then(function (result) {
 					$scope.booksCache = {};
