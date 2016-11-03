@@ -189,7 +189,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
 
         this.productionUrl = "https://api.parse.com/1"; // 1/indicates rev 1 of parse.com API
-        this.sandboxUrl = "http://bloomparseserverebsandbox-env.us-east-1.elasticbeanstalk.com/parse";
+        this.sandboxUrl = "http://bloom-parse-server-develop.azurewebsites.net/parse";
     })
 
     .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',
