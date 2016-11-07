@@ -22,7 +22,10 @@ mixin currentVersionNotes
 			h2 Bloom Installers
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Release.htm', frameborder='0', scrolling='no')
 			+currentVersionNotes
-
+			p
+			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_REACH.htm', frameborder='0', scrolling='no')
+			.versionNotes
+				| Enabling Writers/REACH workshops should use the REACH version, which will not auto-upgrade to 3.8, but will receive any critical fixes.
 			p
 
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', frameborder='0', scrolling='no')
