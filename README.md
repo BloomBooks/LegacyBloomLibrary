@@ -52,9 +52,19 @@ A problem with the current approach is that Google and other web crawlers
 don't see anything more than our home page. This is discussed at length
 at https://docs.google.com/document/d/1XAJRmQoJHYkwkf4CVW_OWiBkRT1jqufKF2rJajcnxIw/edit?usp=sharing.
 
-Copyright and License
-=======
+
+### SIL Build Agent Setup
+
+#### Registry
+The build looks for these environment variables in order to upload to the S3 bucket from which we server bloomlibrary.org:
+HKEY_CURRENT_USER / SOFTWARE / SnowCode / S3BuildPublisher / (AwsAccessKeyId, AwsSecretAccessKey)
+               
+Note that some agents run as the user, but some run as a SYSTEM service (this may change over time, but it is the case at the moment and can really mess you up). So you have to get this into the correct hive for that agent. E.g., for a system user, open the HKEY_USERS/S-1-5-18 hive and put it in there.          
+
+
+#### Install on machine
+gzip must be accessible in the PATH. Current build agents do this by adding gzip.exe to c:\Program Files\nodejs.
+
+## Copyright and License
 Copyright 2013-2016 [SIL International](http://sil.org)
 [MIT/X11](http://sil.mit-license.org/)
-
-
