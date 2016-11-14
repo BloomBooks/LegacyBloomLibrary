@@ -1,4 +1,4 @@
-<div class="modal-dialog"> 
+<div class="modal-dialog">
 <!-- "modal-___" are bootstrap classes used to create the modal look -->
 <!-- We explicitly use these classes for all the pages which look like modals but aren't -->
 <!-- such as Log In, Sign Up, Here It Comes, and the download preflight -->
@@ -36,7 +36,7 @@
             <div class="unfloat"></div>
         </div>
         <div class="actions">
-            <a ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()"><i tooltip="Report violation of this site's terms of use" tooltip-placement="right" class="abuseIcon"></i></a>
+            <a ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()"><i tooltip="Report a concern about this book" tooltip-placement="right" class="abuseIcon"></i></a>
             <a ng-show="canReportViolation" href="mailto:abuse@bloomlibrary.org?subject=Reporting%20a%20violation%20of%20bloomlibrary.org%20terms%20of%20use%20for%20the%20book:%20{{book.title}}%20({{book.objectId}})&body=Please%20edit%20this%20message%20and%20explain%20clearly%20how%20this%20book%20violates%20the%20bloomlibrary.org%20terms%20of%20use.%0D%0AFor%20example:%0D%0A
 %20%20-%20the%20content%20of%20this%20book%20could%20harm%20people%0D%0A%20%20-%20this%20book%20was%20posted%20without%20the%20copyright%20holder's%20permission.%0D%0AThis%20book%20may%20be%20found%20at%20{{location}}."><i tooltip="Report violation of this site's terms of use" tooltip-placement="right" class="abuseIcon"></i></a>
             <a href="" ng-click="showDeleteDialog()"><i tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}"></i></a>
