@@ -188,8 +188,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
     .service('sharedService', function() {
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
 
-        this.productionUrl = "'http://bloom-parse-server-production.azurewebsites.net/parse'";
-        this.sandboxUrl = "http://bloom-parse-server-develop.azurewebsites.net/parse";
+        this.productionUrl = "'https://bloom-parse-server-production.azurewebsites.net/parse'";
+        this.sandboxUrl = "https://bloom-parse-server-develop.azurewebsites.net/parse";
     })
 
     .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',
