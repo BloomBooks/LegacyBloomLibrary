@@ -34,7 +34,7 @@ angular.module('palaso.ui.notice', ['ui.bootstrap'])
 	
 	return {
 		restrict : 'EA',
-		template : '<div ng-class="{shiftRight: isActive(\'/browse\')}" class="notices"><alert ng-repeat="notice in notices()" type="notice.type" close="closeNotice($index)">{{notice.message}}</alert></div>',
+		template : '<div class="notices"><alert ng-repeat="notice in notices()" type="notice.type" close="closeNotice($index)">{{notice.message}}</alert></div>',
 		replace : true,
 		compile : function(tElement, tAttrs) {
 			return function($scope, $elem, $attr) {

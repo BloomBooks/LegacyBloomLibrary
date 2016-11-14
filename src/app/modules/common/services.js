@@ -831,6 +831,22 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			}
 		};
 	})
+	.service('emailService', ['$q', 'authService', 'errorHandlerService', function ($q, authService, errorHandlerService) {
+        this.sendConcernEmail = function(content, bookId) {
+
+            defer = $q.defer();
+            Parse.Cloud.run('sendConcernEmail', { fromAddress: authService.userName(), content: content, bookId: bookId }, {
+                success: function(results) {
+                    defer.resolve();
+                },
+                error: function(error) {
+                    errorHandlerService.handleParseError('sendConcernEmail', error);
+                    defer.reject(error);
+                }
+            });
+            return defer.promise;
+        };
+	}])
     .service('errorHandlerService', ['$modal', '$analytics', function ($modal, $analytics) {
         var mostRecentUserMessage = 0; // a timestamp
 

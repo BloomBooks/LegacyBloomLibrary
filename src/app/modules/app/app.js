@@ -6,7 +6,7 @@
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
 					"BloomLibraryApp.confirmRelateDialog", "BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages", "BloomLibraryApp.suggestions",
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
-                    "BloomLibraryApp.installers", "BloomLibraryApp.errorMessage", "BloomLibraryApp.prefs",
+                    "BloomLibraryApp.installers", "BloomLibraryApp.errorMessage", "BloomLibraryApp.prefs", "BloomLibraryApp.reportBook",
                     "ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies', 'LocalStorageModule',
                     "angulartics", "angulartics.segment.io"])
 
