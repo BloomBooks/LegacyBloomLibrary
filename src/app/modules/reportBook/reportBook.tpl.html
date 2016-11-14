@@ -1,0 +1,40 @@
+
+<div class="modal-dialog">
+  <!-- "modal-___" are bootstrap classes used to create the modal look.-->
+  <!-- We explicitly use these classes for all the pages which look like modals but aren't-->
+  <!-- such as Log In, Sign Up, Here It Comes, and the download preflight-->
+  <div class="modal-content">
+    <div class="report-book">
+      <div class="modal-header"></div>
+      <div class="modal-body"><img ng-src="{{book.baseUrl | makeThumbnailUrl}}"/>
+        <div class="detailCol2">
+          <div class="title notranslate">{{book.title}}</div>
+          <div ng-show="book.summary" class="summary"><span class="fori18n">Summary:</span> <span class="notranslate">{{book.summary}}</span>
+          </div>
+          <div class="copyright">{{book.copyright}}</div>
+          <div class="license"><span class="fori18n">License:</span> <span class="notranslate">{{book.license}}</span>
+          </div>
+        </div>
+        <div class="unfloat"></div>
+        <div class="actions">
+          <div ng-show="canReportViolation">
+            <form ng-submit="report()" name="report-book-form">
+              <div class="input-wrapper">
+                <div>What concerns do you have about this book?</div>
+                <textarea id="concerns" ng-model="concerns" focus-on-load="focus-on-load" required="required"></textarea>
+              </div>
+              <div>
+                <div>Replies will be sent to the email address you provided when you signed up:</div>
+                <div class="notranslate">{{userEmailAddress}}</div>
+              </div>
+              <div class="pull-right"><a ng-click="cancel()" class="cancelBookDownload">Cancel</a>
+                <button id="Send" type="submit" class="btn btn-primary">Send</button>
+              </div>
+            </form>
+          </div>
+          <div ng-hide="canReportViolation">Please <a href="/login">log in</a> to report a concern you have with this book.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
