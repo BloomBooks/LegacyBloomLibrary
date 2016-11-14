@@ -156,7 +156,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			//  -H "X-Parse-REST-API-Key: QN9bdJ8JODDYxUSXqWZTaz2y8WcX3d5kMi6ha3TU" \
 			//  -H "Content-Type: application/json" \
 			//  -d '{"email":"coolguy@iloveapps.com"}' \
-			//  https://api.parse.com/1/requestPasswordReset
+			//  http://bloom-parse-server-production.azurewebsites.net/parse/requestPasswordReset
 			sendResetPassword: function(email)
 			{
 				// It took some experimentation to get restangular to make the post we wanted, with
@@ -188,7 +188,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
     .service('sharedService', function() {
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
 
-        this.productionUrl = "https://api.parse.com/1"; // 1/indicates rev 1 of parse.com API
+        this.productionUrl = "'http://bloom-parse-server-production.azurewebsites.net/parse'";
         this.sandboxUrl = "http://bloom-parse-server-develop.azurewebsites.net/parse";
     })
 
