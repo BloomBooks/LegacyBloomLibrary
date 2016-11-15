@@ -57,24 +57,32 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// See also the keys below in the Parse.initialize call.
         var headers;
         if (!sharedService.isProductionSite) {
-            // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
-            headers = {
-                'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
-                'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
-            //test site
-//                'X-Parse-Application-Id': 'llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv',
-//                'X-Parse-REST-API-Key': 'ZklnIdWBqDUwZo9dR3tp7EAFWOEOU4O5rdv9NLfj'
-            };
+            if (sharedService.isLocalSite){
+                headers = {
+                    'X-Parse-Application-Id': 'myAppId',
+                    'X-Parse-REST-API-Key': 'myRestKey'
+                };
+            } else {
+                // assume we're running the "develop" version of the site
+                headers = {
+                    'X-Parse-Application-Id': 'yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR',
+                    'X-Parse-REST-API-Key': 'KZA7c0gAuwTD6kZHyO5iZm0t48RplaU7o3SHLKnj'
+                };
+            }
         } else {
-            // we're live! Use the real silbloomlibrary api strings.
+            // we're live! Use the real production keys
             headers = {
                 'X-Parse-Application-Id': 'R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5',
                 'X-Parse-REST-API-Key': 'P6dtPT5Hg8PmBCOxhyN9SPmaJ8W4DcckyW0EZkIx'
             };
         }
 		restangularConfig = function (restangularConfigurer) {
-			if (!sharedService.isProductionSite) {
-				restangularConfigurer.setBaseUrl(sharedService.sandboxUrl);
+            if (!sharedService.isProductionSite) {
+                if (sharedService.isLocalSite) {
+                    restangularConfigurer.setBaseUrl(sharedService.localUrl);
+                } else {
+                    restangularConfigurer.setBaseUrl(sharedService.sandboxUrl);
+                }
 			} else {
 				restangularConfigurer.setBaseUrl(sharedService.productionUrl);
 			}
@@ -156,7 +164,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			//  -H "X-Parse-REST-API-Key: QN9bdJ8JODDYxUSXqWZTaz2y8WcX3d5kMi6ha3TU" \
 			//  -H "Content-Type: application/json" \
 			//  -d '{"email":"coolguy@iloveapps.com"}' \
-			//  http://bloom-parse-server-production.azurewebsites.net/parse/requestPasswordReset
+			//  http://bloom-parse-server-development.azurewebsites.net/parse/requestPasswordReset
 			sendResetPassword: function(email)
 			{
 				// It took some experimentation to get restangular to make the post we wanted, with
@@ -186,10 +194,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	} ])
 
     .service('sharedService', function() {
+        this.isLocalSite = window.location.host.indexOf("localhost") === 0;
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
 
-        this.productionUrl = "'https://bloom-parse-server-production.azurewebsites.net/parse'";
+        this.productionUrl = "https://bloom-parse-server-production.azurewebsites.net/parse";
         this.sandboxUrl = "https://bloom-parse-server-develop.azurewebsites.net/parse";
+        this.localUrl = "https://localhost:1337/parse";
     })
 
     .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',
@@ -200,13 +210,18 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Please keep using the REST API wherever possible and the javascript API only where necessary.
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
-		// our dependency on parse.com.
+		// our dependency on parse.com.        
         if (!sharedService.isProductionSite) {
-            // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
-            Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
-            //test site
-            //Parse.initialize('llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv', 'fFumVaz2kanqGHNXE6GXyVheGcDo9xdnYrUtfC2G');
-            Parse.serverURL = sharedService.sandboxUrl;
+            if (sharedService.isLocalSite) {
+                Parse.initialize('myAppId', 'myRestKey');
+                Parse.serverURL = sharedService.localUrl;
+            } else {
+                // we're running somewhere other than the official release of this site...use the silbloomlibrarysandbox api strings
+                Parse.initialize('yrXftBF6mbAuVu3fO6LnhCJiHxZPIdE7gl1DUVGR', '16SZXB7EhUBOBoNol5f8gGypThAiqagG5zmIXfvn');
+                //test site
+                //Parse.initialize('llt7pS0BDnuPvz7Laci2NY04jWWrzmDhlLapQVxv', 'fFumVaz2kanqGHNXE6GXyVheGcDo9xdnYrUtfC2G');
+                Parse.serverURL = sharedService.sandboxUrl;
+            }
         } else {
             // we're live! Use the real silbloomlibrary api strings.
             Parse.initialize('R6qNTeumQXjJCMutAJYAwPtip1qBulkFyLefkCE5', 'bAgoDIISBcscMJTTAY4mBB2RHLfkowkqMBMhQ1CD');
