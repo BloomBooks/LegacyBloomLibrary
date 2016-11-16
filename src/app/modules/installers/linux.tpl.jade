@@ -3,23 +3,26 @@
 	P A
 		strong
 			|  beta release
-		|  of Bloom 3.4 is currently available for Ubuntu Precise and Trusty.  It can also be installed on Wasta12 or Wasta14. You are welcome to try other versions of Linux but we cannot promise to support them.  (Once Bloom 3.7 is ready for beta testing, it will be supported on Ubuntu Xenial and Wasta16 as well as Ubuntu Trusty and Wasta14.)
+		|  of Bloom 3.7 is currently available for Ubuntu Precise, Trusty, and Xenial.  It can also be installed on Wasta12, Wasta14, and Wasta16. You are welcome to try other versions of Linux but we cannot promise to support them.
 
 	H3 Step 1: Try to get the beta release of the Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop-beta
 	P If this succeeds, you can skip to step 5 below (and you are living as a permanent beta tester of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
-	H3 Step 2: Add the SIL experimental repository to your system
+	H3 Step 2: Add the SIL repository and the SIL experimental repository to your system
 	H4 (for precise or wasta12):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise-experimental main"
 	pre sudo apt-get update
 	H4 (for trusty or wasta14):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
-	H4 (for xenial or wasta16 in the future)
+	H4 (for xenial or wasta16):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial-experimental main"
 	pre sudo apt-get update
 	H3 Step 3: Get the beta release of the  Bloom Desktop program
