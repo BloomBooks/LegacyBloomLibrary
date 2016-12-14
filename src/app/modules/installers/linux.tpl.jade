@@ -7,19 +7,19 @@
 		| sudo apt-get install bloom-desktop
 	P If this succeeds, you can skip to step 4 below (you are already a user of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
 	H3 Step 2: Add the SIL repository to your system
-	H4 (for precise or wasta12):
+	H4 (for precise or wasta 12):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
 	pre sudo apt-get update
-	H4 (for trusty or wasta14):
+	H4 (for trusty or wasta 14):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
 	pre sudo apt-get update
-	H4 (for xenial or wasta16):
+	H4 (for xenial or wasta 16):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial main"
 	pre sudo apt-get update
-	H3 Step 3: Get the release of the  Bloom Desktop program
+	H3 Step 3: Install the  Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop
 	H3 Step 4: Copy the desktop launcher to your local area
@@ -47,45 +47,37 @@
 	P A
 		strong
 			|  beta release
-		|  of Bloom may also be available for Ubuntu Trusty and Xenial.  If available, it can also be installed on Wasta 14 and Wasta 16.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  (Note that support for Precise and Wasta 12 ends with Bloom 3.7 since Precise and Wasta 12 reach their &ldquo;end of life&rdquo; in early 2017.)  At this time, a current release of Bloom (bloom-desktop) cannot coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one uninstalls the other.  Unlike the situation with Windows, if the first two numbers of the version are the same, the third number is significant even if the package name changes from bloom-desktop-beta to bloom-desktop.  For example,  bloom-desktop 3.7.307 is newer than bloom-desktop-beta 3.7.304.
+		|  of Bloom may be available for Ubuntu Trusty and Xenial.  If available, it can also be installed on Wasta 14 and Wasta 16.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  (Note that support for Precise and Wasta 12 ends with Bloom 3.7 since Precise and Wasta 12 reach their &ldquo;end of life&rdquo; in early 2017.)  At this time, a current release of Bloom (bloom-desktop) cannot coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one uninstalls the other.  Unlike the situation with Windows, if the first two numbers of the version are the same, the third number is significant even if the package name changes from bloom-desktop-beta to bloom-desktop.  For example,  bloom-desktop 3.7.307 is newer than bloom-desktop-beta 3.7.304.
 
-	H3 Step 1: Try to get the beta release of the Bloom Desktop program
+	H3 Step 1: Try to install the beta release of the Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop-beta
 	P If this succeeds, you can skip to step 5 below (and you are living as a constant beta tester of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
 	H3 Step 2: Add the SIL repository and the SIL experimental repository to your system
-	P The first two commands may be unnecessary if you already use SIL software.
-	H4 (for precise or wasta12):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise-experimental main"
-	pre sudo apt-get update
-	H4 (for trusty or wasta14):
+	P The first two commands (which add the primary SIL repository) may be unnecessary if you already use SIL software.
+	H4 (for trusty or wasta 14):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
-	H4 (for xenial or wasta16):
+	H4 (for xenial or wasta 16):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial-experimental main"
 	pre sudo apt-get update
-	H3 Step 3: Get the beta release of the  Bloom Desktop program
+	H3 Step 3: Install the beta release of the  Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop-beta
 	H3 Step 4: Remove the experimental repository from your system for safety
-	H4 (for precise)
-	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu precise-experimental main"
-	pre sudo apt-get update
 	H4 (for trusty)
 	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
-	H4 (for xenial or wasta16)
+	H4 (for wasta 14)
+	pre synaptic
+	P Using the graphical user interface, open the Settings / Repository dialog, then find and remove any entries in "Additional repositories" that include trusty-experimental in the fine print.
+	H4 (for xenial or wasta 16)
 	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu xenial-experimental main"
 	pre sudo apt-get update
-	H4 (for wasta12 or wasta14)
-	pre synaptic
-	P Using the graphical user interface, open the Settings / Repository dialog, then find and remove any entries in "Additional repositories" that include precise-experimental, trusty-experimental, or xenial-experimental in the fine print.
 	H3 Step 5: Copy the desktop launcher to your local area
 	pre cp -i /usr/share/applications/bloom.desktop ~/Desktop
 	pre chmod +x ~/Desktop/bloom.desktop
