@@ -7,10 +7,16 @@ mixin link(href)
 mixin currentVersionNotes
 	.versionNotes
 		| Requires Windows 7 SP1, 8, 8.1, or 10 and
-		+link('https://www.microsoft.com/en-us/download/details.aspx?id=49982') .NET 4.6.1
+		+link('https://www.microsoft.com/en-us/download/details.aspx?id=30653') .NET 4.5
 		| (part of Windows, so you probably already have it). NOT usable on Windows XP (but you can still use 3.0, see below) or Vista (but you can still use 3.7, see below.) Uninstall Version 1, 2, or 3.0 of Bloom before installing this. Older Windows Versions are
 		+link('/installers/old') here.
 		| Administrators can install into Program Files via --allUsers argument (also supports --silent).
+		block content
+
+mixin betaVersionNotes
+	.versionNotes
+		| Requires Windows 7 SP1, 8, 8.1, or 10 and
+		+link('https://www.microsoft.com/en-us/download/details.aspx?id=49982') .NET 4.6.1
 		block content
 
 .staticPage
@@ -25,23 +31,27 @@ mixin currentVersionNotes
 			p
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_REACH.htm', frameborder='0', scrolling='no')
 			.versionNotes
-				| Enabling Writers/REACH projects should use the REACH version, which will not auto-upgrade to 3.8, but will receive any critical fixes.
+				| Global Reading Network / Enabling Writers REACH projects should use this installer.
+				| Requires Windows 7 SP1, 8, 8.1, or 10 and
+				+link('https://www.microsoft.com/en-us/download/details.aspx?id=30653') .NET 4.5.
+				| Administrators can install into Program Files via --allUsers argument (also supports --silent).
 			p
 
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Beta.htm', frameborder='0', scrolling='no')
-			+currentVersionNotes
+			+betaVersionNotes
 				p Can be installed alongside the Release version, for testing purposes.
 			p
+
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_Vista.htm', frameborder='0', scrolling='no')
 			.versionNotes
 				| This older version can still be used on Windows Vista SP1 with
 				+link("http://www.microsoft.com/en-us/download/details.aspx?id=40779") .NET 4.5
-				|(part of Windows, so you probably already have it). NOT usable on Windows XP (but you can still use 3.0, see below.) Uninstall Version 1, 2, or 3.0 of Bloom before installing this.
+
 			iframe.download-version-frame(src='http://bloomlibrary.org/channels/DownloadPointers_XP.htm', frameborder='0', scrolling='no')
 			.versionNotes
 				| This older version can still be used on Windows XP SP3 with
 				+link('http://www.microsoft.com/en-us/download/details.aspx?id=17718&sa=D&sntz=1&usg=AFQjCNF8zPaQaiipP4wEHEmHtf24xnaVCA') .NET 4.0
-				|(part of Windows, so you probably already have it). Uninstall Version 1 or 2 before installing this.
+				|.
 
 			.linux
 				.label Linux
