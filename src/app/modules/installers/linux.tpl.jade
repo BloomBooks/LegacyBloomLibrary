@@ -1,3 +1,9 @@
+mixin link(href)
+	| &nbsp;
+	a(href=href)
+		block
+	| &nbsp;
+
 .staticPage
 	H2 Getting Bloom on Linux
 	P Bloom 3.7 is available for Ubuntu Precise, Trusty, and Xenial.  It can also be installed on Wasta 12, Wasta 14, and Wasta 16. You are welcome to try other versions of Linux but we cannot promise to support them.
@@ -7,6 +13,9 @@
 		| sudo apt-get install bloom-desktop
 	P If this succeeds, you can skip to step 4 below (you are already a user of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
 	H3 Step 2: Add the SIL repository to your system
+	P See
+		+link('http://packages.sil.org/') Instructions to install SIL software
+		| for alternative directions on how to add the SIL repository to your system.
 	H4 (for precise or wasta 12):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
@@ -29,17 +38,17 @@
 	H4 (mouse)
 	P Double click the desktop launcher icon
 	H4 (keyboard)
-	P Type the name of the program in a command window or into the dashboard or startup menu
+	P Type the name of the program in a terminal window or into the dashboard or startup menu
 	pre
 		| bloom
 
 	P Once Bloom has been installed, updates will be downloaded and installed the same way your system is already installing updates to other software.
 
-	H2 Note to current users of SIL software (December 2016)
+	H2 Note to current users of SIL software (January 2017)
 	P For security reasons, the SIL repository is getting a new
 		strong
 			|  public key
-		|  in January 2017.  Although the developers are making an effort to make this seamless for current users, it is possible that attempts to update or install software from the SIL repository may fail due to a mismatched key after January 1, 2017.  If that happens, the solution is simply to run the first command given above for adding the SIL repository to your system.  This will add the new repository public key to your system.
+		|  in January 2017.  Although the developers are making an effort to make this seamless for current users, it is possible that attempts to update or install software from the SIL repository may fail due to a mismatched key after January 1, 2017.  If that happens, the solution is simply to run the first command given above for adding the SIL repository to your system.  This will add the new repository public key to your system.  For convenience, this command is repeated here.
 	pre
 		| wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 
@@ -47,28 +56,30 @@
 	P A
 		strong
 			|  beta release
-		|  of Bloom may be available for Ubuntu Trusty and Xenial.  If available, it can also be installed on Wasta 14 and Wasta 16.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  (Note that support for Precise and Wasta 12 ends with Bloom 3.7 since Precise and Wasta 12 reach their &ldquo;end of life&rdquo; in early 2017.)  At this time, a current release of Bloom (bloom-desktop) cannot coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one uninstalls the other.  Unlike the situation with Windows, if the first two numbers of the version are the same, the third number is significant even if the package name changes from bloom-desktop-beta to bloom-desktop.  For example,  bloom-desktop 3.7.307 is newer than bloom-desktop-beta 3.7.304.
+		|  of Bloom may be available for Ubuntu Trusty and Xenial.  If available, it can also be installed on Wasta 14 and Wasta 16.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  (Note that support for Precise and Wasta 12 ends with Bloom 3.7 since Precise and Wasta 12 reach their &ldquo;end of life&rdquo; in early 2017.)  As with Windows, a current release of Bloom (bloom-desktop) can coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one does not affect the other.
 
 	H3 Step 1: Try to install the beta release of the Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop-beta
 	P If this succeeds, you can skip to step 5 below (and you are living as a constant beta tester of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
-	H3 Step 2: Add the SIL repository and the SIL experimental repository to your system
-	P The first two commands (which add the primary SIL repository) may be unnecessary if you already use SIL software.
+	H3 Step 2: Add the SIL experimental repository to your system
+	P See
+		+link('http://packages.sil.org/') Install Beta SIL software
+		| for alternative directions on how to add the experimental repository to your system.
+	P The first command (which adds the security key for the SIL repositories) may be unnecessary if you already use SIL software.
 	H4 (for trusty or wasta 14):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
 	H4 (for xenial or wasta 16):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial main"
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial-experimental main"
 	pre sudo apt-get update
 	H3 Step 3: Install the beta release of the  Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop-beta
 	H3 Step 4: Remove the experimental repository from your system for safety
+	P Note that removing the experimental repository reference will prevent the beta version of Bloom from being updated.  So you have a trade-off to consider.  Do you want to always have the latest beta release of Bloom at the risk of getting other beta software that you don't want?  Or do you want to prevent surprises at the cost of going through the process of adding and removing the experimental repository reference every time a new beta release of Bloom is announced?
 	H4 (for trusty)
 	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu trusty-experimental main"
 	pre sudo apt-get update
@@ -79,14 +90,17 @@
 	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu xenial-experimental main"
 	pre sudo apt-get update
 	H3 Step 5: Copy the desktop launcher to your local area
-	pre cp -i /usr/share/applications/bloom.desktop ~/Desktop
-	pre chmod +x ~/Desktop/bloom.desktop
+	pre cp -i /usr/share/applications/bloom-beta.desktop ~/Desktop
+	pre chmod +x ~/Desktop/bloom-beta.desktop
 	H3 Step 6: Launch the Application
 	H4 (mouse)
 	P Double click the desktop launcher icon
 	H4 (keyboard)
-	P Type the name of the program in a command window or into the dashboard or startup menu
+	P Type the name of the program in a terminal window or into the dashboard or startup menu
 	pre
-		| bloom
+		| bloom-beta
 
-	P Once a beta release of Bloom has been installed, updates to the beta release will be downloaded and installed the same way your system is already installing updates to other software.  However, you will not see any updates to the stable release of Bloom since it is no longer installed (if it ever was).
+	P Once a beta release of Bloom has been installed, updates to the beta release will not be downloaded and installed the same way your system installs updates to other software 
+		strong
+			|  unless you skip step 4 above
+		| .
