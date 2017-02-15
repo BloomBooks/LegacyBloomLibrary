@@ -12,6 +12,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-pug');
   grunt.loadNpmTasks('grunt-conventional-changelog');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-coffeelint');
@@ -87,8 +88,23 @@ module.exports = function ( grunt ) {
     /**
      * The directories to delete when `grunt clean` is executed.
      */
-    clean: [ 
-      '<%= build_dir %>', 
+    clean: [
+      /* These .tpl.html files are generated from .tpl.pug files.  There are a
+       * number of other .tpl.html files that are not generated, so we have to
+       * list these individually. */
+      'src/app/modules/prefs/prefs.tpl.html',
+      'src/app/modules/terms/terms.tpl.html',
+      'src/app/modules/installers/linux.tpl.html',
+      'src/app/modules/installers/oldInstallers.tpl.html',
+      'src/app/modules/installers/installers.tpl.html',
+      'src/app/modules/download/hereItComes.tpl.html',
+      'src/app/modules/download/preflight.tpl.html',
+      'src/app/modules/reportBook/reportBook.tpl.html',
+      'src/app/modules/static/opensource.tpl.html',
+      'src/app/modules/static/landing/landing.tpl.html',
+      'src/app/modules/static/about.tpl.html',
+      'src/app/modules/static/support.tpl.html',
+      '<%= build_dir %>',
       '<%= compile_dir %>'
     ],
 
@@ -291,6 +307,39 @@ module.exports = function ( grunt ) {
         options: {
           cleancss: true,
           compress: true
+        }
+      }
+    },
+
+
+    /**
+     * `grunt-contrib-pug` handles our pug compilation automatically.
+     */
+    pug: {
+      build: {
+        options: {
+          data: {
+            debug: false
+          }
+        },
+        files: {
+          /* Not all .tpl.html files have corresponding .tpl.pug files.  So we have to list all
+           * occurrences of .pug files individually here in order to generate the corresponding
+           * .html files.  If we create .tpl.pug files for all existing .tpl.html files, then
+           * this could be simplfied considerably (as could the list in clean: above and in the
+           * .gitignore file. */
+          'src/app/modules/prefs/prefs.tpl.html': 'src/app/modules/prefs/prefs.tpl.pug',
+          'src/app/modules/terms/terms.tpl.html': 'src/app/modules/terms/terms.tpl.pug',
+          'src/app/modules/installers/linux.tpl.html': 'src/app/modules/installers/linux.tpl.pug',
+          'src/app/modules/installers/oldInstallers.tpl.html': 'src/app/modules/installers/oldInstallers.tpl.pug',
+          'src/app/modules/installers/installers.tpl.html': 'src/app/modules/installers/installers.tpl.pug',
+          'src/app/modules/download/hereItComes.tpl.html': 'src/app/modules/download/hereItComes.tpl.pug',
+          'src/app/modules/download/preflight.tpl.html': 'src/app/modules/download/preflight.tpl.pug',
+          'src/app/modules/reportBook/reportBook.tpl.html': 'src/app/modules/reportBook/reportBook.tpl.pug',
+          'src/app/modules/static/opensource.tpl.html': 'src/app/modules/static/opensource.tpl.pug',
+          'src/app/modules/static/landing/landing.tpl.html': 'src/app/modules/static/landing/landing.tpl.pug',
+          'src/app/modules/static/about.tpl.html': 'src/app/modules/static/about.tpl.pug',
+          'src/app/modules/static/support.tpl.html': 'src/app/modules/static/support.tpl.pug'
         }
       }
     },
@@ -500,6 +549,14 @@ module.exports = function ( grunt ) {
       },
 
       /**
+       * When our pug source files change, we want to compile them
+       */
+      pugsrc: {
+        files: [ 'src/app/modules/**/*.pug' ],
+        tasks: [ 'pug:build', 'html2js' ]
+      },
+
+      /**
        * When assets are changed, copy them. Note that this will *not* copy new
        * files, so this is probably not very useful.
        */
@@ -588,7 +645,7 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'copy:css_less', 'less:build',
+    'clean', 'pug:build', 'html2js', 'jshint', 'coffeelint', 'coffee', 'copy:css_less', 'less:build',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build', 'karmaconfig',
     'karma:continuous' 
