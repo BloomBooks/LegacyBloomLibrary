@@ -5,3 +5,15 @@ bin/
 node_modules/
 vendor/
 .idea/*
+src/app/modules/prefs/prefs.tpl.html
+src/app/modules/terms/terms.tpl.html
+src/app/modules/installers/linux.tpl.html
+src/app/modules/installers/oldInstallers.tpl.html
+src/app/modules/installers/installers.tpl.html
+src/app/modules/download/hereItComes.tpl.html
+src/app/modules/download/preflight.tpl.html
+src/app/modules/reportBook/reportBook.tpl.html
+src/app/modules/static/opensource.tpl.html
+src/app/modules/static/landing/landing.tpl.html
+src/app/modules/static/about.tpl.html
+src/app/modules/static/support.tpl.html
