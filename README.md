@@ -10,9 +10,8 @@ Make sure you have [Nodejs](http://nodejs.org/download/) and then:
 git clone  https://github.com/BloomBooks/BloomLibrary.git
 cd BloomLibrary
 sudo npm -g install grunt-cli karma bower  (on Linux)
-sudo npm install                           (on Linux)
 npm -g install grunt-cli karma bower     (on Windows)
-npm install                              (on Windows)
+npm install
 bower install
 grunt watch
 ```
