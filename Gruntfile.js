@@ -89,21 +89,6 @@ module.exports = function ( grunt ) {
      * The directories to delete when `grunt clean` is executed.
      */
     clean: [
-      /* These .tpl.html files are generated from .tpl.pug files.  There are a
-       * number of other .tpl.html files that are not generated, so we have to
-       * list these individually. */
-      'src/app/modules/prefs/prefs.tpl.html',
-      'src/app/modules/terms/terms.tpl.html',
-      'src/app/modules/installers/linux.tpl.html',
-      'src/app/modules/installers/oldInstallers.tpl.html',
-      'src/app/modules/installers/installers.tpl.html',
-      'src/app/modules/download/hereItComes.tpl.html',
-      'src/app/modules/download/preflight.tpl.html',
-      'src/app/modules/reportBook/reportBook.tpl.html',
-      'src/app/modules/static/opensource.tpl.html',
-      'src/app/modules/static/landing/landing.tpl.html',
-      'src/app/modules/static/about.tpl.html',
-      'src/app/modules/static/support.tpl.html',
       '<%= build_dir %>',
       '<%= compile_dir %>'
     ],
@@ -322,25 +307,12 @@ module.exports = function ( grunt ) {
             debug: false
           }
         },
-        files: {
-          /* Not all .tpl.html files have corresponding .tpl.pug files.  So we have to list all
-           * occurrences of .pug files individually here in order to generate the corresponding
-           * .html files.  If we create .tpl.pug files for all existing .tpl.html files, then
-           * this could be simplfied considerably (as could the list in clean: above and in the
-           * .gitignore file. */
-          'src/app/modules/prefs/prefs.tpl.html': 'src/app/modules/prefs/prefs.tpl.pug',
-          'src/app/modules/terms/terms.tpl.html': 'src/app/modules/terms/terms.tpl.pug',
-          'src/app/modules/installers/linux.tpl.html': 'src/app/modules/installers/linux.tpl.pug',
-          'src/app/modules/installers/oldInstallers.tpl.html': 'src/app/modules/installers/oldInstallers.tpl.pug',
-          'src/app/modules/installers/installers.tpl.html': 'src/app/modules/installers/installers.tpl.pug',
-          'src/app/modules/download/hereItComes.tpl.html': 'src/app/modules/download/hereItComes.tpl.pug',
-          'src/app/modules/download/preflight.tpl.html': 'src/app/modules/download/preflight.tpl.pug',
-          'src/app/modules/reportBook/reportBook.tpl.html': 'src/app/modules/reportBook/reportBook.tpl.pug',
-          'src/app/modules/static/opensource.tpl.html': 'src/app/modules/static/opensource.tpl.pug',
-          'src/app/modules/static/landing/landing.tpl.html': 'src/app/modules/static/landing/landing.tpl.pug',
-          'src/app/modules/static/about.tpl.html': 'src/app/modules/static/about.tpl.pug',
-          'src/app/modules/static/support.tpl.html': 'src/app/modules/static/support.tpl.pug'
-        }
+        files: [ {
+          expand: true,
+          src: [ 'src/app/modules/**/*.tpl.pug' ],
+          dest: 'build/tmp/',
+          ext: '.tpl.html'
+        } ]
       }
     },
 
@@ -400,11 +372,16 @@ module.exports = function ( grunt ) {
      */
     html2js: {
       /**
-       * These are the templates from `src/app`.
+       * These are the templates from `src/app`.  (or compiled templates saved to 'build/tmp')
        */
       app: {
         options: {
-          base: 'src/app'
+          base: 'src/app',
+          // base only allows one string, so strip the alternate base with a rename
+          // function.  (The leading ../../ was determined empirically.)
+          rename: function (moduleName) {
+            return moduleName.replace('../../build/tmp/src/app/', '');
+          }
         },
         src: [ '<%= app_files.atpl %>' ],
         dest: '<%= build_dir %>/templates-app.js'
