@@ -1,0 +1,25 @@
+div.loginRoot
+    // uses many classes from signup.less for consistency
+    form(ng-submit="login()" name="loginform")
+        div.modal-dialog
+            div.modal-content
+                div.modal-body
+                    h2 Log In
+                    div.input-wrapper
+                        label(for="usernm") Email Address
+                        input#usernm.userNameInput(spellcheck="false" required type="email" name="usernm" ng-model="username" placeholder="Enter your email address" focus-on-load)/
+                    div.input-wrapper
+                        div.password
+                            div
+                                label.passwordLabel Password
+                            div
+                                input.passwordInput(spellcheck="false" required type="text" name="shown password" ng-model="password" placeholder="Enter your password" ng-show="showPassword")/
+                                input.passwordInput(required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword")/
+                        div.showPassword
+                            div.showPassInput
+                                input(type="checkbox" ng-model="showPassword")/
+                                | Show password
+                    div#forgot
+                        a.resetPw(ng-click="resetPassword()") Forgot password?
+                    div.loginButton
+                        button.btn.btn-primary.signupBtn(type="submit") Log In

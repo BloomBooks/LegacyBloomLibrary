@@ -1,0 +1,48 @@
+div.staticPage
+    // Carousel - text and images set in app.js 
+    div(ng-controller='CarouselCtrl')
+        div
+            carousel(interval='myInterval')
+                slide(ng-repeat='slide in slides', active='slide.active')
+                    img(ng-src='{{slide.image}}', style='margin:auto;')
+                    div.carousel-caption
+                        p {{slide.text}}
+    // /Carousel 
+
+    div.container-fluid
+        div.row
+            div.col-md-6
+                iframe(width='400', height='300', src='http://www.youtube.com/embed/TTQHODxqf4w?vq=hd720', frameborder='0', allowfullscreen)
+            div.col-md-6
+                iframe.right(src='http://prezi.com/embed/benmszxl212z/?bgcolor=ffffff&lock_to_path=0&autoplay=no&autohide_ctrls=0', width='400', height='300', frameBorder='0')
+
+    div.container-fluid.mini-features
+        div.row
+            div.col-md-4
+                img(src='assets/shellbookmini.png')
+                h4 Shell Books
+                div
+                    | Bloom uses collections of "shell books" that come with multiple source languages. Read the ones you understand, type in a translation in your language, and you're done!
+            div.col-md-4
+                img(src='assets/templatemini.png')
+                h4 Templates
+                div
+                    | Bloom comes with templates for Picture Dictionaries, Wall Calendars, and a "Basic Book" with template pages for the most common simple books.
+            div.col-md-4
+                img(src='assets/creative_commons.png')
+                h4 Clear Intellectual Property Rights
+                div Bloom helps authors and illustrators record copyright and select a license.
+        div.row
+            div.col-md-4
+                h4 Multilingual Books
+                div Toggle between monolingual, bilingual, and trilingual layouts.
+            div.col-md-4
+                img(src='assets/HTML5_Logo_32.png')
+                h4 Open, Standard Format
+                div
+                    | Bloom books are based on the same formats as the Web and EPub Ebooks: HTML, Cascading Style Sheets, and Java Script.
+            div.col-md-4
+                img(src='assets/pdf.gif')
+                h4 PDF Booklets
+                div
+                    | Click on Bloom's Publish tab, and voil&agrave;! You have a PDF file laid out as a booklet, ready for saving or printing.
