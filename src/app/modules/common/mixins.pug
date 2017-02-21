@@ -1,0 +1,22 @@
+mixin space
+  = ' '
+
+mixin link(href, target)
+  +space
+  if(attributes.id)
+    a(id!=attributes.id href=href target=target)
+      block
+  else
+    a(href=href target=target)
+      block
+
+mixin link-followed-by-space(href, target)
+  +space
+  if(attributes.id)
+    a(id!=attributes.id href=href target=target)
+      block
+  else
+    a(href=href target=target)
+      block
+  +space
+
