@@ -1,0 +1,9 @@
+div.errorMessage
+    div.modal-header
+        | An Error Occurred
+        div.close(ng-click="close()") x
+    div.modal-body
+        p Oops.  We're sorry, but it looks like the Bloom site is having a problem.
+        p This is probably a temporary connection issue.  Please try again in 1 or 2 minutes.
+        div.actions.right
+            button.btn.btn-primary(type="button" ng-click="close()") Close

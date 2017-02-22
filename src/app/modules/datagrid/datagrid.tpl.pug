@@ -1,0 +1,33 @@
+div.mainContent
+    div.container-fluid
+        div(ng-hide="isUserAdministrator") This screen is intended for those managing groups of books.
+        div.gridStyle.notranslate(ui-grid="gridOptions" ui-grid-pagination ui-grid-resize-columns ui-grid-edit ui-grid-cellNav ui-grid-auto-resize)
+    script#related-books-template(type="text/ng-template")
+        div.notranslate
+            tags-input(ng-model="row.entity.relBooks" ng-focus="grid.appScope.popOut($event)" ng-blur="grid.appScope.popIn($event)"
+                        placeholder="Add Related Book"
+                        template="book-info-tag-template"
+                        on-tag-added="grid.appScope.onRelatedBookAdded($tag, row.entity)"
+                        on-tag-removed="grid.appScope.saveBookRowRelationship(row.entity)"
+                        replace-spaces-with-dashes="false"
+                        add-from-autocomplete-only="true")
+                auto-complete(source="grid.appScope.autoCompleteBook($query, row.entity)"
+                               min-length="0"
+                               load-on-focus="true"
+                               load-on-empty="true"
+                               max-results-to-show="100" style="z-index: 2000"
+                               select-first-match="true" template="book-info-autocomplete-template")
+    script#book-info-tag-template(type="text/ng-template")
+        span(tooltip-html="true"
+              tooltip-placement="bottom"
+              tooltip-html-unsafe="Uploader: {{data.uploader}}<br>Languages: {{data.languages}}<br>{{data.copyright}}") {{data.title}}
+        a.remove-button(ng-click="$removeTag()") &#10006;
+    script#book-info-autocomplete-template(type="text/ng-template")
+        img(ng-src="{{data.imgUrl}}" height="70" width="49" style="float:left; width:49px; height:70px; padding-right:5px;")/
+        span(style="word-wrap: break-word;"): b: i {{data.title}}
+        br
+        span.needed-for-localization Uploader: {{data.uploader}}
+        br
+        span.needed-for-localization Languages: {{data.languages}}
+        br
+        span.needed-for-localization {{data.copyright}}
