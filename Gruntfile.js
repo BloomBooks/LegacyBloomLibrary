@@ -12,6 +12,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-pug');
   grunt.loadNpmTasks('grunt-conventional-changelog');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-coffeelint');
@@ -87,8 +88,8 @@ module.exports = function ( grunt ) {
     /**
      * The directories to delete when `grunt clean` is executed.
      */
-    clean: [ 
-      '<%= build_dir %>', 
+    clean: [
+      '<%= build_dir %>',
       '<%= compile_dir %>'
     ],
 
@@ -295,6 +296,26 @@ module.exports = function ( grunt ) {
       }
     },
 
+
+    /**
+     * `grunt-contrib-pug` handles our pug compilation automatically.
+     */
+    pug: {
+      build: {
+        options: {
+          data: {
+            debug: false
+          }
+        },
+        files: [ {
+          expand: true,
+          src: [ 'src/app/modules/**/*.tpl.pug' ],
+          dest: 'build/tmp/',
+          ext: '.tpl.html'
+        } ]
+      }
+    },
+
     /**
      * `jshint` defines the rules of our linter as well as which files we
      * should check. This file, all javascript sources, and all our unit tests
@@ -351,11 +372,16 @@ module.exports = function ( grunt ) {
      */
     html2js: {
       /**
-       * These are the templates from `src/app`.
+       * These are the templates from `src/app`.  (or compiled templates saved to 'build/tmp')
        */
       app: {
         options: {
-          base: 'src/app'
+          base: 'src/app',
+          // base only allows one string, so strip the alternate base with a rename
+          // function.  (The leading ../../ was determined empirically.)
+          rename: function (moduleName) {
+            return moduleName.replace('../../build/tmp/src/app/', '');
+          }
         },
         src: [ '<%= app_files.atpl %>' ],
         dest: '<%= build_dir %>/templates-app.js'
@@ -500,6 +526,14 @@ module.exports = function ( grunt ) {
       },
 
       /**
+       * When our pug source files change, we want to compile them
+       */
+      pugsrc: {
+        files: [ 'src/app/modules/**/*.pug' ],
+        tasks: [ 'pug:build', 'html2js' ]
+      },
+
+      /**
        * When assets are changed, copy them. Note that this will *not* copy new
        * files, so this is probably not very useful.
        */
@@ -588,7 +622,7 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'copy:css_less', 'less:build',
+    'clean', 'pug:build', 'html2js', 'jshint', 'coffeelint', 'coffee', 'copy:css_less', 'less:build',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build', 'karmaconfig',
     'karma:continuous' 

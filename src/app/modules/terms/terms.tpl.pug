@@ -1,24 +1,28 @@
+include ../common/mixins.pug
+
 div
   .staticPage
     h1 Terms of use
     .termsHeader
       h3 General Description
-    |         Welcome to the Bloom Library.
-    |         To provide you with Services, we have to set out some ground rules for using the Site in this document (the "Terms"). By accessing, using, or contributing to the Services or the Site, and in consideration for the Services we provide to you, you agree to abide by the Terms.
+    | Welcome to the Bloom Library.
+    | To provide you with Services, we have to set out some ground rules for using the Site in this document (the "Terms"). By accessing, using, or contributing to the Services or the Site, and in consideration for the Services we provide to you, you agree to abide by the Terms.
     .termsItem
       | Bloom Library may change the Terms from time to time, at the Bloom Library's sole discretion. Your continued use of the Site following the posting of such changes will constitute your assent to all such changes. Please periodically visit this section of the Site to review the current version of the Terms.
     .termsHeader
-      h3  Key things to know about book submission
+      h3 Key things to know about book submission
     ul
       li
         | All of your book's content must be either in the public domain, your own content, or content that you have permission to republish.
         | Your book's Credits or Title Page must give credit to images used and describe the terms under which they are being used in the book (e.g.
-        a(href='https://creativecommons.org/') Creative Commons license
+        +link('https://creativecommons.org/', '_blank') Creative Commons license
         | ).
+        +space
         strong
           | The presence of an image
           | on the Internet (a blog, news reports, a clipart site, etc.) does not give you the right to republish it here, even if you give credit.
-        |  Nor does a site saying "Royalty Free".
+        +space
+        | Nor does a site saying "Royalty Free".
       li
         | We cannot accept submissions containing material reused under "Fair Use" doctrine, because the whole point of this site is to enable others to continuously republish many copies, in multiple languages.
       li
@@ -77,8 +81,8 @@ div
     .termsSub Privacy
     .termsItem
       | Bloom Library respects the privacy of our users. The
-      a(href='/privacy') Privacy Notice
-      |  is expressly incorporated herein by reference and made a part of these Terms.
+      +link-followed-by-space('/privacy') Privacy Notice
+      | is expressly incorporated herein by reference and made a part of these Terms.
       br
     .termsSub Termination
     .termsItem
@@ -131,7 +135,7 @@ div
       | access to material that is harmful to minors. Information identifying current providers of such protection
       | is available on the Internet
       | (e.g.,
-      a(href='http://en.wikipedia.org/wiki/List_of_content-control_software', target='_blank')  http://en.wikipedia.org/wiki/List_of_content-control_software
+      +link('http://en.wikipedia.org/wiki/List_of_content-control_software', '_blank') http://en.wikipedia.org/wiki/List_of_content-control_software
       | ).
     .termsSub Content
     .termsItem
@@ -146,14 +150,14 @@ div
       | of acting on any advice posted by users of this site.
     .termsSub Licenses Applicable to Contributed Content
     .termsItem
-      | (a)	License to Other Users of the Site and Services: Attribution-Noncommercial License.
+      | (a) License to Other Users of the Site and Services: Attribution-Noncommercial License.
       | Except where otherwise noted, any and all content contributed by you to the Services or the Site is submitted under a
-      a(href='http://creativecommons.org/licenses/by-nc/3.0/us/', target='_blank') Creative Commons Attribution-Noncommercial 3.0 License
+      +link('https://creativecommons.org/licenses/by-nc/4.0/', '_blank') Creative Commons Attribution-Noncommercial 4.0 License
       | .
-      |             Books that you upload and illustrations contained in them will normally carry their own license; thus,
-      |             the above mainly applies to the information (such as thumbnail, title, and summary) which is visible on the web site without downloading a book.
+      | Books that you upload and illustrations contained in them will normally carry their own license; thus,
+      | the above mainly applies to the information (such as thumbnail, title, and summary) which is visible on the web site without downloading a book.
     .termsItem
-      | (b)	License to the Bloom Library. By posting or contributing content to the Site using these Services,
+      | (b) License to the Bloom Library. By posting or contributing content to the Site using these Services,
       | you are granting the Bloom Library a non-exclusive, royalty-free, perpetual, and worldwide license to use
       | your content in connection with the operation of the Site and Services, and/or for educational or other
       | non-commercial purposes, including, without limitation,
@@ -179,7 +183,7 @@ div
     .termsItem
       | If you are a copyright owner and you believe that your copyrighted materials have been used in a way that
       | constitutes copyright infringement, please see our
-      a(href='/infringement') SIL Notice Policy
+      +link('/infringement') SIL Notice Policy
       | .
     .termsSub Indemnities
     .termsItem
@@ -221,10 +225,10 @@ div
       | If for any reason a court of competent jurisdiction finds any provision or portion of these Terms to be unenforceable,
       | the remainder of the Terms will continue in full force and effect.
     .termsItem
-      i Effective Date of the Agreement is February 14, 2014.
+      i Effective Date of the Agreement is February 16, 2017.
     .termsAttribution
       | These terms are adapted from
-      a(href='http://www.dmlp.org/website-terms-use', target='_blank') The Digital Media Law Project terms of service
-      |  and may be used under a
-      a(href='http://creativecommons.org/licenses/by-nc-sa/3.0/us/', target='_blank') Creative Commons Attribution-Noncommercial-Share-Alike 3.0 License
+      +link-followed-by-space('http://www.dmlp.org/website-terms-use', '_blank') The Digital Media Law Project terms of service
+      | and may be used under a
+      +link('http://creativecommons.org/licenses/by-nc-sa/3.0/us/', '_blank') Creative Commons Attribution-Noncommercial-Share-Alike 3.0 License
       | .
