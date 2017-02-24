@@ -201,9 +201,9 @@
 
                 var DO_NOT_DISPLAY = 'DO_NOT_DISPLAY';
 
-                //This is the global list of all categories of tags
-                //The tags are separated out by these categories on the sidebar of the browse view
-                //id is the usage in the tag (e.g. "region.MyRegion") and displayName is the header
+                //This is the global list of all categories of tags.
+                //The tags are separated out by these categories on the sidebar of the browse view.
+                //id is the usage in the tag (e.g. "region" in "region:MyRegion") and displayName is the header.
                 $scope.tagCategories = [
                     {id: 'topic', displayName: 'Topics'},
                     {id: 'region', displayName: 'Regions'},
