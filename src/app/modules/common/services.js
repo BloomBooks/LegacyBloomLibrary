@@ -199,7 +199,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
         this.productionUrl = "https://bloom-parse-server-production.azurewebsites.net/parse";
         this.sandboxUrl = "https://bloom-parse-server-develop.azurewebsites.net/parse";
-        this.localUrl = "https://localhost:1337/parse";
+
+        this.localUrl = "http://localhost:1337/parse";
     })
 
     .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',

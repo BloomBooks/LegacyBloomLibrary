@@ -1,0 +1,13 @@
+div.confirmRelateDialog
+    div.modal-header
+        b: i {{mainBook.title}}
+        |  Is Already Related To Other Books!
+        div.close(ng-click="close()") x
+    div.modal-body
+        div A relationship already exists between <b><i>{{mainBook.title}}</i></b> and these other books:
+        div.notranslate(ng-repeat="book in books") <b><i>{{book.title}}</i></b> by {{book.uploader}}
+        br
+        div If you want to incorporate all of these books into the current relationship, click "Continue."
+        div.actions.right
+            button.btn.btn-primary(type="button" ng-click="relateBooks()") Continue
+            button.btn(type="button" ng-click="close()") Cancel
