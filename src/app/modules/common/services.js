@@ -819,6 +819,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return regex.test(tag);
         };
 
+        this.isTopicTag = function(tag) {
+            return tag.startsWith("topic:") || tag.indexOf(":") < 0;
+        };
+
         this.hideSystemTags = function(book) {
             if(book.tags) {
                 for (var i = book.tags.length-1; i >= 0; i--) {

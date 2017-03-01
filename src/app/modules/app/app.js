@@ -199,95 +199,89 @@
                 }
             });
 
-                var DO_NOT_DISPLAY = 'DO_NOT_DISPLAY';
+            //This is the global list of all categories of tags.
+            //The tags are separated out by these categories on the sidebar of the browse view.
+            //id is the usage in the tag (e.g. "region" in "region:MyRegion") and displayName is the header.
+            $scope.tagCategories = [
+                {id: 'topic', displayName: 'Topics'},
+                {id: 'region', displayName: 'Regions'},
+                {id: 'level', displayName: 'Reading Levels'}
+            ];
 
-                //This is the global list of all categories of tags.
-                //The tags are separated out by these categories on the sidebar of the browse view.
-                //id is the usage in the tag (e.g. "region" in "region:MyRegion") and displayName is the header.
-                $scope.tagCategories = [
-                    {id: 'topic', displayName: 'Topics'},
-                    {id: 'region', displayName: 'Regions'},
-                    {id: 'level', displayName: 'Reading Levels'},
-                    // Bookshelves are handled with different code, but we need to handle them
-                    // here else they end up in the Topics list.
-                    {id: 'bookshelf', displayName: DO_NOT_DISPLAY}
-                ];
+            //This is the object which will hold all of the tag names
+            $scope.tags = {topic: {top: [], other: []}};
 
-                //This is the object which will hold all of the tag names
-                $scope.tags = {topic: {top: [], other: []}};
+            tagService.getTags().then(function(tags) {
+                //This is the number of tags that will be shown in each category of tag before the (n more...)
+                //Currently this is set at 100 to prevent "other" list from showing
+                var numberOfTopTags = 100;
 
-                tagService.getTags().then(function(tags) {
-                    //This is the number of tags that will be shown in each category of tag before the (n more...)
-                    //Currently this is set at 100 to prevent "other" list from showing
-                    var numberOfTopTags = 100;
+                //Convert tag to object with database name and localized name
+                function makeTagObject(tagName) {
+                    return {id: tagName, displayName: _localize(tagService.getDisplayName(tagName))};
+                }
 
-                    //Convert tag to object with database name and localized name
-                    function makeTagObject(tagName) {
-                        return {id: tagName, displayName: _localize(tagService.getDisplayName(tagName))};
-                    }
+                //Get the names out of the tags; we don't care about the other properties
+                var tagNames = tags.map(function(item) {
+                    return item.name;
+                });
 
-                    //Get the names out of the tags; we don't care about the other properties
-                    var tagNames = tags.map(function(item) {
-                        return item.name;
-                    });
+                var iTag, iCat, cat;
+                var categoryRegex = {};
 
-                    var iTag, iCat, cat;
-                    var categoryRegex = {};
+                //Set up objects and regexes to save processing time
+                for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
+                    cat = $scope.tagCategories[iCat].id;
+                    $scope.tags[cat] = {top: [], other: []};
+                    categoryRegex[cat] = new RegExp('^' + cat + ':');
+                }
 
-                    //Set up objects and regexes to save processing time
+                //Loop through tags
+                for(iTag = 0; iTag < tagNames.length; iTag++) {
+                    //Check if tag belongs to a category
                     for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
                         cat = $scope.tagCategories[iCat].id;
-                        $scope.tags[cat] = {top: [], other: []};
-                        categoryRegex[cat] = new RegExp('^' + cat + ':');
+                        if(categoryRegex[cat].test(tagNames[iTag])) {
+                            break;
+                        }
                     }
 
-                    //Loop through tags
-                    for(iTag = 0; iTag < tagNames.length; iTag++) {
-                        var includeTag = true;
-
-                        //Check if tag belongs to a category
-                        for(iCat = 0; iCat < $scope.tagCategories.length; iCat++) {
-                            cat = $scope.tagCategories[iCat].id;
-                            if(categoryRegex[cat].test(tagNames[iTag])) {
-                                if ($scope.tagCategories[iCat].displayName == DO_NOT_DISPLAY) {
-                                    includeTag = false;
-                                }
-                                break;
-                            }
-                        }
-                        if (!includeTag) {
+                    //If we didn't find a category tag belongs to
+                    if(iCat >= $scope.tagCategories.length) {
+                        if (tagService.isTopicTag(tagNames[iTag])) {
+                            // Legacy topics didn't have a prefix, thus we need this special check.
+                            // At some point in the future when all topic tags in the database have
+                            // the prefix, this check can be removed.
+                            cat = $scope.tagCategories[0].id;
+                        } else {
+                            // Don't include it
                             continue;
                         }
-
-                        //If we didn't find a category tag belongs to
-                        if(iCat >= $scope.tagCategories.length) {
-                            //Default is the first-listed category
-                            cat = $scope.tagCategories[0].id;
-                        }
-
-                        //Only add tag to list if not a system tag
-                        if(!tagService.isSystemTag(tagNames[iTag])) {
-                            //If we have more room in the top list, add to top list; otherwise, add to other list
-                            if ($scope.tags[cat].top.length < numberOfTopTags) {
-                                $scope.tags[cat].top.push(makeTagObject(tagNames[iTag]));
-                            }
-                            else {
-                                $scope.tags[cat].other.push(makeTagObject(tagNames[iTag]));
-                            }
-                        }
                     }
 
-                    function compareTagObjects(a, b) {
-                        return a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase());
-                    }
-
-                    //Sort all tag lists alphabetically (previously sorted by usage counts)
-                    for(cat in $scope.tags) {
-                        for(var list in $scope.tags[cat]) {
-                            $scope.tags[cat][list].sort(compareTagObjects);
+                    //Only add tag to list if not a system tag
+                    if(!tagService.isSystemTag(tagNames[iTag])) {
+                        //If we have more room in the top list, add to top list; otherwise, add to other list
+                        if ($scope.tags[cat].top.length < numberOfTopTags) {
+                            $scope.tags[cat].top.push(makeTagObject(tagNames[iTag]));
+                        }
+                        else {
+                            $scope.tags[cat].other.push(makeTagObject(tagNames[iTag]));
                         }
                     }
-                });
+                }
+
+                function compareTagObjects(a, b) {
+                    return a.displayName.toLowerCase().localeCompare(b.displayName.toLowerCase());
+                }
+
+                //Sort all tag lists alphabetically (previously sorted by usage counts)
+                for(cat in $scope.tags) {
+                    for(var list in $scope.tags[cat]) {
+                        $scope.tags[cat][list].sort(compareTagObjects);
+                    }
+                }
+            });
 
             // Toggle sidebar
             $('[data-toggle="offcanvas"]').click(function () {
