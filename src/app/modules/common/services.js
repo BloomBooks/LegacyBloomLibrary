@@ -57,7 +57,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// See also the keys below in the Parse.initialize call.
         var headers;
         if (!sharedService.isProductionSite) {
-            if (sharedService.isLocalSite){
+            if (sharedService.useLocalParseServer){
                 headers = {
                     'X-Parse-Application-Id': 'myAppId',
                     'X-Parse-REST-API-Key': 'myRestKey'
@@ -78,7 +78,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         }
 		restangularConfig = function (restangularConfigurer) {
             if (!sharedService.isProductionSite) {
-                if (sharedService.isLocalSite) {
+                if (sharedService.useLocalParseServer) {
                     restangularConfigurer.setBaseUrl(sharedService.localUrl);
                 } else {
                     restangularConfigurer.setBaseUrl(sharedService.sandboxUrl);
@@ -194,7 +194,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	} ])
 
     .service('sharedService', function() {
-        this.isLocalSite = window.location.host.indexOf("localhost") === 0;
+
+        // Set this to true when you want to run against your own local parse server
+        this.useLocalParseServer = false;
+
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
 
         this.productionUrl = "https://bloom-parse-server-production.azurewebsites.net/parse";
@@ -213,7 +216,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
 		// our dependency on parse.com.
         if (!sharedService.isProductionSite) {
-            if (sharedService.isLocalSite) {
+            if (sharedService.useLocalParseServer) {
                 Parse.initialize('myAppId', 'myRestKey');
                 Parse.serverURL = sharedService.localUrl;
             } else {
