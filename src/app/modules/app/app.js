@@ -155,6 +155,33 @@
                     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
                 }
 
+                // Remove languages whose name is the same as the ISO code if another language with that
+                // ISO code also exists in the list.
+                // See https://silbloom.myjetbrains.com/youtrack/issue/BL-2397 for justification.
+                var nameIsoSame = [];
+                for (var i0 = 0; i0 < languages.length; ++i0) {
+                    if (languages[i0].name === languages[i0].isoCode) {
+                        nameIsoSame.unshift(languages[i0].isoCode);
+                    }
+                }
+                var badIsoSame = [];
+                for (var i1 = 0; i1 < languages.length; ++i1) {
+                    for (var j1 = 0; j1 < nameIsoSame.length; ++j1) {
+                        if (languages[i1].isoCode === nameIsoSame[j1] && languages[i1].name !== nameIsoSame[j1]) {
+                            badIsoSame.unshift(nameIsoSame[j1]);
+                        }
+                    }
+                }
+                while (badIsoSame.length > 0) {
+                    for (var i2 = 0; i2 < languages.length; ++i2) {
+                        if (languages[i2].isoCode === badIsoSame[0] && languages[i2].name === badIsoSame[0]) {
+                            languages.splice(i2, 1);
+                            break;
+                        }
+                    }
+                    badIsoSame.splice(0, 1);
+                }
+
                 //If all languages can be held in the top list, just fill the top list
                 if(languages.length <= numberOfTopLanguages) {
                     $scope.topLanguages = languages.sort(compareLang);
