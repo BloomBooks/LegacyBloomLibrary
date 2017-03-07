@@ -57,7 +57,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// See also the keys below in the Parse.initialize call.
         var headers;
         if (!sharedService.isProductionSite) {
-            if (sharedService.isLocalSite){
+            if (sharedService.useLocalParseServer){
                 headers = {
                     'X-Parse-Application-Id': 'myAppId',
                     'X-Parse-REST-API-Key': 'myRestKey'
@@ -78,7 +78,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         }
 		restangularConfig = function (restangularConfigurer) {
             if (!sharedService.isProductionSite) {
-                if (sharedService.isLocalSite) {
+                if (sharedService.useLocalParseServer) {
                     restangularConfigurer.setBaseUrl(sharedService.localUrl);
                 } else {
                     restangularConfigurer.setBaseUrl(sharedService.sandboxUrl);
@@ -194,7 +194,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 	} ])
 
     .service('sharedService', function() {
-        this.isLocalSite = window.location.host.indexOf("localhost") === 0;
+
+        // Set this to true when you want to run against your own local parse server
+        this.useLocalParseServer = false;
+
         this.isProductionSite = window.location.host.indexOf("bloomlibrary.org") === 0;
 
         this.productionUrl = "https://bloom-parse-server-production.azurewebsites.net/parse";
@@ -211,9 +214,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// Please keep using the REST API wherever possible and the javascript API only where necessary.
 		// Enhance: it is probably possible to implement server-side functions and access them using REST instead of
 		// using the parse.com javascript API. We are limiting use of this API to this one file in order to manage
-		// our dependency on parse.com.        
+		// our dependency on parse.com.
         if (!sharedService.isProductionSite) {
-            if (sharedService.isLocalSite) {
+            if (sharedService.useLocalParseServer) {
                 Parse.initialize('myAppId', 'myRestKey');
                 Parse.serverURL = sharedService.localUrl;
             } else {
@@ -371,11 +374,8 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             });
         };
 
-        // Common to getFilteredBooks{Count,Range}...though they do different things if all four params are blank.
-        // Return a query the yields books whose title (or tags) contain searchString, if any
-        // and whose languages list includes the specified language, if any
-        // and whose tags include the specified tag, if any;
-        // or, if shelf is specified, return exactly the books in that shelf, ignoring other params.
+        // Common to getFilteredBooks{Count,Range}
+        // Generates a book query based on the parameters provided
         this.makeQuery = function(searchString, shelfKey, lang, tag, allLicenses) {
             var query;
             if (shelfKey) {
@@ -415,8 +415,17 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             if (tag) {
                 if (shelfKey) {
                     query.containsAll("tags", ["bookshelf:" + shelfKey, tag]);
-                }else{
-                    query.equalTo("tags", tag);
+                } else {
+                    // if our tag X does not contain ':' or if it starts with 'topic:',
+                    // look up all books with tag topic:X or X
+                    if (tag.indexOf(':') < 0) {
+                        query.containedIn("tags", [tag, 'topic:' + tag]);
+                    } else if (tag.indexOf('topic:') === 0) {
+                        query.containedIn("tags", [tag, tag.substring(6)]);
+                    } else {
+                        // starts with a prefix other than 'topic:'; do a simple equalTo
+                        query.equalTo("tags", tag);
+                    }
                 }
             }
             if (!allLicenses) {
@@ -662,7 +671,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             // Some scenarios (can't remember currently) need to return this immediately, so we can't make
             // the asyncronous call to getBookshelves().
             // But some scenarios haven't yet populated $rootScope.cachedAndLocalizedBookshelves. Those
-            // cases seem to work okay with the asyncronous call. (though I would think maybe this causes a 
+            // cases seem to work okay with the asyncronous call. (though I would think maybe this causes a
             // race condition? Or, hopefully, in that case we are actually replacing it as soon as we obtain it.
             // Spent too much time on this for now...)
             if ($rootScope.cachedAndLocalizedBookshelves) {
