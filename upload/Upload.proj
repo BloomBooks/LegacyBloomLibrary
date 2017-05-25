@@ -1,69 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project=".\Snowcode.S3BuildPublisher.Tasks.Targets" />
 
   <ItemGroup>
     <Root Include="../bin/index.html" />
     <Root Include="../bin/favicon.ico" />
-	<Root Include="../bin/robots.txt" />
-	<Root Include="../bin/sitemap.xml" />
+    <Root Include="../bin/robots.txt" />
+    <Root Include="../bin/sitemap.xml" />
     <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg;../bin/assets/BloomLibrary-0.1.0.js"/>
     <Svg Include="../bin/assets/*.svg"/>
     <MainJs Include="../bin/assets/BloomLibrary-0.1.0.js"/>
   </ItemGroup>
   <PropertyGroup>
-    <AccessKey>AKIAJ24BTPKNQCTQ3WQQ</AccessKey> <!-- This is for JohnThomson, a user who can upload to our libraries; override with /p:AccessKey=; used by ConfigureS3 target-->
-    <Secret></Secret> <!-- Secret access key for use in $(AccessKey) Must override with /p:Secret=; used by ConfigureS3 target-->
-    <Key>Dev</Key>  <!-- Which set of keys to use; May override with /p:Key=; used by all targets. Must configure with this key before using other targets.-->
+    <ProfileName>BloomLibrary</ProfileName>
     <Bucket>dev.bloomlibrary.org</Bucket> <!-- Which bucket to target; May override with /p:Bucket=; used by all targets. User identified by access key must have write permission.-->
   </PropertyGroup>
 
-  <!-- call with build /t:ConfigureS3 /p:AccessKey=...;Secret=...; puts access keys into local registry, encrypted in the way other tasks require -->
-  <Target Name="ConfigureS3">
-    <StoreClientDetailsTask
-      EncryptionContainerName ="$(Key)"
-      AwsAccessKeyId ="$(AccessKey)"
-      AwsSecretAccessKey ="$(Secret)" />
-  </Target>
+  <UsingTask TaskName="S3BuildPublisher" AssemblyFile="SIL.BuildTasks.AWS.dll" />
 
   <!-- Publish root files (including index.html)-->
   <Target Name="Root">
     <S3BuildPublisher
-      EncryptionContainerName ="$(Key)"
+      CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(Root)"
       DestinationBucket="$(Bucket)"
-      PublicRead="true" />
+      IsPublicRead="true" />
   </Target>
 
   <!-- Publish Assets files -->
   <Target Name="Assets">
     <S3BuildPublisher
-      EncryptionContainerName ="$(Key)"
+      CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(Assets)"
       DestinationBucket="$(Bucket)"
       DestinationFolder="assets"
-      PublicRead="true" />
+      IsPublicRead="true" />
   </Target>
 
   <!-- Publish Svg files (with proper content type, which S3 does not guess correctly-->
   <Target Name="Svg">
     <S3BuildPublisher
-      EncryptionContainerName ="$(Key)"
+      CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(Svg)"
       DestinationBucket="$(Bucket)"
       DestinationFolder="assets"
-      PublicRead="true"
+      IsPublicRead="true"
       ContentType="image/svg+xml"/>
   </Target>
-  
+
     <!-- Publish Main Javascript file (with content-encoding indicating it is gzipped -->
   <Target Name="MainJs">
     <S3BuildPublisher
-      EncryptionContainerName ="$(Key)"
+      CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(MainJs)"
       DestinationBucket="$(Bucket)"
       DestinationFolder="assets"
-      PublicRead="true"
+      IsPublicRead="true"
       ContentEncoding="gzip"/>
   </Target>
 
