@@ -54,15 +54,12 @@ at https://docs.google.com/document/d/1XAJRmQoJHYkwkf4CVW_OWiBkRT1jqufKF2rJajcnx
 
 ### SIL Build Agent Setup
 
-#### Registry
-The build looks for these environment variables in order to upload to the S3 bucket from which we server bloomlibrary.org:
-HKEY_CURRENT_USER / SOFTWARE / SnowCode / S3BuildPublisher / (AwsAccessKeyId, AwsSecretAccessKey)
-               
-Note that some agents run as the user, but some run as a SYSTEM service (this may change over time, but it is the case at the moment and can really mess you up). So you have to get this into the correct hive for that agent. E.g., for a system user, open the HKEY_USERS/S-1-5-18 hive and put it in there.          
+#### AWS Credentials
+The credentials needed to upload the content to the S3 bucket must be supplied in the AWS credential store. On current agents, this can be found at c:\users\bob\.aws\credentials. Set the profile name as the ProfileName parameter of the Upload target.
 
 
 #### Install on machine
-gzip must be accessible in the PATH. Current build agents do this by adding gzip.exe to c:\Program Files\nodejs.
+7zip must be accessible in the PATH.
 
 ## Copyright and License
 Copyright 2013-2016 [SIL International](http://sil.org)
