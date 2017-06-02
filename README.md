@@ -55,7 +55,7 @@ at https://docs.google.com/document/d/1XAJRmQoJHYkwkf4CVW_OWiBkRT1jqufKF2rJajcnx
 ### SIL Build Agent Setup
 
 #### AWS Credentials
-The credentials needed to upload the content to the S3 bucket must be supplied in the AWS credential store. On current agents, this can be found at c:\users\bob\.aws\credentials. Set the profile name as the ProfileName parameter of the Upload target.
+The credentials needed to upload the content to the S3 bucket must be supplied in the AWS credential store. On current agents, this can be found at c:\users\bob\\.aws\credentials. Set the profile name as the ProfileName parameter of the Upload target.
 
 
 #### Install on machine
