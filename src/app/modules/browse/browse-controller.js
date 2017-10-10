@@ -44,8 +44,8 @@
 	});
 
 	angular.module('BloomLibraryApp.browse')
-	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService',
-		function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService) {
+	.controller('BrowseCtrl', ['$scope', '$timeout', 'bookService', 'languageService', 'tagService', '$state', '$stateParams', 'bookCountService', 'bookshelfService',
+		function ($scope, $timeout, bookService, languageService, tagService, $state, $stateParams, bookCountService, bookshelfService) {
 
 		$scope.searchText = $stateParams["search"];
         $scope.shelfKey = $stateParams["shelf"];
@@ -178,6 +178,8 @@
             setHiddenBooksMessages();
             $scope.setPage = function () {};
             $scope.initialized = true;
+
+            $scope.bookshelfHeaderHtmlSrc = bookshelfService.getBookshelfHeaderSrc($scope.shelfKey);
         }
         $scope.getFilteredBookCount = function() {
             $scope.numHiddenBooks = 0;

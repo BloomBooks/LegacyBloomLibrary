@@ -57,10 +57,12 @@ div.container.not-centered
                                         a.clear.right(href="" ng-click="filterTag('')") Clear
         div.rightContainer.col-sm-8.col-md-9
             p#sidebarToggleClosed.pull-left.visible-xs.sidebarToggle
-                button.btn.btn-primary.btn-xs(type="button" data-toggle="offcanvas") Filters 
+                button.btn.btn-primary.btn-xs(type="button" data-toggle="offcanvas") Filters&nbsp;
                     i.icon-caret-right
             div.mainContent
                 div.container-fluid
+                    div#bookshelfHeader(ng-include="bookshelfHeaderHtmlSrc")
+                    div#bookshelfHeaderSpacer(ng-show="bookshelfHeaderHtmlSrc")
                     div.searchRow.row
                         div.col-md-6(style="padding-bottom:10px")
                             div(ng-show="initialized")
@@ -69,7 +71,7 @@ div.container.not-centered
                                     div.space-after-book-message
                                     div(ng-show="numHiddenBooks")
                                         span.needed-for-localization {{hiddenBooksMessage}}
-                                        |   
+                                        | &nbsp;
                                         a(href="" ng-click="toggleAllLicenses()") {{hiddenBooksToggleMessage}}
                             div(ng-show="!initialized") Searching...
                         div.col-md-6(style="padding-bottom:10px")
@@ -89,8 +91,8 @@ div.container.not-centered
                                         h3.bookTitle.notranslate {{book.title}}
                                         div.languages(ng-show="book.langPointers.length")
                                             span(ng-repeat="lang in book.langPointers") {{lang.name}}
-                                                span(ng-hide="$last") , 
+                                                span(ng-hide="$last") ,&nbsp;
                                         div.tags(ng-show="book.tags.length")
                                             span.tag(ng-repeat="tag in book.tags") {{tag | getDisplayName}}
-                                                span(ng-hide="$last") , 
+                                                span(ng-hide="$last") ,&nbsp;
                                     div.unfloat

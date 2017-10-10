@@ -860,6 +860,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			}
 		};
 	})
+	.service('bookshelfService', function () {
+        this.getBookshelfHeaderSrc = function(bookshelfKey) {
+            if (!bookshelfKey) {
+                return "";
+            } else {
+                var filePath = "/assets/bookshelves/" + bookshelfKey + "/index.htm";
+                return filePath;
+            }
+        };
+	})
 	.service('emailService', ['$q', 'authService', 'errorHandlerService', function ($q, authService, errorHandlerService) {
         this.sendConcernEmail = function(content, bookId) {
 
