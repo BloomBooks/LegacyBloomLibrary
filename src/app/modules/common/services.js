@@ -395,7 +395,14 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 else {
                     query = new Parse.Query('books');
                     if (!tag) {
-                        query.equalTo("tags", "bookshelf:"+ shelfKey);
+                        if (shelfKey[shelfKey.length - 1] == "/") {
+                            // trailing slash indicates a parent shelf, and we want to include the children
+                            // whose keys start with this. However, there may also be books tagged with the
+                            // parent key itself, so we must not include the slash in the starts-with.
+                            query.startsWith("tags", "bookshelf:"+ shelfKey.substring(0, shelfKey.length - 1));
+                        } else {
+                            query.equalTo("tags", "bookshelf:"+ shelfKey);
+                        }
                     }
                 }
             } else {

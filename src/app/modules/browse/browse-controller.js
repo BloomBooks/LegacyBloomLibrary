@@ -112,6 +112,10 @@
                 } else {
                     shelfLabel = $scope.shelfKey;
                 }
+                if (shelfLabel[shelfLabel.length - 1] === "/") {
+                    // generated heading shelf, don't want to show the slash
+                    shelfLabel = shelfLabel.substring(0, shelfLabel.length - 1);
+                }
             } else {
                 shelfLabel = '';
             }
@@ -197,26 +201,8 @@
                 });
             }
         };
-        // Every path in this 'if' should eventually call getFilteredBookCount(). We can't just move outside
-        // because in at least one path we have to wait to call it after a promise is fulfilled.
-        if ($scope.shelfKey) {
-            if ($scope.shelfKey.substring(0,1) =='$')
-            {
-                // Not a real shelf, triggers a special query
-                $scope.getFilteredBookCount();
-            }
-            else {
-                // We need to retrieve the shelf object, and we can't run the query to get the count
-                // until we get the result.
-                bookService.getBookshelf($scope.shelfKey).then(function (shelf) {
-                    $scope.getFilteredBookCount();
-                });
-                // Todo: what if no such shelf??
-            }
-        }
-        else {
-            $scope.getFilteredBookCount();
-        }
+
+        $scope.getFilteredBookCount();
 
 		// browse.tpl.html listview div configures this to be called as pageItemsFunction when user chooses a page.
 		$scope.getBookRange = function (first, count) {
