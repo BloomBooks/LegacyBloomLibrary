@@ -10,8 +10,8 @@ div.container.not-centered
                 div
                     a.bookshelfItem(href="" ng-click="filterShelf('')") All Books
                 div(ng-repeat="bookshelf in visibleBookshelves")
-                    div(ng-class="{activeFilter: currentShelfKey == bookshelf.key}")
-                        a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.englishName}}
+                    div(ng-class="{activeFilter: currentShelfKey == bookshelf.key, childShelf: bookshelf.isChild}")
+                        a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.displayName}}
                         a.clear.right(href="" ng-click="filterShelf('','')") Clear
                 div
                     div(ng-class="{activeFilter: currentShelfKey == '$recent'}")
@@ -21,11 +21,11 @@ div.container.not-centered
                         a.bookshelfItem(href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-placement="right" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}") My Uploads
                 div(ng-show="otherBookshelves.length")
                     a(href="" ng-click="toggleVisibilityOfOtherBookshelves($event)") {{localizeMore(otherBookshelves.length,otherBookshelvesHidden)}}
-                    div(style="display:none")
+                    div(id="otherBookshelves" style="display:none")
                         div(ng-repeat="bookshelf in otherBookshelves")
                             div
-                                div(ng-class="{activeFilter: currentShelfKey == bookshelf.key}")
-                                    a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.englishName}}
+                                div(ng-class="{activeFilter: currentShelfKey == bookshelf.key, childShelf: bookshelf.isChild}")
+                                    a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.displayName}}
                                     a.clear.right(href="" ng-click="filterShelf('','')") Clear
             div.narrowSearch
                 h4 Narrow Search

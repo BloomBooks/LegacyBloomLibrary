@@ -189,14 +189,74 @@
                     return !bookshelf.normallyVisible;
                 });
 
-                //Search through otherBookshelves
+                // Make sure there is a shelf with the category name
+                function insertParentShelf(shelfList, indexOfChildShelf, prefix) {
+                    var i = indexOfChildShelf - 1;
+                    for (; i >= 0; i--) {
+                        if (!shelfList[i].isChild) {
+                            if (shelfList[i].displayName === prefix) {
+                                // already have suitable parent, make sure it's key
+                                // will trigger including children (assuming keys are
+                                // assigned in a sensible and consistent way)
+                                if (shelfList[i].key[shelfList[i].key.length - 1] != "/") {
+                                    shelfList[i].key = shelfList[i].key + "/";
+                                }
+                                return false; 
+                            }
+                            break;
+                        }
+                    }
+                    // need a new shelf at index i+1 with displayName prefix
+                    // use the child as a model
+                    var newShelf = jQuery.extend({}, shelfList[indexOfChildShelf]);
+                    newShelf.displayName = newShelf.englishName = prefix;
+                    newShelf.isChild = false;
+                    // Make the parent shelf have a key that is the first part of the child key,
+                    // up to and INCLUDING the slash. The slash triggers behavior in services.js
+                    // MakeQuery() to retrive all books belonging to shelves which start with this key.
+                    var index = newShelf.key.indexOf("/");
+                    if (index > 0) {
+                        newShelf.key = newShelf.key.substring(0,index + 1);
+                    }
+                    shelfList.splice(i+1, 0, newShelf);
+                    return true;
+                }
+
+                // Give every shelf a displayName and set isChild true or false
+                // Any shelf in the list whose name contains a slash should be adjusted:
+                // - displayName is shortened to the part after the slash
+                // - isChild is set to true
+                // - we make sure it has an appropriate parent whose displayName is the
+                // part of the name before the slash.
+                function handleIndent(shelfList) {
+                    for (var i = 0; i < shelfList.length; i++) {
+                        var shelf = shelfList[i];
+                        shelf.displayName = shelf.englishName;
+                        shelf.isChild = false;
+                        var index = shelf.englishName.indexOf("/");
+                        if (index >= 0) {
+                            var prefix = shelf.displayName.substring(0, index);
+                            shelf.isChild = true;
+                            shelf.displayName = shelf.displayName.substring(index + 1);
+                            if (insertParentShelf(shelfList, i, prefix)) {
+                                i++;
+                            }
+                        }
+                    }
+                }
+
+                handleIndent($scope.visibleBookshelves);
+                handleIndent($scope.otherBookshelves);
+
+                // If the current selection is in otherBookshelves make sure they are not collapsed.
                 for(var i = 0; i < $scope.otherBookshelves.length; i++) {
-                    //If the currentShelfKey is in the other list, add it to the top (visible) list
                     if ($scope.otherBookshelves[i].key == $scope.currentShelfKey) {
-                        $scope.visibleBookshelves.unshift($scope.otherBookshelves.splice(i, 1)[0]);
+                        $scope.otherLanguagesHidden = false;
+                        $("#otherBookshelves").show();
                         break;
                     }
                 }
+
             });
 
             //This is the global list of all categories of tags.
