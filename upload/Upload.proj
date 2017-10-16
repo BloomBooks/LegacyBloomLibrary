@@ -36,6 +36,15 @@
       IsPublicRead="true" />
   </Target>
 
+  <Target Name="BookshelfAssets">
+    <S3BuildPublisher
+      CredentialStoreProfileName ="$(ProfileName)"
+      SourceFolder="../bin/assets/bookshelves"
+      DestinationBucket="$(Bucket)"
+      DestinationFolder="assets/bookshelves"
+      IsPublicRead="true" />
+  </Target>
+
   <!-- Publish Svg files (with proper content type, which S3 does not guess correctly-->
   <Target Name="Svg">
     <S3BuildPublisher
@@ -58,6 +67,6 @@
       ContentEncoding="gzip"/>
   </Target>
 
-  <Target Name="Upload" DependsOnTargets="Root;Assets;Svg;MainJs"></Target>
+  <Target Name="Upload" DependsOnTargets="Root;Assets;BookshelfAssets;Svg;MainJs"></Target>
 
 </Project>
