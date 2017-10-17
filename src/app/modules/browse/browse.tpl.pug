@@ -10,8 +10,8 @@ div.container.not-centered
                 div
                     a.bookshelfItem(href="" ng-click="filterShelf('')") All Books
                 div(ng-repeat="bookshelf in visibleBookshelves")
-                    div(ng-class="{activeFilter: currentShelfKey == bookshelf.key}")
-                        a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.englishName}}
+                    div(ng-class="{activeFilter: currentShelfKey == bookshelf.key, childShelf: bookshelf.isChild}")
+                        a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.displayName}}
                         a.clear.right(href="" ng-click="filterShelf('','')") Clear
                 div
                     div(ng-class="{activeFilter: currentShelfKey == '$recent'}")
@@ -21,11 +21,11 @@ div.container.not-centered
                         a.bookshelfItem(href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-placement="right" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}") My Uploads
                 div(ng-show="otherBookshelves.length")
                     a(href="" ng-click="toggleVisibilityOfOtherBookshelves($event)") {{localizeMore(otherBookshelves.length,otherBookshelvesHidden)}}
-                    div(style="display:none")
+                    div(id="otherBookshelves" style="display:none")
                         div(ng-repeat="bookshelf in otherBookshelves")
                             div
-                                div(ng-class="{activeFilter: currentShelfKey == bookshelf.key}")
-                                    a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.englishName}}
+                                div(ng-class="{activeFilter: currentShelfKey == bookshelf.key, childShelf: bookshelf.isChild}")
+                                    a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.displayName}}
                                     a.clear.right(href="" ng-click="filterShelf('','')") Clear
             div.narrowSearch
                 h4 Narrow Search
@@ -57,10 +57,12 @@ div.container.not-centered
                                         a.clear.right(href="" ng-click="filterTag('')") Clear
         div.rightContainer.col-sm-8.col-md-9
             p#sidebarToggleClosed.pull-left.visible-xs.sidebarToggle
-                button.btn.btn-primary.btn-xs(type="button" data-toggle="offcanvas") Filters 
+                button.btn.btn-primary.btn-xs(type="button" data-toggle="offcanvas") Filters&nbsp;
                     i.icon-caret-right
             div.mainContent
                 div.container-fluid
+                    div#bookshelfHeader(ng-include="bookshelfHeaderHtmlSrc")
+                    div#bookshelfHeaderSpacer.unfloat
                     div.searchRow.row
                         div.col-md-6(style="padding-bottom:10px")
                             div(ng-show="initialized")
@@ -69,7 +71,7 @@ div.container.not-centered
                                     div.space-after-book-message
                                     div(ng-show="numHiddenBooks")
                                         span.needed-for-localization {{hiddenBooksMessage}}
-                                        |   
+                                        | &nbsp;
                                         a(href="" ng-click="toggleAllLicenses()") {{hiddenBooksToggleMessage}}
                             div(ng-show="!initialized") Searching...
                         div.col-md-6(style="padding-bottom:10px")
@@ -89,8 +91,8 @@ div.container.not-centered
                                         h3.bookTitle.notranslate {{book.title}}
                                         div.languages(ng-show="book.langPointers.length")
                                             span(ng-repeat="lang in book.langPointers") {{lang.name}}
-                                                span(ng-hide="$last") , 
+                                                span(ng-hide="$last") ,&nbsp;
                                         div.tags(ng-show="book.tags.length")
                                             span.tag(ng-repeat="tag in book.tags") {{tag | getDisplayName}}
-                                                span(ng-hide="$last") , 
+                                                span(ng-hide="$last") ,&nbsp;
                                     div.unfloat
