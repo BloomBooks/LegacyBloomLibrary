@@ -23,8 +23,30 @@
       <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
     <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
 
+    <!-- It's tempting to move some of these less important JS files to the end in hopes of speeding loading.
+    The specific ones here...parse.min.js and the transifex ones...each cause an annoying double-header flicker
+    when so moved (BL-5130), so please don't move them unless you can prevent that. -->
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
+    <!-- for parse.com queries. Please use ONLY in services.js. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/1.6.14/parse.min.js"></script>
+    <!--script src="https://npmcdn.com/parse@1.9.1/dist/parse.min.js"></script-->
+    <!-- for transifex.com, localization -->
+    <script type="text/javascript">
+        window.liveSettings = {
+            api_key: "1927b5ee5ee0401baa960991364c4c15",
+            picker: "bottom-right",
+            detectlang: true,
+            dynamic: true,
+            autocollect: true,
+            staging: true
+        };
+    </script>
+    <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
+    <script type="text/javascript">
+        //create an alias for translation of dynamic strings
+        window._localize = Transifex.live.translateText;
+    </script>
   </head>
   <body>
     <noscript>
@@ -118,27 +140,7 @@
             &copy; {{year}} SIL International <span class="separator">|</span><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a><span class="separator">|</span><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a>
           <a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png' alt='Mobile Analytics'/></a>
         </div>
-        <!-- Less important javascripts load down here so the page can render before they've loaded -->
-        <!-- for parse.com queries. Please use ONLY in services.js. -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/1.6.14/parse.min.js"></script>
-        <!--script src="https://npmcdn.com/parse@1.9.1/dist/parse.min.js"></script-->
-
-        <!-- for transifex.com, localization -->
-        <script type="text/javascript">
-        window.liveSettings = {
-            api_key: "1927b5ee5ee0401baa960991364c4c15",
-            picker: "bottom-right",
-            detectlang: true,
-            dynamic: true,
-            autocollect: true,
-            staging: true
-        };
-        </script>
-        <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
-        <script type="text/javascript">
-        //create an alias for translation of dynamic strings
-        window._localize = Transifex.live.translateText;
-        </script>
+        <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
     </div>
   </body>
 </html>
