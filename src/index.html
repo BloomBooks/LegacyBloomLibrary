@@ -6,6 +6,7 @@
 <html ng-app="BloomLibraryApp">
   <head>
     <title ng-bind="pageTitle">Bloom Book Making Software from SIL International</title>
+    <meta charset="UTF-8">
 
     <meta name="viewport" content="initial-scale=1">
 
@@ -46,6 +47,40 @@
     <script type="text/javascript">
         //create an alias for translation of dynamic strings
         window._localize = Transifex.live.translateText;
+
+        // This is a little bit of a hack in that if transifex changes the id of the elements, this will break.
+        // The other alternative is to roll our own picker altogether.
+        // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
+        Transifex.live.onFetchLanguages(function(languages) {
+
+            Transifex.live.onTranslatePage(function(language_code) {
+                $('#tx-live-lang-picker li').each(function( index ) {
+                    var desiredName = convertLanguageName($( this ).text())
+                    $(this).text(desiredName);
+                    //$(this).attr('data-name', desiredName);
+                });
+
+                $('#tx-live-lang-current').text(convertLanguageName($('#tx-live-lang-current').text()));
+            });
+        });
+
+        // Lets us display the language names however we like
+        function convertLanguageName(source) {
+
+            let target = source;
+            switch (source) {
+                case "Español":
+                    target = "español";
+                    break;
+                case "Français":
+                    target = "français";
+                    break;
+                case "中文 (中国)":
+                    target = "中文（简体）";
+                    break;
+            }
+            return target;
+        }
     </script>
   </head>
   <body>
