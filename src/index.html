@@ -6,6 +6,7 @@
 <html ng-app="BloomLibraryApp">
   <head>
     <title ng-bind="pageTitle">Bloom Book Making Software from SIL International</title>
+    <meta charset="UTF-8">
 
     <meta name="viewport" content="initial-scale=1">
 
@@ -46,6 +47,43 @@
     <script type="text/javascript">
         //create an alias for translation of dynamic strings
         window._localize = Transifex.live.translateText;
+
+        // Configure Transifex to show the language names we want in the language-chooser menu (bottom right)
+        // by manipulating the HTML it generates for the menu.
+        // This is a little bit of a hack in that if transifex changes the id of the
+        // tx-live-lang-picker or tx-live-lang-current elements, this will just stop renaming languages.
+        // The other alternative would be to roll our own picker altogether.
+        // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
+        Transifex.live.onFetchLanguages(function(languages) {
+
+            Transifex.live.onTranslatePage(function(language_code) {
+                $('#tx-live-lang-picker li').each((i, listItem) => {
+                    $(listItem).text(convertLanguageName($(listItem).text()));
+                });
+
+                let currentLanguageElement = $('#tx-live-lang-current');
+                currentLanguageElement.text(convertLanguageName(currentLanguageElement.text()));
+            });
+        });
+
+        // Lets us display the language names however we like
+        function convertLanguageName(source) {
+            let target = source;
+            switch (source) {
+                case "Español":
+                    target = "español";
+                    break;
+                case "Français":
+                    target = "français";
+                    break;
+                // We were asked to change this "Chinese (China)" to "Chinese (Simplified)"
+                // for somewhat political reasons by our colleagues working there.
+                case "中文 (中国)":
+                    target = "中文（简体）";
+                    break;
+            }
+            return target;
+        }
     </script>
   </head>
   <body>
