@@ -1,10 +1,12 @@
 mixin SIL(name, roles)
-	br
-	=name
-	| &nbsp;(
-	a(href='http://sil.org') SIL International
-	| ):&nbsp;
-	=roles
+	div
+		span.notranslate
+			=name
+			| &nbsp;(
+			a(href='http://sil.org') SIL International
+			| ):&nbsp;
+		span.needed-for-localization
+			=roles
 
 mixin link(display, url)
 	a(href=url)
@@ -17,23 +19,23 @@ mixin linkPlusSpace(display, url)
 
 .staticPage
 	h3 Team
-	| Our team is constantly changing, with each version created by a slightly different group. Here are all the people that have ever worked on Bloom:
-	p
-		+SIL('Eberhard Beilharz', 'Linux Programming')
-		+SIL('John Hatton','Program Manager, UX Design, Programming, CSS')
-		+SIL('Phil Hopper', 'Programming')
-		+SIL('Marlon Hovland','Documentation')
-		+SIL('Susanna Imrie','Training Videos')
-		+SIL('Gordon Martin','Programming, CSS')
-		+SIL('Steve McConnel', 'Linux Programming')
-		+SIL('David Moore', 'Linux Programming')
-		+SIL('Sue Newland', 'Testing')
-		+SIL('Marvin Nichols','Testing')
-		+SIL('Andrew Polk','Programming')
-		+SIL('John Thomson','Dev Lead, Programming')
-		+SIL('Len Wallstrom', 'Testing')
-		br
-		| Bruce Cox & Jeremy Brown have contributed javascript code.
+	| Our team is constantly changing, with each version created by a slightly different group. Here are all the people who have ever worked on Bloom:
+	br
+	br
+	+SIL('Eberhard Beilharz', 'Linux Programming')
+	+SIL('John Hatton','Program Manager, UX Design, Programming, CSS')
+	+SIL('Phil Hopper', 'Programming')
+	+SIL('Marlon Hovland','Documentation')
+	+SIL('Susanna Imrie','Training Videos')
+	+SIL('Gordon Martin','Programming, CSS')
+	+SIL('Steve McConnel', 'Linux Programming')
+	+SIL('David Moore', 'Linux Programming')
+	+SIL('Sue Newland', 'Testing')
+	+SIL('Marvin Nichols','Testing')
+	+SIL('Andrew Polk','Programming')
+	+SIL('John Thomson','Dev Lead, Programming')
+	+SIL('Len Wallstrom', 'Testing')
+	div Bruce Cox and Jeremy Brown have contributed javascript code.
 	h3 Bloom relies on the following open source works of others:
 	ul
 		li
