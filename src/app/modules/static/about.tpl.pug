@@ -1,10 +1,12 @@
 mixin SIL(name, roles)
 	br
-	=name
-	| &nbsp;(
-	a(href='http://sil.org') SIL International
-	| ):&nbsp;
-	=roles
+	span.notranslate
+		=name
+		| &nbsp;(
+		a(href='http://sil.org') SIL International
+		| ):&nbsp;
+	span.needed-for-localization
+		=roles
 
 mixin link(display, url)
 	a(href=url)
