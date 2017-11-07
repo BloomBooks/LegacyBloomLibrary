@@ -55,16 +55,22 @@
         // The other alternative would be to roll our own picker altogether.
         // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
         Transifex.live.onFetchLanguages(function(languages) {
-
             Transifex.live.onTranslatePage(function(language_code) {
-                $('#tx-live-lang-picker li').each((i, listItem) => {
-                    $(listItem).text(convertLanguageName($(listItem).text()));
-                });
-
-                let currentLanguageElement = $('#tx-live-lang-current');
-                currentLanguageElement.text(convertLanguageName(currentLanguageElement.text()));
+                convertAllLanguageNames();
             });
         });
+        Transifex.live.onReady(() => {
+            convertAllLanguageNames();
+        });
+
+        function convertAllLanguageNames() {
+            $('#tx-live-lang-picker li').each((i, listItem) => {
+                $(listItem).text(convertLanguageName($(listItem).text()));
+            });
+
+            let currentLanguageElement = $('#tx-live-lang-current');
+            currentLanguageElement.text(convertLanguageName(currentLanguageElement.text()));
+        }
 
         // Lets us display the language names however we like
         function convertLanguageName(source) {
