@@ -59,12 +59,12 @@
                 convertAllLanguageNames();
             });
         });
-        Transifex.live.onReady(() => {
+        Transifex.live.onReady(function() {
             convertAllLanguageNames();
         });
 
         function convertAllLanguageNames() {
-            $('#tx-live-lang-picker li').each((i, listItem) => {
+            $('#tx-live-lang-picker li').each(function (i, listItem) {
                 $(listItem).text(convertLanguageName($(listItem).text()));
             });
 
