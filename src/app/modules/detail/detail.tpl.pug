@@ -1,7 +1,7 @@
 div.modal-dialog
-    // "modal-___" are bootstrap classes used to create the modal look 
-    // We explicitly use these classes for all the pages which look like modals but aren't 
-    // such as Log In, Sign Up, Here It Comes, and the download preflight 
+    // "modal-___" are bootstrap classes used to create the modal look
+    // We explicitly use these classes for all the pages which look like modals but aren't
+    // such as Log In, Sign Up, Here It Comes, and the download preflight
     div.modal-content
         div.detail
             div.modal-header
@@ -11,50 +11,55 @@ div.modal-dialog
                     div.title.notranslate {{book.title}}
                     div.summary(ng-hide="!book.summary")
                         span.fori18n Summary:
-                        |  
+                        = ' '
                         span.notranslate {{book.summary}}
                     div.detailPages
                         span.fori18n Pages:
-                        |  
+                        = ' '
                         span.notranslate {{book.pageCount}}
                     div.languages(ng-show="book.langPointers.length")
                         span.fori18n Languages:
-                        |  
+                        = ' '
                         span(ng-repeat="lang in book.langPointers")
                             a(ng-href="http://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank") {{lang.name}}
-                            span(ng-hide="$last") , 
-                    div.copyright {{book.copyright}}
+                            span(ng-hide="$last") ,
+                                = ' '
+                    div.copyright.notranslate {{book.copyright}}
                     div.license
                         span.fori18n License:
-                        |  
+                        = ' '
                         span.notranslate
-                            |  
+                            = ' '
                             a(href="javascript:void(null);" ng-click="showLicense()") {{book.license}}
                             span(ng-hide="!book.licenseNotes") . (
                             | {{book.licenseNotes}}
                             span(ng-hide="!book.licenseNotes") )
                     div.status
-                        // Don't use updatedAt here because it is changed by things other than uploading, for example, when the librarian adds a tag (BL-2737). 
+                        // Don't use updatedAt here because it is changed by things other than uploading, for example, when the librarian adds a tag (BL-2737).
                         span.fori18n Uploaded:
-                        |  
+                        = ' '
                         span.notranslate {{book.createdAt | cleanDate}}
-                        |  
-                        span.fori18n by 
+                        = ' '
+                        span.fori18n by
+                        = ' '
                         span.notranslate
                             a(ng-show="canReportViolation" href="mailto:{{book.uploader.email}}?subject=A%20request%20about%20a%20book%20you%20contributed%20to%20bloomlibrary.org:%20{{book.title}}%20({{book.objectId}})&body=This%20book%20may%20be%20found%20at%20{{location}}.") {{book.uploader.email | obfuscate}}
                             a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()") {{book.uploader.email | obfuscate}}
                     div.tags(ng-show="book.tags.length")
                         span.fori18n Tags:
-                        |  
+                        = ' '
                         span(ng-repeat="tag in book.tags")
                             i.icon-tag(tx-content="exclude")
                             span(tx-content="include") {{tag | getDisplayName}}
+                            span(ng-hide="$last")
+                                = ' '
                     div.relatedBooks(ng-show="book.relatedBooks")
                         span.fori18n Related Books:
-                        |  
+                        = ' '
                         span.notranslate(ng-repeat="relBook in book.relatedBooks")
                             a(ui-sref="browse.detail({bookId: relBook.objectId})") {{relBook.title}}
-                            span(ng-hide="$last") , 
+                            span(ng-hide="$last") ,
+                                = ' '
                     div.unfloat
                 div.actions
                     a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()")
@@ -64,7 +69,7 @@ div.modal-dialog
                     a(href="" ng-click="showDeleteDialog()")
                         i(tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                     div.pull-right
-                        // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work 
+                        // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work
                         a(ng-href="{{book.baseUrl | makePreviewUrl}}" overlayTitle="{{book | previewLangInfo}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
                             button.btn.btn-default(type="button")
                                 i.notranslate.icon-eye-open
