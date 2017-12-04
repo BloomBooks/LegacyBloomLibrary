@@ -180,8 +180,12 @@
     </div>
     <div class="site-footer" ng-controller="FooterCtrl">
         <div class="footerLinks">
-            &copy; {{year}} SIL International <span class="separator">|</span><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a><span class="separator">|</span><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a>
-          <a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png' alt='Mobile Analytics'/></a>
+            <div class="needed-for-localization">&copy; {{year}} SIL International</div>
+            <div class="notranslate"><span class="separator">|</span></div>
+            <div class="needed-for-localization"><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a></div>
+            <div class="notranslate"><span class="separator">|</span></div>
+            <div class="needed-for-localization"><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a></div>
+            <div class="notranslate"><a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png' alt='Mobile Analytics'/></a></div>
         </div>
         <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
     </div>
