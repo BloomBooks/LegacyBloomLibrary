@@ -91,6 +91,12 @@
         };
 
         $scope.localizeMore = function(count,hidden) {
+            // Inexplicably, we get a bunch of calls to this when count is undefined
+            // which causes "undefined" to show up upon localization. Thankfully,
+            // the last relevant call in each case doesn't seem to be undefined,
+            // so we can simply return nothing in the undefined case.
+            if (count === undefined) { return; }
+
             if (hidden) {
                 return _localize("{count} more...", {count:count});
             } else {
