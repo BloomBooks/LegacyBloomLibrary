@@ -34,13 +34,24 @@
     <!--script src="https://npmcdn.com/parse@1.9.1/dist/parse.min.js"></script-->
     <!-- for transifex.com, localization -->
     <script type="text/javascript">
+        var isStaging = true;
+        var apiKey = "83e1ea4d808741d4a50e0dc4b9991154";
+        if (location.hostname === "bloomlibrary.org") {
+            isStaging = false;
+
+            // This is just temporary until we deploy our new transifex project for production
+            // At that point remove code between here and ********
+            apiKey = "1927b5ee5ee0401baa960991364c4c15";
+            isStaging = true;
+            // ********
+        }
         window.liveSettings = {
-            api_key: "83e1ea4d808741d4a50e0dc4b9991154",
+            api_key: apiKey,
             picker: "bottom-right",
             detectlang: true,
             dynamic: true,
             autocollect: true,
-            staging: true
+            staging: isStaging
         };
     </script>
     <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
