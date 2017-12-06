@@ -90,9 +90,11 @@ div.container.not-centered
                                     div.bookInfo
                                         h3.bookTitle.notranslate {{book.title}}
                                         div.languages(ng-show="book.langPointers.length")
-                                            span(ng-repeat="lang in book.langPointers") {{lang.name}}
-                                                span(ng-hide="$last") ,&nbsp;
+                                            span(ng-repeat="lang in book.langPointers")
+                                                span.needed-for-translation {{lang.name}}
+                                                span.needed-for-translation(ng-hide="$last") ,&nbsp;
                                         div.tags(ng-show="book.tags.length")
-                                            span.tag(ng-repeat="tag in book.tags") {{tag | getDisplayName}}
-                                                span(ng-hide="$last") ,&nbsp;
+                                            span.tag(ng-repeat="tag in book.tags")
+                                                span.needed-for-translation {{tag | getDisplayName}}
+                                                span.needed-for-translation(ng-hide="$last") ,&nbsp;
                                     div.unfloat

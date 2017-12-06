@@ -34,13 +34,24 @@
     <!--script src="https://npmcdn.com/parse@1.9.1/dist/parse.min.js"></script-->
     <!-- for transifex.com, localization -->
     <script type="text/javascript">
+        var isStaging = true;
+        var apiKey = "83e1ea4d808741d4a50e0dc4b9991154";
+        if (location.hostname === "bloomlibrary.org") {
+            isStaging = false;
+
+            // This is just temporary until we deploy our new transifex project for production
+            // At that point remove code between here and ********
+            apiKey = "1927b5ee5ee0401baa960991364c4c15";
+            isStaging = true;
+            // ********
+        }
         window.liveSettings = {
-            api_key: "1927b5ee5ee0401baa960991364c4c15",
+            api_key: apiKey,
             picker: "bottom-right",
             detectlang: true,
             dynamic: true,
             autocollect: true,
-            staging: true
+            staging: isStaging
         };
     </script>
     <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
@@ -180,8 +191,12 @@
     </div>
     <div class="site-footer" ng-controller="FooterCtrl">
         <div class="footerLinks">
-            &copy; {{year}} SIL International <span class="separator">|</span><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a><span class="separator">|</span><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a>
-          <a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png' alt='Mobile Analytics'/></a>
+            <div class="needed-for-localization">&copy; {{year}} SIL International</div>
+            <div class="notranslate"><span class="separator">|</span></div>
+            <div class="needed-for-localization"><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a></div>
+            <div class="notranslate"><span class="separator">|</span></div>
+            <div class="needed-for-localization"><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a></div>
+            <div class="notranslate"><a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png' alt='Mobile Analytics'/></a></div>
         </div>
         <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
     </div>
