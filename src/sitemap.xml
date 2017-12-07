@@ -31,10 +31,6 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>http://bloomlibrary.org/suggestions</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
         <loc>http://bloomlibrary.org/browse</loc>
         <changefreq>weekly</changefreq>
     </url>
