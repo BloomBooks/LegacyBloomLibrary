@@ -4,7 +4,7 @@
 	var BloomLibraryApp = angular.module('BloomLibraryApp',
 				['templates-app', 'templates-common', // Required for ng-boilerplate, to use templates from templates-app.js instead of copying individual files.
 				'BloomLibraryApp.browse', 'BloomLibraryApp.detail', "BloomLibraryApp.login", "BloomLibraryApp.signup", "BloomLibraryApp.services", "BloomLibraryApp.datagrid",
-					"BloomLibraryApp.confirmRelateDialog", "BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages", "BloomLibraryApp.suggestions",
+					"BloomLibraryApp.confirmRelateDialog", "BloomLibraryApp.ccdialog", "BloomLibraryApp.download", "BloomLibraryApp.staticPages",
 					"BloomLibraryApp.deleteDialog", "BloomLibraryApp.inProgress", "BloomLibraryApp.pleaseLogIn", "BloomLibraryApp.mustAgree",
                     "BloomLibraryApp.installers", "BloomLibraryApp.errorMessage", "BloomLibraryApp.prefs", "BloomLibraryApp.reportBook",
                     "ui.bootstrap", "ui.bootstrap.modal", 'ui.router', 'palaso.ui.listview', 'restangular', 'ngCookies', 'LocalStorageModule',
@@ -63,7 +63,7 @@
             };
 
             $scope.isBookLibrary = function () {
-                return $.inArray($location.path(), ['/landing','/features','/installers','/installers/old','/installers/linux','/artofreading','/support','/about','/opensource','/suggestions','/terms','/privacy','/infringement']) === -1;
+                return $.inArray($location.path(), ['/landing','/features','/installers','/installers/old','/installers/linux','/artofreading','/support','/about','/opensource','/terms','/privacy','/infringement']) === -1;
             };
 
             // When the navbar is open on a small device (i.e. shown vertically),
