@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-83.471909"
-     inkscape:cy="-1007.7303"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="114.51049"
+     inkscape:cy="16.776724"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -35,10 +35,10 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1920"
-     inkscape:window-height="1147"
-     inkscape:window-x="3112"
-     inkscape:window-y="468"
+     inkscape:window-width="1680"
+     inkscape:window-height="997"
+     inkscape:window-x="1672"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata4236">
@@ -185,5 +185,13 @@
            style="fill:#ffffff;fill-opacity:1" />
       </g>
     </g>
+    <path
+       id="path4626"
+       overflow="visible"
+       d="m -34.82702,-481.46689 c -1.419356,0 -2.5755,1.1561 -2.5755,2.5754 0,1.4193 1.156144,2.5754 2.5755,2.5754 1.419356,0 2.5755,-1.1561 2.5755,-2.5754 0,-1.4193 -1.156144,-2.5754 -2.5755,-2.5754 z m 0,0.5151 c 1.140973,0 2.060396,0.9194 2.060396,2.0603 0,1.1409 -0.919423,2.0603 -2.060396,2.0603 -1.140983,0 -2.060396,-0.9194 -2.060396,-2.0603 0,-1.1409 0.919413,-2.0603 2.060396,-2.0603 z m -0.901422,0.7726 0,2.5754 0.539245,0 0,-0.9255 0.410469,0 0.490953,0.9255 0.571437,0 0,-0.024 -0.571437,-1.0543 c 0.0515,-0.026 0.133606,-0.053 0.185109,-0.1047 0.0773,-0.052 0.101414,-0.1014 0.152927,-0.1529 0.0515,-0.077 0.0789,-0.132 0.104625,-0.2092 0.0258,-0.077 0.0241,-0.1546 0.0241,-0.2576 0,-0.1287 -0.029,-0.235 -0.0805,-0.338 -0.0258,-0.077 -0.09981,-0.1481 -0.177068,-0.2253 -0.103015,-0.077 -0.185109,-0.1352 -0.313885,-0.161 -0.103015,-0.026 -0.231791,-0.048 -0.386328,-0.048 z m 0.563386,0.4668 0.41852,0 c 0.128776,0 0.22857,0.019 0.305844,0.097 0.0773,0.077 0.104625,0.1609 0.104625,0.2897 0,0.052 0.002,0.1014 -0.0241,0.1529 -0.0258,0.052 -0.0547,0.103 -0.0805,0.1288 -0.0258,0.026 -0.0773,0.047 -0.128776,0.072 -0.0515,0.026 -0.0998,0.032 -0.177068,0.032 l -0.41852,0 z"
+       style="line-height:normal;font-family:'Bitstream Vera Sans';-inkscape-font-specification:'Bitstream Vera Sans';text-indent:0;text-align:start;text-transform:none;overflow:visible;fill:#d65649;fill-opacity:1;stroke-width:0.25753784;enable-background:accumulate"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="157.6214"
+       inkscape:export-ydpi="157.6214" />
   </g>
 </svg>
