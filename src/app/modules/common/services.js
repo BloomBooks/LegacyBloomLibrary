@@ -436,7 +436,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 }
             }
             if (!allLicenses) {
-                query.startsWith('license', 'cc-');
+                query.startsWith('license', 'cc'); // not cc-, that excludes cc0
             }
             return query;
         };
