@@ -173,7 +173,7 @@
 								var dateWithTime = new Date(item.createdAt);
 								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
 							}()),
-							copyright: item.copyright.match("^Copyright ") ? item.copyright.substring(10) : item.copyright,
+							copyright: (item.copyright !== null && item.copyright.match('^Copyright '))  ? item.copyright.substring(10) : item.copyright,
 							downloadCount: item.downloadCount || 0,
 							imgUrl: item.baseUrl + "thumbnail-70.png",
 							license: item.license,
