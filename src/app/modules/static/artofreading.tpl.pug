@@ -17,16 +17,20 @@ div.staticPage
         +link("https://s3.amazonaws.com/bloomlibrary.org/ArtOfReading/ArtOfReading-Free-Setup3.3.exe") Download Art Of Reading version 3.3 Installer
         |  (320 Megabytes, for Microsoft Windows)
         br
-        | For WeSay before 1.6 and Bloom before 4.0, use this
+        | For WeSay and Bloom before 4.0, use this
         +link("http://downloads.palaso.org/ArtOfReading/Art%20Of%20Reading%20Free%20Setup%203.2.exe") older version (3.2).
 
     br
     div
         | For Linux, assuming you have followed the
-        +link("/installers/linux") instructions for installing bloom on Linux
-        | , you just need one more command:
+        +link("/installers/linux") instructions for installing Bloom on Linux
+        | , you just need one more command to install Art of Reading version 3.3:
 
-        pre sudo apt-get install art-of-reading
+        pre     sudo apt-get install art-of-reading3
+        | For WeSay and Bloom before 4.0, the older version of Art of Reading (3.0.2) is required.  It has a different package name so that the older and newer versions of Art of Reading can coexist on the same system.  The command to install the older version is
+
+        pre     sudo apt-get install art-of-reading
+        | Newer versions of Bloom can use the older version of Art of Reading, but its images have a more restrictive license embedded in them.
     br
     h5 Metadata
 
