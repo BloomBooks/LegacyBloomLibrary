@@ -21,6 +21,10 @@
 				{
 					return "You may use this work only as described in any adjacent notes or after asking the author for permission.";
 				}
+				if (input == "cc0")
+				{
+					return "No rights reserved.";
+				}
 				var result = "";
 				if(input.indexOf("nc") < 0)
 				{
