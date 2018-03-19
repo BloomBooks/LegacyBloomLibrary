@@ -238,11 +238,24 @@
                             var prefix = shelf.displayName.substring(0, index);
                             shelf.isChild = true;
                             shelf.displayName = shelf.displayName.substring(index + 1);
+                            setSourceNameIfAvailable(shelf);
                             if (insertParentShelf(shelfList, i, prefix)) {
                                 i++;
                             }
                         }
                     }
+                }
+
+                function setSourceNameIfAvailable(shelf) {
+                    var entireName = shelf.displayName;
+                    var index = entireName.indexOf("::");
+                    if (index < 0) {
+                        return;
+                    }
+                    var src = entireName.substring(index + 2);
+                    var mainName = entireName.substring(0, index);
+                    shelf.sourceName = src;
+                    shelf.displayName = mainName;
                 }
 
                 handleIndent($scope.visibleBookshelves);
