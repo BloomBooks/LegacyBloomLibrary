@@ -238,11 +238,24 @@
                             var prefix = shelf.displayName.substring(0, index);
                             shelf.isChild = true;
                             shelf.displayName = shelf.displayName.substring(index + 1);
+                            setOrganizationNameIfAvailable(shelf);
                             if (insertParentShelf(shelfList, i, prefix)) {
                                 i++;
                             }
                         }
                     }
+                }
+
+                function setOrganizationNameIfAvailable(shelf) {
+                    var entireName = shelf.displayName;
+                    var index = entireName.indexOf("::");
+                    if (index < 0 || entireName.length < index+3) {
+                        return;
+                    }
+                    var org = entireName.substring(index + 2);
+                    var mainName = entireName.substring(0, index);
+                    shelf.orgName = org;
+                    shelf.displayName = mainName;
                 }
 
                 handleIndent($scope.visibleBookshelves);
