@@ -27,7 +27,7 @@ div.container.not-centered
                                 div(ng-class="{activeFilter: currentShelfKey == bookshelf.key, childShelf: bookshelf.isChild}")
                                     a.clear.right(href="" ng-click="filterShelf('','')") Clear
                                     a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.displayName}}
-                                        .orgName(ng-class="{showOrg: bookshelf.orgName && bookshelf.orgName.length > 0}") {{bookshelf.orgName}}
+                                        .orgName(ng-if="bookshelf.orgName && bookshelf.orgName.length > 0") {{bookshelf.orgName}}
             div.narrowSearch
                 h4 Narrow Search
                 h5 Languages
