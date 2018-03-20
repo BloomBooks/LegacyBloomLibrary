@@ -1,5 +1,5 @@
 div
-    // pull in the body of what we are wrapping the list function around, from the caller 
+    // pull in the body of what we are wrapping the list function around, from the caller
     div(ng-transclude)
     div.unfloat
     div.pagination(ng-hide="noOfPages==1")
@@ -7,11 +7,11 @@ div
         ul
             li.previous(ng-class="{disabled: currentPage == 1}")
                 a(href="" ng-click="prevPage()") Prev
-            // repeat this for all page buttons 
+            // repeat this for all page buttons
             li.page-number(ng-repeat="n in pageButtons" ng-class="{'active': n == currentPage, 'first': n == 1}" ng-click="setPage()")
-                // ellipsis is shown for 0 in pageButtons array, inserted where there is a gap 
+                // ellipsis is shown for 0 in pageButtons array, inserted where there is a gap
                 span(ng-hide="n!= 0") ...
-                // regular buttons appear when n is not zero. I don't know how the 1 becomes n. 
+                // regular buttons appear when n is not zero. I don't know how the 1 becomes n.
                 a(href="" ng-hide="n==0" ng-bind="n") 1
             li.next(ng-class="{disabled: currentPage == noOfPages}")
                 a(href="" ng-click="nextPage()") Next
@@ -19,6 +19,7 @@ div
     div.itemsPerPage
         // If the text is not wrapped in a span, the entire contents will be replaced when transifex translates it. This breaks the ng-model binding.
         span.needed-for-localization Items per page:
+        = ' '
         select.notranslate(ng-model="itemsPerPage")
             option(selected value="10") 10
             option(value="24") 24

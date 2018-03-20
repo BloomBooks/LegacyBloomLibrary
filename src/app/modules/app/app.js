@@ -201,7 +201,7 @@
                                 if (shelfList[i].key[shelfList[i].key.length - 1] != "/") {
                                     shelfList[i].key = shelfList[i].key + "/";
                                 }
-                                return false; 
+                                return false;
                             }
                             break;
                         }
@@ -238,11 +238,24 @@
                             var prefix = shelf.displayName.substring(0, index);
                             shelf.isChild = true;
                             shelf.displayName = shelf.displayName.substring(index + 1);
+                            setOrganizationNameIfAvailable(shelf);
                             if (insertParentShelf(shelfList, i, prefix)) {
                                 i++;
                             }
                         }
                     }
+                }
+
+                function setOrganizationNameIfAvailable(shelf) {
+                    var entireName = shelf.displayName;
+                    var index = entireName.indexOf("::");
+                    if (index < 0 || entireName.length < index+3) {
+                        return;
+                    }
+                    var org = entireName.substring(index + 2);
+                    var mainName = entireName.substring(0, index);
+                    shelf.orgName = org;
+                    shelf.displayName = mainName;
                 }
 
                 handleIndent($scope.visibleBookshelves);
@@ -401,8 +414,8 @@
 
 	//review: adding functions here is probably not angularjs best practice (but I haven't learned what the correct way would be, just yet)
 	BloomLibraryApp.run(
-   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService', '$location',
-   function ($rootScope, $state, $stateParams, sharedService, localStorageService, $location) {
+   ['$rootScope', '$state', '$stateParams', 'sharedService', 'localStorageService', '$location', '$transitions',
+   function ($rootScope, $state, $stateParams, sharedService, localStorageService, $location, $transitions) {
 	//lets you write ng-click="log('testing')"
 	$rootScope.log = function (variable) {
 		console.log(variable);
@@ -421,11 +434,13 @@
         }
     });
 
-	$rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
-		if (current.title) {
-			$rootScope.pageTitle = "Bloom - " + current.title;
+    $transitions.onSuccess({}, function (transition) {
+        var title = transition.to().title;
+        console.log(title);
+		if (title) {
+			$rootScope.pageTitle = "Bloom - " + title;
 		} else {
-			$rootScope.pageTitle = "Bloom";
+			$rootScope.pageTitle = "Bloom Book Making Software from SIL International";
 		}
     });
 

@@ -103,6 +103,7 @@ li .bookInfo {
     text-decoration: underline;
   }
 }
+@organizationMarginShift: 3px;
 .filterBar {
   background-color: @darkGray;
   .border-bottom-radius(10px);
@@ -132,7 +133,14 @@ li .bookInfo {
   div.activeFilter a.clear {
     color: @lightGray;
   }
-  div.childShelf {margin-left: 1em}
+  div.childShelf {
+    margin-left: 1em;
+    .orgName {
+      font-size: smaller;
+      margin-top: -@organizationMarginShift;
+      margin-bottom: @organizationMarginShift;
+    }
+  }
 }
 div.bookshelves, div.narrowSearch {
   margin-bottom: 10px;
