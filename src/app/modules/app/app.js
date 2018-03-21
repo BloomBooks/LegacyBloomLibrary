@@ -248,11 +248,11 @@
 
                 function setOrganizationNameIfAvailable(shelf) {
                     var entireName = shelf.displayName;
-                    var index = entireName.indexOf("::");
-                    if (index < 0 || entireName.length < index+3) {
+                    var index = entireName.indexOf("_");
+                    if (index < 0 || entireName.length < index + 2) {
                         return;
                     }
-                    var org = entireName.substring(index + 2);
+                    var org = entireName.substring(index + 1);
                     var mainName = entireName.substring(0, index);
                     shelf.orgName = org;
                     shelf.displayName = mainName;
