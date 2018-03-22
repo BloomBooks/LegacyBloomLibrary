@@ -3,7 +3,7 @@
 
     var installersApp = angular.module('BloomLibraryApp.installers', ['ui.router','restangular'])
         .config(function config($urlRouterProvider, $stateProvider,RestangularProvider){
-            RestangularProvider.setBaseUrl('http://bloomlibrary.org.s3.amazonaws.com?prefix=installers/');
+            RestangularProvider.setBaseUrl('https://s3.amazonaws.com/bloomlibrary.org?prefix=installers/');
 
             $stateProvider.state('installers', {
                 url: "/installers",
