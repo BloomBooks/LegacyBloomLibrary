@@ -436,7 +436,6 @@
 
     $transitions.onSuccess({}, function (transition) {
         var title = transition.to().title;
-        console.log(title);
 		if (title) {
 			$rootScope.pageTitle = "Bloom - " + title;
 		} else {
