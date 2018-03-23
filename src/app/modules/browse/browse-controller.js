@@ -18,6 +18,11 @@
             return tagService.getDisplayName(input);
         };
     }])
+    .filter('getCleanBookshelfName', ['bookshelfService', function(bookshelfService) {
+        return function(input) {
+            return bookshelfService.getCleanBookshelfName(input);
+        };
+    }])
 
 	//we get a json list like ['me','you'] and we return 'me, you'
 	.filter('makeCommaList', function () {
