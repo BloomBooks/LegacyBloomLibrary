@@ -876,6 +876,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return filePath;
             }
         };
+        this.getCleanBookshelfName = function(shelfDisplayName) {
+            var cleanName = shelfDisplayName;
+            var i = shelfDisplayName.indexOf("_");
+            if (i > 0) {
+                cleanName = shelfDisplayName.substring(0, i);
+            }
+            cleanName = cleanName.replace(/\//g, " - ");
+            return cleanName;
+        };
 	})
 	.service('emailService', ['$q', 'authService', 'errorHandlerService', function ($q, authService, errorHandlerService) {
         this.sendConcernEmail = function(content, bookId) {

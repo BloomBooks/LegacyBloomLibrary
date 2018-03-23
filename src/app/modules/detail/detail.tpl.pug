@@ -50,7 +50,7 @@ div.modal-dialog
                         = ' '
                         span(ng-repeat="tag in book.tags")
                             i.icon-tag(tx-content="exclude")
-                            span(tx-content="include") {{tag | getDisplayName}}
+                            span(tx-content="include") {{tag | getDisplayName | getCleanBookshelfName}}
                             span(ng-hide="$last")
                                 = ' '
                     div.relatedBooks(ng-show="book.relatedBooks")

@@ -96,6 +96,6 @@ div.container.not-centered
                                                 span.needed-for-translation(ng-hide="$last") ,&nbsp;
                                         div.tags(ng-show="book.tags.length")
                                             span.tag(ng-repeat="tag in book.tags")
-                                                span.needed-for-translation {{tag | getDisplayName}}
+                                                span.needed-for-translation {{tag | getDisplayName | getCleanBookshelfName}}
                                                 span.needed-for-translation(ng-hide="$last") ,&nbsp;
                                     div.unfloat

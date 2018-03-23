@@ -7,9 +7,9 @@
 		// least won't follow them.). This is needed for the Open in Bloom button, mailto links. adding bloom is the unusual thing.
 		// This seems to be global...any additions might need to go in other instances as well to make them work.
 		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|bloom|mailto):/);
-        
+
         var detailModalInstance;
-        
+
 		$stateProvider.state('browse.detail', {
 			url: "/detail/:bookId",
             views: {
@@ -23,6 +23,11 @@
 		.filter('getDisplayName', ['tagService', function(tagService) {
 			return function(input) {
 				return tagService.getDisplayName(input);
+			};
+		}])
+		.filter('getCleanBookshelfName', ['bookshelfService', function(bookshelfService) {
+			return function(input) {
+				return bookshelfService.getCleanBookshelfName(input);
 			};
 		}])
 		//we get a json list like ['me','you'] and we return 'me, you'
@@ -153,7 +158,7 @@
 				// controller, thus giving it access to the book whose license we want details about.
 				resolve: {book: function() {return $scope.book;}}
 			});
-			
+
 			deleteModalInstance.result.then(function(result) {
 				if (result) {
 					bookService.deleteBook($scope.book.objectId).then(function() {
@@ -166,6 +171,6 @@
 					});
 				}
 			});
-		};		
+		};
 	} ]);
 } ());  // end wrap-everything function
