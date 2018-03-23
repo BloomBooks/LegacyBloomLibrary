@@ -131,6 +131,7 @@
                 shelfLabel = '';
             }
             shelfLabel = _localize(shelfLabel);
+            shelfLabel = bookshelfService.getCleanBookshelfName(shelfLabel);
             var booksTranslation = _localize("books");
             var params = {
                 count: count,
