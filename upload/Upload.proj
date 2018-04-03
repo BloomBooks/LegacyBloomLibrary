@@ -9,6 +9,8 @@
     <Assets Include="../bin/assets/*" Exclude="../bin/assets/*.svg;../bin/assets/BloomLibrary-0.1.0.js"/>
     <Svg Include="../bin/assets/*.svg"/>
     <MainJs Include="../bin/assets/BloomLibrary-0.1.0.js"/>
+    <BloomReaderApk Include="app-production-release.apk"/>
+    <BloomReaderApkRenamed Include="BloomReader.apk"/>
   </ItemGroup>
   <PropertyGroup>
     <ProfileName>BloomLibrary</ProfileName>
@@ -68,5 +70,17 @@
   </Target>
 
   <Target Name="Upload" DependsOnTargets="Root;Assets;BookshelfAssets;Svg;MainJs"></Target>
+
+  <Target Name="UploadBloomReaderApk">
+    <Copy
+      SourceFiles="@(BloomReaderApk)"
+      DestinationsFiles="@(BloomReaderApkRenamed)" />
+    <S3BuildPublisher
+      CredentialStoreProfileName ="$(ProfileName)"
+      SourceFiles="@(BloomReaderApkRenamed)"
+      DestinationBucket="$(Bucket)"
+      DestinationFolder="bloomReader/apks/release/latest"
+      IsPublicRead="true" />
+  </Target>
 
 </Project>
