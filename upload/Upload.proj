@@ -74,7 +74,7 @@
   <Target Name="UploadBloomReaderApk">
     <Copy
       SourceFiles="@(BloomReaderApk)"
-      DestinationsFiles="@(BloomReaderApkRenamed)" />
+      DestinationFiles="@(BloomReaderApkRenamed)" />
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(BloomReaderApkRenamed)"
