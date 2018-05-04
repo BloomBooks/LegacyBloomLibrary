@@ -473,30 +473,20 @@
 				$(element).fancybox({
 					'overlayShow': true,
                     'helpers':{title: { type:'inside', position:'top'}},
-                    // The title comes from an overlayTitle attribute in the element with the pdfoverlay directive, e.g.,
-                    // in detail.tpl.html for the Preview button. So it can't contain HTML. We insert markup here
-                    // to put an Info icon in front, interpret [] as requesting bold, and interpret | as line
-                    // breaks.
                     afterLoad: function() {
-                        var title = '';
-                        try {
-                            title = this.element.context.attributes['overlayTitle'].value;
-                        }
-                        catch(_) {}
-                        if(!title) {
-                            return;  // if it's empty don't insert the icon etc.
-                        }
-                        var temp=title.replace('[', '<b>').replace(']', '</b>').split('|');
-                        var result = '<table><tbody><tr><td><i class="icon-info-sign" style="font-size:5em;margin-right:12px;position:relative;top:-4px"></i></td><td>';
-                        for(var i = 0; i < temp.length; i++){
-                            var after = '';
-                            if (i === temp.length - 1) {
-                                after = ' style="margin-bottom:10px"';
+                        var book = scope.book;
+                        if (book && book.langPointers && book.langPointers.length){
+                            var languageList = _localize(book.langPointers[0].name);
+                            for (var i = 1; i < book.langPointers.length; i++) {
+                                languageList += ", " + _localize(book.langPointers[i].name);
                             }
-                            result += '<div' + after +  '>' + temp[i] + '</div>';
+                            var titleHtml = '<table id="previewTitle"><tbody><tr><td><i class="icon-info-sign"></i></td><td>';
+                            titleHtml += '<div>' + _localize('This book contains the following source languages: <b>{languageList}</b>.', {languageList:languageList}) + '</div>';
+                            titleHtml += '<div>However the following preview provides a sample using just one of these languages.</div>';
+                            titleHtml += '<div>Once you load this book in Bloom, you will see the text in the other language(s).</div>';
+                            titleHtml += '</td></tr></tbody></table>';
+                            this.title = titleHtml;
                         }
-                        result += '</td></tr></tbody></table>';
-                        this.title = result;
                     },
 					'type': 'iframe',
 					iframe: {
