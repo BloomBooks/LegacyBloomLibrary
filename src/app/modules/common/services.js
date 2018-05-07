@@ -877,6 +877,10 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
         };
         this.getCleanBookshelfName = function(shelfDisplayName) {
+            if (!shelfDisplayName || !shelfDisplayName.length) {
+                return "";
+            }
+
             var cleanName = shelfDisplayName;
             var i = shelfDisplayName.indexOf("_");
             if (i > 0) {

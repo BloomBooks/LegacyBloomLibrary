@@ -475,7 +475,7 @@
                     'helpers':{title: { type:'inside', position:'top'}},
                     afterLoad: function() {
                         var book = scope.book;
-                        if (book && book.langPointers && book.langPointers.length){
+                        if (book && book.langPointers && book.langPointers.length > 1) {
                             var languageList = _localize(book.langPointers[0].name);
                             for (var i = 1; i < book.langPointers.length; i++) {
                                 languageList += ", " + _localize(book.langPointers[i].name);
