@@ -17,10 +17,16 @@
     <Bucket>dev.bloomlibrary.org</Bucket> <!-- Which bucket to target; May override with /p:Bucket=; used by all targets. User identified by access key must have write permission.-->
   </PropertyGroup>
 
-  <UsingTask TaskName="S3BuildPublisher" AssemblyFile="SIL.BuildTasks.AWS.dll" />
+  <UsingTask TaskName="S3BuildPublisher" AssemblyFile="packages/SIL.BuildTasks.AWS/tools/SIL.BuildTasks.AWS.dll" />
+
+  <Import Project="../.nuget/NuGet.targets" />
+
+  <Target Name="RestoreBuildTasks" DependsOnTargets="CheckPrerequisites">
+    <Exec Command='$(NuGetCommand) install SIL.BuildTasks.AWS -excludeVersion -source "$(PackageSources)" -solutionDirectory "."' />
+  </Target>
 
   <!-- Publish root files (including index.html)-->
-  <Target Name="Root">
+  <Target Name="Root" DependsOnTargets="RestoreBuildTasks">
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(Root)"
@@ -29,7 +35,7 @@
   </Target>
 
   <!-- Publish Assets files -->
-  <Target Name="Assets">
+  <Target Name="Assets" DependsOnTargets="RestoreBuildTasks">
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(Assets)"
@@ -38,7 +44,7 @@
       IsPublicRead="true" />
   </Target>
 
-  <Target Name="BookshelfAssets">
+  <Target Name="BookshelfAssets" DependsOnTargets="RestoreBuildTasks">
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFolder="../bin/assets/bookshelves"
@@ -48,7 +54,7 @@
   </Target>
 
   <!-- Publish Svg files (with proper content type, which S3 does not guess correctly-->
-  <Target Name="Svg">
+  <Target Name="Svg" DependsOnTargets="RestoreBuildTasks">
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(Svg)"
@@ -59,7 +65,7 @@
   </Target>
 
     <!-- Publish Main Javascript file (with content-encoding indicating it is gzipped -->
-  <Target Name="MainJs">
+  <Target Name="MainJs" DependsOnTargets="RestoreBuildTasks">
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFiles="@(MainJs)"
@@ -71,7 +77,7 @@
 
   <Target Name="Upload" DependsOnTargets="Root;Assets;BookshelfAssets;Svg;MainJs"></Target>
 
-  <Target Name="UploadBloomReaderApk">
+  <Target Name="UploadBloomReaderApk" DependsOnTargets="RestoreBuildTasks">
     <Copy
       SourceFiles="@(BloomReaderApk)"
       DestinationFiles="@(BloomReaderApkRenamed)" />
