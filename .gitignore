@@ -6,3 +6,5 @@ node_modules/
 vendor/
 .idea/*
 upload/*.dll
+/upload/packages/
+/.nuget/NuGet.exe
