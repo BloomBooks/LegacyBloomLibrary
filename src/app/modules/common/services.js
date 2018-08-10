@@ -409,7 +409,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 query = new Parse.Query('books');
             }
             if (searchString) {
-                var searchWords = searchString.match(/[\w]+/g);
+                // See https://silbloom.myjetbrains.com/youtrack/issue/BL-3256 and
+                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions.
+                var searchWords = searchString.match(/[\S]+/g);
                 for(var i = 0; i < searchWords.length; i++) {
                     query.contains('search', searchWords[i].toLowerCase());
                 }
