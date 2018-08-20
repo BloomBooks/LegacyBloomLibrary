@@ -758,9 +758,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     // that the capitalized version of a name will come first and so be preferred.)
                     for (var i = 0; i < objects.length - 1; i++) {
                         if (objects[i].isoCode.toLowerCase() == objects[i+1].isoCode.toLowerCase() && objects[i].name.toLowerCase() == objects[i+1].name.toLowerCase()) {
+                            objects[i].usageCount += objects[i+1].usageCount;
                             objects.splice(i+1, 1);
                         }
                     }
+                    objects.sort(function(a,b) {return b.usageCount - a.usageCount;});
                     languageList = objects;
                     // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
                     // NOT using it in this context.
