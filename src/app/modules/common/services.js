@@ -739,6 +739,36 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                     for (i = 0; i < results.length; i++) {
                         objects[i] = results[i].toJSON();
                     }
+                    objects.sort(function (a, b) {
+                        // First sort things with same LC isocode together.
+                        var x = a.isoCode.toLowerCase();
+                        var y = b.isoCode.toLowerCase();
+                        if (x < y) {return -1;}
+                        if (x > y) {return 1;}
+                        // Then things with same case-insensitive names together
+                        if (a.name.toLowerCase() < b.name.toLowerCase()) {return -1;}
+                        if (a.name.toLowerCase() > b.name.toLowerCase()) {return 1;}
+                        // Next we want to put the one with the largest usage count first.
+                        // This means we show the most popular version of names that differ only by case.
+                        // (The || 0's are there because some new langauges may not have usageCount yet,
+                        // and undefined < N does not give the expected result.)
+                        if ((a.usageCount || 0) > (b.usageCount || 0)) {return -1;}
+                        if ((a.usageCount || 0) < (b.usageCount || 0)) {return 1;}
+                        // if two options have the same usage count, for the same case-insensitive name,
+                        // put the one with initial uppercase first.
+                        if (a.name < b.name) {return -1;}
+                        if (a.name > b.name) {return 1;}
+                        return 0;
+                    });
+                    // Delete any duplicates, keeping the first one. (The sort above ensures
+                    // that the more popular version of a name will come first and so be preferred.)
+                    for (var i = 0; i < objects.length - 1; i++) {
+                        if (objects[i].isoCode.toLowerCase() == objects[i+1].isoCode.toLowerCase() && objects[i].name.toLowerCase() == objects[i+1].name.toLowerCase()) {
+                            objects[i].usageCount = (objects[i].usageCount || 0) + (objects[i+1].usageCount || 0);
+                            objects.splice(i+1, 1);
+                        }
+                    }
+                    objects.sort(function(a,b) {return b.usageCount - a.usageCount;});
                     languageList = objects;
                     // See the discussion in getFilteredBookRange of why the $apply is used. I haven't tried
                     // NOT using it in this context.
