@@ -78,16 +78,16 @@ div.container.not-centered
                         div.col-md-6(style="padding-bottom:10px")
                             form(ng-submit="SearchNow()")
                                 div.input-group
-                                    input.form-control.border-inverse(type="text" ng-keypress="x()" placeholder="Search title or tag" ng-model="searchTextRaw")/
+                                    input.form-control.border-inverse(type="text" ng-keypress="x()" placeholder="Search title or tag" ng-model="searchTextRaw" aria-label="Search text" tx-attrs="aria-label")/
                                     span.input-group-btn
-                                        button.btn.btn-inverse(type="button" ng-click="SearchNow()")
+                                        button.btn.btn-inverse(type="button" ng-click="SearchNow()" aria-label="Search now" tx-attrs="aria-label")
                                             i.icon-search
                     div(ng-hide="bookCount==0")
                         ul.books.row(listview hide-if-empty="true" item-count="bookCount" page-items-function="getBookRange(first, itemsPerPage)" page-count-tag="browseView")
                             li.book.col-md-6(ng-repeat="book in visibleBooks")
                                 a(ui-sref="browse.detail({bookId: book.objectId})")
                                     div.imageContainer
-                                        img(ng-src="{{book.baseUrl | makeThumbnailUrl}}")/
+                                        img(ng-src="{{book.baseUrl | makeThumbnailUrl}}" alt="cover thumbnail" tx-attrs="alt")/
                                     div.bookInfo
                                         h3.bookTitle.notranslate {{book.title}}
                                         div.languages(ng-show="book.langPointers.length")
