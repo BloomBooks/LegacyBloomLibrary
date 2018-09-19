@@ -28,7 +28,7 @@ html
 							//	a(href="/installers")
 							//		button.btn.download-btn.btn-large Download Bloom
 					.col-sm-6
-						img(src="assets/huyagirls.jpg")
+						img(src="assets/huyagirls.jpg" alt="Group of girls sitting and holding books" tx-attrs="alt")
 
 		.landing
 			.section
@@ -68,13 +68,13 @@ html
 								| &nbsp;offers books from around the world for you to translate into a local language. With a single click, shell books are downloaded to your computer, ready to use even when you're offline.
 							P Got a book you'd like to share? Just add a major language translation (e.g. English, French, Thai) and then tell Bloom to upload it to the online library.
 						.col-md-3.pull-right
-							a(href="/browse")
-								img(src='assets/bookLibrarySmallScreenshot.png')
+							a(href="/browse" aria-label="Book library" tx-attrs="alt")
+								img(src='assets/bookLibrarySmallScreenshot.png' alt="Screenshot showing some books in the bloom library" tx-attrs="alt")
 			.section
 				.container.centeritems
 					.row
 						.col-md-12
-							iframe(width="420", height="315", src="https://player.vimeo.com/video/141561934", frameborder="0", allowfullscreen)
+							iframe(width="420", height="315", src="https://player.vimeo.com/video/141561934", frameborder="0", allowfullscreen, title="introductory video" tx-attrs="title")
 					.row
 						.col-md-12
 							p To learn more, check out Bloom's&nbsp;
