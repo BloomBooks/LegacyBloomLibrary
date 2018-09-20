@@ -1,6 +1,6 @@
 div
     // pull in the body of what we are wrapping the list function around, from the caller
-    ul(ng-transclude)
+    ul.book-list(ng-transclude)
     div.unfloat
     div.pagination(ng-hide="noOfPages==1")
         // The page index is a list inside a div (entirely hidden if only one page)
