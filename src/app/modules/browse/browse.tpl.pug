@@ -87,7 +87,7 @@ div.container.not-centered
                             li.book.col-md-6(ng-repeat="book in visibleBooks")
                                 a(ui-sref="browse.detail({bookId: book.objectId})")
                                     div.imageContainer
-                                        img(ng-src="{{book.baseUrl | makeThumbnailUrl}}" alt="cover thumbnail" tx-attrs="alt")/
+                                        img(ng-src="{{book.baseUrl | makeThumbnailUrl}}" alt="cover thumbnail")/
                                     div.bookInfo
                                         h3.bookTitle.notranslate {{book.title}}
                                         div.languages(ng-show="book.langPointers.length")

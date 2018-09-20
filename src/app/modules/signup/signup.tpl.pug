@@ -7,7 +7,7 @@ div(ng-app='signup', ng-cloak)
                         h2 Sign Up
                         div.input-wrapper
                             div
-                                label Email Address
+                                label(for="email") Email Address
                                 |  
                                 input#email.userNameInput(required, type='email', placeholder='Enter your email address', ng-model='record.email', name='email', ng-blur='checkUserAccount()', focus-on-load)
                                 |  
@@ -30,16 +30,16 @@ div(ng-app='signup', ng-cloak)
                             div.password
                                 label Password
                                 |  
-                                input.passwordInput(placeholder='Choose your password', required, type='text', ng-model='record.password', name='shown password', ng-show='showPassword')
+                                input.passwordInput(placeholder='Choose your password', required, type='text', ng-model='record.password', name='shown password', ng-show='showPassword', aria-label="Password - showing")
                                 |  
-                                input.passwordInput(placeholder='Choose your password', required, type='password', ng-model='record.password', name='password', ng-show='!showPassword')
+                                input.passwordInput(placeholder='Choose your password', required, type='password', ng-model='record.password', name='password', ng-show='!showPassword', aria-label="Password - hidden")
                             div.showPassword
                                 div.showPassInput
-                                    input(type='checkbox', ng-model='showPassword')
-                                    span.needed-for-localization Show password
+                                    input(type='checkbox', ng-model='showPassword', id="showpw")
+                                    label.needed-for-localization(for="showpw") Show password
                         div.agreeTerms
-                            input(type='checkbox', name='agree', ng-model='agreeToTerms')
-                            span.needed-for-localization
+                            input#agree(type='checkbox', name='agree', ng-model='agreeToTerms')
+                            label.needed-for-localization(for="agree")
                                 | I agree to the Bloom Library&apos;s 
                                 a(href='/terms', target='_blank') Terms of Use
                                 | .
