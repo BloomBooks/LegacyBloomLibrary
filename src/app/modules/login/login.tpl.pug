@@ -13,12 +13,12 @@ div.loginRoot
                             div
                                 label.passwordLabel Password
                             div
-                                input.passwordInput(spellcheck="false" required type="text" name="shown password" ng-model="password" placeholder="Enter your password" ng-show="showPassword")/
-                                input.passwordInput(required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword")/
+                                input.passwordInput(spellcheck="false" required type="text" name="shown password" ng-model="password" placeholder="Enter your password" ng-show="showPassword" aria-label="Password - showing")/
+                                input.passwordInput(required type="password" name="password" ng-model="password" placeholder="Enter your password" ng-show="!showPassword" aria-label="Password - hidden")/
                         div.showPassword
                             div.showPassInput
-                                input(type="checkbox" ng-model="showPassword")/
-                                | Show password
+                                input#showpw(type="checkbox" ng-model="showPassword")
+                                label(for="showpw") Show password
                     div#forgot
                         a.resetPw(ng-click="resetPassword()") Forgot password?
                     div.loginButton

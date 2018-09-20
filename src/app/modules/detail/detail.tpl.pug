@@ -6,7 +6,7 @@ div.modal-dialog
         div.detail
             div.modal-header
             div.modal-body
-                img(ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}")/
+                img(ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}" alt="Cover thumbnail")/
                 div.detailCol2
                     div.title.notranslate {{book.title}}
                     div.summary(ng-hide="!book.summary")
@@ -62,11 +62,11 @@ div.modal-dialog
                                 = ' '
                     div.unfloat
                 div.actions
-                    a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()")
+                    a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()" aria-label="Report a concern about this book")
                         i.abuseIcon(tooltip="Report a concern about this book" tooltip-placement="right")
-                    a(ng-show="canReportViolation" ui-sref="browse.detail.reportbook")
+                    a(ng-show="canReportViolation" ui-sref="browse.detail.reportbook" aria-label="Report a concern about this book")
                         i.abuseIcon(tooltip="Report a concern about this book" tooltip-placement="right")
-                    a(href="" ng-click="showDeleteDialog()")
+                    a(href="" ng-click="showDeleteDialog()" aria-label="Delete this book")
                         i(tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                     div.pull-right
                         // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work
