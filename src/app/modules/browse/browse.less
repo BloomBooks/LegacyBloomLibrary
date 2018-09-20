@@ -17,7 +17,8 @@ H3.bookTitle {
 .book-list {
   // Suppress default ul behaviors we don't want
   list-style-type: none;
-  padding-inline-start: 0;
+  padding-inline-start: 0; // recent browsers
+  padding-left: 0; // Edge, older FF
 }
 .author {
   font-weight: 300;
