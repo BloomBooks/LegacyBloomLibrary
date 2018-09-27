@@ -4,7 +4,7 @@ A web site for sharing literacy materials, especially templates for translation 
 
 ## Quick Start
 
-Make sure you have [Nodejs](http://nodejs.org/download/) and then:
+Make sure you have [Nodejs](http://nodejs.org/download/) version 6.10 and then:
 
 ```sh
 git clone  https://github.com/BloomBooks/BloomLibrary.git
