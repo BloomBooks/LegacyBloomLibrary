@@ -6,7 +6,7 @@ mixin link(href)
 
 .staticPage
 	H2 Getting Bloom on Linux
-	P Bloom 3.7 is available for Ubuntu Precise, Trusty, and Xenial.  It can also be installed on Wasta 12, Wasta 14, and Wasta 16. You are welcome to try other versions of Linux but we cannot promise to support them.
+	P Bloom 4.2 is available for Ubuntu Trusty, Xenial, and Bionic.  It can also be installed on Wasta 14, Wasta 16, and Wasta 18. You are welcome to try other versions of Linux but we cannot promise to support them.  Support for Ubuntu Trusty and Wasta 14 is scheduled to end in early 2019.
 
 	H3 Step 1: Try to install the Bloom Desktop program
 	pre
@@ -16,10 +16,6 @@ mixin link(href)
 	P See
 		+link('http://packages.sil.org/') Instructions to install SIL software
 		| for alternative directions on how to add the SIL repository to your system.
-	H4 (for precise or wasta 12):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu precise main"
-	pre sudo apt-get update
 	H4 (for trusty or wasta 14):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
@@ -27,6 +23,10 @@ mixin link(href)
 	H4 (for xenial or wasta 16):
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial main"
+	pre sudo apt-get update
+	H4 (for bionic or wasta 18):
+	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu bionic main"
 	pre sudo apt-get update
 	H3 Step 3: Install the  Bloom Desktop program
 	pre
@@ -56,7 +56,7 @@ mixin link(href)
 	P A
 		strong
 			|  beta release
-		|  of Bloom may be available for Ubuntu Trusty and Xenial.  If available, it can also be installed on Wasta 14 and Wasta 16.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  (Note that support for Precise and Wasta 12 ends with Bloom 3.7 since Precise and Wasta 12 reach their &ldquo;end of life&rdquo; in early 2017.)  As with Windows, a current release of Bloom (bloom-desktop) can coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one does not affect the other.
+		|  of Bloom may be available for Ubuntu Trusty, Xenial, and Bionic.  If available, it can also be installed on Wasta 14, Wasta 16, and Wasta 18.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  As with Windows, a current release of Bloom (bloom-desktop) can coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one does not affect the other.
 
 	H3 Step 1: Try to install the beta release of the Bloom Desktop program
 	pre
@@ -75,6 +75,10 @@ mixin link(href)
 	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
 	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial-experimental main"
 	pre sudo apt-get update
+	H4 (for bionic or wasta 18):
+	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu bionic-experimental main"
+	pre sudo apt-get update
 	H3 Step 3: Install the beta release of the  Bloom Desktop program
 	pre
 		| sudo apt-get install bloom-desktop-beta
@@ -88,6 +92,9 @@ mixin link(href)
 	P Using the graphical user interface, open the Settings / Repository dialog, then find and remove any entries in "Additional repositories" that include trusty-experimental in the fine print.
 	H4 (for xenial or wasta 16)
 	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu xenial-experimental main"
+	pre sudo apt-get update
+	H4 (for bionic or wasta 18)
+	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu bionic-experimental main"
 	pre sudo apt-get update
 	H3 Step 5: Copy the desktop launcher to your local area
 	pre cp -i /usr/share/applications/bloom-beta.desktop ~/Desktop
