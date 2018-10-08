@@ -13,7 +13,7 @@
           url: "/browse?search&shelf&lang&langname&tag&allLicenses",
           templateUrl: "modules/browse/browse.tpl.html",
           controller: "BrowseCtrl",
-          title: "Book Library of Free Shell Books"
+          title: "Book Library of shell books to download into Bloom Editor"
         });
       }
     ])

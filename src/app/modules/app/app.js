@@ -550,8 +550,7 @@
         if (title) {
           $rootScope.pageTitle = "Bloom - " + title;
         } else {
-          $rootScope.pageTitle =
-            "Bloom Book Making Software from SIL International";
+          $rootScope.pageTitle = "Home";
         }
       });
 

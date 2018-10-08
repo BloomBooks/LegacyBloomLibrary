@@ -51,7 +51,7 @@
         url: "/download",
         templateUrl: "modules/static/downloadapp.tpl.html",
         controller: "GoToTop",
-        title: "Download"
+        title: "Download Bloom Editor Installers"
       });
       // This state manages the Support page in the menu.
       // its url looks like /support.
@@ -83,7 +83,7 @@
         url: "/opensource",
         templateUrl: "modules/static/opensource.tpl.html",
         controller: "GoToTop",
-        title: "Open Source"
+        title: "Open source information"
       });
     });
 
