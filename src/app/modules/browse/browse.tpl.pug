@@ -76,7 +76,7 @@ div.container.not-centered
                                         a(href="" ng-click="toggleAllLicenses()") {{hiddenBooksToggleMessage}}
                             div(ng-show="!initialized") Searching...
                         div.col-md-6(style="padding-bottom:10px")
-                            form(ng-submit="SearchNow()")
+                            form(ng-submit="SearchNow()" role="search")
                                 div.input-group
                                     input.form-control.border-inverse(type="text" ng-keypress="x()" placeholder="Search title or tag" ng-model="searchTextRaw" aria-label="Search text" tx-attrs="aria-label")/
                                     span.input-group-btn

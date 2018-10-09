@@ -119,8 +119,8 @@
         </div>
     </noscript>
     <div class="page-wrap">
-        <div class="site-header" ng-controller="HeaderCtrl">
-            <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse" role="navigation">
+        <header class="site-header" ng-controller="HeaderCtrl">
+            <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#editor-navbar-elements">
@@ -161,7 +161,7 @@
                     </div>
                 </div><!-- /.container-fluid -->
             </nav>
-            <nav ng-show="isBookLibrary()" id="book-library-navbar" class="navbar navbar-inverse" role="navigation">
+            <nav ng-show="isBookLibrary()" id="book-library-navbar" class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#book-library-navbar-elements">
@@ -196,11 +196,11 @@
                     </div>
                 </div><!-- /.container-fluid -->
             </nav>
-        </div>
+        </header>
         <sil-notices></sil-notices>
         <div ui-view></div>
     </div>
-    <div class="site-footer" ng-controller="FooterCtrl">
+    <footer class="site-footer" ng-controller="FooterCtrl">
         <div class="footerLinks">
             <div class="needed-for-localization">&copy; {{year}} SIL International</div>
             <div class="notranslate"><span class="separator">|</span></div>
@@ -211,7 +211,7 @@
                         alt='Mobile Analytics' /></a></div>
         </div>
         <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
-    </div>
+    </footer>
 </body>
 
 </html>
