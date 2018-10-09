@@ -167,9 +167,7 @@
         var params = {
           count: count,
           shelf: shelfLabel,
-          language: $scope.langName
-            ? $scope.langName
-            : languageService.getDisplayName($scope.lang),
+          language: $scope.langName ? $scope.langName : languageService.getDisplayName($scope.lang),
           bookOrBooks: booksTranslation,
           tag: tagService.getDisplayName($scope.tag),
           searchText: $scope.searchText
