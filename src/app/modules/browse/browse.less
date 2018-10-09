@@ -1,12 +1,12 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
 @filterBarWidth: 235px;
-BODY {
+body {
   font-size: small !important;
 }
 .search {
   margin-left: 20px;
 }
-H3.bookTitle {
+h3.bookTitle {
   font-size: 103%;
   margin-top: 0px;
   margin-bottom: 0px;
@@ -37,7 +37,7 @@ H3.bookTitle {
   float: left;
   margin-right: 7px;
 }
-.imageContainer IMG {
+.imageContainer img {
   text-align: center;
   height: 70px; //Bloom version 2 sets all books to this height
 }
@@ -52,7 +52,8 @@ H3.bookTitle {
 }
 .books {
   list-style-type: none;
-  a:hover, a:focus {
+  a:hover,
+  a:focus {
     text-decoration: none;
     outline: none;
   }
@@ -60,7 +61,7 @@ H3.bookTitle {
 .pagination {
   clear: both;
 }
-SELECT {
+select {
   width: 5em;
 }
 input.searchInput {
@@ -116,7 +117,12 @@ li .bookInfo {
   .border-left-radius(0px);
   color: @lightGray;
   line-height: 20px;
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: @lightGray;
     margin-bottom: 0;
     font-weight: bold;
@@ -149,7 +155,8 @@ li .bookInfo {
     }
   }
 }
-div.bookshelves, div.narrowSearch {
+div.bookshelves,
+div.narrowSearch {
   margin-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
@@ -181,16 +188,17 @@ div.bookshelves {
   width: @filterBarWidth;
 }
 // Shouldn't need this, but it isn't working without it for some reason
-.sidebar-offcanvas, .row-offcanvas .rightContainer {
+.sidebar-offcanvas,
+.row-offcanvas .rightContainer {
   float: left;
 }
-@media screen and (max-width:@screen-xs-max) {
+@media screen and (max-width: @screen-xs-max) {
   .row-offcanvas {
     position: relative;
     left: 0;
-    -webkit-transition: all .25s ease-out;
-         -o-transition: all .25s ease-out;
-            transition: all .25s ease-out;
+    -webkit-transition: all 0.25s ease-out;
+    -o-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
   }
   .row-offcanvas.active {
     left: @filterBarWidth;
