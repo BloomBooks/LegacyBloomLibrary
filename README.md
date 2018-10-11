@@ -4,16 +4,27 @@ A web site for sharing literacy materials, especially templates for translation 
 
 ## Quick Start
 
-Make sure you have [Nodejs](http://nodejs.org/download/) version 6.10 and then:
+Make sure you have [yarn](https://yarnpkg.com). Look in packages.json under the "engines" key. Get that version of [Nodejs](http://nodejs.org/download/).
 
 ```sh
 git clone  https://github.com/BloomBooks/BloomLibrary.git
 cd BloomLibrary
-npm install
-grunt watch
+yarn
 ```
 
-You will need to develop using a local web server (see [Setting Up Your Development Environment -> Server](https://github.com/BloomBooks/BloomLibrary/wiki/Setting-Up-your-Development-Environment#server)).
+In one terminal (e.g. in vscode), run
+
+```sh
+yarn watch
+```
+
+In another terminal (e.g. to its side, in vscode), run
+
+```sh
+yarn serve
+```
+
+That should open a web browser page at localhost:3000.
 
 ## About the grunt files
 
@@ -23,15 +34,6 @@ Grunt merges many vendor and app-specific less files together into the bloom_xyz
 If you have a css file to load separately, list that in build.config.js.
 
 Normally we have tests run via the offscreen browser phantomjs. If you want to debug using a normal browser, you'll find that setting in karma/X:\dev\BloomLibrary\karma\karma-unit.tpl.js.
-
-## Roadmap
-
-see https://trello.com/b/eO6j48sf/bloom-library
-
-### Contributing
-
-Books may be contributed to the [website](http://www.bloomlibrary.org). Code contributions are welcome also.
-We recommend interacting through the Trello board to be sure we're on the same track.
 
 ### Search Engine Optimization
 

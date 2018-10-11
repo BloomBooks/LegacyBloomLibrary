@@ -7,13 +7,22 @@
     "type": "MIT",
     "url": "http://sil.mit-license.org"
   },
+  "engines": {
+    "node": "~6.10.1"
+  },
+  "scripts": {
+    "build": "yarn grunt build",
+    "watch": "yarn grunt watch",
+    "serve": "yarn lite-server",
+    "//About-postinstall": "This was added by 'bower-away', the tool that helped retire bower. It creates it in order to reconnect all the things that are still pointing at the old 'vendor' directory, stuff that has been moved to node_modules",
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'vendor', 'junction') } catch (e) { console.error(e);}\""
+  },
   "bugs": "https://trello.com/board/bloom-development/4f087ec138f81c83752051a0",
   "repository": {
     "type": "git",
     "url": "https://github.com/BloomBooks/BloomLibrary"
   },
   "dependencies": {
-    "bower-away": "^1.1.2",
     "@bower_components/angular": "angular/bower-angular#1.2.32",
     "@bower_components/angular-bootstrap": "angular-ui/bootstrap-bower#~0.11.0",
     "@bower_components/angular-cookies": "angular/bower-angular-cookies#~1.2.18",
@@ -36,7 +45,8 @@
     "@bower_components/lodash": "lodash/lodash#>=1.3.0 <2.5.0",
     "@bower_components/ng-tags-input": "mbenford/ngTagsInput-bower#~2.3.0",
     "@bower_components/restangular": "mgonto/restangular#~1.4.0",
-    "@bower_components/underscore": "jashkenas/underscore#~1.6.0"
+    "@bower_components/underscore": "jashkenas/underscore#~1.6.0",
+    "bower-away": "^1.1.2"
   },
   "devDependencies": {
     "bower": "^1.7.9",
@@ -61,12 +71,10 @@
     "karma-coffee-preprocessor": "^0.2.1",
     "karma-firefox-launcher": "^0.1.3",
     "karma-jasmine": "^0.1.5",
-    "karma-phantomjs-launcher": "^1.0.2"
+    "karma-phantomjs-launcher": "^1.0.2",
+    "lite-server": "^2.4.0"
   },
   "engines": {
     "yarn": ">= 1.0.0"
-  },
-  "scripts": {
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'vendor', 'junction') } catch (e) { }\""
   }
 }
