@@ -17,7 +17,7 @@
         url: "/installers",
         templateUrl: "modules/installers/installers.tpl.html",
         controller: "InstallersCtrl",
-        title: "Download Bloom Book Making Software from SIL"
+        title: "Download Installers"
       });
 
       //TODO: this should be installers.old, but when set, it becomes unreachable, with no console errors
