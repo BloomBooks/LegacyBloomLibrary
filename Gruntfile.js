@@ -547,7 +547,7 @@ module.exports = function(grunt) {
     "clean",
     "pug:build",
     "html2js",
-    //"jshint",
+    "jshint",
     "copy:css_less",
     "less:build",
     "concat:build_css",
