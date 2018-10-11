@@ -66,10 +66,10 @@ module.exports = function(grunt) {
      */
     bump: {
       options: {
-        files: ["package.json", "bower.json"],
+        files: ["package.json"],
         commit: false,
         commitMessage: "chore(release): v%VERSION%",
-        commitFiles: ["package.json", "client/bower.json"],
+        commitFiles: ["package.json"],
         createTag: false,
         tagName: "v%VERSION%",
         tagMessage: "Version %VERSION%",
@@ -613,9 +613,7 @@ module.exports = function(grunt) {
     "clean",
     "pug:build",
     "html2js",
-    "jshint",
-    "coffeelint",
-    "coffee",
+    //"jshint",
     "copy:css_less",
     "less:build",
     "concat:build_css",

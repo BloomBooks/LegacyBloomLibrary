@@ -5,10 +5,8 @@ Notes on configuring the TeamCity build agent for BloomLibrary
   - Clone https://github.com/BloomBooks/BloomLibrary.git there, making a folder bloom/BloomLibrary
   - create a folder bloom\AppData
   - start dos prompt, cd to bloom\BloomLibrary
-  - npm -g install grunt-cli karma bower
+  - npm -g install grunt-cli karma
   - npm install
-  - bower install
-  (during bower install you will probably have to choose angularjs version 1.0.8 from a list of version options)
   - I _think_ you can then delete everything in BloomLibrary except the vendor folder. However, it may be helpful to keep the rest around in case you need to update things at some point.
 
 2. Install various tools for the user that executes the automated tasks. On TeamCity
