@@ -7,8 +7,8 @@ module.exports = {
    * development and the `compile_dir` folder is where our app resides once it's
    * completely built.
    */
-  build_dir: 'build',
-  compile_dir: 'bin',
+  build_dir: "build",
+  compile_dir: "bin",
 
   /**
    * This is a collection of file patterns that refer to our app code (the
@@ -20,26 +20,21 @@ module.exports = {
    * app's unit tests.
    */
   app_files: {
-    js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
-    jsunit: [ 'src/**/*.spec.js' ],
-    
-    coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee' ],
-    coffeeunit: [ 'src/**/*.spec.coffee' ],
+    js: ["src/**/*.js", "!src/**/*.spec.js", "!src/assets/**/*.js"],
+    jsunit: ["src/**/*.spec.js"],
 
-    atpl: [ 'src/app/**/*.tpl.html', 'build/tmp/**/*.tpl.html' ],
-    ctpl: [ 'src/common/**/*.tpl.html' ],
+    atpl: ["src/app/**/*.tpl.html", "build/tmp/**/*.tpl.html"],
+    ctpl: ["src/common/**/*.tpl.html"],
 
-    html: [ 'src/index.html' ],
-    less: 'src/less/main.less'
+    html: ["src/index.html"],
+    less: "src/less/main.less"
   },
 
   /**
    * This is a collection of files used during testing only.
    */
   test_files: {
-    js: [
-      'vendor/angular-mocks/angular-mocks.js'
-    ]
+    js: ["vendor/angular-mocks/angular-mocks.js"]
   },
 
   /**
@@ -62,33 +57,33 @@ module.exports = {
    */
   vendor_files: {
     js: [
-      'vendor/angular/angular.js',
+      "vendor/angular/angular.js",
       //'vendor-patches/angular-bootstrap/ui-bootstrap-tpls.min.js',
-      'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
-      'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
-      'vendor/angular-ui-router/release/angular-ui-router.js',
-      'vendor/angular-ui-utils/ui-utils.js',
-	  'vendor/jquery/dist/jquery.js',
-	  'vendor/jquery-ui/ui/jquery-ui.js',
-	  //'vendor/angular-route/angular-route.js',
-	  'vendor/restangular/dist/restangular.js',
-	  'vendor/underscore/underscore.js',
-	  //'vendor/angular-ui-router/release/angular-ui-router.js',
-	  'vendor/fancybox/source/jquery.fancybox.js',
-	  'vendor/angular-ui-grid/ui-grid.js',
-	  'vendor/angular-cookies/angular-cookies.js',
+      "vendor/angular-bootstrap/ui-bootstrap-tpls.min.js",
+      "vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js",
+      "vendor/angular-ui-router/release/angular-ui-router.js",
+      "vendor/angular-ui-utils/ui-utils.js",
+      "vendor/jquery/dist/jquery.js",
+      "vendor/jquery-ui/ui/jquery-ui.js",
+      //'vendor/angular-route/angular-route.js',
+      "vendor/restangular/dist/restangular.js",
+      "vendor/underscore/underscore.js",
+      //'vendor/angular-ui-router/release/angular-ui-router.js',
+      "vendor/fancybox/source/jquery.fancybox.js",
+      "vendor/angular-ui-grid/ui-grid.js",
+      "vendor/angular-cookies/angular-cookies.js",
       //'vendor/bootstrap-modal/js/*.js',
-      'vendor/bootstrap/js/carousel.js',
-      'vendor/bootstrap/js/transition.js',
-      'vendor/bootstrap/js/collapse.js',
-      'vendor/angular-local-storage/angular-local-storage.min.js',
-      'vendor/jquery-xml2json/src/xml2json.js',
-      'vendor/angulartics/dist/angulartics.min.js',
-      'vendor/angulartics/dist/angulartics-segmentio.min.js',
-      'vendor/ng-tags-input/ng-tags-input.min.js'
+      "vendor/bootstrap/js/carousel.js",
+      "vendor/bootstrap/js/transition.js",
+      "vendor/bootstrap/js/collapse.js",
+      "vendor/angular-local-storage/angular-local-storage.min.js",
+      "vendor/jquery-xml2json/src/xml2json.js",
+      "vendor/angulartics/dist/angulartics.min.js",
+      "vendor/angulartics/dist/angulartics-segmentio.min.js",
+      "vendor/ng-tags-input/ng-tags-input.min.js"
     ],
     css: [
-        /* most/all of our stylesheets are compiled into on file from less files.
+      /* most/all of our stylesheets are compiled into on file from less files.
          The list of those is kept in src/main.less.
          The css section here is basically obsolete, and although I (JohnT) fixed some
          of the bugs, it doesn't fully work...typically you will have to manually copy
@@ -97,14 +92,14 @@ module.exports = {
          automatically copied to .less, and adding to src/main.less. */
     ],
     assets: [
-        'src/app/modules/static/landing/*.png',
-        'src/app/modules/static/landing/*.jpg',
-        'src/app/modules/static/landing/*.svg',
-		'vendor/fancybox/source/*.png',
-        'vendor/fancybox/source/*.gif',
-        'vendor/bootstrap-css/fonts/*.*', //for glyphicons-halflings.*
-        'vendor/angular-ui-grid/ui-grid.ttf',
-        'vendor/angular-ui-grid/ui-grid.woff'
+      "src/app/modules/static/landing/*.png",
+      "src/app/modules/static/landing/*.jpg",
+      "src/app/modules/static/landing/*.svg",
+      "vendor/fancybox/source/*.png",
+      "vendor/fancybox/source/*.gif",
+      "vendor/bootstrap-css/fonts/*.*", //for glyphicons-halflings.*
+      "vendor/angular-ui-grid/ui-grid.ttf",
+      "vendor/angular-ui-grid/ui-grid.woff"
     ]
   }
 };
