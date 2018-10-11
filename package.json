@@ -8,14 +8,15 @@
     "url": "http://sil.mit-license.org"
   },
   "engines": {
-    "node": "~6.10.1"
+    "yarn": ">= 1.0.0",
+    "node": "~8.10.0"
   },
   "scripts": {
     "build": "yarn grunt build",
     "watch": "yarn grunt watch",
     "serve": "yarn lite-server",
     "//About-postinstall": "This was added by 'bower-away', the tool that helped retire bower. It creates it in order to reconnect all the things that are still pointing at the old 'vendor' directory, stuff that has been moved to node_modules",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'vendor', 'junction') } catch (e) { console.error(e);}\""
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'vendor', 'junction') } catch (e) { }\""
   },
   "bugs": "https://trello.com/board/bloom-development/4f087ec138f81c83752051a0",
   "repository": {
@@ -46,7 +47,8 @@
     "@bower_components/ng-tags-input": "mbenford/ngTagsInput-bower#~2.3.0",
     "@bower_components/restangular": "mgonto/restangular#~1.4.0",
     "@bower_components/underscore": "jashkenas/underscore#~1.6.0",
-    "bower-away": "^1.1.2"
+    "bower-away": "^1.1.2",
+    "jasmine-core": "^3.2.1"
   },
   "devDependencies": {
     "bower": "^1.7.9",
@@ -63,16 +65,12 @@
     "grunt-contrib-watch": "^0.4.4",
     "grunt-conventional-changelog": "^0.1.2",
     "grunt-html2js": "^0.1.9",
-    "grunt-karma": "^0.8.2",
+    "grunt-karma": "^3.0.0",
     "grunt-ngmin": "0.0.2",
-    "karma": "^0.12.9",
+    "karma": "^3.0.0",
     "karma-firefox-launcher": "^1.1.0",
-    "karma-firefox-launcher": "^0.1.3",
-    "karma-jasmine": "^0.1.5",
-    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-jasmine": "^1.1.2",
+    "karma-phantomjs-launcher": "^1.0.4",
     "lite-server": "^2.4.0"
-  },
-  "engines": {
-    "yarn": ">= 1.0.0"
   }
 }
