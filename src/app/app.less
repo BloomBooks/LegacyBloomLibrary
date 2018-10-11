@@ -39,7 +39,7 @@ div.footerLinks {
   a.active {
     color: @bloomRed;
   }
-  a.mixpanel{
+  a.mixpanel {
     margin-left: 20px;
   }
   div {
@@ -65,19 +65,19 @@ div.container.not-centered {
   border: none;
   border-radius: 0;
 }
-@media (max-width:@navbar-small-breakpoint-max) and (min-width:@grid-float-breakpoint) {
+@media (max-width: @navbar-small-breakpoint-max) and (min-width: @grid-float-breakpoint) {
   .navbar-brand img {
     height: 35px;
   }
 }
-@media (min-width:@navbar-small-breakpoint) {
+@media (min-width: @navbar-small-breakpoint) {
   .navbar li.navbar-lg a {
     font-size: @site-header-font-size * 1.75;
     margin-top: -4px;
     margin-left: 3px; //Line up the menu item with the books
   }
 }
-@media (min-width:@grid-float-breakpoint) {
+@media (min-width: @grid-float-breakpoint) {
   .site-header .navbar ul.nav {
     margin-top: (@navbar-padding-vertical * 2) + 23px;
   }
@@ -88,7 +88,7 @@ div.container.not-centered {
 .site-header {
   color: @navbar-inverse-color;
   font-size: @site-header-font-size;
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width: @grid-float-breakpoint) {
     .navbar-collapse {
       padding-left: 0;
       padding-right: 0;
@@ -101,17 +101,17 @@ div.container.not-centered {
   // }
 }
 #book-library-link-lg {
-  @media (max-width:@navbar-small-breakpoint-max) {
+  @media (max-width: @navbar-small-breakpoint-max) {
     display: none;
   }
 }
 #book-library-link-sm {
-  @media (min-width:@navbar-small-breakpoint) {
+  @media (min-width: @navbar-small-breakpoint) {
     display: none;
   }
 }
 #book-library-link-landing-sm {
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width: @grid-float-breakpoint) {
     display: none;
   }
 }
@@ -123,10 +123,12 @@ div.container.not-centered {
   a {
     color: @lightGray;
   }
-  a:hover, a:focus {
+  a:hover,
+  a:focus {
     text-decoration: none;
   }
-  a:hover .hover-highlight, a:focus .hover-highlight {
+  a:hover .hover-highlight,
+  a:focus .hover-highlight {
     color: @bloomRed;
   }
   a .hover-highlight {
@@ -138,12 +140,12 @@ div.container.not-centered {
   top: 40px;
   right: 0;
   padding-right: 15px;
-  @media (max-width:@grid-float-breakpoint-max) {
+  @media (max-width: @grid-float-breakpoint-max) {
     display: none;
   }
 }
 #editor-link-sm {
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width: @grid-float-breakpoint) {
     display: none;
   }
 }
@@ -156,7 +158,7 @@ div.container.not-centered {
   height: 54px;
 }
 // The following makes a smoother transition when using two collapsible navbars
-@media (max-width:@grid-float-breakpoint-max) {
+@media (max-width: @grid-float-breakpoint-max) {
   .navbar-nav.navbar-collapse {
     margin: 0;
     padding-left: 0;
