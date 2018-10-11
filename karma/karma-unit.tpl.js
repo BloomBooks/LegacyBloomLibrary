@@ -12,16 +12,13 @@ module.exports = function ( karma ) {
       <% scripts.forEach( function ( file ) { %>'<%= file %>',
       <% }); %>
       'src/**/*.js',
-      'src/**/*.coffee',
     ],
     exclude: [
       'src/assets/**/*.js'
     ],
     frameworks: [ 'jasmine' ],
-    plugins: [ 'karma-jasmine', 'karma-phantomjs-launcher', 'karma-firefox-launcher', 'karma-coffee-preprocessor' ],
-    preprocessors: {
-      '**/*.coffee': 'coffee',
-    },
+    plugins: [ 'karma-jasmine', 'karma-phantomjs-launcher', 'karma-firefox-launcher' ],
+
 
     /**
      * How to report, by default.
