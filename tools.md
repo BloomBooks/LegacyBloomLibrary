@@ -88,10 +88,10 @@ First, we tell Grunt which tasks we might want to use:
 
 ```js
 // ...
-grunt.loadNpmTasks('grunt-recess');
-grunt.loadNpmTasks('grunt-contrib-clean');
-grunt.loadNpmTasks('grunt-contrib-copy');
-grunt.loadNpmTasks('grunt-contrib-jshint');
+grunt.loadNpmTasks("grunt-recess");
+grunt.loadNpmTasks("grunt-contrib-clean");
+grunt.loadNpmTasks("grunt-contrib-copy");
+grunt.loadNpmTasks("grunt-contrib-jshint");
 // ...
 ```
 
@@ -141,7 +141,7 @@ $ grunt copy
 
 But how automated is that? So instead we define a composite task that executes
 all that for us. The commands above make up the `default` tasks, which can be
-run by typing *either* of these commands:
+run by typing _either_ of these commands:
 
 ```js
 $ grunt
@@ -209,7 +209,7 @@ overview.
 
 One last thing to note is that packages installed with Bower are not
 standardized, so we cannot automatically add them to the build process; anything
-installed with Bower (or placed in the `vendor/` directory manually) *must* be
+installed with Bower (or placed in the `vendor/` directory manually) _must_ be
 added to your `build.config.js` file manually; look for the Bower libs included
 in `ngBoilerplate` by default in there to see what I mean.
 
@@ -220,4 +220,3 @@ through the [main README](README.md) to dive another level deeper and apply what
 you've learned for great good. I promise it will all make sense it short order.
 
 Happy programming!
-
