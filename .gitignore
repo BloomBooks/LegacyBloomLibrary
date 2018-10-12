@@ -8,3 +8,5 @@ vendor/
 upload/*.dll
 /upload/packages/
 /.nuget/NuGet.exe
+
+vendor
