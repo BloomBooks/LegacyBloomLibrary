@@ -153,6 +153,7 @@ li .bookInfo {
   .clear {
     visibility: hidden;
   }
+  .activeFilter,
   .activeFilter a {
     color: @bloomRed;
   }
@@ -237,4 +238,18 @@ li .bookInfo {
 
 .space-after-book-message {
   height: 5px;
+}
+
+.features {
+  label {
+    // For some reason, bootstrap puts styling on all labels which we have to override
+    font-weight: normal;
+    margin-bottom: 0px;
+
+    vertical-align: top;
+
+    // An unfortunate magic number to get the text to wrap below itself rather than the checkbox.
+    // The alternative was a counter-intuitive float:left on the checkbox and display:flex on the label.
+    max-width: 155px;
+  }
 }
