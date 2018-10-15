@@ -1,13 +1,13 @@
 div.container.not-centered
     div.row.row-offcanvas
-        div#sideBar.filterBar.col-md-3.sidebar-offcanvas(ng-show="wantLeftBar" ng-controller="LeftSidebar")
+        aside#sideBar.filterBar.col-md-3.sidebar-offcanvas(ng-show="wantLeftBar" ng-controller="LeftSidebar" role="search" aria-label="guided navigation")
             p.pull-right.visible-xs.sidebarToggle
                 button.btn.btn-primary.btn-xs(type="button" data-toggle="offcanvas") &nbsp;
                     i.icon-caret-left
                     | &nbsp;&nbsp;
             ul
                 li.bookshelves
-                    h4 Bookshelves
+                    h1 Bookshelves
                     ul
                         li
                             a.bookshelfItem(href="" ng-click="filterShelf('')") All Books
@@ -31,8 +31,8 @@ div.container.not-centered
                                             a.bookshelfItem(href="" ng-click="filterShelf(bookshelf.key)") {{bookshelf.displayName}}
                                                 .orgName(ng-if="bookshelf.orgName && bookshelf.orgName.length > 0") {{bookshelf.orgName}}
                 li.narrowSearch
-                    h4 Narrow Search
-                    h5 Languages
+                    h1 Narrow Search
+                    h2 Languages
                     ul(ng-repeat="lang in topLanguages")
                         li(ng-class="{activeFilter: currentLang == lang.isoCode}")
                             a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
@@ -46,7 +46,7 @@ div.container.not-centered
                                     a.clear.right(href="" ng-click="filterLanguage('','')") Clear
                     ul(ng-repeat="category in tagCategories")
                         li(ng-show="tags[category.id].top.length")
-                            h5 {{category.displayName}}
+                            h2 {{category.displayName}}
                             ul(ng-repeat="tag in tags[category.id].top")
                                 li(ng-class="{activeFilter: currentTag == tag.id}")
                                     a.tagItem(href="" ng-click="filterTag(tag.id)") {{tag.displayName}}
