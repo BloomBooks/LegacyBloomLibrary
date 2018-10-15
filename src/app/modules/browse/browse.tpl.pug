@@ -44,6 +44,17 @@ div.container.not-centered
                                 li(ng-class="{activeFilter: currentLang == lang.isoCode}")
                                     a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
                                     a.clear.right(href="" ng-click="filterLanguage('','')") Clear
+                    h2 Features
+                    ul.features
+                        li.blind.feature
+                            input(id="feature_blind" type="checkbox" ng-click="filterFeature(this, 'blind')" ng-checked="{{isActiveFeature('blind')}}")
+                            label(for="feature_blind" ng-class="{activeFilter: isActiveFeature('blind')}") Accessible to the Blind
+                        li.visuallyImpaired.feature
+                            input(id="feature_visuallyImpaired" type="checkbox" ng-click="filterFeature(this, 'visuallyImpaired')" ng-checked="{{isActiveFeature('visuallyImpaired')}}")
+                            label(for="feature_visuallyImpaired" ng-class="{activeFilter: isActiveFeature('visuallyImpaired')}") Accessible to the Visually Impaired
+                        li.signLanguage.feature
+                            input(id="feature_signLanguage" type="checkbox" ng-click="filterFeature(this, 'signLanguage')" ng-checked="{{isActiveFeature('signLanguage')}}")
+                            label(for="feature_signLanguage" ng-class="{activeFilter: isActiveFeature('signLanguage')}") Includes Sign Language Videos
                     ul(ng-repeat="category in tagCategories")
                         li(ng-show="tags[category.id].top.length")
                             h2 {{category.displayName}}

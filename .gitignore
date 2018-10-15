@@ -10,3 +10,4 @@ upload/*.dll
 /.nuget/NuGet.exe
 
 vendor
+*.orig

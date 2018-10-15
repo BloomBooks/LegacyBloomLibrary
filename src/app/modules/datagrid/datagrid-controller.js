@@ -158,7 +158,7 @@
 				// is beyond the scope of this change.) So for now, just set to an arbitrarily high number.
 				var count = 100000;
 
-				bookService.getFilteredBookRange(first, count, '', '', '', '', true, '', '', true).then(function (result) {
+				bookService.getFilteredBookRange(first, count, '', '', '', '', true, [], '', '', true).then(function (result) {
 					$scope.booksCache = {};
 					// Here for each book $scope.booksCache[objectId] is set to an object that is a more user-friendly
 					// representation of the book data, suitable for the grid; and $scope.booksData becomes the array
@@ -173,7 +173,7 @@
 								var dateWithTime = new Date(item.createdAt);
 								return new Date(dateWithTime.getFullYear(), dateWithTime.getMonth(), dateWithTime.getDate());
 							}()),
-							copyright: (item.copyright !== null && item.copyright.match('^Copyright '))  ? item.copyright.substring(10) : item.copyright,
+							copyright: (item.copyright && item.copyright.match('^Copyright '))  ? item.copyright.substring(10) : item.copyright,
 							downloadCount: item.downloadCount || 0,
 							imgUrl: item.baseUrl + "thumbnail-70.png",
 							license: item.license,

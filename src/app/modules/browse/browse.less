@@ -238,3 +238,24 @@ li .bookInfo {
 .space-after-book-message {
   height: 5px;
 }
+
+.features {
+  .feature {
+    .activeFilter {
+      color: @bloomRed;
+    }
+  }
+
+  input[type="checkbox"] {
+    // This along with display: flex; on the label makes the label wrap under the label instead of under the check box
+    float: left;
+  }
+
+  label {
+    // For some reason, bootstrap puts styling on all labels which we have to override
+    font-weight: normal;
+
+    // This along with float: left; on the check box makes the label wrap under the label instead of under the check box
+    display: flex;
+  }
+}
