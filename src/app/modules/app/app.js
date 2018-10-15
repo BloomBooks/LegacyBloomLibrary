@@ -196,7 +196,8 @@
               shelf: shelfName,
               lang: "",
               langname: "",
-              tag: ""
+              tag: "",
+              features: ""
             });
           } else {
             $state.go("browse", { search: "", shelf: shelfName }); // keep other params unchanged.
@@ -210,6 +211,23 @@
             $scope.showPleaseLogIn();
           }
         };
+        $scope.filterFeature = function(passedScope, feature) {
+          bookService.resetCurrentPage();
+          $state.go("browse", {
+            features: getFeaturesParam(passedScope, feature)
+          });
+        };
+
+        function getFeaturesParam(passedScope, feature) {
+          var features = passedScope.features;
+          var index = features.indexOf(feature);
+          if (index > -1) {
+            features.splice(index, 1);
+          } else {
+            features.push(feature);
+          }
+          return JSON.stringify(features);
+        }
 
         // Sadly duplicated in detail controller
         $scope.showPleaseLogIn = function() {

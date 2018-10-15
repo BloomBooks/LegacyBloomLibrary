@@ -10,7 +10,7 @@
           parent: "requireLoginResolution",
           //review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
           //it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@':
-          url: "/browse?search&shelf&lang&langname&tag&allLicenses",
+          url: "/browse?search&shelf&lang&langname&tag&allLicenses&features",
           templateUrl: "modules/browse/browse.tpl.html",
           controller: "BrowseCtrl",
           title: "Book Library of shell books to download into Bloom Editor"
@@ -85,6 +85,7 @@
       $scope.langName = $stateParams["langname"];
       $scope.tag = $stateParams["tag"];
       $scope.allLicenses = $stateParams["allLicenses"] === "true";
+      $scope.features = getFeaturesFromStateParams();
       $scope.numHiddenBooks = 0;
       $scope.otherBookshelvesHidden = true;
       $scope.otherLanguagesHidden = true;
@@ -101,6 +102,17 @@
       $scope.$watch("bookCountObject.bookCount", function() {
         $scope.bookCount = $scope.bookCountObject.bookCount;
       });
+
+      function getFeaturesFromStateParams() {
+        if ($stateParams.features) {
+          return JSON.parse($stateParams.features);
+        }
+        return [];
+      }
+
+      $scope.isActiveFeature = function(feature) {
+        return $scope.features.indexOf(feature) > -1;
+      };
 
       $scope.toggleVisibilityOfOtherBookshelves = function(event) {
         var list = event.currentTarget.nextElementSibling;
@@ -167,7 +179,9 @@
         var params = {
           count: count,
           shelf: shelfLabel,
-          language: $scope.langName ? $scope.langName : languageService.getDisplayName($scope.lang),
+          language: $scope.langName
+            ? $scope.langName
+            : languageService.getDisplayName($scope.lang),
           bookOrBooks: booksTranslation,
           tag: tagService.getDisplayName($scope.tag),
           searchText: $scope.searchText
@@ -245,7 +259,8 @@
           $scope.lang,
           $scope.tag,
           false,
-          true
+          true,
+          $scope.features
         );
         if ($scope.allLicenses) {
           promise.then(function(count) {
@@ -260,7 +275,8 @@
                 $scope.lang,
                 $scope.tag,
                 false,
-                false
+                false,
+                $scope.features
               )
               .then(function(ccCount) {
                 $scope.numHiddenBooks = fullCount - ccCount;
@@ -292,6 +308,7 @@
             $scope.lang,
             $scope.tag,
             $scope.allLicenses,
+            $scope.features,
             "title",
             true
           )

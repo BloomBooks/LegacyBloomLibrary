@@ -238,3 +238,17 @@ li .bookInfo {
 .space-after-book-message {
   height: 5px;
 }
+
+.features {
+  .feature {
+    .activeFilter {
+      color: @bloomRed;
+    }
+  }
+
+  label {
+    // For some reason, bootstrap puts styling on all labels which we have to override
+    font-weight: normal;
+    display: unset;
+  }
+}
