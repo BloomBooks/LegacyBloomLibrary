@@ -74,7 +74,13 @@ html
 				.container.centeritems
 					.row
 						.col-md-12
-							iframe(width="420", height="315", src="https://player.vimeo.com/video/141561934?title=0&byline=0&portrait=0", frameborder="0", allowfullscreen, title="introductory video" tx-attrs="title")
+							a(href = "https://player.vimeo.com/video/141561934" aria-label="Play Bloom introductory video 'Why Bloom?'")
+								// the height and padding make it take up about the same space as the original embedded vimeo video,
+								// which we changed to a link because it isn't sufficiently accessible (BL-6623).
+								// Note that it deliberately has no alt text, the image doesn't convey anything that isn't described
+								// by the aria-label on the link. It's basically decoration for the link.
+								img(width="422", height="315", style="padding: 44px 0" src = "assets/BloomLibraryVimeoPlaceholder.png" alt="")
+							//iframe(width="420", height="315", src="https://player.vimeo.com/video/141561934?title=0&byline=0&portrait=0", frameborder="0", allowfullscreen, title="introductory video" tx-attrs="title")
 					.row
 						.col-md-12
 							p To learn more, check out Bloom's&nbsp;
