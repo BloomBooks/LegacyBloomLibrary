@@ -5,6 +5,16 @@ body {
   margin: 0;
   -ms-overflow-style: scrollbar; //Prevents issue with IE scrollbar being on top of content
 }
+:root {
+  --darkGray: @darkGray;
+}
+.high-contrast {
+  --darkGray: @darkGrayHighContrast;
+  // Some elements we can't easily make use --var(darkGray) because controlled by Bootstrap
+  .navbar-inverse {
+    background-color: @darkGrayHighContrast;
+  }
+}
 a {
   cursor: pointer;
 }
@@ -149,6 +159,21 @@ div.container.not-centered {
     display: none;
   }
 }
+// We can't just make a class increase-contrast-collapsed for this,
+// because of rules like nav li {display: block} which have higher priority.
+// So make rules specifically for the elements we need to hide/show at different widths.
+// The two versions of IncreaseContrast need to be in different positions in their
+// parent list in the two modes.
+#increase-contrast-collapsed {
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
+#increase-contrast-expanded {
+  @media (max-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
 .site-header .navbar-brand {
   padding-top: 0;
   padding-bottom: 0;
@@ -186,7 +211,7 @@ body {
 }
 
 .carousel {
-  background-color: @darkGray;
+  background-color: var(--darkGray);
   width: 860px;
   margin-left: auto;
   margin-right: auto;
