@@ -18,7 +18,12 @@
  * Colors
  */
 @lightGray: #E5E5E5;
+// In our own code, we prefer to use var(--darkGrey), which app.less defines to
+// be the appropriate one of the following two constants. However, that doesn't
+// work as a way to define other variables, some of which are used in bootstrap,
+// so I'm keeping these constants as the master version of the two colors.
 @darkGray: #333333;
+@darkGrayHighContrast: #101010;
 @bloomRed: #D65649;
 
 /**

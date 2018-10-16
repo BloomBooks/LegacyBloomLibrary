@@ -95,6 +95,19 @@
         $scope.isActive = function(viewLocation) {
           return viewLocation === $location.path();
         };
+        $scope.highContrast = false;
+        $scope.toggleHighContrast = function() {
+          $scope.highContrast = !$scope.highContrast;
+          if ($scope.highContrast) {
+            document.body.classList.add("high-contrast");
+          }
+          else {
+            document.body.classList.remove("high-contrast");
+          }
+        };
+        $scope.showingHighContrast = function() {
+          return $scope.highContrast;
+        };
 
         $scope.isBookLibrary = function() {
           return (
