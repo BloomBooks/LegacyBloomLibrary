@@ -78,6 +78,11 @@
         });
         Transifex.live.onReady(function () {
             convertAllLanguageNames();
+            // force the transifex control into our footer to make accessibility checkers happy.
+            // (And maybe really help blind people find it.)
+            var transifex = document.getElementById("tx-live-lang-container");
+            var footer = document.getElementsByClassName("site-footer")[0];
+            footer.append(transifex);
         });
 
         function convertAllLanguageNames() {
