@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lte IE 9 ]>
+<!--[if lte IE 11 ]>
     <meta http-equiv="refresh" content="0;url=assets/unsupportedBrowser.html">
 <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
+<!--[if (gt IE 11)|!(IE)]><!-->
 <html ng-app="BloomLibraryApp" lang="en">
 
 <head>
@@ -154,7 +154,8 @@
                                     <li><a href="/opensource">Open Source</a></li>
                                     <!-- There are three copies of this menu item. I don't think its (quite) complex enough to be worth the effort
                                     of somehow making a reusable component out of it. -->
-                                    <li><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
+                                    <li><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
+                                                Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -194,7 +195,8 @@
                         </ul>
                         <ul id="credentials-menu" ng-cloak class="nav navbar-nav navbar-right">
                             <!-- CSS ensures one or the other Increase Contrast is shown-->
-                            <li id="increase-contrast-expanded"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
+                            <li id="increase-contrast-expanded"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
+                                        Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
                             <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="/signup">Sign
                                     Up</a></li>
                             <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="/login">Log In</a></li>
@@ -202,7 +204,8 @@
                             <li ng-if="isLoggedIn()"><a class="logout" ng-click="logout()">Log Out</a></li>
                             <!-- CSS ensures either this (editor-link-sm) or the div above (editor-link-lg) will be displayed -->
                             <li><a id="editor-link-sm" href="/landing">Bloom Editor</a></li>
-                            <li id="increase-contrast-collapsed"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
+                            <li id="increase-contrast-collapsed"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
+                                        Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
                         </ul>
                     </div>
                 </div><!-- /.container-fluid -->
