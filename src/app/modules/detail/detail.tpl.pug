@@ -5,7 +5,7 @@ div.modal-dialog
     div.modal-content
         div.detail
             div.modal-header
-            main.modal-body
+            div.modal-body(role="dialog" aria-label="Details of the book")
                 img(ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}" alt="Cover thumbnail")/
                 div.detailCol2
                     h1.title.notranslate {{book.title}}
