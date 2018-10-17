@@ -209,7 +209,8 @@
               shelf: shelfName,
               lang: "",
               langname: "",
-              tag: ""
+              tag: "",
+              features: ""
             });
           } else {
             $state.go("browse", { search: "", shelf: shelfName }); // keep other params unchanged.
@@ -571,10 +572,10 @@
       // The first line is boilerplate stuff from segment.io.  It is only modified to adhere to strict mode.
       // I don't know everything it does, but one thing is it stores up any calls made before the analytics object is fully initialized.
       // Once the object is initialized, it runs through the queue.  This prevents script errors during load.
-      // prettier-ignore
+      //prettier-ignore
       window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return (a.unshift(t),window.analytics.push(a),window.analytics);};};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key);}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);}},window.analytics.SNIPPET_VERSION="2.0.9",
       // Development: vidljptawu, Production: a6nswpue7x
-      // prettier-ignore
+      //prettier-ignore
       window.analytics.load(!sharedService.isProductionSite || localStorageService.get('trackLiveAnalytics') === "false" ? "vidljptawu" : "a6nswpue7x");
 
       // It's very handy to add references to $state and $stateParams to the $rootScope

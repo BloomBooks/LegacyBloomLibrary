@@ -376,7 +376,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 
         // Common to getFilteredBooks{Count,Range}
         // Generates a book query based on the parameters provided
-        this.makeQuery = function(searchString, shelfKey, lang, tag, allLicenses) {
+        this.makeQuery = function(searchString, shelfKey, lang, tag, allLicenses, features) {
             var query;
             if (shelfKey) {
                 if (shelfKey == "$recent") {
@@ -440,6 +440,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             if (!allLicenses) {
                 query.startsWith('license', 'cc'); // not cc-, that excludes cc0
             }
+            if (features && features.length > 0) {
+                query.containsAll("features", features);
+            }
             return query;
         };
 
@@ -448,15 +451,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// The caller will typically do getFilteredBooksCount(...).then(function(count) {...}
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
-		this.getFilteredBooksCount = function (searchString, shelfKey, lang, tag, includeOutOfCirculation, allLicenses) {
+		this.getFilteredBooksCount = function (searchString, shelfKey, lang, tag, includeOutOfCirculation, allLicenses, features) {
             $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: shelfKey || '', lang: lang || '', tag: tag || '', allLicenses: allLicenses || ''});
 			var defer = $q.defer();
 
             var query;
-            if (!searchString && !shelfKey && !lang && !tag && allLicenses) {
+            if (!searchString && !shelfKey && !lang && !tag && allLicenses && (!features || features.length === 0)) {
                 query = new Parse.Query('books'); // good enough for count, we just want them all in some order.
             } else {
-                query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses);
+                query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses, features);
             }
 
             if(!includeOutOfCirculation) {
@@ -489,9 +492,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// We will return the result as an angularjs promise. Typically the caller will
 		// do something like getFilteredBookRange(...).then(function(books) {...do something with books}
 		// By that time books will be an array of json-encoded book objects from parse.com.
-		this.getFilteredBookRange = function (first, count, searchString, shelfKey, lang, tag, allLicenses, sortBy, ascending, includeOutOfCirculation) {
+		this.getFilteredBookRange = function (first, count, searchString, shelfKey, lang, tag, allLicenses, features, sortBy, ascending, includeOutOfCirculation) {
 			var defer = $q.defer(); // used to implement angularjs-style promise
-            if (!searchString && !shelfKey && !lang && !tag) {
+            if (!searchString && !shelfKey && !lang && !tag && (!features || features.length === 0)) {
                 // default initial state. Show featured books and then all the rest.
                 // This is implemented by cloud code, so just call the cloud function.
                 // Enhance: if we want to control sorting for this, we will need to pass the appropriate params
@@ -518,7 +521,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 return defer.promise;
             }
             // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
-			var query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses);
+			var query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses, features);
 
             //Hide out-of-circulation books
             if(!includeOutOfCirculation) {
