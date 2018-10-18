@@ -38,6 +38,7 @@
 
   installersApp.controller("InstallersCtrl", function(
     $scope,
+    $rootScope,
     $state,
     Restangular
   ) {
@@ -56,6 +57,23 @@
             $scope.files = r;
             console.log(r);
           });
+      }
+      // If we're in high-contrast mode, the appropriate class needs to be added to the
+      // body of each iframe's document. See comment in app.js (search for high-contrast)
+      // for more info.
+      if ($rootScope.highContrast) {
+        $('iframe').each(function(index, iframe) {
+          // not sure whether both of these are needed; the idea is that if somehow the
+          // document is already loaded enough to have a body, we may be too late for
+          // the DOMContentLoaded event, so just do it now; if it doesn't (probably more common),
+          // we can't do it now, so presumably the document isn't loaded and doing it when it is will work.
+          if (iframe.contentWindow && iframe.contentWindow.document && iframe.contentWindow.document) {
+            iframe.contentWindow.document.body.classList.add("high-contrast");
+          }
+          iframe.contentWindow.addEventListener("DOMContentLoaded", function() {
+            iframe.contentWindow.document.body.classList.add("high-contrast");
+          });
+        });
       }
     });
   });
