@@ -78,8 +78,8 @@
       "authService",
       "$location",
       "$state",
-      "silNoticeService",
-      function($scope, authService, $location, $state, silNoticeService) {
+      "silNoticeService", "$rootScope",
+      function($scope, authService, $location, $state, silNoticeService, $rootScope) {
         $scope.location = $location.path();
         $scope.isLoggedIn = authService.isLoggedIn;
 
@@ -95,18 +95,42 @@
         $scope.isActive = function(viewLocation) {
           return viewLocation === $location.path();
         };
-        $scope.highContrast = false;
+        // We store this in rootScope so it is accessible to some code that needs it in installers-controller.js
+        $rootScope.highContrast = false;
         $scope.toggleHighContrast = function() {
-          $scope.highContrast = !$scope.highContrast;
-          if ($scope.highContrast) {
+          $rootScope.highContrast = !$rootScope.highContrast;
+          if ($rootScope.highContrast) {
             document.body.classList.add("high-contrast");
+            // The installers page has some iframes that hold generated documents with links for
+            // installing the latest version of Bloom in various channels.
+            // Because they are in an iframe, they ignore the high-contrast class on the root body.
+            // So we need to put the class on their own body.
+            // Unfortunately, we may not be currently in the downloads page, so these iframes
+            // may not be present; therefore, we have to do something similar in the code that
+            // runs when that page is activated.
+            // Even more unfortunately, this code simply fails when debugging local builds;
+            // it is considered a security violation for code running in a localhost: scope
+            // to try to manipulate the DOM of a page whose source is on bloomlibrary.org.
+            // ("cross-domain scripting"). If you really need to test this out on a local build,
+            // or work on it, the only way I found is to make local copies of the documents
+            // that are the contents of the iframes, and temporarily change the links to use them.
+            $('iframe').each(function(index, iframe) {
+              if (iframe.contentWindow && iframe.contentWindow.document) {
+                iframe.contentWindow.document.body.classList.add("high-contrast");
+              }
+            });
           }
           else {
             document.body.classList.remove("high-contrast");
+            $('iframe').each(function(index, iframe) {
+              if (iframe.contentWindow && iframe.contentWindow.document) {
+                iframe.contentWindow.document.body.classList.remove("high-contrast");
+              }
+            });
           }
         };
         $scope.showingHighContrast = function() {
-          return $scope.highContrast;
+          return $rootScope.highContrast;
         };
 
         $scope.isBookLibrary = function() {

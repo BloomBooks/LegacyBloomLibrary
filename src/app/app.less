@@ -7,12 +7,19 @@ body {
 }
 :root {
   --darkGray: @darkGray;
+  --link-color: @link-color;
 }
 .high-contrast {
   --darkGray: @darkGrayHighContrast;
+  --link-color: @link-color-high-contrast;
   // Some elements we can't easily make use --var(darkGray) because controlled by Bootstrap
   .navbar-inverse {
     background-color: @darkGrayHighContrast;
+  }
+  // This overrides the bootstrap rule making links (by default) @link-color,
+  // which is @Bloom-red.
+  a {
+    color: @link-color-high-contrast;
   }
 }
 a {
