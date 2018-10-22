@@ -79,7 +79,8 @@
       "$location",
       "$state",
       "silNoticeService", "$rootScope",
-      function($scope, authService, $location, $state, silNoticeService, $rootScope) {
+      "$cookies",
+      function($scope, authService, $location, $state, silNoticeService, $rootScope, $cookies) {
         $scope.location = $location.path();
         $scope.isLoggedIn = authService.isLoggedIn;
 
@@ -96,9 +97,15 @@
           return viewLocation === $location.path();
         };
         // We store this in rootScope so it is accessible to some code that needs it in installers-controller.js
-        $rootScope.highContrast = false;
+        $rootScope.highContrast = $cookies["highContrast"]; // correctly false if not recorded
+        $scope.$watch('$viewContentLoaded',function() {
+          if ($rootScope.highContrast) {
+            document.body.classList.add("high-contrast"); // make use of cookie
+          }
+        });
         $scope.toggleHighContrast = function() {
           $rootScope.highContrast = !$rootScope.highContrast;
+          $cookies["highContrast"] = $rootScope.highContrast;
           if ($rootScope.highContrast) {
             document.body.classList.add("high-contrast");
             // The installers page has some iframes that hold generated documents with links for
