@@ -256,8 +256,8 @@ module.exports = function(grunt) {
           sourceMap: true,
           sourceMapFilename:
             "<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css.map",
-          sourceMapBasepath: "",
-          sourceMapRootpath: "../../"
+          sourceMapURL: "<%= pkg.name %>-<%= pkg.version %>.css.map",
+          sourceMapRootpath: "../"
         },
         files: {
           "<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css":
