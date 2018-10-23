@@ -106,7 +106,7 @@ li .bookInfo {
   //There is probably a more elegant way... this is copied from scaffolding.less with the book title added
   a:hover .bookTitle,
   a:focus .bookTitle {
-    color: @link-hover-color;
+    color: var(--link-hover-color);
     text-decoration: underline;
   }
 }
@@ -147,15 +147,15 @@ li .bookInfo {
   a {
     color: @lightGray;
   }
-  a:hover {
-    color: @bloomRed;
+  a:hover, a:focus {
+    color: var(--link-on-black-color);
   }
   .clear {
     visibility: hidden;
   }
   .activeFilter,
   .activeFilter a {
-    color: @bloomRed;
+    color: var(--link-on-black-color);
   }
   .activeFilter .clear {
     visibility: visible;

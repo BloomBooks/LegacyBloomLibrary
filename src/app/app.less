@@ -7,19 +7,38 @@ body {
 }
 :root {
   --darkGray: @darkGray;
+  --button-back-color: @bloomRed;
   --link-color: @link-color;
+  --link-hover-color: @link-color;
+  --link-on-black-color: @link-color;
 }
 .high-contrast {
   --darkGray: @darkGrayHighContrast;
   --link-color: @link-color-high-contrast;
+  --button-back-color: @link-color-high-contrast;
+  --link-hover-color: @link-color-high-contrast;
+  --link-on-black-color:#FF6757; // as bright as we can make red with same proportions as bloomRed (#D65649)
   // Some elements we can't easily make use --var(darkGray) because controlled by Bootstrap
-  .navbar-inverse {
+  .navbar-inverse, .dropdown-menu {
     background-color: @darkGrayHighContrast;
   }
   // This overrides the bootstrap rule making links (by default) @link-color,
   // which is @Bloom-red.
   a {
     color: @link-color-high-contrast;
+  }
+  // In normal mode, for these, the button gets a little darker still when hovered.
+  .btn-primary, .btn-primary.active, .btn-primary.focus {
+    border-color: var(--button-back-color);
+    background-color: var(--button-back-color);
+  }
+
+  // I can't find a rule that makes these @bloomRed normally, but the bootstrap rule
+  // that seems to be controlling them looks like this, so I've followed the pattern.
+  .navbar-inverse .navbar-nav > .active > a,
+  .navbar-inverse .navbar-nav > .active > a:hover,
+  .navbar-inverse .navbar-nav > .active > a:focus {
+    color:var(--link-on-black-color);
   }
 }
 a {
@@ -36,7 +55,7 @@ textarea {
 }
 
 .highlight {
-  color: @bloomRed;
+  color: var(--link-on-black-color);
 }
 .mandatoryfields {
   display: none;
@@ -51,10 +70,10 @@ textarea {
     color: @darkText;
   }
   a:hover {
-    color: @bloomRed;
+    color: var(--link-color);
   }
   a.active {
-    color: @bloomRed;
+    color: var(--link-color);
   }
   a.mixpanel {
     margin-left: 20px;
@@ -146,7 +165,7 @@ div.container.not-centered {
   }
   a:hover .hover-highlight,
   a:focus .hover-highlight {
-    color: @bloomRed;
+    color: var(--link-on-black-color);
   }
   a .hover-highlight {
     text-decoration: underline;
