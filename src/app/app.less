@@ -11,6 +11,7 @@ body {
   --link-color: @link-color;
   --link-hover-color: @link-color;
   --link-on-black-color: @link-color;
+  --light-text-on-default: grey;
 }
 .high-contrast {
   --darkGray: @darkGrayHighContrast;
@@ -18,6 +19,7 @@ body {
   --button-back-color: @link-color-high-contrast;
   --link-hover-color: @link-color-high-contrast;
   --link-on-black-color:#FF6757; // as bright as we can make red with same proportions as bloomRed (#D65649)
+  --light-text-on-default: #666666; // lightest text is allowed to be for 4.5 contrast on our default (#E5E5E5) background.
   // Some elements we can't easily make use --var(darkGray) because controlled by Bootstrap
   .navbar-inverse, .dropdown-menu {
     background-color: @darkGrayHighContrast;
