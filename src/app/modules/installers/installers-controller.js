@@ -40,6 +40,20 @@
                         });
                     }
                 });
+
+    function getBloomReaderVersionNumber() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              $scope.bloomReaderVersion = this.responseText;
+              $scope.$apply();
+          }
+      };
+      xhttp.open("GET", 'https://bloomlibrary.org/assets/bloomReaderVersionNumber.txt', true);
+      xhttp.send();
+    }
+
+    getBloomReaderVersionNumber();
         });
 } ());  // end wrap-everything function
 

@@ -69,11 +69,14 @@ mixin betaVersionNotes
 			p
 
 			h2 Bloom Reader
-			p Bloom Reader is the easiest way to distribute your Bloom books on Android devices. If you can't use the Play store, you can download the
-				+link('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/latest/BloomReader.apk') apk here
-				| .
+			p Bloom Reader is the easiest way to distribute your Bloom books on Android devices.
 			a(href='https://play.google.com/store/apps/details?id=org.sil.bloom.reader')
 				img.playStoreBadge(alt='Get it on Google Play', src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png')
+			p
+			p If you can't use the Play store, you can download the
+				+link-followed-by-space('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/latest/BloomReader.apk') apk here
+				| (version {{bloomReaderVersion}}).
+
 
 			h2 The Art of Reading
 			p
