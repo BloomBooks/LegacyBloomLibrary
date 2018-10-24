@@ -106,6 +106,22 @@
             return target;
         }
     </script>
+    <script>
+        function insertBloomReaderVersionNumber() {
+            var versionElement = document.getElementById('bloomReaderVersion');
+            if (!versionElement)
+                return;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    versionElement.innerHTML = this.responseText;
+                }
+            }
+            xhttp.open("GET", 'assets/bloomReaderVersionNumber.txt', true);
+            xhttp.send();
+        }
+    </script>
 </head>
 
 <body>
@@ -220,6 +236,11 @@
         </div>
         <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
     </footer>
+    <script>
+        $(document).ready(function() {
+            insertBloomReaderVersionNumber();
+        });
+    </script>
 </body>
 
 </html>
