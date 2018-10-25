@@ -11,6 +11,7 @@
     <MainJs Include="../bin/assets/BloomLibrary-0.1.0.js"/>
     <BloomReaderApk Include="app-production-release.apk"/>
     <BloomReaderApkRenamed Include="BloomReader.apk"/>
+    <BloomReaderVersionFile Include="bloomReaderVersionNumber.txt"/>
   </ItemGroup>
   <PropertyGroup>
     <ProfileName>BloomLibrary</ProfileName>
@@ -86,6 +87,12 @@
       SourceFiles="@(BloomReaderApkRenamed)"
       DestinationBucket="$(Bucket)"
       DestinationFolder="bloomReader/apks/release/latest"
+      IsPublicRead="true" />
+    <S3BuildPublisher
+      CredentialStoreProfileName ="$(ProfileName)"
+      SourceFiles="@(BloomReaderVersionFile)"
+      DestinationBucket="$(Bucket)"
+      DestinationFolder="assets"
       IsPublicRead="true" />
   </Target>
 
