@@ -18,7 +18,12 @@
  * Colors
  */
 @lightGray: #E5E5E5;
+// In our own code, we prefer to use var(--darkGrey), which app.less defines to
+// be the appropriate one of the following two constants. However, that doesn't
+// work as a way to define other variables, some of which are used in bootstrap,
+// so I'm keeping these constants as the master version of the two colors.
 @darkGray: #333333;
+@darkGrayHighContrast: #101010;
 @bloomRed: #D65649;
 
 /**
@@ -60,10 +65,10 @@
  * Typography-related.
  */
 @body-bg: @lightGray;
-@font-family-sans-serif: 'PT Sans', sans-serif;
+@font-family-sans-serif: sans-serif, "Helvetica", "PT Sans";
 
 @link-color: @bloomRed;
-@link-hover-color: @bloomRed;
+@link-color-high-contrast: #923930; // 2/3 of @Bloom-red for each color.
 
 /**
  * Shortcut so you don't have to use all 4 lines each time

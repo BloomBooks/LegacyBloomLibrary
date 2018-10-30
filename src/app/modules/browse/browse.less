@@ -1,18 +1,24 @@
 /*Will be compiled down to a single stylesheet with your sass files*/
 @filterBarWidth: 235px;
-BODY {
+body {
   font-size: small !important;
 }
 .search {
   margin-left: 20px;
 }
-H3.bookTitle {
+h3.bookTitle {
   font-size: 103%;
   margin-top: 0px;
   margin-bottom: 0px;
   padding-top: 0px;
   padding-bottom: 3px;
   line-height: 1em;
+}
+.book-list {
+  // Suppress default ul behaviors we don't want
+  list-style-type: none;
+  padding-inline-start: 0; // recent browsers
+  padding-left: 0; // Edge, older FF
 }
 .author {
   font-weight: 300;
@@ -31,7 +37,7 @@ H3.bookTitle {
   float: left;
   margin-right: 7px;
 }
-.imageContainer IMG {
+.imageContainer img {
   text-align: center;
   height: 70px; //Bloom version 2 sets all books to this height
 }
@@ -46,7 +52,8 @@ H3.bookTitle {
 }
 .books {
   list-style-type: none;
-  a:hover, a:focus {
+  a:hover,
+  a:focus {
     text-decoration: none;
     outline: none;
   }
@@ -54,7 +61,7 @@ H3.bookTitle {
 .pagination {
   clear: both;
 }
-SELECT {
+select {
   width: 5em;
 }
 input.searchInput {
@@ -99,41 +106,64 @@ li .bookInfo {
   //There is probably a more elegant way... this is copied from scaffolding.less with the book title added
   a:hover .bookTitle,
   a:focus .bookTitle {
-    color: @link-hover-color;
+    color: var(--link-hover-color);
     text-decoration: underline;
   }
 }
 @organizationMarginShift: 3px;
 .filterBar {
-  background-color: @darkGray;
+  background-color: var(--darkGray);
   .border-bottom-radius(10px);
   .border-left-radius(0px);
   color: @lightGray;
   line-height: 20px;
-  h1, h2, h3, h4, h5, h6 {
+
+  li {
+    list-style-type: none;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: @lightGray;
     margin-bottom: 0;
     font-weight: bold;
   }
+  h1 {
+    font-size: 18px;
+    margin-block-start: 10px;
+  }
+  h2 {
+    font-size: 14px;
+    margin-block-start: 10px;
+  }
   a {
     color: @lightGray;
   }
-  a:hover {
-    color: @bloomRed;
+  a:hover, a:focus {
+    color: var(--link-on-black-color);
   }
   .clear {
     visibility: hidden;
   }
-  div.activeFilter a {
-    color: @bloomRed;
+  .activeFilter,
+  .activeFilter a {
+    color: var(--link-on-black-color);
   }
-  div.activeFilter .clear {
+  .activeFilter .clear {
     visibility: visible;
   }
-  div.activeFilter a.clear {
+  .activeFilter a.clear {
     color: @lightGray;
   }
-  div.childShelf {
+  .childShelf {
     margin-left: 1em;
     .orgName {
       font-size: smaller;
@@ -143,13 +173,14 @@ li .bookInfo {
     }
   }
 }
-div.bookshelves, div.narrowSearch {
+.bookshelves,
+.narrowSearch {
   margin-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 10px;
 }
-div.bookshelves {
+.bookshelves {
   margin-bottom: 20px;
 }
 .sidebarToggle .btn:focus {
@@ -175,16 +206,17 @@ div.bookshelves {
   width: @filterBarWidth;
 }
 // Shouldn't need this, but it isn't working without it for some reason
-.sidebar-offcanvas, .row-offcanvas .rightContainer {
+.sidebar-offcanvas,
+.row-offcanvas .rightContainer {
   float: left;
 }
-@media screen and (max-width:@screen-xs-max) {
+@media screen and (max-width: @screen-xs-max) {
   .row-offcanvas {
     position: relative;
     left: 0;
-    -webkit-transition: all .25s ease-out;
-         -o-transition: all .25s ease-out;
-            transition: all .25s ease-out;
+    -webkit-transition: all 0.25s ease-out;
+    -o-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
   }
   .row-offcanvas.active {
     left: @filterBarWidth;
@@ -206,4 +238,18 @@ div.bookshelves {
 
 .space-after-book-message {
   height: 5px;
+}
+
+.features {
+  label {
+    // For some reason, bootstrap puts styling on all labels which we have to override
+    font-weight: normal;
+    margin-bottom: 0px;
+
+    vertical-align: top;
+
+    // An unfortunate magic number to get the text to wrap below itself rather than the checkbox.
+    // The alternative was a counter-intuitive float:left on the checkbox and display:flex on the label.
+    max-width: 155px;
+  }
 }

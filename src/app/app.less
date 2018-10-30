@@ -5,6 +5,44 @@ body {
   margin: 0;
   -ms-overflow-style: scrollbar; //Prevents issue with IE scrollbar being on top of content
 }
+:root {
+  --darkGray: @darkGray;
+  --button-back-color: @bloomRed;
+  --link-color: @link-color;
+  --link-hover-color: @link-color;
+  --link-on-black-color: @link-color;
+  --light-text-on-default: grey;
+}
+.high-contrast {
+  --darkGray: @darkGrayHighContrast;
+  --link-color: @link-color-high-contrast;
+  --button-back-color: @link-color-high-contrast;
+  --link-hover-color: @link-color-high-contrast;
+  --link-on-black-color:#FF6757; // as bright as we can make red with same proportions as bloomRed (#D65649)
+  --light-text-on-default: #666666; // lightest text is allowed to be for 4.5 contrast on our default (#E5E5E5) background.
+  // Some elements we can't easily make use --var(darkGray) because controlled by Bootstrap
+  .navbar-inverse, .dropdown-menu {
+    background-color: @darkGrayHighContrast;
+  }
+  // This overrides the bootstrap rule making links (by default) @link-color,
+  // which is @Bloom-red.
+  a {
+    color: @link-color-high-contrast;
+  }
+  // In normal mode, for these, the button gets a little darker still when hovered.
+  .btn-primary, .btn-primary.active, .btn-primary.focus {
+    border-color: var(--button-back-color);
+    background-color: var(--button-back-color);
+  }
+
+  // I can't find a rule that makes these @bloomRed normally, but the bootstrap rule
+  // that seems to be controlling them looks like this, so I've followed the pattern.
+  .navbar-inverse .navbar-nav > .active > a,
+  .navbar-inverse .navbar-nav > .active > a:hover,
+  .navbar-inverse .navbar-nav > .active > a:focus {
+    color:var(--link-on-black-color);
+  }
+}
 a {
   cursor: pointer;
 }
@@ -19,7 +57,7 @@ textarea {
 }
 
 .highlight {
-  color: @bloomRed;
+  color: var(--link-on-black-color);
 }
 .mandatoryfields {
   display: none;
@@ -28,30 +66,30 @@ textarea {
   margin-left: 20px;
   visibility: hidden;
 }
-div.footerLinks {
+.footerLinks {
   float: left;
   a {
     color: @darkText;
   }
   a:hover {
-    color: @bloomRed;
+    color: var(--link-color);
   }
   a.active {
-    color: @bloomRed;
+    color: var(--link-color);
   }
-  a.mixpanel{
+  a.mixpanel {
     margin-left: 20px;
   }
   div {
     display: inline;
   }
 }
-div.alert {
+.alert {
   //border: 2px outset @bloomRed;
   padding: 3px 5px;
   background: lightyellow;
 }
-div.staticPage {
+.staticPage {
   max-width: 900px;
   margin-left: 60px;
   margin-right: 60px;
@@ -65,19 +103,19 @@ div.container.not-centered {
   border: none;
   border-radius: 0;
 }
-@media (max-width:@navbar-small-breakpoint-max) and (min-width:@grid-float-breakpoint) {
+@media (max-width: @navbar-small-breakpoint-max) and (min-width: @grid-float-breakpoint) {
   .navbar-brand img {
     height: 35px;
   }
 }
-@media (min-width:@navbar-small-breakpoint) {
+@media (min-width: @navbar-small-breakpoint) {
   .navbar li.navbar-lg a {
     font-size: @site-header-font-size * 1.75;
     margin-top: -4px;
     margin-left: 3px; //Line up the menu item with the books
   }
 }
-@media (min-width:@grid-float-breakpoint) {
+@media (min-width: @grid-float-breakpoint) {
   .site-header .navbar ul.nav {
     margin-top: (@navbar-padding-vertical * 2) + 23px;
   }
@@ -88,7 +126,7 @@ div.container.not-centered {
 .site-header {
   color: @navbar-inverse-color;
   font-size: @site-header-font-size;
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width: @grid-float-breakpoint) {
     .navbar-collapse {
       padding-left: 0;
       padding-right: 0;
@@ -101,17 +139,17 @@ div.container.not-centered {
   // }
 }
 #book-library-link-lg {
-  @media (max-width:@navbar-small-breakpoint-max) {
+  @media (max-width: @navbar-small-breakpoint-max) {
     display: none;
   }
 }
 #book-library-link-sm {
-  @media (min-width:@navbar-small-breakpoint) {
+  @media (min-width: @navbar-small-breakpoint) {
     display: none;
   }
 }
 #book-library-link-landing-sm {
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width: @grid-float-breakpoint) {
     display: none;
   }
 }
@@ -123,11 +161,13 @@ div.container.not-centered {
   a {
     color: @lightGray;
   }
-  a:hover, a:focus {
+  a:hover,
+  a:focus {
     text-decoration: none;
   }
-  a:hover .hover-highlight, a:focus .hover-highlight {
-    color: @bloomRed;
+  a:hover .hover-highlight,
+  a:focus .hover-highlight {
+    color: var(--link-on-black-color);
   }
   a .hover-highlight {
     text-decoration: underline;
@@ -138,12 +178,27 @@ div.container.not-centered {
   top: 40px;
   right: 0;
   padding-right: 15px;
-  @media (max-width:@grid-float-breakpoint-max) {
+  @media (max-width: @grid-float-breakpoint-max) {
     display: none;
   }
 }
 #editor-link-sm {
-  @media (min-width:@grid-float-breakpoint) {
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
+// We can't just make a class increase-contrast-collapsed for this,
+// because of rules like nav li {display: block} which have higher priority.
+// So make rules specifically for the elements we need to hide/show at different widths.
+// The two versions of IncreaseContrast need to be in different positions in their
+// parent list in the two modes.
+#increase-contrast-collapsed {
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
+#increase-contrast-expanded {
+  @media (max-width: @grid-float-breakpoint) {
     display: none;
   }
 }
@@ -156,7 +211,7 @@ div.container.not-centered {
   height: 54px;
 }
 // The following makes a smoother transition when using two collapsible navbars
-@media (max-width:@grid-float-breakpoint-max) {
+@media (max-width: @grid-float-breakpoint-max) {
   .navbar-nav.navbar-collapse {
     margin: 0;
     padding-left: 0;
@@ -184,7 +239,7 @@ body {
 }
 
 .carousel {
-  background-color: @darkGray;
+  background-color: var(--darkGray);
   width: 860px;
   margin-left: auto;
   margin-right: auto;

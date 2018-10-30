@@ -1,4 +1,4 @@
-﻿mixin simpleSection
+mixin simpleSection
 	.section
 		.container
 			.row
@@ -19,7 +19,7 @@ html
 					.col-sm-6
 						.verticalCenter
 							h1 Let's Grow a Library
-							h3 Bloom makes it easy to create simple books and  translate them into multiple languages.
+							h2 Bloom makes it easy to create simple books and  translate them into multiple languages.
 							//h3 Bloom is open source software that makes it easy for language groups to quickly produce their own library of books.
 							//.pull-left
 							//	a(href="/installers")
@@ -28,7 +28,7 @@ html
 							//	a(href="/installers")
 							//		button.btn.download-btn.btn-large Download Bloom
 					.col-sm-6
-						img(src="assets/huyagirls.jpg")
+						img(src="assets/huyagirls.jpg" alt="Group of girls sitting and holding books")
 
 		.landing
 			.section
@@ -37,10 +37,10 @@ html
 						.col-md-6
 							H1 Goal: 10x More Books
 							P Here's the problem Bloom addresses: when working in local-language literacy projects, we end up settling for what is practical, instead of what is actually needed. The hope is often that a primer and a handful of books will be enough to open up the joy and power of reading in minority language communities. But realistically, we know that it takes <i>stacks</i> of titles to make reading worthwhile and give the practice needed to develop true literacy. The problem has been who will make all those books? How will we find the time? Where will we get the content? So we settle for the possible and hope for the best.
-						.col-md-3.pull-right
-							a(href="/browse")
+						nav.col-md-3.pull-right
+							a(tabIndex=-1 href="/browse")
 								button.btn.download-btn.btn-large Visit Book Library
-							a(href="/installers")
+							a(tabIndex=-1 href="/installers")
 								button.btn.download-btn.btn-large Download Bloom
 						//	img(src="assets/laptop.png").videoInvitation
 						//	a.iconfont-playvideo.play-desktop(data-height="500" data-width="900" data-url="http://www.youtube.com/watch?v=TTQHODxqf4w?rel=0&amp;autoplay=1&amp;controls=1&amp;showinfo=0&amp;color=white" href="http://youtu.be/UpPRxtVsZKI" target="_blank")
@@ -68,18 +68,20 @@ html
 								| &nbsp;offers books from around the world for you to translate into a local language. With a single click, shell books are downloaded to your computer, ready to use even when you're offline.
 							P Got a book you'd like to share? Just add a major language translation (e.g. English, French, Thai) and then tell Bloom to upload it to the online library.
 						.col-md-3.pull-right
-							a(href="/browse")
-								img(src='assets/bookLibrarySmallScreenshot.png')
+							a(href="/browse" aria-label="Book library")
+								img(src='assets/bookLibrarySmallScreenshot.png' alt="Screenshot showing some books in the bloom library")
 			.section
 				.container.centeritems
 					.row
 						.col-md-12
-							iframe(width="420", height="315", src="https://player.vimeo.com/video/141561934", frameborder="0", allowfullscreen)
-					.row
-						.col-md-12
 							p To learn more, check out Bloom's&nbsp;
-								a(href='https://vimeo.com/channels/bloomlibrary') instructional videos
+								a(href='https://vimeo.com/channels/bloomlibrary/videos') instructional videos
 								| .
+							a(href = "https://vimeo.com/channels/bloomlibrary" aria-label="Go to Bloom introductory video 'Why Bloom?'")
+								//- We changed this from an embedded video to a link because the embedded iframe wasn't sufficiently accessible (BL-6623).
+								//- Note that it deliberately has no alt text, the image doesn't convey anything that isn't described
+								//- by the aria-label on the link. It's basically decoration for the link.
+								img(width="422", src = "assets/BloomLibraryVimeoPlaceholder.png" alt="")
 			.section
 				.container
 					.row
@@ -89,24 +91,31 @@ html
 							ul
 								li PDF Booklet Creation
 								li Bilingual and trilingual books in a single click
-								li Individual reader to Big Book in a single click
 								li Calendars
 								li Picture Dictionaries
 								li Primers and Teacher's Guides
 								li Complex Non-roman Script Support
 								li Decodable Reader Tool
 								li Leveled Reader Tool
-								li EBooks
+								li Electronic Books
+								ul
+									li Record Talking Books
+									li Record Sign Language diglots (experimental)
+									li Books for the blind (experimental)
+									li Publish to ePUB or the Bloom Reader Android app
+									li Comprehension Quizzes
+										li Motion Books (Ken Burns effect)
+										li Online analytics to support Monitoring &amp; Evaluation
 				.container-fluid.centeritems
-					.row
+					.row.featureDisplays
 						.col-sm-6.col-md-4
 							img(src='assets/shellbooks.png', alt='Shell Books')
-							h3 Shell Books
+							h1 Shell Books
 							p
 								| A growing collection of Creative Commons-licensed shell books help you grow your library quickly.  Just add a book to your vernacular library, then type in translations.
 						.col-sm-6.col-md-4
 							img(src='assets/templatebooks.png', alt='Template Books')
-							h3 Template Books
+							h1 Template Books
 							p
 								| Bloom isn't just for
 								em  shell
@@ -115,18 +124,18 @@ html
 								| . For most books, the "Basic Book" template is enough. It contains templates pages with the most frequently used layouts. There is also a Picture Dictionary template and Wall Calendar template.
 						.col-sm-6.col-md-4
 							img(src='assets/pdfbooklets.png', alt='Effortless PDF Booklets')
-							h3 Effortless PDF Booklets
+							h1 Effortless PDF Booklets
 							p
 								| Click on Bloom's Publish tab, and voil&agrave;! You have a PDF file laid out as a booklet, ready for saving or printing.
 						.clearfix.visible-md.visible-lg
 						.col-sm-6.col-md-4
 							img(src='assets/multilingual.png', alt='Multilingual Books')
-							h3 Multilingual Books
+							h1 Multilingual Books
 							p
 								| For each box of text, Bloom stores text in any a number of languages.  You can then tell it to show one, two, or three of those languages to make monolingual, bilingual, or trilingual versions of the publication.
 						.col-sm-6.col-md-4
 							img(src='assets/allbooks.png', alt='All your Books, a Click Away')
-							h3
+							h1
 								| All your Books,
 								br
 								| a Click Away
@@ -134,7 +143,7 @@ html
 								| Bloom never asks you to find things in the computer's file system. It just shows your library and books that you can add to it when you're ready.
 						.col-sm-6.col-md-4
 							img(src='assets/artofreading.png', alt='Pictures from the Art of Reading Collection')
-							h3
+							h1
 								| Pictures from the
 								br
 								| Art of Reading Collection

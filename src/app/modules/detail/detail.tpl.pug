@@ -5,10 +5,10 @@ div.modal-dialog
     div.modal-content
         div.detail
             div.modal-header
-            div.modal-body
-                img(ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}")/
+            div.modal-body(role="dialog" aria-label="Details of the book")
+                img(ng-src="{{book.baseUrl | makeDetailSizedThumbnailUrl}}" alt="Cover thumbnail")/
                 div.detailCol2
-                    div.title.notranslate {{book.title}}
+                    h1.title.notranslate {{book.title}}
                     div.summary(ng-hide="!book.summary")
                         span.fori18n Summary:
                         = ' '
@@ -62,21 +62,22 @@ div.modal-dialog
                                 = ' '
                     div.unfloat
                 div.actions
-                    a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()")
-                        i.abuseIcon(tooltip="Report a concern about this book" tooltip-placement="right")
-                    a(ng-show="canReportViolation" ui-sref="browse.detail.reportbook")
-                        i.abuseIcon(tooltip="Report a concern about this book" tooltip-placement="right")
-                    a(href="" ng-click="showDeleteDialog()")
-                        i(tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
+                    a(tab-index="-1"  ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()" aria-label="Report a concern about this book")
+                        i.abuseIcon(ng-attr-tabIndex="{{canReportViolation ? -1  : 0}}" tooltip="Report a concern about this book" tooltip-placement="right")
+                    a(tab-index="-1" ng-show="canReportViolation" ui-sref="browse.detail.reportbook" aria-label="Report a concern about this book")
+                        i.abuseIcon(ng-attr-tabIndex="{{canReportViolation ? 0 : -1}}" tooltip="Report a concern about this book" tooltip-placement="right")
+                    //- note: the tab stops on this anchor even when tab-index is -1, I couldn't figure out why.
+                    a(tab-index="-1" href="" ng-click="showDeleteDialog()" aria-label="Delete this book")
+                        i(ng-attr-tabIndex="{{canDeleteBook ? 0 : -1}}" tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                     div.pull-right
                         // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work
-                        a(ng-href="{{book.baseUrl | makePreviewUrl}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
+                        a(tabIndex="-1" ng-href="{{book.baseUrl | makePreviewUrl}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
                             button.btn.btn-default(type="button")
                                 i.notranslate.icon-eye-open
                                 |  Preview
-                        a(ui-sref="browse.detail.downloadBook.preflight" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book.")
+                        a(tabIndex="-1" ui-sref="browse.detail.downloadBook.preflight" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book.")
                             button.btn.btn-default(type="button")
                                 i.notranslate.icon-download
                                 |  Open in Bloom
-                        a(ui-sref="browse")
+                        a(tabIndex="-1" ui-sref="browse")
                             button#OK.btn.btn-primary(type="button") Return to the Library

@@ -2,7 +2,7 @@
 
 .pagination, .itemsPerPage{
   padding-left: 15px;
-  color: @darkGray;
+  color: var(--darkGray);
 
 }
 .pagination {
@@ -21,7 +21,7 @@
 .pagination ul> li > a{
   position: relative;
   float: left;
-  color: @darkGray;
+  color: var(--darkGray);
   padding: 6px 12px;
   margin-left: 3px;
   line-height: 1.428571429;
@@ -36,7 +36,7 @@
 .pagination ul> li > span {
   float: left;
   padding: 6px 6px;
-  color: #808080;
+  color: var(--darkGray);
   margin-left: 3px;
   text-decoration: none;
   background-color: @body-bg;
@@ -87,10 +87,10 @@ select{
 .pagination ul> .active > a:focus,
 .pagination ul> .active > span:focus {
   z-index: 2;
-  color: @darkGray;//#ffffff;
+  color: var(--darkGray);//#ffffff;
   cursor: default;
   background-color: #cccccc;
-  border-color: @darkGray;
+  border-color: var(--darkGray);
 }
 
 .pagination ul> .disabled > span,

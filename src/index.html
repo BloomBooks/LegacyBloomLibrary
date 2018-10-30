@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<!--[if lte IE 9 ]>
+<!--[if lte IE 11 ]>
     <meta http-equiv="refresh" content="0;url=assets/unsupportedBrowser.html">
 <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<html ng-app="BloomLibraryApp">
-  <head>
+<!--[if (gt IE 11)|!(IE)]><!-->
+<html ng-app="BloomLibraryApp" lang="en">
+
+<head>
     <title ng-bind="pageTitle">Bloom Book Making Software from SIL International</title>
     <meta charset="UTF-8">
 
@@ -21,14 +22,18 @@
 
     <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
-    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
-    <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+    <!-- compiled CSS -->
+    <% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>" />
+    <% }); %>
 
     <!-- It's tempting to move some of these less important JS files to the end in hopes of speeding loading.
     The specific ones here...parse.min.js and the transifex ones...each cause an annoying double-header flicker
     when so moved (BL-5130), so please don't move them unless you can prevent that. -->
-    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
-    <script type="text/javascript" src="<%= file %>"></script><% }); %>
+    <!-- compiled JavaScript -->
+    <% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }); %>
     <!-- for parse.com queries. Please use ONLY in services.js. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/1.6.14/parse.min.js"></script>
     <!--script src="https://npmcdn.com/parse@1.9.1/dist/parse.min.js"></script-->
@@ -59,13 +64,19 @@
         // tx-live-lang-picker or tx-live-lang-current elements, this will just stop renaming languages.
         // The other alternative would be to roll our own picker altogether.
         // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
-        Transifex.live.onFetchLanguages(function(languages) {
-            Transifex.live.onTranslatePage(function(language_code) {
+        Transifex.live.onFetchLanguages(function (languages) {
+            Transifex.live.onTranslatePage(function (language_code) {
+                document.rootElement.setAttribute("lang", code);
                 convertAllLanguageNames();
             });
         });
-        Transifex.live.onReady(function() {
+        Transifex.live.onReady(function () {
             convertAllLanguageNames();
+            // force the transifex control into our footer to make accessibility checkers happy.
+            // (And maybe really help blind people find it.)
+            var transifex = document.getElementById("tx-live-lang-container");
+            var footer = document.getElementsByClassName("site-footer")[0];
+            footer.append(transifex);
         });
 
         function convertAllLanguageNames() {
@@ -95,19 +106,20 @@
             return target;
         }
     </script>
-  </head>
-  <body>
+</head>
+
+<body>
     <noscript>
         <!-- A message displayed when javascript is disabled or not supported.  It covers the whole page. -->
         <div style="position: fixed; top: 0px; left: 0px; z-index: 3000; height: 100%; width: 100%; background-color: #FFFFFF; padding: 50px">
-        To use the Bloom Web site it is necessary to enable JavaScript.
-        Here are the <a href="http://www.enable-javascript.com/">
-        instructions how to enable JavaScript in your web browser</a>.
+            To use the Bloom Web site it is necessary to enable JavaScript.
+            Here are the <a href="http://www.enable-javascript.com/">
+                instructions how to enable JavaScript in your web browser</a>.
         </div>
     </noscript>
     <div class="page-wrap">
-        <div class="site-header" ng-controller="HeaderCtrl">
-            <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse" role="navigation">
+        <header class="site-header" ng-controller="HeaderCtrl">
+            <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#editor-navbar-elements">
@@ -116,9 +128,11 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/landing">
-                            <img ng-show="isActive('/landing')" class="bigLogoOnLanding" src="assets/bloomNavbarLogo.svg"/>
-                            <img ng-hide="isActive('/landing')" src="assets/bloomNavbarLogo.svg"/>
+                        <span ng-show="isActive('/landing')" class="navbar-brand">
+                            <img class="bigLogoOnLanding" src="assets/bloomNavbarLogo.svg" alt="" />
+                        </span>
+                        <a ng-hide="isActive('/landing')" class="navbar-brand" href="/landing">
+                            <img src="assets/bloomNavbarLogo.svg" alt="Bloom logo, click for home page" />
                         </a>
                     </div>
                     <div class="collapse navbar-collapse" id="editor-navbar-elements">
@@ -132,6 +146,10 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="/about">About</a></li>
                                     <li><a href="/opensource">Open Source</a></li>
+                                    <!-- There are three copies of this menu item. I don't think its (quite) complex enough to be worth the effort
+                                    of somehow making a reusable component out of it. -->
+                                    <li><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
+                                                Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -146,7 +164,7 @@
                     </div>
                 </div><!-- /.container-fluid -->
             </nav>
-            <nav ng-show="isBookLibrary()" id="book-library-navbar" class="navbar navbar-inverse" role="navigation">
+            <nav ng-show="isBookLibrary()" id="book-library-navbar" class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#book-library-navbar-elements">
@@ -156,43 +174,53 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="/landing">
-                            <img src="assets/bloomNavbarLogo.svg"/>
+                            <img src="assets/bloomNavbarLogo.svg" alt="Bloom logo, click for home page" />
                         </a>
                         <!-- CSS ensures either this (editor-link-lg) or the li below (editor-link-sm) will be displayed -->
                         <div id="editor-link-lg">
-                            <a href="/landing"><span class="pull-right">Make these books in <span class="highlight">your language</span><br/>with the <span class="hover-highlight">Bloom Editor</span></span></a>
+                            <a href="/landing"><span class="pull-right">Make these books in <span class="highlight">your
+                                        language</span><br />with the <span class="hover-highlight">Bloom Editor</span></span></a>
                         </div>
                     </div>
                     <div class="collapse navbar-collapse" id="book-library-navbar-elements">
                         <ul id="book-library-menu" ng-cloak class="nav navbar-nav">
-                            <li ng-class="{active: isActive('/browse')}" class="navbar-lg"><a href="/browse">Book Library</a></li>
+                            <li ng-class="{active: isActive('/browse')}" class="navbar-lg"><a href="/browse">Book
+                                    Library</a></li>
                         </ul>
                         <ul id="credentials-menu" ng-cloak class="nav navbar-nav navbar-right">
-                            <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="/signup">Sign Up</a></li>
+                            <!-- CSS ensures one or the other Increase Contrast is shown-->
+                            <li id="increase-contrast-expanded"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
+                                        Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
+                            <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="/signup">Sign
+                                    Up</a></li>
                             <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="/login">Log In</a></li>
                             <li id="user-name" ng-if="isLoggedIn()">{{userName()}}</li>
                             <li ng-if="isLoggedIn()"><a class="logout" ng-click="logout()">Log Out</a></li>
                             <!-- CSS ensures either this (editor-link-sm) or the div above (editor-link-lg) will be displayed -->
                             <li><a id="editor-link-sm" href="/landing">Bloom Editor</a></li>
+                            <li id="increase-contrast-collapsed"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
+                                        Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
                         </ul>
                     </div>
                 </div><!-- /.container-fluid -->
             </nav>
-        </div>
+        </header>
         <sil-notices></sil-notices>
-        <div ui-view></div>
+        <main ui-view></main>
     </div>
-    <div class="site-footer" ng-controller="FooterCtrl">
+    <footer class="site-footer" ng-controller="FooterCtrl">
         <div class="footerLinks">
             <div class="needed-for-localization">&copy; {{year}} SIL International</div>
             <div class="notranslate"><span class="separator">|</span></div>
             <div class="needed-for-localization"><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a></div>
             <div class="notranslate"><span class="separator">|</span></div>
             <div class="needed-for-localization"><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a></div>
-            <div class="notranslate"><a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png' alt='Mobile Analytics'/></a></div>
+            <div class="notranslate"><a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png'
+                        alt='Mobile Analytics' /></a></div>
         </div>
         <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
-    </div>
-  </body>
+    </footer>
+</body>
+
 </html>
 <!--<![endif]-->

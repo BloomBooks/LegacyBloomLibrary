@@ -5,10 +5,10 @@
     .modal-content
         .report-book
             .modal-header
-            .modal-body
-                img(ng-src='{{book.baseUrl | makeThumbnailUrl}}')
+            main.modal-body
+                img(ng-src='{{book.baseUrl | makeThumbnailUrl}}' alt="cover thumbnail")
                 .detailCol2
-                    .title.notranslate {{book.title}}
+                    h1.title.notranslate {{book.title}}
                     .summary(ng-show='book.summary')
                         span.fori18n Summary:
                         = ' '
@@ -23,8 +23,8 @@
                     div(ng-show='canReportViolation')
                         form(ng-submit='report()', name='report-book-form')
                             .input-wrapper
-                                div What concerns do you have about this book?
-                                textarea#concerns(ng-model='concerns', focus-on-load, required)
+                                label(for='concerns') What concerns do you have about this book?
+                                textarea#concerns( ng-model='concerns', focus-on-load, required)
                             div
                                 div Replies will be sent to the email address you provided when you signed up:
                                 .notranslate {{userEmailAddress}}
