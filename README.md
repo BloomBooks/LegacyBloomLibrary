@@ -53,5 +53,5 @@ The credentials needed to upload the content to the S3 bucket must be supplied i
 
 ## Copyright and License
 
-Copyright 2013-2018 [SIL International](http://sil.org)
-[MIT/X11](http://sil.mit-license.org/)
+Copyright 2013-2018 [SIL International](https://www.sil.org/)
+[MIT/X11](https://sil.mit-license.org/)

@@ -105,7 +105,7 @@
 
 		$scope.showLicense = function() {
             if ($scope.book.license && $scope.book.license.indexOf('cc-') === 0) {
-                var url = 'http://creativecommons.org/licenses/' + $scope.book.license.substring(3) + '/4.0';
+                var url = 'https://creativecommons.org/licenses/' + $scope.book.license.substring(3) + '/4.0';
                 $window.open(url);
             } else {
                 $modal.open({
