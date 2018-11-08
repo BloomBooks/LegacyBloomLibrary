@@ -26,7 +26,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         var file = {};
                         file.name = items[i].Key.replace("installers/","");
                         if(file.name.indexOf(".msi")>-1 || file.name.indexOf(".exe")>-1) {
-                            file.url = "http://bloomlibrary.org.s3.amazonaws.com/" + items[i].Key;
+                            file.url = "https://bloomlibrary.org.s3.amazonaws.com/" + items[i].Key;
                             file.date = items[i].LastModified;
                             extractedData.push(file);
                         }
