@@ -207,7 +207,7 @@
 							}).join(', ') : '',
 							librarianNote: item.librarianNote,
 							relBooks: [], // filled in later (see next then)
-							uploader: item.uploader.email,
+							uploader: item.uploader.username,
 							text: item.objectId
 						};
 

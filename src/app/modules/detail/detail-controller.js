@@ -91,7 +91,7 @@
 		bookService.getBookById($stateParams.bookId).then(function (book) {
 			tagService.hideSystemTags(book);
 			$scope.book = book;
-			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.email.toLowerCase() || authService.isUserAdministrator());
+			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.username.toLowerCase() || authService.isUserAdministrator());
 			//Get related books
 			bookService.getRelatedBooks($stateParams.bookId).then(function(results) {
 				if(results.length > 0) {
