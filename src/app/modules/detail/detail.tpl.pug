@@ -43,8 +43,8 @@ div.modal-dialog
                         span.fori18n by
                         = ' '
                         span.notranslate
-                            a(ng-show="canReportViolation" href="mailto:{{book.uploader.email}}?subject=A%20request%20about%20a%20book%20you%20contributed%20to%20bloomlibrary.org:%20{{book.title}}%20({{book.objectId}})&body=This%20book%20may%20be%20found%20at%20{{location}}.") {{book.uploader.email | obfuscate}}
-                            a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()") {{book.uploader.email | obfuscate}}
+                            a(ng-show="canReportViolation" href="mailto:{{book.uploader.username}}?subject=A%20request%20about%20a%20book%20you%20contributed%20to%20bloomlibrary.org:%20{{book.title}}%20({{book.objectId}})&body=This%20book%20may%20be%20found%20at%20{{location}}.") {{book.uploader.username | obfuscate}}
+                            a(ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()") {{book.uploader.username | obfuscate}}
                     div.tags(ng-show="book.tags.length")
                         span.fori18n Tags:
                         = ' '
