@@ -409,12 +409,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 query = new Parse.Query('books');
             }
             if (searchString) {
-                // See https://silbloom.myjetbrains.com/youtrack/issue/BL-3256 and
-                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions.
-                var searchWords = searchString.match(/[\S]+/g);
-                for(var i = 0; i < searchWords.length; i++) {
-                    query.contains('search', searchWords[i].toLowerCase());
-                }
+                query.fullText('search', searchString);
             }
             if (lang) {
                 var langQuery = new Parse.Query('language');
@@ -520,7 +515,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                 });
                 return defer.promise;
             }
-            // This is a parse.com query, using the parse-1.2.13.min.js script included by index.html
+            // This is a parse query
 			var query = this.makeQuery(searchString, shelfKey, lang, tag, allLicenses, features);
 
             //Hide out-of-circulation books
@@ -532,17 +527,32 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             query.limit(count);
             query.include("langPointers");
             query.include("uploader");
+
 			// Sorting probably works only for top-level complete fields.
 			// It does not work for e.g. (obsolete) volumeInfo.title.
             // The $recent shelf is implemented as a special sort, so we need to disable any other for that.
-			if (sortBy && (shelfKey != '$recent')) {
-				if (ascending) {
-					query.ascending(sortBy);
-				}
-				else {
-					query.descending(sortBy);
-				}
-			}
+            if (!searchString) {
+                if (sortBy && (shelfKey != '$recent')) {
+                    if (ascending) {
+                        query.ascending(sortBy);
+                    }
+                    else {
+                        query.descending(sortBy);
+                    }
+                }
+            } else {
+                // If the user provides a search string, we use the fullText search capability of mongoDB.
+                // We want to sort by the score which that search provides.
+                query.ascending('$score');
+            }
+
+            // To make sort by score (above) work, we have to 'select' the $score. But select limits the columns we get
+            // back, so we have to list out all the ones we need. Previously, we were just returning the whole
+            // book record, but since I had to figure out the ones we need anyway, I figured we might as well only get
+            // the columns we need for both paths through the if above.
+            // NOTE: This path is not used by the datagrid or we would need to add more.
+            query.select('$score', 'title', 'tags', 'baseUrl', 'langPointers', 'uploader');
+
 			// query.find returns a parse.com promise, but it is not quite the same api as
 			// as an angularjs promise. Instead, translate its find and error functions using the
 			// angularjs promise.
