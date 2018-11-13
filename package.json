@@ -47,7 +47,8 @@
     "@bower_components/lodash": "lodash/lodash#>=1.3.0 <2.5.0",
     "@bower_components/ng-tags-input": "mbenford/ngTagsInput-bower#~2.3.0",
     "@bower_components/restangular": "mgonto/restangular#~1.4.0",
-    "@bower_components/underscore": "jashkenas/underscore#~1.6.0"
+    "@bower_components/underscore": "jashkenas/underscore#~1.6.0",
+    "parse": "^1.11.1"
   },
   "devDependencies": {
     "jasmine-core": "^3.2.1",
