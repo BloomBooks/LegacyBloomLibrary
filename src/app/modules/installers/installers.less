@@ -24,7 +24,7 @@ body.buildInfo {
         .label {
             font-weight: bold;
             width: 150pt;
-            &:before {
+            &:empty:before {
                 content: attr(data-channel-label) ' Version';
             }
         }
@@ -32,13 +32,13 @@ body.buildInfo {
         .link {
             font-weight: bold;
             width: 200pt;
-            .linkLabel:before {
+            .linkLabel:empty:before {
                 content: 'Bloom ' attr(data-version-number) ' ' attr(data-channel-label);
             }
         }
 
         .date {
-            &:before {
+            &:empty:before {
                 content: attr(data-date);
             }
         }
