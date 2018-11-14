@@ -63,7 +63,6 @@
         // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
         Transifex.live.onFetchLanguages(function (languages) {
             Transifex.live.onTranslatePage(function (language_code) {
-                document.rootElement.setAttribute("lang", code);
                 convertAllLanguageNames();
             });
         });
