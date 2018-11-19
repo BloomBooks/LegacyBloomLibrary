@@ -138,7 +138,7 @@
                             <li ng-class="{active: isActive('/installers')}"><a href="/installers">Download</a></li>
                             <li ng-class="{active: isActive('/support')}"><a href="/support">Support</a></li>
                             <li ng-class="{active: isActive('/about')||isActive('/opensource')}" class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="needed-for-translation">More</span> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/about">About</a></li>
                                     <li><a href="/opensource">Open Source</a></li>
@@ -190,7 +190,7 @@
                             <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="/signup">Sign
                                     Up</a></li>
                             <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="/login">Log In</a></li>
-                            <li id="user-name" ng-if="isLoggedIn()">{{userName()}}</li>
+                            <li id="user-name" ng-if="isLoggedIn()" class="notranslate">{{userName()}}</li>
                             <li ng-if="isLoggedIn()"><a class="logout" ng-click="logout()">Log Out</a></li>
                             <!-- CSS ensures either this (editor-link-sm) or the div above (editor-link-lg) will be displayed -->
                             <li><a id="editor-link-sm" href="/landing">Bloom Editor</a></li>

@@ -1,3 +1,5 @@
+include ../common/mixins.pug
+
 div(ng-app='signup', ng-cloak)
     div.signup(ng-controller='SignupCtrl')
         form#userForm(ng-disabled='userRegistered', ng-submit='createUser(record)')
@@ -8,30 +10,26 @@ div(ng-app='signup', ng-cloak)
                         div.input-wrapper
                             div
                                 label(for="email") Email Address
-                                |  
                                 input#email.userNameInput(required, type='email', placeholder='Enter your email address', ng-model='record.email', name='email', ng-blur='checkUserAccount()', focus-on-load)
-                                |  
+                                = ' '
                                 span(ng-show='userNameLoading')
                                     img#userNameLoading.input-icon(src='assets/loading-small.gif')
-                                |  
                                 span(ng-show='userNameOk')
                                     img#userNameOk.input-icon(src='assets/tick.png', title='User name is available!')
-                                |  
                                 span(ng-show='userNameExists')
                                     img#userNameExists.input-icon(src='assets/exclamation.png', title='User name already exists!')
                             div(ng-show='userNameExists', style='color:red')
-                                | We already have an account with this address. Would you like to 
-                                a(href='/login') login
+                                | We already have an account with this address. Would you like to
+                                +link('/login') login
                                 | ?
                         div.mandatoryfields.input-wrapper
-                            | If you can see this, do not fill in the following text field 
+                            | If you can see this, do not fill in the following text field
+                            = ' '
                             input(type='text', name='name', ng-model='record.mandatoryfields')
                         div.input-wrapper
                             div.password
                                 label Password
-                                |  
                                 input.passwordInput(placeholder='Choose your password', required, type='text', ng-model='record.password', name='shown password', ng-show='showPassword', aria-label="Password - showing")
-                                |  
                                 input.passwordInput(placeholder='Choose your password', required, type='password', ng-model='record.password', name='password', ng-show='!showPassword', aria-label="Password - hidden")
                             div.showPassword
                                 div.showPassInput
@@ -40,15 +38,15 @@ div(ng-app='signup', ng-cloak)
                         div.agreeTerms
                             input#agree(type='checkbox', name='agree', ng-model='agreeToTerms')
                             label.needed-for-localization(for="agree")
-                                | I agree to the Bloom Library&apos;s 
-                                a(href='/terms', target='_blank') Terms of Use
+                                | I agree to the Bloom Library&apos;s
+                                +link('/terms', '_blank') Terms of Use
                                 | .
                         div#hpot
                             label(for='notHuman') Leave this field blank
-                            |  
+                            = ' '
                             input#notHuman(type='text', name='notHuman', ng-model='record.notHuman')
                         div
                         div.signupButton
                             button#submit.btn.btn-primary.signupBtn(type='submit', ng-disabled='submitting || userNameLoading || userNameExists || userForm.$invalid')
-                                | Sign Up
+                                span.needed-for-translation Sign Up
                                 i.icon-thumbs-up(style='margin-left: 5px')

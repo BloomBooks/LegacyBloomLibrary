@@ -22,7 +22,7 @@ div.container.not-centered
                             div(ng-class="{activeFilter: currentShelfKey == '$myUploads'}")
                                 a.bookshelfItem(href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-placement="right" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}") My Uploads
                         li(ng-show="otherBookshelves.length")
-                            a(href="" ng-click="toggleVisibilityOfOtherBookshelves($event)") {{localizeMore(otherBookshelves.length,otherBookshelvesHidden)}}
+                            a.notranslate(href="" ng-click="toggleVisibilityOfOtherBookshelves($event)") {{localizeMore(otherBookshelves.length,otherBookshelvesHidden)}}
                             div(id="otherBookshelves" style="display:none")
                                 div(ng-repeat="bookshelf in otherBookshelves")
                                     div
@@ -38,7 +38,7 @@ div.container.not-centered
                             a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
                             a.clear.right(href="" ng-click="filterLanguage('','')") Clear
                     div(ng-show="otherLanguages.length")
-                        a(href="" ng-click="toggleVisibilityOfOtherLanguages($event)") {{localizeMore(otherLanguages.length,otherLanguagesHidden)}}
+                        a.notranslate(href="" ng-click="toggleVisibilityOfOtherLanguages($event)") {{localizeMore(otherLanguages.length,otherLanguagesHidden)}}
                         div(style="display:none")
                             ul(ng-repeat="lang in otherLanguages")
                                 li(ng-class="{activeFilter: currentLang == lang.isoCode}")
@@ -64,7 +64,7 @@ div.container.not-centered
                                     a.tagItem(href="" ng-click="filterTag(tag.id)") {{tag.displayName}}
                                     a.clear.right(href="" ng-click="filterTag('')") Clear
                             div(ng-show="tags[category.id].other.length")
-                                a(href="" ng-click="toggleVisibilityOfOtherTopics($event)") {{localizeMore(tags[category.id].other.length,otherTopicsHidden)}}
+                                a.notranslate(href="" ng-click="toggleVisibilityOfOtherTopics($event)") {{localizeMore(tags[category.id].other.length,otherTopicsHidden)}}
                                 div(style="display:none")
                                     ul(ng-repeat="tag in tags[category.id].other")
                                         li(ng-class="{activeFilter: currentTag == tag.id}")
@@ -81,11 +81,11 @@ div.container.not-centered
                     div.searchRow.row
                         div.col-md-6(style="padding-bottom:10px")
                             div(ng-show="initialized")
-                                div {{bookMessage}}
+                                div.notranslate {{bookMessage}}
                                 div(ng-show="numHiddenBooks || bookCount!=0")
                                     div.space-after-book-message
                                     div(ng-show="numHiddenBooks")
-                                        span.needed-for-localization {{hiddenBooksMessage}}
+                                        span.needed-for-localization.notranslate {{hiddenBooksMessage}}
                                         | &nbsp;
                                         a(href="" ng-click="toggleAllLicenses()") {{hiddenBooksToggleMessage}}
                             div(ng-show="!initialized") Searching...

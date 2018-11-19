@@ -1,3 +1,5 @@
+include ../common/mixins.pug
+
 .modal-dialog
     // "modal-___" are bootstrap classes used to create the modal look.
     // We explicitly use these classes for all the pages which look like modals but aren't
@@ -13,7 +15,7 @@
                         span.fori18n Summary:
                         = ' '
                         span.notranslate {{book.summary}}
-                    .copyright {{book.copyright}}
+                    .copyright.notranslate {{book.copyright}}
                     .license
                         span.fori18n License:
                         = ' '
@@ -32,6 +34,6 @@
                                 a.cancelBookDownload(ng-click='cancel()') Cancel
                                 button#Send.btn.btn-primary(type='submit') Send
                     div(ng-hide='canReportViolation')
-                        | Please 
-                        a(href='/login') log in
-                        |  to report a concern you have with this book.
+                        | Please
+                        +link-followed-by-space('/login') log in
+                        | to report a concern you have with this book.

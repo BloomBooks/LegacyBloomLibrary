@@ -75,7 +75,10 @@ mixin betaVersionNotes
 			p
 			p If you can't use the Play store, you can download the
 				+link-followed-by-space('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/latest/BloomReader.apk') apk here
-				| (version {{bloomReaderVersion}}).
+				| (version
+				= ' '
+				span.notranslate {{bloomReaderVersion}}
+				| ).
 
 
 			h2 The Art of Reading
@@ -117,9 +120,8 @@ mixin betaVersionNotes
 				| . On Windows you might consider
 				+link('https://keyman.com/desktop/download.php') Keyman
 				| , available in a free edition.
-			h2
-				a
-				| Help getting started and learning Bloom
+
+			h2 Help getting started and learning Bloom
 			p
 				| Bloom is easy to use, but you may find it helpful to watch the
 				+link('https://tiny.cc/bloomVimeo') Bloom training videos
