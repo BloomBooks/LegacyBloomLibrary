@@ -643,7 +643,10 @@
                 var titleHtml =
                   '<table id="previewTitle"><tbody><tr><td><i class="icon-info-sign"></i></td><td>';
                 titleHtml +=
-                  "<div>" +
+                  // Without the 'notranslate' class, Transifex Live picks up the string with the language list added
+                  // and asks us to add it to the list of strings which need translation. Calling _localize
+                  // ensures we can still translate the string with the placeholder.
+                  "<div class='notranslate'>" +
                   _localize(
                     "This book contains the following source languages: <b>{languageList}</b>.",
                     { languageList: languageList }
