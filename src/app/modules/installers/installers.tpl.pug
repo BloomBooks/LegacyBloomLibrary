@@ -75,7 +75,10 @@ mixin betaVersionNotes
 			p
 			p If you can't use the Play store, you can download the
 				+link-followed-by-space('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/latest/BloomReader.apk') apk here
-				| (version {{bloomReaderVersion}}).
+				| (version
+				= ' '
+				span.notranslate {{bloomReaderVersion}}
+				| ).
 
 
 			h2 The Art of Reading
