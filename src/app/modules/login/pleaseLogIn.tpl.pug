@@ -1,10 +1,12 @@
+include ../common/mixins.pug
+
 div.pleaseLogIn
     div.modal-header
         | Please Log In
-        div.close(ng-click="close()") x
+        div.close.notranslate(ng-click="close()") x
     div.modal-body
-        div To use this function, please 
-            a(href="/login") Log In to BloomLibrary.org
+        div To use this function, please
+            +link("/login") Log In to BloomLibrary.org
             | .
         div Bloom Library requires you to log in for several reasons:
         ul
