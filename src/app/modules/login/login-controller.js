@@ -6,7 +6,7 @@
 
 		$stateProvider.state('login', {
 			//review: I had wanted to have the main view be named, and have the name be 'main', but then nothing would show
-			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@': 
+			//it's as if the top level view cannot be named. (note that you can specify it by saying views: {'@':
 			url: "/login",
 			templateUrl: 'modules/login/login.tpl.html',
 			controller: 'LoginCtrl',
@@ -88,7 +88,7 @@
 					} else {
 						authService.sendResetPassword($scope.username);
 						silNoticeService.replace(silNoticeService.SUCCESS,
-							"An email with instructions for resetting your password has been sent to " + $scope.username + ". If you don't see it in a few minutes, check your spam/junk mail folder.");
+							_localize("An email with instructions for resetting your password has been sent to {email}. If you don't see it in a few minutes, check your spam/junk mail folder.", {email: $scope.username}));
 					}
 					// todo: check for error state
 				});
