@@ -73,20 +73,6 @@
           iframe.contentWindow.addEventListener("DOMContentLoaded", function() {
             iframe.contentWindow.document.body.classList.add("high-contrast");
           });
-
-    function getBloomReaderVersionNumber() {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-              $scope.bloomReaderVersion = this.responseText;
-              $scope.$apply();
-          }
-      };
-      xhttp.open("GET", 'https://bloomlibrary.org/assets/bloomReaderVersionNumber.txt', true);
-      xhttp.send();
-    }
-
-    getBloomReaderVersionNumber();
         });
       }
     });
