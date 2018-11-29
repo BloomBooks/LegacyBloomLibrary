@@ -1,4 +1,6 @@
 @icon-button-size: 18px;
+@image-width: 180px;
+@image-right-margin: 16px;
 
 .modal-body
 {
@@ -14,12 +16,13 @@
 }
 .modal-dialog .detail IMG
 {
-	height: 256px;
-	float: left;
-	position: relative;
-	left: 0px;
-	top: 0px;
-	margin-right: 16px;
+	width: @image-width;
+}
+.modal-dialog .detailCol1
+{
+	display: inline-block;
+	margin-right: @image-right-margin;
+	vertical-align: top;
 }
 .modal-dialog .title
 {
@@ -30,8 +33,9 @@
 }
 .detail .detailCol2
 {
+	width: calc(~"100% - " (@image-width + @image-right-margin));
+	display: inline-block;
 	margin-top: 1px;
-	margin-left: 143px;
 }
 .detail BUTTON, .report-book BUTTON, .deleteDialog BUTTON
 {
