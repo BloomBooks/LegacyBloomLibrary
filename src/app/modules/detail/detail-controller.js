@@ -83,8 +83,8 @@
 			};
 		});
 
-	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', 'tagService', '$modal', '$window',
-	function ($scope, authService, $stateParams, bookService, bookCountService, tagService, $modal, $window) {
+	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', 'bookSizeService', 'tagService', '$modal', '$window',
+	function ($scope, authService, $stateParams, bookService, bookCountService, bookSizeService, tagService, $modal, $window) {
 		$scope.canDeleteBook = false; // until we get the book and may make it true
 		$scope.location = window.location.href; // make available to embed in mailto: links
 		//get the book for which we're going to show the details
@@ -92,6 +92,7 @@
 			tagService.hideSystemTags(book);
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.username.toLowerCase() || authService.isUserAdministrator());
+			$scope.downloadSize = 0; // hidden until we set a value
 			//Get related books
 			bookService.getRelatedBooks($stateParams.bookId).then(function(results) {
 				if(results.length > 0) {
@@ -100,7 +101,24 @@
 					});
 				}
 			});
+			// Get the book size
+			bookSizeService.getBookSize(book.bookOrder, function (err, data) {
+				if (err) {
+					console.log(err, err.stack); // an error occurred
+				}
+				else {
+					// successful response
+					var size = 0;
+					for (var i = 0; i < data.Contents.length; i++) {
+						size += data.Contents[i].Size;
+					}
+					// It should work just to set $scope.downloadSize, without the wrapping.
+					// But the display does not update. I don't know why.
+					$scope.$apply(function() {$scope.downloadSize = Math.ceil(size/1024/1024);});
+				}
+			});
 		});
+		
         $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
 
 		$scope.showLicense = function() {
