@@ -950,7 +950,39 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             });
             return defer.promise;
         };
-	}])
+    }])
+    .service('bookSizeService', ['sharedService', function(sharedService) {
+        this.getBookSize = function(bookOrder, callback) {
+            var prefix = bookOrder;
+			// like bloom://localhost/order?orderFile=BloomLibraryBooks-Sandbox/hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo+Brothers%2fTwo+Brothers.BloomBookOrder
+			prefix = prefix.substring(prefix.indexOf("?orderFile="), prefix.lastIndexOf("%2f"));
+			// like                        ?orderFile=BloomLibraryBooks-Sandbox/hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo+Brothers
+			prefix = prefix.substring(prefix.indexOf("/") + 1);
+			// like                                                             hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo+Brothers
+			prefix = prefix.replace(/\+/g, " "); // if the name really has a plus, it should be percent encoded.
+			// like                                                             hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo Brothers
+			prefix = decodeURIComponent(prefix);
+			// like hattonlists@gmail.com/a7c32c37-a048-441d-aa12-707221c41b70/Two Brothers
+			var params = {
+				Bucket: (sharedService.isProductionSite ? "BloomLibraryBooks": "BloomLibraryBooks-Sandbox"), 
+				//ContinuationToken: 'STRING_VALUE',
+				//Delimiter: 'STRING_VALUE',
+				FetchOwner: false,
+				MaxKeys: 1000,
+				Prefix: prefix
+			};
+			// It is utterly infuriating that we need credentials here, because all the
+			// information is publicly available. This identity pool (publicAccessIdentityPool)
+			// was created purposely to have no permissions so we can use it here.
+			AWS.config.region = 'us-east-1'; // Region
+			var creds = new AWS.CognitoIdentityCredentials({
+				IdentityPoolId: 'us-east-1:0cfa82d1-4186-47af-9dca-99b1044a2ae9'
+			});
+			AWS.config.credentials = creds;
+			var s3 = new AWS.S3();
+			s3.listObjectsV2(params, callback);
+        };
+    }])
     .service('errorHandlerService', ['$modal', '$analytics', function ($modal, $analytics) {
         var mostRecentUserMessage = 0; // a timestamp
 

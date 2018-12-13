@@ -61,6 +61,8 @@ div.modal-dialog
                             a(ui-sref="browse.detail({bookId: relBook.objectId})") {{relBook.title}}
                             span(ng-hide="$last") ,
                                 = ' '
+                    .downloadSize(ng-show="downloadSize")
+                        span {{downloadSize}} MB
                     div.unfloat
                 div.actions
                     a(tab-index="-1"  ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()" aria-label="Report a concern about this book")
