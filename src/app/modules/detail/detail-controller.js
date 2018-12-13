@@ -92,6 +92,7 @@
 			tagService.hideSystemTags(book);
 			$scope.book = book;
 			$scope.canDeleteBook = authService.isLoggedIn() && (authService.userName().toLowerCase() == book.uploader.username.toLowerCase() || authService.isUserAdministrator());
+			$scope.downloadSize = 0; // hidden until we set a value
 			//Get related books
 			bookService.getRelatedBooks($stateParams.bookId).then(function(results) {
 				if(results.length > 0) {
@@ -100,7 +101,49 @@
 					});
 				}
 			});
+			// Get size
+			var prefix = book.bookOrder;
+			// like bloom://localhost/order?orderFile=BloomLibraryBooks-Sandbox/hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo+Brothers%2fTwo+Brothers.BloomBookOrder
+			prefix = prefix.substring(prefix.indexOf("?orderFile="), prefix.lastIndexOf("%2f"));
+			// like                        ?orderFile=BloomLibraryBooks-Sandbox/hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo+Brothers
+			prefix = prefix.substring(prefix.indexOf("/") + 1);
+			// like                                                             hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo+Brothers
+			prefix = prefix.replace(/\+/g, " "); // if the name really has a plus, it should be percent encoded.
+			// like                                                             hattonlists%40gmail.com%2fa7c32c37-a048-441d-aa12-707221c41b70%2fTwo Brothers
+			prefix = decodeURIComponent(prefix);
+			// like hattonlists@gmail.com/a7c32c37-a048-441d-aa12-707221c41b70/Two Brothers
+			var params = {
+				Bucket: 'BloomLibraryBooks-Sandbox', /* required */
+				//ContinuationToken: 'STRING_VALUE',
+				//Delimiter: 'STRING_VALUE',
+				FetchOwner: false,
+				MaxKeys: 1000,
+				Prefix: prefix
+			};
+			// These credentials belong to the IAM user "noPermissions", which has no permission to do anything
+			// not available to the public. This user was created to get around the stupid requirement
+			// this this S3 API must have valid credentials, even to access public information.
+			// Because we're not depending on this identity to have any permissions, the same one works
+			// equally well for both dev and production buckets.
+			var s3 = new AWS.S3({credentials: {accessKeyId: 'AKIAIVBVOIFW3DBZSBPQ', secretAccessKey: "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"}});
+			s3.listObjectsV2(params, function (err, data) {
+				if (err) {
+					console.log(err, err.stack); // an error occurred
+				}
+				else {
+					// successful response
+					var size = 0;
+					for (var i = 0; i < data.Contents.length; i++) {
+						size += data.Contents[i].Size;
+					}
+					// It should work just to set $scope.downloadSize, without the wrapping.
+					// But the display does not update. I don't know why.
+					$scope.$apply(function() {$scope.downloadSize = Math.ceil(size/1024/1024);});
+
+				}
+			});
 		});
+		
         $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
 
 		$scope.showLicense = function() {
