@@ -55,7 +55,7 @@ div.modal-dialog
                             span(ng-hide="$last")
                                 = ' '
                     .downloadSize(ng-show="downloadSize")
-                        span {{downloadSize}} MB
+                        span.notranslate {{downloadSize | addMbLabel}}
                     div.relatedBooks(ng-show="book.relatedBooks")
                         span.fori18n Related Books:
                         = ' '

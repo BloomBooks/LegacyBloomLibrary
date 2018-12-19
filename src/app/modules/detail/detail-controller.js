@@ -81,6 +81,15 @@
 				var name = leadin.substring(slashBeforeBookName+3); // includes leading slash (%2f)
 				return baseUrl + name + ".pdf";
 			};
+		})
+		.filter('addMbLabel', function() {
+			return function(input) {
+				if (!input)
+				{
+					return "";
+				}
+				return _localize("{sizeInMb} MB", {sizeInMb:input});
+			};
 		});
 
 	angular.module('BloomLibraryApp.detail').controller('DetailCtrl', ['$scope', 'authService', '$stateParams', 'bookService', 'bookCountService', 'bookSizeService', 'tagService', '$modal', '$window',
@@ -118,7 +127,7 @@
 				}
 			});
 		});
-		
+
         $scope.canReportViolation = authService.isLoggedIn(); // We demand this to reduce spamming.
 
 		$scope.showLicense = function() {

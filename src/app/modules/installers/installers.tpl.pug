@@ -74,12 +74,8 @@ mixin betaVersionNotes
 				img.playStoreBadge(alt='Get it on Google Play', src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png')
 			p
 			p If you can't use the Play store, you can download the
-				+link-followed-by-space('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/latest/BloomReader.apk') apk here
-				| (version
-				= ' '
-				span.notranslate {{bloomReaderVersion}}
-				| ).
-
+				+link-followed-by-space('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/latest/BloomReader.apk') apk here.
+				span.notranslate {{bloomReaderVersion | addVersionLabel}}
 
 			h2 The Art of Reading
 			p
