@@ -2,140 +2,134 @@
 @image-width: 180px;
 @image-right-margin: 16px;
 
-.modal-body
-{
-	padding-top: 0px;
-	margin-top: 17px;
-	margin-left: 15px;
-	margin-right: 17px;
-    overflow: hidden;
+.modal-body {
+  padding-top: 0px;
+  margin-top: 17px;
+  margin-left: 15px;
+  margin-right: 17px;
+  overflow: hidden;
 }
 
 .deleteConfirm .modal-dialog {
   width: 450px;
 }
-.modal-dialog .detail IMG
-{
-	width: @image-width;
+
+.modal-dialog {
+  .detail img {
+    width: @image-width;
+  }
+  .detailCol1 {
+    display: inline-block;
+    margin-right: @image-right-margin;
+    vertical-align: top;
+  }
+  .title {
+    color: #000000;
+    font-size: 16pt;
+    margin-top: -2px;
+    line-height: 1;
+  }
+  .summary {
+    margin-top: 11px;
+  }
+  .relatedBooks {
+    margin-top: 11px;
+  }
 }
-.modal-dialog .detailCol1
-{
-	display: inline-block;
-	margin-right: @image-right-margin;
-	vertical-align: top;
+
+.detail {
+  .detailCol2 {
+    width: calc(~"100% - " (@image-width + @image-right-margin));
+    display: inline-block;
+    margin-top: 1px;
+  }
+  .author {
+    margin-top: 6px;
+  }
 }
-.modal-dialog .title
-{
-	color: #000000;
-	font-size: 16pt;
-	margin-top: -2px;
-	line-height: 1;
-}
-.detail .detailCol2
-{
-	width: calc(~"100% - " (@image-width + @image-right-margin));
-	display: inline-block;
-	margin-top: 1px;
-}
-.detail BUTTON, .report-book BUTTON, .deleteDialog BUTTON
-{
-	/*[empty]margin-right:;*/
+.detail button,
+.report-book button,
+.deleteDialog button {
+  /*[empty]margin-right:;*/
   margin-right: 4px;
 }
 
-.modal-dialog .summary
-{
-	margin-top: 11px;
-}
-.detail .author
-{
-	margin-top: 6px;
-}
-.modal-header
-{
-	font-size: 18pt;
-	font-weight: bold;
-	border-bottom: 1px solid transparent;
-}
-.modal-header .close
-{
-	font-weight: bold;
-	font-size: 18pt;
+.modal-header {
+  font-size: 18pt;
+  font-weight: bold;
+  border-bottom: 1px solid transparent;
+
+  .close {
+    font-weight: bold;
+    font-size: 18pt;
+  }
 }
 
-.ccmodal
-{
+.ccmodal {
   top: 15%;
 }
 
-img.ccLogo
-{
+img.ccLogo {
   width: 88px;
   height: 31px;
   float: none;
 }
 
-span.bookName
-{
+span.bookName {
   font-style: italic;
 }
 
-div.delete-actions
-{
+div.delete-actions {
   padding-top: 15px;
 }
 
-i.icon-trash, i.icon-folder-open
-{
-  float:left;
+i.icon-trash,
+i.icon-folder-open {
+  float: left;
   // These transforms make the trash icon from glyph-icons about the right size
   // If you think of taking them out, make sure you haven't shrunk the delete icon.
   // If you know a better way to grow it (or a better icon), go for it.
-  transform:scale(2.0,2.0);
-  -ms-transform:scale(2.0,2.0); /* IE 9 */
-  -moz-transform:scale(2.0,2.0); /* Firefox */
-  -webkit-transform:scale(2.0,2.0); /* Safari and Chrome */
-  -o-transform:scale(2.0,2.0); /* Opera */
-  margin-top:8px;
+  transform: scale(2, 2);
+  -ms-transform: scale(2, 2); /* IE 9 */
+  -moz-transform: scale(2, 2); /* Firefox */
+  -webkit-transform: scale(2, 2); /* Safari and Chrome */
+  -o-transform: scale(2, 2); /* Opera */
+  margin-top: 8px;
   width: 20px;
   font-size: 8pt;
   color: lightgrey;
 }
 
-.detail i:hover
-{
+.detail i:hover {
   color: black;
   text-decoration: none;
 }
 
-i.icon-folder-open
-{
+i.icon-folder-open {
   margin-right: 14px;
   margin-left: 8px;
 }
 
-i.icon-trash
-{
+i.icon-trash {
   margin-left: 22px;
 }
 
-i.icon-hidden
-{
+i.icon-hidden {
   visibility: hidden;
 }
 
-i.abuseIcon
-{
-  float:left;
+i.abuseIcon {
+  float: left;
   margin-top: 5px;
   margin-left: 16px;
   width: @icon-button-size;
   height: @icon-button-size;
   background-image: url("reportAbuse.svg");
-  background-size: @icon-button-size @icon-button-size // so it scales the image rather than clipping
+  background-size: @icon-button-size @icon-button-size; // so it scales the image rather than clipping
 }
 
-.detail .actions, .report-book .actions {
+.detail .actions,
+.report-book .actions {
   margin-top: 15px;
 }
 
@@ -149,7 +143,7 @@ i.inBookshelf {
     font-size: 5em;
     margin-right: 12px;
     position: relative;
-    top: -4px
+    top: -4px;
   }
   td div:last-of-type {
     margin-bottom: 10px;
