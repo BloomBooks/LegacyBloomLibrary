@@ -34,6 +34,15 @@
         templateUrl: "modules/installers/linux.tpl.html",
         controller: "InstallersCtrl"
       });
+    })
+    .filter("addVersionLabel", function() {
+      return function(input) {
+        if (!input){
+          return "";
+        }
+
+        return _localize("(version {versionNumber})", {versionNumber:input});
+      };
     });
 
   installersApp.controller("InstallersCtrl", function(
