@@ -46,13 +46,12 @@ div.container.not-centered
                                     a.clear.right(href="" ng-click="filterLanguage('','')") Clear
                     h2 Features
                     ul.features
-                        //- Hiding these temporarily until we actually have one or more books with these features. See BL-6670.
-                        //- li.blind.feature
-                        //-     input(id="feature_blind" type="checkbox" ng-click="toggleFeature('blind')" ng-checked="{{isActiveFeature('blind')}}")
-                        //-     label(for="feature_blind" ng-class="{activeFilter: isActiveFeature('blind')}") Accessible to the Blind
-                        //- li.visuallyImpaired.feature
-                        //-     input(id="feature_visuallyImpaired" type="checkbox" ng-click="toggleFeature('visuallyImpaired')" ng-checked="{{isActiveFeature('visuallyImpaired')}}")
-                        //-     label(for="feature_visuallyImpaired" ng-class="{activeFilter: isActiveFeature('visuallyImpaired')}") Accessible to the Visually Impaired
+                        li.blind.feature
+                            input(id="feature_blind" type="checkbox" ng-click="toggleFeature('blind')" ng-checked="{{isActiveFeature('blind')}}")
+                            label(for="feature_blind" ng-class="{activeFilter: isActiveFeature('blind')}") Accessible to the Blind
+                        li.visuallyImpaired.feature
+                            input(id="feature_visuallyImpaired" type="checkbox" ng-click="toggleFeature('visuallyImpaired')" ng-checked="{{isActiveFeature('visuallyImpaired')}}")
+                            label(for="feature_visuallyImpaired" ng-class="{activeFilter: isActiveFeature('visuallyImpaired')}") Accessible to the Visually Impaired
                         li.signLanguage.feature
                             input(id="feature_signLanguage" type="checkbox" ng-click="toggleFeature('signLanguage')" ng-checked="{{isActiveFeature('signLanguage')}}")
                             label(for="feature_signLanguage" ng-class="{activeFilter: isActiveFeature('signLanguage')}") Includes Sign Language Videos
