@@ -2,6 +2,8 @@
 	h3 All Bloom Installers
 	.row(ng-repeat='file in files')
 		.col-md-3
-			a(ng-href='{{file.url}}', analytics-on, analytics-event="Download Installer", analytics-installer="{{file.name}}") {{file.name}}
+			//- We used to just point at the s3 link directly, but that causes certificate errors (BL-7033).
+			//- Using bloomlibrary.org/* is better anyway.
+			a(ng-href='https://bloomlibrary.org/installers/{{file.name}}', analytics-on, analytics-event="Download Installer", analytics-installer="{{file.name}}") {{file.name}}
 		.col-md-3
 			| {{file.date | date:'dd/MMM/yyyy'}}
