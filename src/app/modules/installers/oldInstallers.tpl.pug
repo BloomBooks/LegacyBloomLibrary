@@ -4,6 +4,8 @@
 		.col-md-3
 			//- We used to just point at the s3 link directly, but that causes certificate errors (BL-7033).
 			//- Using bloomlibrary.org/* is better anyway.
-			a(ng-href='https://bloomlibrary.org/installers/{{file.name}}', analytics-on, analytics-event="Download Installer", analytics-installer="{{file.name}}") {{file.name}}
+			//- The www. is a hack to make the production site treat the link as external to itself (and download the file)
+			//- rather than as an internal routing (which gets confused and reloads the home page).
+			a(ng-href='https://www.bloomlibrary.org/installers/{{file.name}}', analytics-on, analytics-event="Download Installer", analytics-installer="{{file.name}}") {{file.name}}
 		.col-md-3
 			| {{file.date | date:'dd/MMM/yyyy'}}
