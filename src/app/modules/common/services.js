@@ -447,8 +447,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		// and inside the scope of the function count will be the book count.
 		// See comments in getFilteredBookRange for how the parse.com query is mapped to an angularjs promise.
 		this.getFilteredBooksCount = function (searchString, shelfKey, lang, tag, includeOutOfCirculation, allLicenses, features) {
-            $analytics.eventTrack('Book Search', {searchString: searchString || '', shelf: shelfKey || '', lang: lang || '', tag: tag || '', allLicenses: allLicenses || ''});
-			var defer = $q.defer();
+            var defer = $q.defer();
 
             var query;
             if (!searchString && !shelfKey && !lang && !tag && allLicenses && (!features || features.length === 0)) {
@@ -964,7 +963,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			prefix = decodeURIComponent(prefix);
 			// like hattonlists@gmail.com/a7c32c37-a048-441d-aa12-707221c41b70/Two Brothers
 			var params = {
-				Bucket: (sharedService.isProductionSite ? "BloomLibraryBooks": "BloomLibraryBooks-Sandbox"), 
+				Bucket: (sharedService.isProductionSite ? "BloomLibraryBooks": "BloomLibraryBooks-Sandbox"),
 				FetchOwner: false,
 				MaxKeys: 1000,
 				Prefix: prefix
