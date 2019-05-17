@@ -74,7 +74,7 @@ div.modal-dialog
                         i(ng-attr-tabIndex="{{canDeleteBook ? 0 : -1}}" tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                     div.pull-right
                         // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work
-                        a(tabIndex="-1" ng-href="{{book.baseUrl | makePreviewUrl}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
+                        a(tabIndex="-1" ng-href="{{book | makePreviewUrl}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
                             button.btn.btn-default(type="button")
                                 i.notranslate.icon-eye-open
                                 |  Preview
