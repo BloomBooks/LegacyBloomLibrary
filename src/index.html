@@ -27,6 +27,15 @@
     <link rel="stylesheet" type="text/css" href="<%= file %>" />
     <% }); %>
 
+    <script>
+        // The check at the top will not work for IE10+ (and cannot be made to work).
+        // And what we really want to know is if the browser supports CSS variables.
+        // See https://stackoverflow.com/a/26633844/7442826.
+        if (!window.CSS || !CSS.supports('color', 'var(--fake-var)')) {
+            window.location.href = "assets/unsupportedBrowser.html";
+        }
+    </script>
+
     <!-- It's tempting to move some of these less important JS files to the end in hopes of speeding loading.
     The specific ones here...parse.min.js and the transifex ones...each cause an annoying double-header flicker
     when so moved (BL-5130), so please don't move them unless you can prevent that. -->

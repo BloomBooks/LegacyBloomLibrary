@@ -60,7 +60,7 @@
 
   angular.module("BloomLibraryApp.browse").controller("BrowseCtrl", [
     "$scope",
-    "$timeout",
+    "$analytics",
     "bookService",
     "languageService",
     "tagService",
@@ -70,7 +70,7 @@
     "bookshelfService",
     function(
       $scope,
-      $timeout,
+      $analytics,
       bookService,
       languageService,
       tagService,
@@ -251,6 +251,10 @@
         );
       }
       $scope.getFilteredBookCount = function() {
+        $analytics.eventTrack('Book Search',
+          {searchString: $scope.searchText || '', shelf: $scope.shelfKey || '', lang: $scope.lang || '',
+          tag: $scope.tag || '', allLicenses: $scope.allLicenses || '', features: $scope.features || ''});
+
         $scope.numHiddenBooks = 0;
         var promise = bookService.getFilteredBooksCount(
           $scope.searchText,
