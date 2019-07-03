@@ -1,5 +1,5 @@
 /**
- * These are the variables used throughout the application. This is where 
+ * These are the variables used throughout the application. This is where
  * overwrites that are not specific to components should be maintained.
  */
 
@@ -12,6 +12,11 @@
 }
 .modal-body fieldset {
     border: 0;
+}
+@media (min-width: @screen-sm-min) {
+  .modal-dialog {
+    width: @modal-md + 50px; //adds 50px of width to the bootstrap default
+  }
 }
 
 /**
