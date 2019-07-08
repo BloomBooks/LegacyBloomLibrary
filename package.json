@@ -2,7 +2,7 @@
   "author": "SIL Interational",
   "name": "BloomLibrary",
   "version": "0.1.0",
-  "homepage": "http://bloom.palaso.org/",
+  "homepage": "https://bloomlibrary.org/",
   "licenses": {
     "type": "MIT",
     "url": "http://sil.mit-license.org"
@@ -51,7 +51,6 @@
     "parse": "^1.11.1"
   },
   "devDependencies": {
-    "jasmine-core": "^3.2.1",
     "grunt": "~0.4.1",
     "grunt-bump": "0.0.6",
     "grunt-cli": "~1.2.0",
@@ -67,10 +66,11 @@
     "grunt-html2js": "^0.1.9",
     "grunt-karma": "^3.0.0",
     "grunt-ngmin": "0.0.2",
+    "jasmine-core": "^3.2.1",
     "karma": "^3.0.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.2",
     "karma-phantomjs-launcher": "^1.0.4",
-    "lite-server": "^2.4.0"
+    "lite-server": "^2.5.3"
   }
 }
