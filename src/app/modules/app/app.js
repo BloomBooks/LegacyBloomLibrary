@@ -635,7 +635,9 @@
             helpers: { title: { type: "inside", position: "top" } },
             afterLoad: function() {
               var book = scope.book;
-              if (book && book.langPointers && book.langPointers.length > 1) {
+              // For harvested books, we only use "pdfoverlay" for the bloom-player "Read" mode.
+              // We don't want to display the multiple languages message in that case. (BL-7385)
+              if (book && book.langPointers && book.langPointers.length > 1 && !scope.isHarvested) {
                 var languageList = _localize(book.langPointers[0].name);
                 for (var i = 1; i < book.langPointers.length; i++) {
                   languageList += ", " + _localize(book.langPointers[i].name);
