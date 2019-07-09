@@ -74,7 +74,7 @@
     return book && book.harvestState === "Done";
   }
 
-  // we get a URL for the contents of the book and return the one for the Preview.
+  // we get a URL for the contents of the book and return the one for the PDF preview.
   // input url is .../BookName/
   // output is .../BookName/BookName.pdf.
   // (Except that both are url encoded, so the slashes appear as %2f.)
