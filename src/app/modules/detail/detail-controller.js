@@ -189,34 +189,50 @@
   var canDownloadShell = function(book) {
     return new Promise(function(resolve, reject) {
       if (!book) {
-        resolve(false);
+        resolve([false, ""]);
       }
       if (
         !book.internetLimits ||
         !book.internetLimits.downloadShell ||
         !book.internetLimits.downloadShell.countryCode
       ) {
-        resolve(true);
+        resolve([true, ""]);
       }
+      var countryCode = book.internetLimits.downloadShell.countryCode;
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
         if (this.readyState == 4) {
           if (this.status == 200) {
             var geoInfo = JSON.parse(this.responseText);
             if (geoInfo && geoInfo.country) {
-              if (
-                geoInfo.country !==
-                book.internetLimits.downloadShell.countryCode
-              ) {
-                resolve(true);
+              if (geoInfo.country === countryCode) {
+                resolve([true, ""]);
+              }
+              else {
+                console.log(geoInfo.country);
               }
             }
           }
-          resolve(false);
+          var msgToUser;
+          // Hardcoding for PG because we currently don't know if we'll ever have another one of these.
+          if (countryCode === "PG") {
+            msgToUser =
+              "Sorry, the uploader of this book has restricted shellbook download to Papua New Guinea only.";
+          } else {
+            msgToUser =
+              "Sorry, the uploader of this book has restricted shellbook download to country " +
+              countryCode +
+              " only.";
+          }
+          resolve([false, msgToUser]);
         }
       };
       // AWS API Gateway which is a passthrough to ipinfo.io
-      xhttp.open("GET", "https://58nig3vzci.execute-api.us-east-2.amazonaws.com/Production", true);
+      xhttp.open(
+        "GET",
+        "https://58nig3vzci.execute-api.us-east-2.amazonaws.com/Production",
+        true
+      );
       xhttp.send(null);
     });
   };
@@ -362,9 +378,15 @@
       };
 
       $scope.onDownloadShell = function(book) {
-        canDownloadShell(book).then(function(canDownload) {
+        canDownloadShell(book).then(function(result) {
+          var canDownload = result[0];
+          var msgToUser = result[1];
           if (canDownload) {
             $state.go("browse.detail.downloadBook.preflight");
+          } else {
+            if (msgToUser) {
+              alert(msgToUser);
+            }
           }
         });
       };
