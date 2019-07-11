@@ -4,10 +4,7 @@
 
   angular
     .module("BloomLibraryApp.detail", ["ui.router", "restangular"])
-    .config(function config(
-      $stateProvider,
-      $compileProvider
-    ) {
+    .config(function config($stateProvider, $compileProvider) {
       // Tell angular that urls starting with bloom: and mailto: (and http{s}: of course) are OK. (Otherwise it marks them 'unsafe' and Chrome at
       // least won't follow them.). This is needed for the Open in Bloom button, mailto links. adding bloom is the unusual thing.
       // This seems to be global...any additions might need to go in other instances as well to make them work.
@@ -77,7 +74,7 @@
     return book && book.harvestState === "Done";
   }
 
-  // we get a URL for the contents of the book and return the one for the Preview.
+  // we get a URL for the contents of the book and return the one for the PDF preview.
   // input url is .../BookName/
   // output is .../BookName/BookName.pdf.
   // (Except that both are url encoded, so the slashes appear as %2f.)
@@ -184,9 +181,50 @@
     // Otherwise, the filename can be something like ken@example.com_007b3c03-52b7-4689-80bd-06fd4b6f9f28_Fox+and+Frog.bloomd
   }
 
+  // In theory, we'll be wanting to make this more generic.
+  // There are other potential events to limit (like downloadEpub),
+  // other potential geo parameters (like region/city),
+  // and even potential reverse logic (like notDownloadShell: {countryCode: CN}).
+  // But at this point, that all seems YAGNI, so I'm not going to overcomplicate.
+  var canDownloadShell = function(book) {
+    return new Promise(function(resolve, reject) {
+      if (!book) {
+        resolve(false);
+      }
+      if (
+        !book.internetLimits ||
+        !book.internetLimits.downloadShell ||
+        !book.internetLimits.downloadShell.countryCode
+      ) {
+        resolve(true);
+      }
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            var geoInfo = JSON.parse(this.responseText);
+            if (geoInfo && geoInfo.country) {
+              if (
+                geoInfo.country !==
+                book.internetLimits.downloadShell.countryCode
+              ) {
+                resolve(true);
+              }
+            }
+          }
+          resolve(false);
+        }
+      };
+      // AWS API Gateway which is a passthrough to ipinfo.io
+      xhttp.open("GET", "https://58nig3vzci.execute-api.us-east-2.amazonaws.com/Production", true);
+      xhttp.send(null);
+    });
+  };
+
   angular.module("BloomLibraryApp.detail").controller("DetailCtrl", [
     "$scope",
     "authService",
+    "$state",
     "$stateParams",
     "bookService",
     "bookCountService",
@@ -197,6 +235,7 @@
     function(
       $scope,
       authService,
+      $state,
       $stateParams,
       bookService,
       bookCountService,
@@ -318,6 +357,14 @@
                 alert(error);
               }
             );
+          }
+        });
+      };
+
+      $scope.onDownloadShell = function(book) {
+        canDownloadShell(book).then(function(canDownload) {
+          if (canDownload) {
+            $state.go("browse.detail.downloadBook.preflight");
           }
         });
       };

@@ -583,9 +583,9 @@
       };
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
-        // For more info, see comment on pdfoverlay directive (below)
-        if ($.fancybox.isActive && oldUrl.indexOf("preview=true") > 0) {
-          // On history navigation, close Preview and stay on detail page
+        // For more info, see comment on viewoverlay directive (below)
+        if ($.fancybox.isActive && oldUrl.indexOf("overlay=true") > 0) {
+          // On history navigation, close view overlay and stay on detail page
           $.fancybox.close();
         }
       });
@@ -619,12 +619,12 @@
   ]);
 
   // The main problem being solved with onClick, afterClose, and $locationChangeStart (above) is ensuring that
-  // whether the user closes the preview or hits the back button, we end up on the detail page with the preview closed.
-  // Clicking preview adds preview=true to the url effectively adding another item to the history stack.
-  // When the user closes the preview, we call history.back to ensure url is the detail page.
-  // If the user clicks back when the preview is open, the $locationChangeStart event (above) is used to close the preview.
-  // preview=true is required to ensure we don't try to perform a duplicate action (closing preview or going back).
-  BloomLibraryApp.directive("pdfoverlay", [
+  // whether the user closes the overlay or hits the back button, we end up on the detail page with the overlay closed.
+  // Clicking Read (or PDF when not harvested) adds overlay=true to the url effectively adding another item to the history stack.
+  // When the user closes the overlay, we call history.back to ensure url is the detail page.
+  // If the user clicks back when the overlay is open, the $locationChangeStart event (above) is used to close the overlay.
+  // overlay=true is required to ensure we don't try to perform a duplicate action (closing overlay or going back).
+  BloomLibraryApp.directive("viewoverlay", [
     "$location",
     function($location) {
       return {
@@ -635,7 +635,9 @@
             helpers: { title: { type: "inside", position: "top" } },
             afterLoad: function() {
               var book = scope.book;
-              if (book && book.langPointers && book.langPointers.length > 1) {
+              // Directives "normalize" the attribute names, so data-view-type became viewType
+              var viewType = attrs.viewType ? attrs.viewType : "";
+              if (book && book.langPointers && book.langPointers.length > 1 && viewType !== "read") {
                 var languageList = _localize(book.langPointers[0].name);
                 for (var i = 1; i < book.langPointers.length; i++) {
                   languageList += ", " + _localize(book.langPointers[i].name);
@@ -665,13 +667,13 @@
               preload: false
             },
             afterClose: function() {
-              if ($location.search().preview) {
+              if ($location.search().overlay) {
                 history.back();
               }
             }
           });
           $(element).on("click", function(e) {
-            $location.search("preview", "true");
+            $location.search("overlay", "true");
           });
         }
       };

@@ -76,8 +76,8 @@ div.modal-dialog
                         i(ng-attr-tabIndex="{{canDeleteBook ? 0 : -1}}" tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                 .actions.major
                     .button-container
-                        // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work
-                        a(ng-hide="isHarvested" ng-href="{{pdfPreviewUrl}}" ng-click="" pdfoverlay analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
+                        // I have no idea why, but without ng-click (even though it is empty), the setting of overlay=true in the url in the viewoverlay directive (in app.js) doesn't work
+                        a(ng-hide="isHarvested" ng-href="{{pdfPreviewUrl}}" ng-click="" viewoverlay data-view-type="pdf" analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
                             img.large-icon(src="/assets/pdfIcon.svg")
 
                         a(ng-show="isHarvested" ng-href="{{pdfDownloadUrl}}" target="_blank" download="{{book.title}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="pdf")
@@ -85,7 +85,7 @@ div.modal-dialog
                         a(ng-show="isHarvested" ng-href="{{epubUrl}}" download="{{book.title}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="epub")
                             img.large-icon(src="/assets/ePUBIcon.svg")
                     .button-container.right
-                        a(tabIndex="-1" ui-sref="browse.detail.downloadBook.preflight" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="shell")
+                        a(tabIndex="-1" ng-click="onDownloadShell(book)" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="shell")
                             button.btn.btn-default(type="button")
                                 //- helpful for multiline button formatting (see less)
                                 span
@@ -97,8 +97,8 @@ div.modal-dialog
                                 span
                                     img.icon(src="/assets/brDownloadIcon.svg")
                                     span Download to Bloom Reader
-                        // I have no idea why, but without ng-click (even though it is empty), the setting of preview=true in the url in the pdfoverlay directive (in app.js) doesn't work
-                        a(ng-show="isHarvested" tabIndex="-1" ng-href="{{readUrl}}" ng-click="" pdfoverlay tooltip="Read now in your browser" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="read")
+                        // I have no idea why, but without ng-click (even though it is empty), the setting of overlay=true in the url in the viewoverlay directive (in app.js) doesn't work
+                        a(ng-show="isHarvested" tabIndex="-1" ng-href="{{readUrl}}" ng-click="" viewoverlay data-view-type="read" tooltip="Read now in your browser" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="read")
                             button.btn.btn-primary(type="button")
                                 //- helpful for multiline button formatting (see less)
                                 span
