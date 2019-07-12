@@ -78,9 +78,18 @@
       "authService",
       "$location",
       "$state",
-      "silNoticeService", "$rootScope",
+      "silNoticeService",
+      "$rootScope",
       "$cookies",
-      function($scope, authService, $location, $state, silNoticeService, $rootScope, $cookies) {
+      function(
+        $scope,
+        authService,
+        $location,
+        $state,
+        silNoticeService,
+        $rootScope,
+        $cookies
+      ) {
         $scope.location = $location.path();
         $scope.isLoggedIn = authService.isLoggedIn;
 
@@ -98,7 +107,7 @@
         };
         // We store this in rootScope so it is accessible to some code that needs it in installers-controller.js
         $rootScope.highContrast = $cookies["highContrast"]; // correctly false if not recorded
-        $scope.$watch('$viewContentLoaded',function() {
+        $scope.$watch("$viewContentLoaded", function() {
           if ($rootScope.highContrast) {
             document.body.classList.add("high-contrast"); // make use of cookie
           }
@@ -121,17 +130,20 @@
             // ("cross-domain scripting"). If you really need to test this out on a local build,
             // or work on it, the only way I found is to make local copies of the documents
             // that are the contents of the iframes, and temporarily change the links to use them.
-            $('iframe').each(function(index, iframe) {
+            $("iframe").each(function(index, iframe) {
               if (iframe.contentWindow && iframe.contentWindow.document) {
-                iframe.contentWindow.document.body.classList.add("high-contrast");
+                iframe.contentWindow.document.body.classList.add(
+                  "high-contrast"
+                );
               }
             });
-          }
-          else {
+          } else {
             document.body.classList.remove("high-contrast");
-            $('iframe').each(function(index, iframe) {
+            $("iframe").each(function(index, iframe) {
               if (iframe.contentWindow && iframe.contentWindow.document) {
-                iframe.contentWindow.document.body.classList.remove("high-contrast");
+                iframe.contentWindow.document.body.classList.remove(
+                  "high-contrast"
+                );
               }
             });
           }
@@ -630,14 +642,45 @@
       return {
         restrict: "A",
         link: function(scope, element, attrs) {
+          // A window message listener function possibly added in afterLoad and removed in
+          // afterClose. It listens for messages from bloom-player and handles them.
+          var listener = function(data) {
+            var message = JSON.parse(data.data);
+            var messageType = message.messageType;
+            // Upon request, tell the player we can handle a request to go back (so it should
+            // show the back button).
+            if (messageType === "requestCapabilities") {
+              var iframe = document.getElementsByClassName(
+                "fancybox-iframe"
+              )[0];
+              iframe.contentWindow.postMessage(
+                JSON.stringify({
+                  messageType: "capabilities",
+                  canGoBack: true
+                }),
+                "*"
+              );
+            } else if (messageType === "backButtonClicked") {
+              $.fancybox.close();
+            }
+          };
           $(element).fancybox({
+            padding: 0,
             overlayShow: true,
-            helpers: { title: { type: "inside", position: "top" } },
+            helpers: {
+              title: { type: "inside", position: "top" },
+              overlay: { closeClick: false } // prevents closing when clicking OUTSIDE fancybox
+            },
             afterLoad: function() {
               var book = scope.book;
               // Directives "normalize" the attribute names, so data-view-type became viewType
               var viewType = attrs.viewType ? attrs.viewType : "";
-              if (book && book.langPointers && book.langPointers.length > 1 && viewType !== "read") {
+              if (
+                book &&
+                book.langPointers &&
+                book.langPointers.length > 1 &&
+                viewType !== "read"
+              ) {
                 var languageList = _localize(book.langPointers[0].name);
                 for (var i = 1; i < book.langPointers.length; i++) {
                   languageList += ", " + _localize(book.langPointers[i].name);
@@ -661,6 +704,10 @@
                 titleHtml += "</td></tr></tbody></table>";
                 this.title = titleHtml;
               }
+              if (viewType === "read") {
+                // Listen for messages from the player
+                window.addEventListener("message", listener);
+              }
             },
             type: "iframe",
             iframe: {
@@ -670,6 +717,7 @@
               if ($location.search().overlay) {
                 history.back();
               }
+              window.removeEventListener("message", listener);
             }
           });
           $(element).on("click", function(e) {
