@@ -665,11 +665,12 @@
             }
           };
           $(element).fancybox({
-            padding: 0,
+            padding: attrs.viewType === "read" ? 0 : 15,
+            wrapCSS: attrs.viewType === "read" ? "dark" : "",
             overlayShow: true,
             helpers: {
               title: { type: "inside", position: "top" },
-              overlay: { closeClick: false } // prevents closing when clicking OUTSIDE fancybox
+              overlay: { closeClick: attrs.viewType !== "read" } // prevents closing when clicking OUTSIDE fancybox
             },
             afterLoad: function() {
               var book = scope.book;
