@@ -141,6 +141,8 @@
     }
 
     return (
+      // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
+      // "http://localhost:3000/bloom-player/bloomplayer.htm?url=" +
       "https://bloomlibrary.org/bloom-player/bloomplayer.htm?url=" +
       harvesterBaseUrl +
       "bloomdigital%2findex.htm"
@@ -207,8 +209,7 @@
             if (geoInfo && geoInfo.country) {
               if (geoInfo.country === countryCode) {
                 resolve([true, ""]);
-              }
-              else {
+              } else {
                 console.log(geoInfo.country);
               }
             }
