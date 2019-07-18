@@ -212,9 +212,6 @@
               } else {
                 console.log(geoInfo.country);
               }
-              else {
-                console.log(geoInfo.country);
-              }
             }
           }
           var msgToUser;
