@@ -645,6 +645,12 @@
           // A window message listener function possibly added in afterLoad and removed in
           // afterClose. It listens for messages from bloom-player and handles them.
           var listener = function(data) {
+            // We are getting a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
+            // isn't json encoded.
+            // That message, that we want to ignore, is not a string.
+            if (!data.data || typeof data.data !== "string") {
+              return;
+            }
             var message = JSON.parse(data.data);
             var messageType = message.messageType;
             // Upon request, tell the player we can handle a request to go back (so it should
