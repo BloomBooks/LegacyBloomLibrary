@@ -284,3 +284,10 @@ div:first-child#bookshelfHeaderSpacer {
 .fancybox-wrap.dark .fancybox-skin {
   background-color: rgb(46, 46, 46); // to match nav bar of bloom-player
 }
+
+// This will be overridden by javascript in the fancybox's afterLoad method,
+// but we set it here to hopefully reduce flicker.
+.fixed-preview-size .fancybox-iframe {
+  height: 600px;
+  width: 800px;
+}

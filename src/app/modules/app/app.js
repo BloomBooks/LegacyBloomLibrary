@@ -645,6 +645,12 @@
           // A window message listener function possibly added in afterLoad and removed in
           // afterClose. It listens for messages from bloom-player and handles them.
           var listener = function(data) {
+            // We are getting a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
+            // isn't json encoded.
+            // That message, that we want to ignore, is not a string.
+            if (!data.data || typeof data.data !== "string") {
+              return;
+            }
             var message = JSON.parse(data.data);
             var messageType = message.messageType;
             // Upon request, tell the player we can handle a request to go back (so it should
@@ -666,7 +672,7 @@
           };
           $(element).fancybox({
             padding: attrs.viewType === "read" ? 0 : 15,
-            wrapCSS: attrs.viewType === "read" ? "dark" : "",
+            wrapCSS: attrs.viewType === "read" ? "dark fixed-preview-size" : "",
             overlayShow: true,
             helpers: {
               title: { type: "inside", position: "top" },
@@ -708,11 +714,48 @@
               if (viewType === "read") {
                 // Listen for messages from the player
                 window.addEventListener("message", listener);
+
+                var iframe = document.getElementsByClassName(
+                  "fancybox-iframe"
+                )[0];
+
+                // There is a property on fancybox's iframe which is also setting scrolling to no,
+                // but on iOS (and maybe Android?), it is overridden in fancybox's code to be "auto".
+                // We must set it to "no" to defeat iOS's attempt to resize the iframe to show all of its content.
+                // A fixed size for the iframe is also necessary. See below.
+                // See BL-7448.
+                iframe.setAttribute("scrolling", "no");
+
+                // Setting the size of the iframe to its parent size immediately is too soon,
+                // but pushing it into the next event cycle seems to be late enough in our testing.
+                //
+                // We would love to just use css to make height and width 100% (the default from fancybox),
+                // but that doesn't work on iOS which tries to resize the iframe to show all of its content.
+                // The result of that resizing is that the scale is continually recalculated which
+                // presents strange results as the page continually grows.
+                // "scrolling" must be "no" as well. See above.
+                // See BL-7448.
+                //
+                // We set the height and width to 600x800 in css, but for some devices, that is too large.
+                // We're leaving that in place because in many cases that will be the correct size,
+                // and we hope to reduce flicker.
+                setTimeout(function() {
+                  iframe.style.width = iframe.parentElement.clientWidth + "px";
+                  iframe.style.height = iframe.parentElement.clientHeight + "px";
+                }, 0);
+
+                // We would love to replace the above setTimeout with this ResizeObserver code, but
+                // its adoption in browsers is a long way off.
+                // new ResizeObserver(function() {
+                //   iframe.style.width = iframe.parentElement.clientWidth + "px";
+                //   iframe.style.height = iframe.parentElement.clientHeight + "px";
+                // }).observe(iframe.parentElement);
               }
             },
             type: "iframe",
             iframe: {
-              preload: false
+              preload: false,
+              scrolling: "no"
             },
             afterClose: function() {
               if ($location.search().overlay) {
