@@ -134,21 +134,6 @@
     return null;
   }
 
-  function getReadUrl(book) {
-    var harvesterBaseUrl = getHarvesterBaseUrl(book);
-    if (!harvesterBaseUrl) {
-      return null;
-    }
-
-    return (
-      // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
-      // "http://localhost:3000/bloom-player/bloomplayer.htm?url=" +
-      "https://bloomlibrary.org/bloom-player/bloomplayer.htm?url=" +
-      harvesterBaseUrl +
-      "bloomdigital%2findex.htm"
-    );
-  }
-
   function getHarvesterBaseUrl(book) {
     if (!book) {
       return null;
@@ -246,6 +231,7 @@
     "bookService",
     "bookCountService",
     "bookSizeService",
+    "sharedService",
     "tagService",
     "$modal",
     "$window",
@@ -257,6 +243,7 @@
       bookService,
       bookCountService,
       bookSizeService,
+      sharedService,
       tagService,
       $modal,
       $window
@@ -391,6 +378,24 @@
           }
         });
       };
+
+      function getReadUrl(book) {
+        var harvesterBaseUrl = getHarvesterBaseUrl(book);
+        if (!harvesterBaseUrl) {
+          return null;
+        }
+
+        var bloomPlayerUrl = sharedService.isProductionSite ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm" : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
+
+        // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
+        // bloomPlayerUrl = "http://localhost:3000/bloom-player/bloomplayer.htm";
+        return (
+          bloomPlayerUrl +
+          "?url=" +
+          harvesterBaseUrl +
+          "bloomdigital%2findex.htm"
+        );
+      }
     }
   ]);
 })(); // end wrap-everything function
