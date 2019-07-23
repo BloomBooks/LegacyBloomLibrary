@@ -670,7 +670,57 @@
               $.fancybox.close();
             }
           };
+
+          // Setting the size of the iframe to its parent size immediately is too soon.
+          // Pushing it into the next event cycle seems to be late enough when initially
+          // opening the preview, but if we later resize the window, we can easily
+          // end up with the iframe size lagging a few pixels behind the parent.
+          // That doesn't matter too much when the iframe is too small, but when it's
+          // just barely too big, suddenly scroll bars appear. So we have this rather
+          // elaborate code to make the sizes match ten times over the course of a
+          // second. The inner function could get called quite a lot during a continuous
+          // drag, with multiple sequences of ten checks firing, but it does very little
+          // on each call, especially if the size is already right.
+          //
+          // We would love to just use css to make height and width 100% (the default from fancybox),
+          // but that doesn't work on iOS which tries to resize the iframe to show all of its content.
+          // The result of that resizing is that the scale is continually recalculated which
+          // presents strange results as the page continually grows.
+          // "scrolling" must be "no" as well to prevent this behavior. We do that once below.
+          // See BL-7448.
+
+          // We would love to replace the above setTimeout with this ResizeObserver code, but
+          // its adoption in browsers is a long way off.
+          // new ResizeObserver(function() {
+          //   iframe.style.width = iframe.parentElement.clientWidth + "px";
+          //   iframe.style.height = iframe.parentElement.clientHeight + "px";
+          // }).observe(iframe.parentElement);
+          function resizeIframeToParentSize() {
+            var iframe = document.getElementsByClassName("fancybox-iframe")[0];
+            function resizeRepeat(checks) {
+              if (checks <= 0) {
+                return;
+              }
+              iframe.style.width = iframe.parentElement.clientWidth + "px";
+              iframe.style.height = iframe.parentElement.clientHeight + "px";
+              setTimeout(function() {
+                resizeRepeat(checks - 100);
+              }, 100);
+            }
+            resizeRepeat(1000);
+          }
+          // We tried earlier putting this inside the afterLoad callback, but it didn't work.
+          // Seems that possibly in that calling context we're dealing with a different document,
+          // probably the iframe one.
+          document.defaultView.addEventListener(
+            "resize",
+            resizeIframeToParentSize
+          );
           $(element).fancybox({
+            // Doesn't quite achieve 100%, there's some minimum border
+            width: "100%",
+            height: "100%",
+            autoSize: false, // not sure if this helps
             padding: attrs.viewType === "read" ? 0 : 15,
             wrapCSS: attrs.viewType === "read" ? "dark fixed-preview-size" : "",
             overlayShow: true,
@@ -726,30 +776,8 @@
                 // See BL-7448.
                 iframe.setAttribute("scrolling", "no");
 
-                // Setting the size of the iframe to its parent size immediately is too soon,
-                // but pushing it into the next event cycle seems to be late enough in our testing.
-                //
-                // We would love to just use css to make height and width 100% (the default from fancybox),
-                // but that doesn't work on iOS which tries to resize the iframe to show all of its content.
-                // The result of that resizing is that the scale is continually recalculated which
-                // presents strange results as the page continually grows.
-                // "scrolling" must be "no" as well. See above.
-                // See BL-7448.
-                //
-                // We set the height and width to 600x800 in css, but for some devices, that is too large.
-                // We're leaving that in place because in many cases that will be the correct size,
-                // and we hope to reduce flicker.
-                setTimeout(function() {
-                  iframe.style.width = iframe.parentElement.clientWidth + "px";
-                  iframe.style.height = iframe.parentElement.clientHeight + "px";
-                }, 0);
-
-                // We would love to replace the above setTimeout with this ResizeObserver code, but
-                // its adoption in browsers is a long way off.
-                // new ResizeObserver(function() {
-                //   iframe.style.width = iframe.parentElement.clientWidth + "px";
-                //   iframe.style.height = iframe.parentElement.clientHeight + "px";
-                // }).observe(iframe.parentElement);
+                // Get the initial size of the iframe right.
+                resizeIframeToParentSize();
               }
             },
             type: "iframe",
