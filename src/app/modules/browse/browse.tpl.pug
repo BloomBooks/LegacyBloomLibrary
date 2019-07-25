@@ -20,7 +20,7 @@ div.container.not-centered
                                 a.bookshelfItem(href="" ng-click="filterShelf('$recent')") New Arrivals
                         li
                             div(ng-class="{activeFilter: currentShelfKey == '$myUploads'}")
-                                a.bookshelfItem(href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="Log in to enable" tooltip-placement="right" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}") My Uploads
+                                a.bookshelfItem(href="" ng-click="filterMyUploads()" ng-class="{disabled:!isLoggedIn}" tooltip="{{showTooltips? 'Log in to enable':''}}" tooltip-placement="right" tooltip-trigger="{{{false: 'mouseenter', true: 'never'}[isLoggedIn]}}") My Uploads
                         li(ng-show="otherBookshelves.length")
                             a.notranslate(href="" ng-click="toggleVisibilityOfOtherBookshelves($event)") {{localizeMore(otherBookshelves.length,otherBookshelvesHidden)}}
                             div(id="otherBookshelves" style="display:none")
@@ -35,14 +35,14 @@ div.container.not-centered
                     h2 Languages
                     ul(ng-repeat="lang in topLanguages")
                         li(ng-class="{activeFilter: currentLang == lang.isoCode}")
-                            a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
+                            a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{(showTooltips && lang.englishName != lang.name) ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
                             a.clear.right(href="" ng-click="filterLanguage('','')") Clear
                     div(ng-show="otherLanguages.length")
                         a.notranslate(href="" ng-click="toggleVisibilityOfOtherLanguages($event)") {{localizeMore(otherLanguages.length,otherLanguagesHidden)}}
                         div(style="display:none")
                             ul(ng-repeat="lang in otherLanguages")
                                 li(ng-class="{activeFilter: currentLang == lang.isoCode}")
-                                    a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{lang.englishName != lang.name ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
+                                    a.languageItem(href="" ng-click="filterLanguage(lang.isoCode,lang.name)" tooltip="{{(showTooltips && lang.englishName != lang.name) ? lang.englishName : ''}}" tooltip-placement="right" tooltip-trigger="{{'mouseenter'}}") {{lang.name}}
                                     a.clear.right(href="" ng-click="filterLanguage('','')") Clear
                     h2 Features
                     ul.features
