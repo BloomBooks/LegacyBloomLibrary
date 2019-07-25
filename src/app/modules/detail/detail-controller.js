@@ -248,6 +248,10 @@
       $modal,
       $window
     ) {
+      // A fairly crude way of testing for IOS, where a click on a button that has a tooltip just
+      // shows the tooltip, to the dismay of anyone expecting the button to work.
+      $scope.showTooltips =
+        !navigator.platform || !/iPad|iPhone|iPod/.test(navigator.platform);
       $scope.canDeleteBook = false; // until we get the book and may make it true
       $scope.location = window.location.href; // make available to embed in mailto: links
       //get the book for which we're going to show the details

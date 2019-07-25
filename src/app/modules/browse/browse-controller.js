@@ -79,6 +79,10 @@
       bookCountService,
       bookshelfService
     ) {
+      // A fairly crude way of testing for IOS, where a click on a button that has a tooltip just
+      // shows the tooltip, to the dismay of anyone expecting the button to work.
+      $scope.showTooltips =
+        !navigator.platform || !/iPad|iPhone|iPod/.test(navigator.platform);
       $scope.searchText = $stateParams["search"];
       $scope.shelfKey = $stateParams["shelf"];
       $scope.lang = $stateParams["lang"];
