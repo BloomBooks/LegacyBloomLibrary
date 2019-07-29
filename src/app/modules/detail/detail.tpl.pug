@@ -75,32 +75,38 @@ div.modal-dialog
                     a(tabIndex="-1" href="" ng-click="showDeleteDialog()" aria-label="Delete this book")
                         i(ng-attr-tabIndex="{{canDeleteBook ? 0 : -1}}" tooltip="{{showTooltips? 'Delete this book':''}}" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                 .actions.major
-                    .button-container
+                    .button-container.shellAndRead
+
+                        
+                        a.read(ng-show="isHarvested" tabIndex="-1" ng-href="{{readUrl}}" ng-click="" viewoverlay data-view-type="read" tooltip="Read now in your browser" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="read")
+                            button.btn.btn-primary(type="button")
+                                //- helpful for multiline button formatting (see less)
+                                .iconAndLabel
+                                    img.icon(src="/assets/readIcon.svg")
+                                    span Read
+                    h2 Downloads
+                    .download-buttons
                         // I have no idea why, but without ng-click (even though it is empty), the setting of overlay=true in the url in the viewoverlay directive (in app.js) doesn't work
                         a(ng-hide="isHarvested" ng-href="{{pdfPreviewUrl}}" ng-click="" viewoverlay data-view-type="pdf" analytics-on analytics-event="Preview" analytics-book="{{book.objectId}}")
-                            img.large-icon(src="/assets/pdfIcon.svg")
+                            img(src="/assets/pdf.png" alt="Download PDF")
 
                         a(ng-show="isHarvested" ng-href="{{pdfDownloadUrl}}" target="_blank" download="{{book.title}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="pdf")
-                            img.large-icon(src="/assets/pdfIcon.svg")
+                            img(src="/assets/pdf.png" alt="Download PDF")
                         a(ng-show="isHarvested" ng-href="{{epubUrl}}" download="{{book.title}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="epub")
-                            img.large-icon(src="/assets/ePUBIcon.svg")
-                    .button-container.right
-                        a(tabIndex="-1" ng-click="onDownloadShell(book)" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="shell")
+                            img(src="/assets/epub.png" alt="Download ePUB")
+                    
+                        a.bloomReaderDownload(ng-show="isHarvested" tabIndex="-1" ng-href="{{digitalDownloadUrl}}" tooltip="Use with Bloom's companion Android app, Bloom Reader" download="{{book.title}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="bloomd")
+                            img(src="/assets/bloomd.png" alt="Download version for Bloom Reader app")
+                            div Bloom Reader
+
+                        a.shellbook(tabIndex="-1" ng-click="onDownloadShell(book)" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="shell")
                             button.btn.btn-default(type="button")
                                 //- helpful for multiline button formatting (see less)
                                 span
                                     img.icon(src="/assets/shellDownloadIcon.svg")
                                     span Translate using Bloom Editor
-                        a(ng-show="isHarvested" tabIndex="-1" ng-href="{{digitalDownloadUrl}}" tooltip="{{showTooltips? 'Use with Bloom\\'s companion Android app, Bloom Reader':''}}" download="{{book.title}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="bloomd")
-                            button.btn.btn-default(type="button")
-                                //- helpful for multiline button formatting (see less)
-                                span
-                                    img.icon(src="/assets/brDownloadIcon.svg")
-                                    span Download to Bloom Reader
-                        // I have no idea why, but without ng-click (even though it is empty), the setting of overlay=true in the url in the viewoverlay directive (in app.js) doesn't work
-                        a(ng-show="isHarvested" tabIndex="-1" ng-href="{{readUrl}}" ng-click="" viewoverlay data-view-type="read" tooltip="{{showTooltips? 'Read now in your browser':''}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="read")
-                            button.btn.btn-primary(type="button")
-                                //- helpful for multiline button formatting (see less)
-                                span
-                                    img.icon(src="/assets/readIcon.svg")
-                                    span Read
+
+                    .playStore
+                        h2 Get Bloom Reader
+                        a(href='https://play.google.com/store/apps/details?id=org.sil.bloom.reader&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1')
+                            img(alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png')

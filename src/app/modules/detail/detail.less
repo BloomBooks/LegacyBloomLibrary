@@ -127,23 +127,82 @@ i.abuseIcon {
 }
 
 .detail {
-  .actions.major {
+  h2 {
+    font-size: 12pt;
+    font-weight: bold;
+  }
+
+  /* Element | http://localhost:3000/browse/detail/ifzrkowMRX */
+
+  .playStore {
+    h2 {
+      margin-top: 29px;
+    }
+    img {
+      width: 170px;
+      margin-left: -10px;
+      margin-top: -10px;
+    }
+  }
+  .download-buttons {
     display: flex;
-    justify-content: space-between;
+    img {
+      height: 50px;
+      margin-right: 25px;
+    }
+    a.bloomReaderDownload {
+      color: black;
+      width: 60px;
+      img {
+        height: 52px; // bit taller to compensate for being thinner
+        margin-top: -1px; // scooch it up so it is still centered with the other two
+        // margin-left: auto;
+        // margin-right: auto;
+        display: block;
+      }
+      div {
+        text-align: center;
+        line-height: 14px;
+        height: 30px;
+        width: 50px; // we want it to wrap
+        margin-left: -8px; // move it to the left so, at least in English, it looks centered
+      }
+    }
+  }
+
+  .shellbook {
+    margin-left: auto;
+  }
+
+  .read {
+    button {
+      width: 336px;
+      display: table;
+      .iconAndLabel {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+    }
+  }
+  .actions.major {
+    // display: flex;
+    // justify-content: space-between;
     margin-top: 25px;
 
     .button-container {
       display: flex;
+      flex-wrap: wrap;
       align-items: stretch;
 
-      .right {
+      &.shellAndRead {
         justify-content: flex-end;
       }
     }
 
     button {
       min-height: @icon-button-size-large;
-      max-width: 155px;
+      //max-width: 155px;
       white-space: unset;
       margin-left: @button-horizontal-spacing;
     }
