@@ -1,9 +1,26 @@
 @icon-button-size: 18px;
-@icon-button-size-large: 54px;
+@icon-button-size-large: 50px;
 @image-width: 180px;
 @image-right-margin: 16px;
 @button-horizontal-spacing: 7px;
 @modal-dialog-margin-left: 15px;
+@phoneMinWidth: 500px;
+
+@media (max-width: @phoneMinWidth) {
+  .largeScreenOnly {
+    display: none !important;
+  }
+}
+@media (pointer: coarse) {
+  .desktopOnly {
+    display: none !important;
+  }
+}
+@supports (-webkit-overflow-scrolling: touch) {
+  .hideOnIOS {
+    display: none !important;
+  }
+}
 
 .modal-body {
   padding-top: 0px;
@@ -41,6 +58,17 @@
   }
   .relatedBooks {
     margin-top: 11px;
+  }
+}
+#previewTitle {
+  i.icon-info-sign {
+    font-size: 5em;
+    margin-right: 12px;
+    position: relative;
+    top: -4px;
+  }
+  td div:last-of-type {
+    margin-bottom: 10px;
   }
 }
 
@@ -127,139 +155,159 @@ i.abuseIcon {
 }
 
 .detail {
+  a.read {
+    width: 100%;
+    @media (min-width: @phoneMinWidth) {
+      width: calc(~"100% - " (@image-width + @image-right-margin));
+    }
+    display: block;
+    margin-left: auto;
+
+    button {
+      width: 100%;
+      .iconAndLabel {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+
+        img {
+          margin-right: 5px;
+          height: 22px;
+          padding-bottom: 4px;
+        }
+        span {
+          font-weight: bold;
+          font-size: 14pt;
+        }
+      }
+    }
+  }
+
   h2 {
     font-size: 12pt;
     font-weight: bold;
   }
 
-  /* Element | http://localhost:3000/browse/detail/ifzrkowMRX */
+  .shellbook {
+    width: calc(~"100% - " (@image-width + @image-right-margin));
+    margin-bottom: 16px;
+    display: block;
+    margin-left: auto;
+    button {
+      border-color: #d65648;
+      border-width: 2px;
+
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      img {
+        height: unset;
+        margin-top: 2px;
+      }
+      .subtext {
+        color: #979797;
+        font-size: 9pt;
+      }
+      span {
+        margin-left: auto;
+        margin-right: auto;
+        display: contents;
+        span {
+          line-height: 16px;
+        }
+      }
+    }
+  }
+
+  .downloads {
+    margin-top: 32px;
+    .download-buttons {
+      display: flex;
+      flex-wrap: wrap;
+
+      a {
+        margin-right: 25px;
+      }
+      img {
+        height: 50px;
+      }
+      a.bloomReaderDownload {
+        color: black;
+        width: 60px;
+        img {
+          height: 52px; // bit taller to compensate for being thinner
+          margin-top: -1px; // scooch it up so it is still centered with the other two
+          // margin-left: auto;
+          // margin-right: auto;
+          display: block;
+        }
+        div {
+          text-align: center;
+          line-height: 14px;
+          height: 30px;
+          width: 50px; // we want it to wrap
+          margin-left: -8px; // move it to the left so, at least in English, it looks centered
+        }
+      }
+    }
+  }
 
   .playStore {
-    h2 {
-      margin-top: 29px;
-    }
+    margin-top: 8px;
     img {
       width: 170px;
       margin-left: -10px;
       margin-top: -10px;
     }
   }
-  .download-buttons {
+
+  button {
+    min-height: @icon-button-size-large;
+    //max-width: 155px;
+    white-space: unset;
+  }
+
+  // Hack: adding span child of button because button is not a valid flex container
+  button > span {
     display: flex;
-    img {
-      height: 50px;
-      margin-right: 25px;
+
+    > img {
+      margin-right: 10px;
+      max-width: 20px;
     }
-    a.bloomReaderDownload {
-      color: black;
-      width: 60px;
-      img {
-        height: 52px; // bit taller to compensate for being thinner
-        margin-top: -1px; // scooch it up so it is still centered with the other two
-        // margin-left: auto;
-        // margin-right: auto;
-        display: block;
-      }
-      div {
-        text-align: center;
-        line-height: 14px;
-        height: 30px;
-        width: 50px; // we want it to wrap
-        margin-left: -8px; // move it to the left so, at least in English, it looks centered
-      }
+
+    > span {
+      text-align: left;
     }
   }
 
-  .shellbook {
-    margin-left: auto;
+  img.large-icon {
+    height: @icon-button-size-large;
+    margin-right: @button-horizontal-spacing;
   }
+}
 
-  .read {
-    button {
-      width: 336px;
-      display: table;
-      .iconAndLabel {
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-      }
-    }
-  }
-  .actions.major {
-    // display: flex;
-    // justify-content: space-between;
-    margin-top: 25px;
-
-    .button-container {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: stretch;
-
-      &.shellAndRead {
-        justify-content: flex-end;
-      }
-    }
-
-    button {
-      min-height: @icon-button-size-large;
-      //max-width: 155px;
-      white-space: unset;
-      margin-left: @button-horizontal-spacing;
-    }
-
-    // Hack: adding span child of button because button is not a valid flex container
-    button > span {
-      display: flex;
-
-      > img {
-        margin-right: 10px;
-        max-width: 20px;
-      }
-
-      > span {
-        text-align: left;
-      }
-    }
-
-    img.large-icon {
-      height: @icon-button-size-large;
-      margin-right: @button-horizontal-spacing;
-    }
-  }
-
-  .actions.minor {
-    display: inline-block;
-    margin-top: 15px;
-
-    a:hover {
-      text-decoration: none;
-    }
-  }
-
-  .returnToLibrary a {
-    display: flex;
-    align-items: center;
-    font-size: 14pt;
-  }
-
-  .returnToLibrary a:hover {
+.actions {
+  display: inline-block;
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  a:hover {
     text-decoration: none;
   }
+}
+
+.returnToLibrary a {
+  display: flex;
+  align-items: center;
+  font-size: 14pt;
+}
+
+.returnToLibrary a:hover {
+  text-decoration: none;
 }
 
 // temporary way of showing that a book is in the (one, Featured) bookshelf.
 i.inBookshelf {
   background-color: green;
-}
-
-#previewTitle {
-  i.icon-info-sign {
-    font-size: 5em;
-    margin-right: 12px;
-    position: relative;
-    top: -4px;
-  }
-  td div:last-of-type {
-    margin-bottom: 10px;
-  }
 }
