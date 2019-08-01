@@ -151,9 +151,9 @@ module.exports = function(grunt) {
       css_less: {
         files: [
           /* some css files need to be just copied to corresponding .less files,
-                 * so we can successfully import them in main.less.
-                 * It would be nicer to make this configurable, with the actual list in build.config.js,
-                 * but I haven't figured out how. */
+           * so we can successfully import them in main.less.
+           * It would be nicer to make this configurable, with the actual list in build.config.js,
+           * but I haven't figured out how. */
           {
             src: ["vendor/fancybox/source/jquery.fancybox.css"],
             dest: "vendor/fancybox/source/jquery.fancybox.less"
@@ -316,7 +316,8 @@ module.exports = function(grunt) {
         noarg: true,
         sub: true,
         boss: true,
-        eqnull: true
+        eqnull: true,
+        laxbreak: true
       },
       globals: {}
     },

@@ -25,7 +25,7 @@ div.modal-dialog
                         span.fori18n Languages:
                         = ' '
                         span(ng-repeat="lang in book.langPointers")
-                            a(ng-href="https://www.ethnologue.com/language/{{lang.ethnologueCode}}" target="_blank") {{lang.name}}
+                            a(ng-href="{{lang.href}}" target="_blank") {{lang.name}}
                             span(ng-hide="$last") ,
                                 = ' '
                     div.largeScreenOnly.copyright.notranslate {{book.copyright}}
