@@ -1,28 +1,45 @@
 <!DOCTYPE html>
-<!--[if lte IE 11 ]>
-    <meta http-equiv="refresh" content="0;url=assets/unsupportedBrowser.html">
+<!--[if lte IE 11]>
+  <meta http-equiv="refresh" content="0;url=assets/unsupportedBrowser.html" />
 <![endif]-->
 <!--[if (gt IE 11)|!(IE)]><!-->
 <html ng-app="BloomLibraryApp" lang="en">
+  <head>
+    <title ng-bind="pageTitle">
+      Bloom Book Making Software from SIL International
+    </title>
+    <meta charset="UTF-8" />
 
-<head>
-    <title ng-bind="pageTitle">Bloom Book Making Software from SIL International</title>
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="initial-scale=1">
+    <meta name="viewport" content="initial-scale=1" />
 
     <!-- social media tags -->
     <meta property="og:title" content="BloomLibrary" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://bloomlibrary.org/" />
-    <meta property="og:image" content="https://bloomlibrary.org/assets/bloomIcon.png" />
-    <meta property="og:description" content="Let's grow a library: Bloom keeps things simple and efficient by offering a library of shell books. You just translate from a source language, and print.">
+    <meta
+      property="og:image"
+      content="https://bloomlibrary.org/assets/bloom-facebook.png"
+    />
+    <meta
+      property="og:description"
+      content="Help us create 10x more books, in every language on Earth."
+    />
 
     <!-- font awesome from BootstrapCDN -->
-    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link
+      href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
+      rel="stylesheet"
+    />
 
-    <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=PT+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
 
     <!-- compiled CSS -->
     <% styles.forEach( function ( file ) { %>
@@ -30,12 +47,12 @@
     <% }); %>
 
     <script>
-        // The check at the top will not work for IE10+ (and cannot be made to work).
-        // And what we really want to know is if the browser supports CSS variables.
-        // See https://stackoverflow.com/a/26633844/7442826.
-        if (!window.CSS || !CSS.supports('color', 'var(--fake-var)')) {
-            window.location.href = "assets/unsupportedBrowser.html";
-        }
+      // The check at the top will not work for IE10+ (and cannot be made to work).
+      // And what we really want to know is if the browser supports CSS variables.
+      // See https://stackoverflow.com/a/26633844/7442826.
+      if (!window.CSS || !CSS.supports("color", "var(--fake-var)")) {
+        window.location.href = "assets/unsupportedBrowser.html";
+      }
     </script>
 
     <!-- It's tempting to move some of these less important JS files to the end in hopes of speeding loading.
@@ -47,188 +64,317 @@
     <% }); %>
     <!-- for transifex.com, localization -->
     <script type="text/javascript">
-        var isStaging = true;
-        var apiKey = "83e1ea4d808741d4a50e0dc4b9991154";
-        if (location.hostname === "bloomlibrary.org") {
-            isStaging = false;
-        }
-        window.liveSettings = {
-            api_key: apiKey,
-            picker: "bottom-right",
-            detectlang: true,
-            dynamic: true,
-            autocollect: true,
-            staging: isStaging
-        };
+      var isStaging = true;
+      var apiKey = "83e1ea4d808741d4a50e0dc4b9991154";
+      if (location.hostname === "bloomlibrary.org") {
+        isStaging = false;
+      }
+      window.liveSettings = {
+        api_key: apiKey,
+        picker: "bottom-right",
+        detectlang: true,
+        dynamic: true,
+        autocollect: true,
+        staging: isStaging
+      };
     </script>
     <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.375.0.min.js"></script>
     <script type="text/javascript">
-        //create an alias for translation of dynamic strings
-        window._localize = Transifex.live.translateText;
+      //create an alias for translation of dynamic strings
+      window._localize = Transifex.live.translateText;
 
-        // Configure Transifex to show the language names we want in the language-chooser menu (bottom right)
-        // by manipulating the HTML it generates for the menu.
-        // This is a little bit of a hack in that if transifex changes the id of the
-        // tx-live-lang-picker or tx-live-lang-current elements, this will just stop renaming languages.
-        // The other alternative would be to roll our own picker altogether.
-        // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
-        Transifex.live.onFetchLanguages(function (languages) {
-            Transifex.live.onTranslatePage(function (language_code) {
-                convertAllLanguageNames();
-            });
+      // Configure Transifex to show the language names we want in the language-chooser menu (bottom right)
+      // by manipulating the HTML it generates for the menu.
+      // This is a little bit of a hack in that if transifex changes the id of the
+      // tx-live-lang-picker or tx-live-lang-current elements, this will just stop renaming languages.
+      // The other alternative would be to roll our own picker altogether.
+      // See https://docs.transifex.com/live/webmasters#creating-a-custom-language-selector.
+      Transifex.live.onFetchLanguages(function(languages) {
+        Transifex.live.onTranslatePage(function(language_code) {
+          convertAllLanguageNames();
         });
-        Transifex.live.onReady(function () {
-            convertAllLanguageNames();
-            // force the transifex control into our footer to make accessibility checkers happy.
-            // (And maybe really help blind people find it.)
-            var transifex = document.getElementById("tx-live-lang-container");
-            var footer = document.getElementsByClassName("site-footer")[0];
-            footer.append(transifex);
+      });
+      Transifex.live.onReady(function() {
+        convertAllLanguageNames();
+        // force the transifex control into our footer to make accessibility checkers happy.
+        // (And maybe really help blind people find it.)
+        var transifex = document.getElementById("tx-live-lang-container");
+        var footer = document.getElementsByClassName("site-footer")[0];
+        footer.append(transifex);
+      });
+
+      function convertAllLanguageNames() {
+        $("#tx-live-lang-picker li").each(function(i, listItem) {
+          $(listItem).text(convertLanguageName($(listItem).text()));
         });
 
-        function convertAllLanguageNames() {
-            $('#tx-live-lang-picker li').each(function (i, listItem) {
-                $(listItem).text(convertLanguageName($(listItem).text()));
-            });
+        let currentLanguageElement = $("#tx-live-lang-current");
+        currentLanguageElement.text(
+          convertLanguageName(currentLanguageElement.text())
+        );
+      }
 
-            let currentLanguageElement = $('#tx-live-lang-current');
-            currentLanguageElement.text(convertLanguageName(currentLanguageElement.text()));
+      // Lets us display the language names however we like
+      function convertLanguageName(source) {
+        let target = source;
+        switch (source) {
+          case "Español":
+            target = "español";
+            break;
+          case "Français":
+            target = "français";
+            break;
+          // We were asked to change this "Chinese (China)" to "Chinese (Simplified)"
+          case "中文 (中国)":
+            target = "中文（简体）";
+            break;
         }
-
-        // Lets us display the language names however we like
-        function convertLanguageName(source) {
-            let target = source;
-            switch (source) {
-                case "Español":
-                    target = "español";
-                    break;
-                case "Français":
-                    target = "français";
-                    break;
-                // We were asked to change this "Chinese (China)" to "Chinese (Simplified)"
-                case "中文 (中国)":
-                    target = "中文（简体）";
-                    break;
-            }
-            return target;
-        }
+        return target;
+      }
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <noscript>
-        <!-- A message displayed when javascript is disabled or not supported.  It covers the whole page. -->
-        <div style="position: fixed; top: 0px; left: 0px; z-index: 3000; height: 100%; width: 100%; background-color: #FFFFFF; padding: 50px">
-            To use the Bloom Web site it is necessary to enable JavaScript.
-            Here are the <a href="http://www.enable-javascript.com/">
-                instructions how to enable JavaScript in your web browser</a>.
-        </div>
+      <!-- A message displayed when javascript is disabled or not supported.  It covers the whole page. -->
+      <div
+        style="position: fixed; top: 0px; left: 0px; z-index: 3000; height: 100%; width: 100%; background-color: #FFFFFF; padding: 50px"
+      >
+        To use the Bloom Web site it is necessary to enable JavaScript. Here are
+        the
+        <a href="http://www.enable-javascript.com/">
+          instructions how to enable JavaScript in your web browser</a
+        >.
+      </div>
     </noscript>
     <div class="page-wrap">
-        <header class="site-header" ng-controller="HeaderCtrl">
-            <nav ng-show="!isBookLibrary()" id="editor-navbar" class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#editor-navbar-elements">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <span ng-show="isActive('/landing')" class="navbar-brand">
-                            <img class="bigLogoOnLanding" src="assets/bloomNavbarLogo.svg" alt="The Bloom logo, which is a stylized tulip that looks vaguely like an open book. Also shows the Bloom tagline, 'Let's grow a library'." />
-                        </span>
-                        <a ng-hide="isActive('/landing')" class="navbar-brand" href="/landing">
-                            <img src="assets/bloomNavbarLogo.svg" alt="The Bloom logo, which is a stylized tulip that looks vaguely like an open book. Also shows the Bloom tagline, 'Let's grow a library'. Click for home page." />
-                        </a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="editor-navbar-elements">
-                        <ul class="nav navbar-nav">
-                            <li ng-class="{active: isActive('/landing')}" class="home"><a href="/landing">Home</a></li>
-                            <!--<li ng-class="{active: isActive('/features')}"><a href="/features">Features</a></li>-->
-                            <li ng-class="{active: isActive('/installers')}"><a href="/installers">Download</a></li>
-                            <li ng-class="{active: isActive('/support')}"><a href="/support">Support</a></li>
-                            <li ng-class="{active: isActive('/about')||isActive('/opensource')}" class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="needed-for-translation">More</span> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/about">About</a></li>
-                                    <li><a href="/opensource">Open Source</a></li>
-                                    <!-- There are three copies of this menu item. I don't think its (quite) complex enough to be worth the effort
+      <header class="site-header" ng-controller="HeaderCtrl">
+        <nav
+          ng-show="!isBookLibrary()"
+          id="editor-navbar"
+          class="navbar navbar-inverse"
+        >
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#editor-navbar-elements"
+              >
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <span ng-show="isActive('/landing')" class="navbar-brand">
+                <img
+                  class="bigLogoOnLanding"
+                  src="assets/bloomNavbarLogo.svg"
+                  alt="The Bloom logo, which is a stylized tulip that looks vaguely like an open book. Also shows the Bloom tagline, 'Let's grow a library'."
+                />
+              </span>
+              <a
+                ng-hide="isActive('/landing')"
+                class="navbar-brand"
+                href="/landing"
+              >
+                <img
+                  src="assets/bloomNavbarLogo.svg"
+                  alt="The Bloom logo, which is a stylized tulip that looks vaguely like an open book. Also shows the Bloom tagline, 'Let's grow a library'. Click for home page."
+                />
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="editor-navbar-elements">
+              <ul class="nav navbar-nav">
+                <li ng-class="{active: isActive('/landing')}" class="home">
+                  <a href="/landing">Home</a>
+                </li>
+                <!--<li ng-class="{active: isActive('/features')}"><a href="/features">Features</a></li>-->
+                <li ng-class="{active: isActive('/installers')}">
+                  <a href="/installers">Download</a>
+                </li>
+                <li ng-class="{active: isActive('/support')}">
+                  <a href="/support">Support</a>
+                </li>
+                <li
+                  ng-class="{active: isActive('/about')||isActive('/opensource')}"
+                  class="dropdown"
+                >
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                    ><span class="needed-for-translation">More</span>
+                    <span class="caret"></span
+                  ></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/opensource">Open Source</a></li>
+                    <!-- There are three copies of this menu item. I don't think its (quite) complex enough to be worth the effort
                                     of somehow making a reusable component out of it. -->
-                                    <li><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
-                                                Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul ng-hide="isActive('/landing')" ng-cloak class="nav navbar-nav navbar-right">
-                            <!-- Only one of the following will be shown (based on css) -->
-                            <li><a href="/browse" id="book-library-link-lg">Check out the Book Library</a></li>
-                            <li><a href="/browse" id="book-library-link-sm">Book Library</a></li>
-                        </ul>
-                        <ul ng-show="isActive('/landing')" ng-cloak class="nav navbar-nav navbar-right">
-                            <li><a href="/browse" id="book-library-link-landing-sm">Book Library</a></li>
-                        </ul>
-                    </div>
-                </div><!-- /.container-fluid -->
-            </nav>
-            <nav ng-show="isBookLibrary()" id="book-library-navbar" class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#book-library-navbar-elements">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="/landing">
-                            <img src="assets/bloomNavbarLogo.svg" alt="The Bloom logo, which is a stylized tulip that looks vaguely like an open book. Also shows the Bloom tagline, 'Let's grow a library'. Click for home page." />
-                        </a>
-                        <!-- CSS ensures either this (editor-link-lg) or the li below (editor-link-sm) will be displayed -->
-                        <div id="editor-link-lg">
-                            <a href="/landing"><span class="pull-right">Make these books in <span class="highlight">your
-                                        language</span><br />with the <span class="hover-highlight">Bloom Editor</span></span></a>
-                        </div>
-                    </div>
-                    <div class="collapse navbar-collapse" id="book-library-navbar-elements">
-                        <ul id="book-library-menu" ng-cloak class="nav navbar-nav">
-                            <li ng-class="{active: isActive('/browse')}" class="navbar-lg"><a href="/browse">Book
-                                    Library</a></li>
-                        </ul>
-                        <ul id="credentials-menu" ng-cloak class="nav navbar-nav navbar-right">
-                            <!-- CSS ensures one or the other Increase Contrast is shown-->
-                            <li id="increase-contrast-expanded"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
-                                        Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
-                            <li ng-class="{active: isActive('/signup')}" ng-if="!isLoggedIn()"><a href="/signup">Sign
-                                    Up</a></li>
-                            <li ng-class="{active: isActive('/login')}" ng-if="!isLoggedIn()"><a href="/login">Log In</a></li>
-                            <li id="user-name" ng-if="isLoggedIn()" class="notranslate">{{userName()}}</li>
-                            <li ng-if="isLoggedIn()"><a class="logout" ng-click="logout()">Log Out</a></li>
-                            <!-- CSS ensures either this (editor-link-sm) or the div above (editor-link-lg) will be displayed -->
-                            <li><a id="editor-link-sm" href="/landing">Bloom Editor</a></li>
-                            <li id="increase-contrast-collapsed"><a ng-click="toggleHighContrast()"><span ng-if="showingHighContrast()">Reset
-                                        Contrast</span><span ng-if="!showingHighContrast()">Increase Contrast</span></a></li>
-                        </ul>
-                    </div>
-                </div><!-- /.container-fluid -->
-            </nav>
-        </header>
-        <sil-notices></sil-notices>
-        <main ui-view></main>
+                    <li>
+                      <a ng-click="toggleHighContrast()"
+                        ><span ng-if="showingHighContrast()"
+                          >Reset Contrast</span
+                        ><span ng-if="!showingHighContrast()"
+                          >Increase Contrast</span
+                        ></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <ul
+                ng-hide="isActive('/landing')"
+                ng-cloak
+                class="nav navbar-nav navbar-right"
+              >
+                <!-- Only one of the following will be shown (based on css) -->
+                <li>
+                  <a href="/browse" id="book-library-link-lg"
+                    >Check out the Book Library</a
+                  >
+                </li>
+                <li>
+                  <a href="/browse" id="book-library-link-sm">Book Library</a>
+                </li>
+              </ul>
+              <ul
+                ng-show="isActive('/landing')"
+                ng-cloak
+                class="nav navbar-nav navbar-right"
+              >
+                <li>
+                  <a href="/browse" id="book-library-link-landing-sm"
+                    >Book Library</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </nav>
+        <nav
+          ng-show="isBookLibrary()"
+          id="book-library-navbar"
+          class="navbar navbar-inverse"
+        >
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#book-library-navbar-elements"
+              >
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/landing">
+                <img
+                  src="assets/bloomNavbarLogo.svg"
+                  alt="The Bloom logo, which is a stylized tulip that looks vaguely like an open book. Also shows the Bloom tagline, 'Let's grow a library'. Click for home page."
+                />
+              </a>
+              <!-- CSS ensures either this (editor-link-lg) or the li below (editor-link-sm) will be displayed -->
+              <div id="editor-link-lg">
+                <a href="/landing"
+                  ><span class="pull-right"
+                    >Make these books in
+                    <span class="highlight">your language</span><br />with the
+                    <span class="hover-highlight">Bloom Editor</span></span
+                  ></a
+                >
+              </div>
+            </div>
+            <div
+              class="collapse navbar-collapse"
+              id="book-library-navbar-elements"
+            >
+              <ul id="book-library-menu" ng-cloak class="nav navbar-nav">
+                <li ng-class="{active: isActive('/browse')}" class="navbar-lg">
+                  <a href="/browse">Book Library</a>
+                </li>
+              </ul>
+              <ul
+                id="credentials-menu"
+                ng-cloak
+                class="nav navbar-nav navbar-right"
+              >
+                <!-- CSS ensures one or the other Increase Contrast is shown-->
+                <li id="increase-contrast-expanded">
+                  <a ng-click="toggleHighContrast()"
+                    ><span ng-if="showingHighContrast()">Reset Contrast</span
+                    ><span ng-if="!showingHighContrast()"
+                      >Increase Contrast</span
+                    ></a
+                  >
+                </li>
+                <li
+                  ng-class="{active: isActive('/signup')}"
+                  ng-if="!isLoggedIn()"
+                >
+                  <a href="/signup">Sign Up</a>
+                </li>
+                <li
+                  ng-class="{active: isActive('/login')}"
+                  ng-if="!isLoggedIn()"
+                >
+                  <a href="/login">Log In</a>
+                </li>
+                <li id="user-name" ng-if="isLoggedIn()" class="notranslate">
+                  {{ userName() }}
+                </li>
+                <li ng-if="isLoggedIn()">
+                  <a class="logout" ng-click="logout()">Log Out</a>
+                </li>
+                <!-- CSS ensures either this (editor-link-sm) or the div above (editor-link-lg) will be displayed -->
+                <li><a id="editor-link-sm" href="/landing">Bloom Editor</a></li>
+                <li id="increase-contrast-collapsed">
+                  <a ng-click="toggleHighContrast()"
+                    ><span ng-if="showingHighContrast()">Reset Contrast</span
+                    ><span ng-if="!showingHighContrast()"
+                      >Increase Contrast</span
+                    ></a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </nav>
+      </header>
+      <sil-notices></sil-notices>
+      <main ui-view></main>
     </div>
     <footer class="site-footer" ng-controller="FooterCtrl">
-        <div class="footerLinks">
-            <div class="needed-for-localization">&copy; {{year}} SIL International</div>
-            <div class="notranslate"><span class="separator">|</span></div>
-            <div class="needed-for-localization"><a ng-class="{active: isActive('/terms')}" href="/terms">Terms of Use</a></div>
-            <div class="notranslate"><span class="separator">|</span></div>
-            <div class="needed-for-localization"><a ng-class="{active: isActive('/privacy')}" href="/privacy">Privacy</a></div>
-            <div class="notranslate"><a href='https://mixpanel.com/f/partner' class="mixpanel"><img src='https://cdn.mxpnl.com/site_media/images/partner/badge_light.png'
-                        alt='Mobile Analytics' /></a></div>
+      <div class="footerLinks">
+        <div class="needed-for-localization">
+          &copy; {{ year }} SIL International
         </div>
-        <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
+        <div class="notranslate"><span class="separator">|</span></div>
+        <div class="needed-for-localization">
+          <a ng-class="{active: isActive('/terms')}" href="/terms"
+            >Terms of Use</a
+          >
+        </div>
+        <div class="notranslate"><span class="separator">|</span></div>
+        <div class="needed-for-localization">
+          <a ng-class="{active: isActive('/privacy')}" href="/privacy"
+            >Privacy</a
+          >
+        </div>
+        <div class="notranslate">
+          <a href="https://mixpanel.com/f/partner" class="mixpanel"
+            ><img
+              src="https://cdn.mxpnl.com/site_media/images/partner/badge_light.png"
+              alt="Mobile Analytics"
+          /></a>
+        </div>
+      </div>
+      <!-- Less important javascripts could load down here so the page can render before they've loaded. Be careful, moving some things has caused flicker at startup. -->
     </footer>
-</body>
-
+  </body>
 </html>
 <!--<![endif]-->
