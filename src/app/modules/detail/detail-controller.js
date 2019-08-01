@@ -259,6 +259,23 @@
         tagService.hideSystemTags(book);
         $scope.book = book;
 
+        for (i = 0; i < $scope.book.langPointers.length; i++) {
+          var l = $scope.book.langPointers[i];
+          // cut off any script identifiers after the iso6393 code
+          var dashLocation = l.ethnologueCode.indexOf("-");
+          if (dashLocation === -1) {
+            dashLocation = 100;
+          }
+          var isoCode = l.ethnologueCode.substring(0, dashLocation);
+          if (isoCode.length === 2) {
+            // Ethnologue.com can only be directly accessed if we have a 3 letter code.
+            // But this other SIL site will point you to the right language:
+            l.href = "https://iso639-3.sil.org/search/content/" + isoCode;
+          } else {
+            l.href = "https://www.ethnologue.com/language/" + isoCode;
+          }
+        }
+
         $scope.pdfPreviewUrl = getPdfPreviewUrl(book);
         $scope.pdfDownloadUrl = getPdfDownloadUrl(book);
         $scope.epubUrl = getEpubUrl(book);
