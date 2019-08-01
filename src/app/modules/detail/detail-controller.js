@@ -389,7 +389,9 @@
           return null;
         }
 
-        var bloomPlayerUrl = sharedService.isProductionSite ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm" : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
+        var bloomPlayerUrl = sharedService.isProductionSite
+          ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm"
+          : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
 
         // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
         // bloomPlayerUrl = "http://localhost:3000/bloom-player/bloomplayer.htm";
