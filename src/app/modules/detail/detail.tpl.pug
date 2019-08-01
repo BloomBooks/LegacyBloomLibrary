@@ -69,20 +69,20 @@ div.modal-dialog
                     div.unfloat
                 .actions
                     a.largeScreenOnly(tabIndex="-1" ng-hide="canReportViolation" href="" ng-click="showPleaseLogIn()" aria-label="Report a concern about this book")
-                        i.abuseIcon(ng-attr-tabIndex="{{canReportViolation ? -1  : 0}}" tooltip="Report a concern about this book" tooltip-placement="right")
+                        i.abuseIcon(ng-attr-tabIndex="{{canReportViolation ? -1  : 0}}" tooltip="{{showTooltips? 'Report a concern about this book':''}}" tooltip-placement="right")
                     a.largeScreenOnly(tabIndex="-1" ng-show="canReportViolation" ui-sref="browse.detail.reportbook" aria-label="Report a concern about this book")
-                        i.abuseIcon(ng-attr-tabIndex="{{canReportViolation ? 0 : -1}}" tooltip="Report a concern about this book" tooltip-placement="right")
+                        i.abuseIcon(ng-attr-tabIndex="{{canReportViolation ? 0 : -1}}" tooltip="{{showTooltips? 'Report a concern about this book':''}}" tooltip-placement="right")
                     a.largeScreenOnly(tabIndex="-1" href="" ng-click="showDeleteDialog()" aria-label="Delete this book")
-                        i(ng-attr-tabIndex="{{canDeleteBook ? 0 : -1}}" tooltip="Delete this book" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
+                        i(ng-attr-tabIndex="{{canDeleteBook ? 0 : -1}}" tooltip="{{showTooltips? 'Delete this book':''}}" tooltip-placement="right" ng-class="{'icon-trash': true, 'icon-hidden':!canDeleteBook}")
                                   
-                    a.read(ng-show="isHarvested" tabIndex="-1" ng-href="{{readUrl}}" ng-click="" viewoverlay data-view-type="read" tooltip="Read now in your browser" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="read")
+                    a.read(ng-show="isHarvested" tabIndex="-1" ng-href="{{readUrl}}" ng-click="" viewoverlay data-view-type="read" tooltip="{{showTooltips? 'Read now in your browser':''}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="read")
                         button.btn.btn-primary(type="button")
                             //- helpful for multiline button formatting (see less)
                             .iconAndLabel
                                 img.icon(src="/assets/readIcon.svg")
                                 span Read
                 .downloads 
-                    a.shellbook.desktopOnly(tabIndex="-1" ng-click="onDownloadShell(book)" tooltip="Download to the Bloom software on your computer, so that you can use it as a shell book." analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="shell")
+                    a.shellbook.desktopOnly(tabIndex="-1" ng-click="onDownloadShell(book)" tooltip="{{showTooltips? 'Download to the Bloom software on your computer, so that you can use it as a shell book.':''}}" analytics-on analytics-event="GetBook" analytics-book="{{book.objectId}}" analytics-type="shell")
                         button.btn.btn-default(type="button")
                             //- helpful for multiline button formatting (see less)
                             span
