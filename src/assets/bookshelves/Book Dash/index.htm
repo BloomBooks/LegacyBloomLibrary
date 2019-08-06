@@ -3,19 +3,22 @@
 <style>
 #book-dash-header {
 	font-size: 16px;
+	display: flex;
 }
 #book-dash-header .left-section {
-	float: left;
-	width: 40%;
+	flex: 40%;
+}
+#book-dash-header .left-section .logo {
+	padding-right: 25px;
+	width: 100%;
 }
 #book-dash-header .right-section {
-	float: left;
-	width: 60%
+	flex: 60%
 }
 </style>
 <div id="book-dash-header">
 	<div class="left-section">
-		<a href="https://bookdash.org/" target="_blank"><img src="/assets/bookshelves/Book Dash/book-dash-logo.png" /></a>
+		<a href="https://bookdash.org/" target="_blank"><img class="logo" src="/assets/bookshelves/Book Dash/book-dash-logo.png" /></a>
 	</div>
 	<div class="right-section">
 		<p>Book Dash gathers volunteer creative professionals to create new, African storybooks that anyone can freely translate and distribute.</p>
