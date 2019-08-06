@@ -259,7 +259,7 @@
         tagService.hideSystemTags(book);
         $scope.book = book;
 
-        for (i = 0; i < $scope.book.langPointers.length; i++) {
+        for (var i = 0; i < $scope.book.langPointers.length; i++) {
           var l = $scope.book.langPointers[i];
           // cut off any script identifiers after the iso6393 code
           var dashLocation = l.ethnologueCode.indexOf("-");
