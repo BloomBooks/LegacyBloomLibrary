@@ -1,0 +1,10 @@
+.read-book iframe {
+  position: fixed;
+  border: none;
+  top: @navbar-height;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: calc(~"100vh - " @navbar-height); // quotes to get past less mangling the calc
+}

@@ -17,7 +17,8 @@
             templateUrl: "modules/detail/detail.tpl.html",
             controller: "DetailCtrl"
           }
-        }
+        },
+        title: "Details about a book"
       });
     })
     .filter("getDisplayName", [
@@ -280,11 +281,7 @@
         $scope.pdfDownloadUrl = getPdfDownloadUrl(book);
         $scope.epubUrl = getEpubUrl(book);
         $scope.digitalDownloadUrl = getDigitalDownloadUrl(book);
-
         $scope.isHarvested = isHarvested(book);
-        if ($scope.isHarvested) {
-          $scope.readUrl = getReadUrl(book);
-        }
 
         $scope.canDeleteBook =
           authService.isLoggedIn() &&
@@ -399,27 +396,6 @@
           }
         });
       };
-
-      function getReadUrl(book) {
-        var harvesterBaseUrl = getHarvesterBaseUrl(book);
-        if (!harvesterBaseUrl) {
-          return null;
-        }
-
-        var bloomPlayerUrl = sharedService.isProductionSite
-          ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm"
-          : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
-
-        // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
-        // bloomPlayerUrl = "http://localhost:3000/bloomplayer-for-developing.htm";
-        return (
-          bloomPlayerUrl +
-          "?url=" +
-          harvesterBaseUrl +
-          "bloomdigital%2findex.htm" +
-          "&showBackButton=true"
-        );
-      }
     }
   ]);
 })(); // end wrap-everything function
