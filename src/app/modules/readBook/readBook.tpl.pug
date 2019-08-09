@@ -1,0 +1,5 @@
+div.container.not-centered
+    iframe.read-book(ng-src="{{readUrl}}")
+    div.read-book-back
+        a(ui-sref="browse.detail({bookId: book.objectId})")
+            <i class="material-icons">arrow_back</i>

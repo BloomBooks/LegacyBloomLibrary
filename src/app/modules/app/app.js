@@ -24,6 +24,7 @@
       "BloomLibraryApp.errorMessage",
       "BloomLibraryApp.prefs",
       "BloomLibraryApp.reportBook",
+      "BloomLibraryApp.readBook",
       "ui.bootstrap",
       "ui.bootstrap.modal",
       "ui.router",

@@ -1,0 +1,18 @@
+.read-book {
+  position: fixed;
+  border: none;
+  top: @navbar-height;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: calc(~"100vh - " @navbar-height); // quotes to get past less mangling the calc
+  z-index: 100;
+}
+.read-book-back {
+  position: fixed;
+  top: @navbar-height + 20px; // less adds fine with both being px measurements
+  left: 30px;
+  width: 100px;
+  z-index: 200;
+}
