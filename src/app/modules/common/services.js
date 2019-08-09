@@ -713,6 +713,103 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
             return shelfKey;
         };
+
+        this.isHarvested = function (book) {
+            return book && book.harvestState === "Done";
+        };
+
+        // we get a URL for the contents of the book and return the one for the PDF preview.
+        // input url is .../BookName/
+        // output is .../BookName/BookName.pdf.
+        // (Except that both are url encoded, so the slashes appear as %2f.)
+        this.getPdfPreviewUrl = function (book) {
+            if (!book) {
+                return null;
+            }
+            var baseUrl = book.baseUrl;
+            if (!baseUrl) {
+               return null;
+            }
+            var bookName = getBookNameFromUrl(baseUrl);
+            return baseUrl + bookName + ".pdf";
+        };
+
+        this.getPdfDownloadUrl = function (book) {
+            // Once the harvester can be relied on to have created a pdf in the correct place,
+            // we want this instead:
+            //return this.getDownloadUrl(book, "pdf");
+
+            return this.getPdfPreviewUrl(book);
+        };
+
+        this.getEpubUrl = function (book) {
+            return this.getDownloadUrl(book, "epub");
+        };
+
+        this.getDigitalDownloadUrl = function (book) {
+            return this.getDownloadUrl(book, "bloomd");
+        };
+
+        this.getHarvesterBaseUrl = function (book) {
+            if (!book) {
+                return null;
+            }
+            var baseUrl = book.baseUrl;
+            if (baseUrl == null) {
+                return null;
+            }
+            if (!this.isHarvested(book)) {
+                return null;
+            }
+
+            // typical input url:
+            // https://s3.amazonaws.com/BloomLibraryBooks-Sandbox/ken%40example.com%2faa647178-ed4d-4316-b8bf-0dc94536347d%2fsign+language+test%2f
+            // want:
+            // https://s3.amazonaws.com/bloomharvest-sandbox/ken%40example.com%2faa647178-ed4d-4316-b8bf-0dc94536347d/
+            // We come up with that URL by
+            //  (a) changing BloomLibraryBooks{-Sandbox} to bloomharvest{-sandbox}
+            //  (b) strip off everything after the next-to-final slash
+            var folderWithoutLastSlash = baseUrl;
+            if (baseUrl.endsWith("%2f")) {
+            folderWithoutLastSlash = baseUrl.substring(0, baseUrl.length - 3);
+            }
+            var index = folderWithoutLastSlash.lastIndexOf("%2f");
+            var pathWithoutBookName = folderWithoutLastSlash.substring(0, index);
+            return (
+            pathWithoutBookName
+                .replace("BloomLibraryBooks-Sandbox", "bloomharvest-sandbox")
+                .replace("BloomLibraryBooks", "bloomharvest") + "/"
+            );
+            // Using slash rather than %2f at the end helps us download as the filename we want.
+            // Otherwise, the filename can be something like ken@example.com_007b3c03-52b7-4689-80bd-06fd4b6f9f28_Fox+and+Frog.bloomd
+        };
+
+        this.getDownloadUrl = function (book, fileType) {
+            var harvesterBaseUrl = this.getHarvesterBaseUrl(book);
+            if (!harvesterBaseUrl) {
+                return null;
+            }
+
+            var bookName = getBookNameFromUrl(book.baseUrl);
+
+            if (bookName) {
+                if (fileType === "bloomd") {
+                    return harvesterBaseUrl + bookName + "." + fileType;
+            }
+            return harvesterBaseUrl + fileType + "/" + bookName + "." + fileType;
+            }
+            return null;
+        };
+
+        getBookNameFromUrl = function (baseUrl) {
+            var lastSlashIndex = baseUrl.lastIndexOf("%2f");
+            var leadin = baseUrl.substring(0, lastSlashIndex);
+            var slashBeforeBookName = leadin.lastIndexOf("%2f");
+            if (slashBeforeBookName < 0) {
+            return null;
+            }
+            return leadin.substring(slashBeforeBookName + 3); // includes leading slash (%2f)
+        };
 	} ])
     .service('downloadHistoryService', ['Restangular', '$http', 'authService', function(restangular, $http, authService) {
         this.logDownload = function(bookId) {
