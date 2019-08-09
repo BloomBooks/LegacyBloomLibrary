@@ -662,7 +662,8 @@
               iframe.contentWindow.postMessage(
                 JSON.stringify({
                   messageType: "capabilities",
-                  canGoBack: true
+                  canGoBack: true,
+                  allowHideAppBar: false // enhance: say "true" if showing on mobile
                 }),
                 "*"
               );
