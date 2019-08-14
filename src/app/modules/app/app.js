@@ -653,21 +653,7 @@
             }
             var message = JSON.parse(data.data);
             var messageType = message.messageType;
-            // Upon request, tell the player we can handle a request to go back (so it should
-            // show the back button).
-            if (messageType === "requestCapabilities") {
-              var iframe = document.getElementsByClassName(
-                "fancybox-iframe"
-              )[0];
-              iframe.contentWindow.postMessage(
-                JSON.stringify({
-                  messageType: "capabilities",
-                  canGoBack: true,
-                  allowHideAppBar: false // enhance: say "true" if showing on mobile
-                }),
-                "*"
-              );
-            } else if (messageType === "backButtonClicked") {
+            if (messageType === "backButtonClicked") {
               $.fancybox.close();
             }
           };

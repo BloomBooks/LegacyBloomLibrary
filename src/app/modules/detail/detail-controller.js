@@ -411,12 +411,13 @@
           : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
 
         // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
-        // bloomPlayerUrl = "http://localhost:3000/bloom-player/bloomplayer.htm";
+        // bloomPlayerUrl = "http://localhost:3000/bloomplayer-for-developing.htm";
         return (
           bloomPlayerUrl +
           "?url=" +
           harvesterBaseUrl +
-          "bloomdigital%2findex.htm"
+          "bloomdigital%2findex.htm" +
+          "&showBackButton=true"
         );
       }
     }
