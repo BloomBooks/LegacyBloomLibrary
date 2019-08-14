@@ -12,6 +12,8 @@
     "node": "~8.10.0"
   },
   "scripts": {
+    "//needed if you are going to test bloomplayer, because currently BP is blocked from getting at a book on S3 by CORS rules": "",
+    "chrome": "chrome http://localhost:3000/ --disable-web-security --disable-gpu --user-data-dir=%temp%/chromeTemp",
     "build": "yarn grunt build",
     "watch": "yarn grunt watch",
     "serve": "yarn lite-server",
