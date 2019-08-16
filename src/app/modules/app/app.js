@@ -24,6 +24,7 @@
       "BloomLibraryApp.errorMessage",
       "BloomLibraryApp.prefs",
       "BloomLibraryApp.reportBook",
+      "BloomLibraryApp.readBook",
       "ui.bootstrap",
       "ui.bootstrap.modal",
       "ui.router",
@@ -642,22 +643,6 @@
       return {
         restrict: "A",
         link: function(scope, element, attrs) {
-          // A window message listener function possibly added in afterLoad and removed in
-          // afterClose. It listens for messages from bloom-player and handles them.
-          var listener = function(data) {
-            // We are getting a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
-            // isn't json encoded.
-            // That message, that we want to ignore, is not a string.
-            if (!data.data || typeof data.data !== "string") {
-              return;
-            }
-            var message = JSON.parse(data.data);
-            var messageType = message.messageType;
-            if (messageType === "backButtonClicked") {
-              $.fancybox.close();
-            }
-          };
-
           // Setting the size of the iframe to its parent size immediately is too soon.
           // Pushing it into the next event cycle seems to be late enough when initially
           // opening the preview, but if we later resize the window, we can easily
@@ -749,9 +734,6 @@
                 this.title = titleHtml;
               }
               if (viewType === "read") {
-                // Listen for messages from the player
-                window.addEventListener("message", listener);
-
                 var iframe = document.getElementsByClassName(
                   "fancybox-iframe"
                 )[0];
@@ -776,7 +758,6 @@
               if ($location.search().overlay) {
                 history.back();
               }
-              window.removeEventListener("message", listener);
             }
           });
           $(element).on("click", function(e) {
