@@ -136,6 +136,7 @@
     "bookSizeService",
     "sharedService",
     "tagService",
+    "pageService",
     "$modal",
     "$window",
     function(
@@ -148,6 +149,7 @@
       bookSizeService,
       sharedService,
       tagService,
+      pageService,
       $modal,
       $window
     ) {
@@ -161,6 +163,7 @@
       bookService.getBookById($stateParams.bookId).then(function(book) {
         tagService.hideSystemTags(book);
         $scope.book = book;
+        pageService.setTitle(_localize("{bookTitle} - Details", { bookTitle: book.title }));
 
         for (var i = 0; i < $scope.book.langPointers.length; i++) {
           var l = $scope.book.langPointers[i];

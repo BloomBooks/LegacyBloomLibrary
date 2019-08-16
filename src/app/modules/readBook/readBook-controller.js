@@ -13,8 +13,8 @@
             controller: "ReadBookCtrl"
           }
         },
-        title: "Read a book"        }
-      );
+        title: "Read a book"
+      });
     })
     .filter("getDisplayName", [
       "tagService",
@@ -32,6 +32,7 @@
     "bookService",
     "sharedService",
     "tagService",
+    "pageService",
     "$sce",
     function(
       $scope,
@@ -40,6 +41,7 @@
       bookService,
       sharedService,
       tagService,
+      pageService,
       $sce
     ) {
       // A fairly crude way of testing for IOS, where a click on a button that has a tooltip just
@@ -54,6 +56,8 @@
         $scope.book = book;
         var url = getReadUrl(book);
         $scope.readUrl = $sce.trustAsResourceUrl(url);
+
+        pageService.setTitle(_localize("{bookTitle} - Read", { bookTitle: book.title }));
       });
 
       // Listen for messages from the player

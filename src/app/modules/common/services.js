@@ -206,6 +206,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.localUrl = "http://localhost:1337/parse";
     })
 
+    .service('pageService', function() {
+        this.setTitle = function(newTitle) {
+            window.document.title = newTitle;
+        };
+    })
+
     .service('bookService', ['Restangular', 'authService', '$q', '$rootScope', 'errorHandlerService', '$analytics', 'sharedService', '$cookies',
         function (restangular, authService, $q, $rootScope, errorHandlerService, $analytics, sharedService, $cookies) {
 		// Initialize Parse.com javascript query module for our project.
