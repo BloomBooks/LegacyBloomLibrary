@@ -1,2 +1,3 @@
 div.read-book
-    iframe(ng-src="{{readUrl}}")
+    // history gets doubled without the ng-if attribute.
+    iframe(ng-if="readUrl" ng-src="{{readUrl}}")

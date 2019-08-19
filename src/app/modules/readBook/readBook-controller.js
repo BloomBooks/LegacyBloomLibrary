@@ -94,13 +94,8 @@
             var messageType = message.messageType;
             if (messageType === "backButtonClicked") {
               window.removeEventListener("message", messageListener);
-              // We get two pages in the history list when loading the readBook page,
-              // the first of them showing a blank page under the BloomLibrary header.
-              // I'd rather not add to the history, and my web searching seems to show
-              // that this doubled history is a common problem that is tricky to get
-              // rid of, so go(-2) should be safe.  The $state.go() just keeps adding
-              // more history, which I find unappealing.
-              window.history.go(-2);
+              // $state.go() just keeps adding more history, which I find unappealing.
+              window.history.back();
               //$state.go("browse.detail", {bookId: $scope.book.objectId});
             }
       }
