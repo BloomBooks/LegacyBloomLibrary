@@ -17,7 +17,8 @@
             templateUrl: "modules/detail/detail.tpl.html",
             controller: "DetailCtrl"
           }
-        }
+        },
+        title: "Details about a book"
       });
     })
     .filter("getDisplayName", [
@@ -69,104 +70,6 @@
         return _localize("{sizeInMb} MB", { sizeInMb: input });
       };
     });
-
-  function isHarvested(book) {
-    return book && book.harvestState === "Done";
-  }
-
-  // we get a URL for the contents of the book and return the one for the PDF preview.
-  // input url is .../BookName/
-  // output is .../BookName/BookName.pdf.
-  // (Except that both are url encoded, so the slashes appear as %2f.)
-  function getPdfPreviewUrl(book) {
-    if (!book) {
-      return null;
-    }
-    var baseUrl = book.baseUrl;
-    if (!baseUrl) {
-      return null;
-    }
-
-    var bookName = getBookNameFromUrl(baseUrl);
-    return baseUrl + bookName + ".pdf";
-  }
-
-  function getPdfDownloadUrl(book) {
-    // Once the harvester can be relied on to have created a pdf in the correct place,
-    // we want this instead:
-    //return getDownloadUrl(book, "pdf");
-
-    return getPdfPreviewUrl(book);
-  }
-
-  function getEpubUrl(book) {
-    return getDownloadUrl(book, "epub");
-  }
-
-  function getDigitalDownloadUrl(book) {
-    return getDownloadUrl(book, "bloomd");
-  }
-
-  function getBookNameFromUrl(baseUrl) {
-    var lastSlashIndex = baseUrl.lastIndexOf("%2f");
-    var leadin = baseUrl.substring(0, lastSlashIndex);
-    var slashBeforeBookName = leadin.lastIndexOf("%2f");
-    if (slashBeforeBookName < 0) {
-      return null;
-    }
-    return leadin.substring(slashBeforeBookName + 3); // includes leading slash (%2f)
-  }
-
-  function getDownloadUrl(book, fileType) {
-    var harvesterBaseUrl = getHarvesterBaseUrl(book);
-    if (!harvesterBaseUrl) {
-      return null;
-    }
-
-    var bookName = getBookNameFromUrl(book.baseUrl);
-
-    if (bookName) {
-      if (fileType === "bloomd") {
-        return harvesterBaseUrl + bookName + "." + fileType;
-      }
-      return harvesterBaseUrl + fileType + "/" + bookName + "." + fileType;
-    }
-    return null;
-  }
-
-  function getHarvesterBaseUrl(book) {
-    if (!book) {
-      return null;
-    }
-    var baseUrl = book.baseUrl;
-    if (baseUrl == null) {
-      return null;
-    }
-    if (!isHarvested(book)) {
-      return null;
-    }
-
-    // typical input url:
-    // https://s3.amazonaws.com/BloomLibraryBooks-Sandbox/ken%40example.com%2faa647178-ed4d-4316-b8bf-0dc94536347d%2fsign+language+test%2f
-    // want:
-    // https://s3.amazonaws.com/bloomharvest-sandbox/ken%40example.com%2faa647178-ed4d-4316-b8bf-0dc94536347d/
-    // We come up with that URL by
-    //  (a) changing BloomLibraryBooks{-Sandbox} to bloomharvest{-sandbox}
-    //  (b) strip off everything after the next-to-final slash
-    var folderWithoutLastSlash = baseUrl;
-    if (baseUrl.endsWith("%2f")) {
-      folderWithoutLastSlash = baseUrl.substring(0, baseUrl.length - 3);
-    }
-    var index = folderWithoutLastSlash.lastIndexOf("%2f");
-    var pathWithoutBookName = folderWithoutLastSlash.substring(0, index);
-    return (
-      pathWithoutBookName
-        .replace("BloomLibraryBooks-Sandbox", "bloomharvest-sandbox")
-        .replace("BloomLibraryBooks", "bloomharvest") + "/"
-    );
-    // Using slash rather than %2f at the end helps us download as the filename we want.
-    // Otherwise, the filename can be something like ken@example.com_007b3c03-52b7-4689-80bd-06fd4b6f9f28_Fox+and+Frog.bloomd
-  }
 
   // In theory, we'll be wanting to make this more generic.
   // There are other potential events to limit (like downloadEpub),
@@ -233,6 +136,7 @@
     "bookSizeService",
     "sharedService",
     "tagService",
+    "pageService",
     "$modal",
     "$window",
     function(
@@ -245,6 +149,7 @@
       bookSizeService,
       sharedService,
       tagService,
+      pageService,
       $modal,
       $window
     ) {
@@ -258,6 +163,7 @@
       bookService.getBookById($stateParams.bookId).then(function(book) {
         tagService.hideSystemTags(book);
         $scope.book = book;
+        pageService.setTitle(_localize("{bookTitle} - Details", { bookTitle: book.title }));
 
         for (var i = 0; i < $scope.book.langPointers.length; i++) {
           var l = $scope.book.langPointers[i];
@@ -276,15 +182,11 @@
           }
         }
 
-        $scope.pdfPreviewUrl = getPdfPreviewUrl(book);
-        $scope.pdfDownloadUrl = getPdfDownloadUrl(book);
-        $scope.epubUrl = getEpubUrl(book);
-        $scope.digitalDownloadUrl = getDigitalDownloadUrl(book);
-
-        $scope.isHarvested = isHarvested(book);
-        if ($scope.isHarvested) {
-          $scope.readUrl = getReadUrl(book);
-        }
+        $scope.pdfPreviewUrl = bookService.getPdfPreviewUrl(book);
+        $scope.pdfDownloadUrl = bookService.getPdfDownloadUrl(book);
+        $scope.epubUrl = bookService.getEpubUrl(book);
+        $scope.digitalDownloadUrl = bookService.getDigitalDownloadUrl(book);
+        $scope.isHarvested = bookService.isHarvested(book);
 
         $scope.canDeleteBook =
           authService.isLoggedIn() &&
@@ -399,26 +301,6 @@
           }
         });
       };
-
-      function getReadUrl(book) {
-        var harvesterBaseUrl = getHarvesterBaseUrl(book);
-        if (!harvesterBaseUrl) {
-          return null;
-        }
-
-        var bloomPlayerUrl = sharedService.isProductionSite
-          ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm"
-          : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
-
-        // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
-        // bloomPlayerUrl = "http://localhost:3000/bloom-player/bloomplayer.htm";
-        return (
-          bloomPlayerUrl +
-          "?url=" +
-          harvesterBaseUrl +
-          "bloomdigital%2findex.htm"
-        );
-      }
     }
   ]);
 })(); // end wrap-everything function
