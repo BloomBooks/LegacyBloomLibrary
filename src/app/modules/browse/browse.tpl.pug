@@ -72,8 +72,15 @@ div.container.not-centered
                     i.icon-caret-right
             div.mainContent
                 div.container-fluid
-                    div#bookshelfHeader(ng-include="bookshelfHeaderHtmlSrc")
-                    div#bookshelfHeaderSpacer.unfloat
+                    //- Having two distinct divs for top level and sub bookshelves allows us to deal with all combinations like
+                    //- * top level bookshelf has header and there are no sub bookshelves (Book Dash)
+                    //- * top level bookshelf has header but sub bookshelves don't (Resources for the Blind)
+                    //- * top level bookshelf has no header but sub bookshelf does (Enabling Writers - Nepal)
+                    //- In the future, it would allow for a top level bookshelf header to appear above a sub bookshelf header
+                    div.bookshelfHeader(ng-include="topLevelBookshelfHeaderHtmlSrc")
+                    div.bookshelfHeaderSpacer.unfloat
+                    div.bookshelfHeader(ng-include="subBookshelfHeaderHtmlSrc")
+                    div.bookshelfHeaderSpacer.unfloat
                     div.searchRow.row
                         div.col-md-6(style="padding-bottom:10px")
                             div(ng-show="initialized")
