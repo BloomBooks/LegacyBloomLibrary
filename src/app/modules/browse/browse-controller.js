@@ -250,7 +250,10 @@
         $scope.setPage = function() {};
         $scope.initialized = true;
 
-        $scope.bookshelfHeaderHtmlSrc = bookshelfService.getBookshelfHeaderSrc(
+        $scope.topLevelBookshelfHeaderHtmlSrc = bookshelfService.getTopLevelBookshelfHeaderSrc(
+          $scope.shelfKey
+        );
+        $scope.subBookshelfHeaderHtmlSrc = bookshelfService.getSubBookshelfHeaderSrc(
           $scope.shelfKey
         );
       }
