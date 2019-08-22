@@ -1015,13 +1015,35 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 		};
 	})
 	.service('bookshelfService', function () {
-        this.getBookshelfHeaderSrc = function(bookshelfKey) {
+        this.getSubBookshelfHeaderSrc = function(bookshelfKey) {
             if (!bookshelfKey) {
                 return "";
-            } else {
-                var filePath = "/assets/bookshelves/" + bookshelfKey + "/index.htm";
-                return filePath;
             }
+
+            if (bookshelfKey[bookshelfKey.length - 1] === "/") {
+                // Can happen when selecting a top-level shelf
+                bookshelfKey = bookshelfKey.substring(0, bookshelfKey.length - 1);
+            }
+            if (bookshelfKey.indexOf("/") < 0) {
+                // This isn't a sub-bookshelf
+                return "";
+            }
+            return this.getBookshelfHeaderSrc(bookshelfKey);
+        };
+        this.getTopLevelBookshelfHeaderSrc = function(bookshelfKey) {
+            if (!bookshelfKey) {
+                return "";
+            }
+
+            var slashIndex = bookshelfKey.indexOf("/");
+            if (slashIndex >= 0) {
+                // Strip off trailing slashes and sub-bookshelves
+                bookshelfKey = bookshelfKey.substring(0, slashIndex);
+            }
+            return this.getBookshelfHeaderSrc(bookshelfKey);
+        };
+        this.getBookshelfHeaderSrc = function(bookshelfKey) {
+            return "/assets/bookshelves/" + bookshelfKey + "/index.htm";
         };
         this.getCleanBookshelfName = function(shelfDisplayName) {
             if (!shelfDisplayName || !shelfDisplayName.length) {
