@@ -1,10 +1,11 @@
 .read-book iframe {
   position: fixed;
   border: none;
-  top: @navbar-height;
+  top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   width: 100%;
-  height: calc(~"100vh - " @navbar-height); // quotes to get past less mangling the calc
+  height: 100vh;
+  z-index: 1000000; // .txlive-langselector has z-index of 999999!
 }
