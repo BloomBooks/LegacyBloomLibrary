@@ -85,6 +85,13 @@
         controller: "GoToTop",
         title: "Open source information"
       });
+      // Currently, this page is only externally linked.
+      $stateProvider.state("bloom-reader-privacy-policy", {
+        url: "/bloom-reader-privacy-policy",
+        templateUrl: "modules/static/bloom-reader-privacy-policy.tpl.html",
+        controller: "GoToTop",
+        title: "Bloom Reader Privacy Policy"
+      });
     });
 
   // All the controller for static pages does is to scroll to the top when the page opens.
