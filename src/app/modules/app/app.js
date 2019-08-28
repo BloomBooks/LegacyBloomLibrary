@@ -574,7 +574,6 @@
     "$stateParams",
     "sharedService",
     "localStorageService",
-    "$location",
     "$transitions",
     function(
       $rootScope,
@@ -582,7 +581,6 @@
       $stateParams,
       sharedService,
       localStorageService,
-      $location,
       $transitions
     ) {
       //lets you write ng-click="log('testing')"
@@ -594,14 +592,6 @@
       $rootScope.alert = function(text) {
         alert(text);
       };
-
-      $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
-        // For more info, see comment on viewoverlay directive (below)
-        if ($.fancybox.isActive && oldUrl.indexOf("overlay=true") > 0) {
-          // On history navigation, close view overlay and stay on detail page
-          $.fancybox.close();
-        }
-      });
 
       $transitions.onSuccess({}, function(transition) {
         var title = transition.to().title;
@@ -628,143 +618,6 @@
       // to active whenever 'contacts.list' or one of its descendants is active.
       $rootScope.$state = $state;
       $rootScope.$stateParams = $stateParams;
-    }
-  ]);
-
-  // The main problem being solved with onClick, afterClose, and $locationChangeStart (above) is ensuring that
-  // whether the user closes the overlay or hits the back button, we end up on the detail page with the overlay closed.
-  // Clicking Read (or PDF when not harvested) adds overlay=true to the url effectively adding another item to the history stack.
-  // When the user closes the overlay, we call history.back to ensure url is the detail page.
-  // If the user clicks back when the overlay is open, the $locationChangeStart event (above) is used to close the overlay.
-  // overlay=true is required to ensure we don't try to perform a duplicate action (closing overlay or going back).
-  BloomLibraryApp.directive("viewoverlay", [
-    "$location",
-    function($location) {
-      return {
-        restrict: "A",
-        link: function(scope, element, attrs) {
-          // Setting the size of the iframe to its parent size immediately is too soon.
-          // Pushing it into the next event cycle seems to be late enough when initially
-          // opening the preview, but if we later resize the window, we can easily
-          // end up with the iframe size lagging a few pixels behind the parent.
-          // That doesn't matter too much when the iframe is too small, but when it's
-          // just barely too big, suddenly scroll bars appear. So we have this rather
-          // elaborate code to make the sizes match ten times over the course of a
-          // second. The inner function could get called quite a lot during a continuous
-          // drag, with multiple sequences of ten checks firing, but it does very little
-          // on each call, especially if the size is already right.
-          //
-          // We would love to just use css to make height and width 100% (the default from fancybox),
-          // but that doesn't work on iOS which tries to resize the iframe to show all of its content.
-          // The result of that resizing is that the scale is continually recalculated which
-          // presents strange results as the page continually grows.
-          // "scrolling" must be "no" as well to prevent this behavior. We do that once below.
-          // See BL-7448.
-
-          // We would love to replace the above setTimeout with this ResizeObserver code, but
-          // its adoption in browsers is a long way off.
-          // new ResizeObserver(function() {
-          //   iframe.style.width = iframe.parentElement.clientWidth + "px";
-          //   iframe.style.height = iframe.parentElement.clientHeight + "px";
-          // }).observe(iframe.parentElement);
-          function resizeIframeToParentSize() {
-            var iframe = document.getElementsByClassName("fancybox-iframe")[0];
-            function resizeRepeat(checks) {
-              if (checks <= 0) {
-                return;
-              }
-              iframe.style.width = iframe.parentElement.clientWidth + "px";
-              iframe.style.height = iframe.parentElement.clientHeight + "px";
-              setTimeout(function() {
-                resizeRepeat(checks - 100);
-              }, 100);
-            }
-            resizeRepeat(1000);
-          }
-          // We tried earlier putting this inside the afterLoad callback, but it didn't work.
-          // Seems that possibly in that calling context we're dealing with a different document,
-          // probably the iframe one.
-          document.defaultView.addEventListener(
-            "resize",
-            resizeIframeToParentSize
-          );
-          $(element).fancybox({
-            // Doesn't quite achieve 100%, there's some minimum border
-            width: "100%",
-            height: "100%",
-            autoSize: false, // not sure if this helps
-            padding: attrs.viewType === "read" ? 0 : 15,
-            wrapCSS: attrs.viewType === "read" ? "dark fixed-preview-size" : "",
-            overlayShow: true,
-            helpers: {
-              title: { type: "inside", position: "top" },
-              overlay: { closeClick: attrs.viewType !== "read" } // prevents closing when clicking OUTSIDE fancybox
-            },
-            afterLoad: function() {
-              var book = scope.book;
-              // Directives "normalize" the attribute names, so data-view-type became viewType
-              var viewType = attrs.viewType ? attrs.viewType : "";
-              if (
-                book &&
-                book.langPointers &&
-                book.langPointers.length > 1 &&
-                viewType !== "read"
-              ) {
-                var languageList = _localize(book.langPointers[0].name);
-                for (var i = 1; i < book.langPointers.length; i++) {
-                  languageList += ", " + _localize(book.langPointers[i].name);
-                }
-                var titleHtml =
-                  '<table id="previewTitle"><tbody><tr><td><i class="icon-info-sign"></i></td><td>';
-                titleHtml +=
-                  // Without the 'notranslate' class, Transifex Live picks up the string with the language list added
-                  // and asks us to add it to the list of strings which need translation. Calling _localize
-                  // ensures we can still translate the string with the placeholder.
-                  "<div class='notranslate'>" +
-                  _localize(
-                    "This book contains the following source languages: <b>{languageList}</b>.",
-                    { languageList: languageList }
-                  ) +
-                  "</div>";
-                titleHtml +=
-                  "<div>However the following preview provides a sample using just one of these languages.</div>";
-                titleHtml +=
-                  "<div>Once you load this book in Bloom, you will see the text in the other language(s).</div>";
-                titleHtml += "</td></tr></tbody></table>";
-                this.title = titleHtml;
-              }
-              if (viewType === "read") {
-                var iframe = document.getElementsByClassName(
-                  "fancybox-iframe"
-                )[0];
-
-                // There is a property on fancybox's iframe which is also setting scrolling to no,
-                // but on iOS (and maybe Android?), it is overridden in fancybox's code to be "auto".
-                // We must set it to "no" to defeat iOS's attempt to resize the iframe to show all of its content.
-                // A fixed size for the iframe is also necessary. See below.
-                // See BL-7448.
-                iframe.setAttribute("scrolling", "no");
-
-                // Get the initial size of the iframe right.
-                resizeIframeToParentSize();
-              }
-            },
-            type: "iframe",
-            iframe: {
-              preload: false,
-              scrolling: "no"
-            },
-            afterClose: function() {
-              if ($location.search().overlay) {
-                history.back();
-              }
-            }
-          });
-          $(element).on("click", function(e) {
-            $location.search("overlay", "true");
-          });
-        }
-      };
     }
   ]);
 })(); // end wrap-everything function
