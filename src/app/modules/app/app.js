@@ -25,6 +25,7 @@
       "BloomLibraryApp.prefs",
       "BloomLibraryApp.reportBook",
       "BloomLibraryApp.readBook",
+      "BloomLibraryApp.sponsorship",
       "ui.bootstrap",
       "ui.bootstrap.modal",
       "ui.router",
