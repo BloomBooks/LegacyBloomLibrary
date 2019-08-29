@@ -69,7 +69,6 @@ module.exports = {
       "vendor/restangular/dist/restangular.js",
       "vendor/underscore/underscore.js",
       //'vendor/angular-ui-router/release/angular-ui-router.js',
-      "vendor/fancybox/source/jquery.fancybox.js",
       "vendor/angular-ui-grid/ui-grid.js",
       "vendor/angular-cookies/angular-cookies.js",
       //'vendor/bootstrap-modal/js/*.js',
@@ -96,8 +95,6 @@ module.exports = {
       "src/app/modules/static/landing/*.png",
       "src/app/modules/static/landing/*.jpg",
       "src/app/modules/static/landing/*.svg",
-      "vendor/fancybox/source/*.png",
-      "vendor/fancybox/source/*.gif",
       "vendor/bootstrap-css/fonts/*.*", //for glyphicons-halflings.*
       "vendor/angular-ui-grid/ui-grid.ttf",
       "vendor/angular-ui-grid/ui-grid.woff"

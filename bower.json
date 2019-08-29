@@ -8,7 +8,6 @@
     "restangular": "~1.4.0",
     "underscore": "~1.6.0",
     "bootstrap-css": "~3.1.1",
-    "fancybox": "~2.1.5",
     "angular-ui-grid": "3.0.1",
     "jquery": "~1.11.0",
     "angular-local-storage": "~0.0.5",
