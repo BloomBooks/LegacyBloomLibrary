@@ -168,7 +168,8 @@
               "/opensource",
               "/terms",
               "/privacy",
-              "/infringement"
+              "/infringement",
+              "/bloom-reader-privacy-policy"
             ]) === -1
           );
         };
