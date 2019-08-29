@@ -164,6 +164,7 @@
               "/artofreading",
               "/support",
               "/about",
+              "/sponsorship",
               "/opensource",
               "/terms",
               "/privacy",
