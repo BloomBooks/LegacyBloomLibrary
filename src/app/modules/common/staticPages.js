@@ -61,6 +61,12 @@
         controller: "GoToTop",
         title: "Support"
       });
+      $stateProvider.state("sponsorship", {
+        url: "/sponsorship",
+        templateUrl: "modules/static/sponsorship.tpl.html",
+        controller: "GoToTop",
+        title: "Sponsorship"
+      });
 
       // This state manages the Art of Reading page (accessed from Download page).
       // its url looks like /artofreading.
@@ -95,24 +101,12 @@
       });
     });
 
-    angular.module("BloomLibraryApp.sponsorship", ["ui.router"])
-    .config(function config($stateProvider) {
-      // Moving this to its own module to see if it helps with direct url
-      // navigation in Safari/iOS
-      $stateProvider.state("sponsorship", {
-        url: "/sponsorship",
-        templateUrl: "modules/static/sponsorship.tpl.html",
-        controller: "GoToTop",
-        title: "Sponsorship"
-      });
-    });
-
-    // All the controller for static pages does is to scroll to the top when the page opens.
-    // Otherwise angular apparently keeps us at whatever scroll position we happened to be in the previous document.
-    angular.module("BloomLibraryApp.staticPages").controller("GoToTop", [
-      "$scope",
-      function($scope) {
-        window.scrollTo(0, 0);
-      }
-    ]);
+  // All the controller for static pages does is to scroll to the top when the page opens.
+  // Otherwise angular apparently keeps us at whatever scroll position we happened to be in the previous document.
+  angular.module("BloomLibraryApp.staticPages").controller("GoToTop", [
+    "$scope",
+    function($scope) {
+      window.scrollTo(0, 0);
+    }
+  ]);
 })(); // end wrap-everything function
