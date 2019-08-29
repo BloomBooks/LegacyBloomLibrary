@@ -61,6 +61,13 @@
         controller: "GoToTop",
         title: "Support"
       });
+      $stateProvider.state("sponsorship", {
+        url: "/sponsorship",
+        templateUrl: "modules/static/sponsorship.tpl.html",
+        controller: "GoToTop",
+        title: "Sponsorship"
+      });
+
       // This state manages the Art of Reading page (accessed from Download page).
       // its url looks like /artofreading.
       $stateProvider.state("artofreading", {

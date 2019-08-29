@@ -1,0 +1,58 @@
+mixin link-without-space(href, target)
+	if(attributes.id)
+		a(id!=attributes.id href=href target=target)
+			block
+	else
+		a(href=href target=target)
+			block
+
+mixin link(href, target)
+	+space
+	+link-without-space(href, target)
+		block
+
+
+main.sponsorshipsPage(style="background-color:white")
+	//414px chosen to max out at iphonex width, not keep getting bigger if shown on desktop
+	img(src="assets/corporateSponsorships.jpg" style="width:100%; max-width:414px") 
+	div(style="padding-left:10px;width: 350px;")
+		
+
+		p
+		h4(style="font-weight:bold")  A World #[span(style='color:purple') WITH] Books is So Much Better than one #[span(style='color:purple') withOUT.] Help us grow a library for those without!
+
+		p Bloom is an award-winning digital publishing solution that serves:
+
+		table
+			tr
+				td(style='width:10em') 9750
+				td(style='width:5em') in
+				td 199
+			tr
+				td Registered Users
+				td
+				td Languages
+
+		p
+		p And has built a library of over 5400 books!
+
+		h4(style="font-weight:bold")  Your corporate sponsorship covers:
+		ul
+			li Critical Staff
+			li Technology and Travel
+			li On site Bloom Trainings
+			li Grants for Bloom Enterprise
+
+		h4(style="font-weight:bold") Sponsorship Levels: 
+		ul
+			li $100,000 - Platinum Sponsorships
+			li $50,000 - Gold Sponsorships
+			li $25,000 - Silver Sponsorships
+			li $10,000 - Bronze Sponsorships
+
+		p Visit #[a(href='https://bloomlibrary.org') bloomlibrary.org] to explore the product. 
+
+		h4(style="font-weight:bold")  Contact: 
+		p Corporate Sponsorships: Jon Hirst, #[a(href='mailto://jon_hirst@sil.org') jon_hirst@sil.org]
+		p Bloom Enterprise Licensing: Paul Frank, #[a(href='mailto://paul_frank@sil-lead.org') paul_frank@sil-lead.org ]
+		p &nbsp;
