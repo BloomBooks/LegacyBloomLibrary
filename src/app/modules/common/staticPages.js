@@ -96,7 +96,7 @@
     });
 
     angular.module("BloomLibraryApp.sponsorship", ["ui.router"])
-    .config(['$stateProvider', function config($stateProvider) {
+    .config(function config($stateProvider) {
       // Moving this to its own module to see if it helps with direct url
       // navigation in Safari/iOS
       $stateProvider.state("sponsorship", {
@@ -105,7 +105,7 @@
         controller: "GoToTop",
         title: "Sponsorship"
       });
-    }]);
+    });
 
     // All the controller for static pages does is to scroll to the top when the page opens.
     // Otherwise angular apparently keeps us at whatever scroll position we happened to be in the previous document.
