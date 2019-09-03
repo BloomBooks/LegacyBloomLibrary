@@ -26,6 +26,43 @@ yarn serve
 
 That should open a web browser page at localhost:3000.
 
+## Important Notes about S3 Setup
+
+The router we use makes all pages have a hash before the final part of the url. e.g. bloomlibrary.org/#/browse.
+
+When navigating within the site internally, the router happily deals with this. When navigating to a particular page directly via a url, we would prefer to not include the hash. e.g. bloomlibrary.org/browse.
+
+To date, we have accomplished this by two different methods on S3.
+1) Routing Rules
+  * In AWS, navigate to the bucket (bloomlibrary.org or dev.bloomlibrary.org)
+  * Properties
+  * Static website hosting
+  * Redirection rules
+  * something like
+  ```
+<RoutingRules>
+  <RoutingRule>
+    <Condition>
+      <KeyPrefixEquals>about</KeyPrefixEquals>
+    </Condition>
+    <Redirect>
+      <ReplaceKeyPrefixWith>#/about</ReplaceKeyPrefixWith>
+    </Redirect>
+  </RoutingRule>
+<RoutingRules>
+  ```
+  * We recently discovered these don't work on Safari (or iOS Chrome)
+  
+2) An empty file with redirect rules
+  * In AWS, navigate to the bucket (bloomlibrary.org or dev.bloomlibrary.org)
+  * Upload an empty file for your page. e.g. browse
+  * Click on that file
+  * Properties
+  * Metadata
+  * Add key=Website-Redirect-Location, value=/#/page-name, e.g. /#/browse
+  
+  Careful! Method 2 won't work if you have implemented method 1.
+
 ## About the grunt files
 
 We built these using [ngBoilerplate](https://github.com/ngbp/ngbp). Read the build.config.js file to see most of what is going on. See the readme of ngBoilerplate for more information. Here are key things:

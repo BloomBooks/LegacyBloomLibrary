@@ -737,6 +737,11 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                return null;
             }
             var bookName = getBookNameFromUrl(baseUrl);
+
+            // By decoding the slashes, the file name will be just the part after the final slash
+            // rather than everything including the book hash and email address.
+            baseUrl = baseUrl.replace(/%2f/gi, "/");
+
             return baseUrl + bookName + ".pdf";
         };
 
@@ -777,7 +782,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             //  (b) strip off everything after the next-to-final slash
             var folderWithoutLastSlash = baseUrl;
             if (baseUrl.endsWith("%2f")) {
-            folderWithoutLastSlash = baseUrl.substring(0, baseUrl.length - 3);
+                folderWithoutLastSlash = baseUrl.substring(0, baseUrl.length - 3);
             }
             var index = folderWithoutLastSlash.lastIndexOf("%2f");
             var pathWithoutBookName = folderWithoutLastSlash.substring(0, index);
