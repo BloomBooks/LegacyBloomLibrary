@@ -153,6 +153,8 @@
       $modal,
       $window
     ) {
+      setupHarvestPanel(bookService, authService);
+
       // A fairly crude way of testing for IOS, where a click on a button that has a tooltip just
       // shows the tooltip, to the dismay of anyone expecting the button to work.
       $scope.showTooltips =
@@ -163,7 +165,9 @@
       bookService.getBookById($stateParams.bookId).then(function(book) {
         tagService.hideSystemTags(book);
         $scope.book = book;
-        pageService.setTitle(_localize("{bookTitle} - Details", { bookTitle: book.title }));
+        pageService.setTitle(
+          _localize("{bookTitle} - Details", { bookTitle: book.title })
+        );
 
         for (var i = 0; i < $scope.book.langPointers.length; i++) {
           var l = $scope.book.langPointers[i];
@@ -307,3 +311,21 @@
     }
   ]);
 })(); // end wrap-everything function
+
+function setupHarvestPanel(bookService, authService) {
+  var currentUserIsUploader =
+    authService.isLoggedIn() &&
+    authService.userName().toLowerCase() ===
+      book.uploader.username.toLowerCase();
+  var harvestPanel = React.createElement(
+    "h1",
+    {
+      bookId: bookService.bookId,
+      currentUserIsUploader: currentUserIsUploader,
+      currentUserIsAdmin: authService.isUserAdministrator()
+    },
+    "React Harvest Panel Goes Here: "
+  );
+
+  ReactDOM.render(harvestPanel, document.getElementById("harvestPanel"));
+}
