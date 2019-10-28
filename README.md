@@ -62,6 +62,8 @@ To date, we have accomplished this by two different methods on S3.
   * Add key=Website-Redirect-Location, value=/#/page-name, e.g. /#/browse
   
   Careful! Method 2 won't work if you have implemented method 1.
+  
+  Note: Method 2 doesn't work with urls containing information after the would-be file name, e.g. https://bloomlibrary.org/readBook/jnG2YFeIIG
 
 ## About the grunt files
 
