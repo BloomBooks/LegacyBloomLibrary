@@ -724,6 +724,21 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return book && book.harvestState === "Done";
         };
 
+        // For now, we want to show epub and bloom digital artifacts where show isn't populated.
+        // That is so we can maintain status quo until show gets populated for every book.
+        this.showEpub = function (book) {
+            return this.isHarvested(book) && (!book.show || book.show.epub);
+        };
+        this.showBloomReader = function (book) {
+            return this.isHarvested(book) && (!book.show || book.show.bloomReader);
+        };
+        this.showRead = function (book) {
+            return this.isHarvested(book) && (!book.show || book.show.readOnline);
+        };
+        this.showHarvestedPdf = function (book) {
+            return this.isHarvested(book) && book.show && book.show.pdf;
+        };
+
         // we get a URL for the contents of the book and return the one for the PDF preview.
         // input url is .../BookName/
         // output is .../BookName/BookName.pdf.
