@@ -186,7 +186,10 @@
         $scope.pdfDownloadUrl = bookService.getPdfDownloadUrl(book);
         $scope.epubUrl = bookService.getEpubUrl(book);
         $scope.digitalDownloadUrl = bookService.getDigitalDownloadUrl(book);
-        $scope.isHarvested = bookService.isHarvested(book);
+        $scope.showEpub = bookService.showEpub(book);
+        $scope.showBloomReader = bookService.showBloomReader(book);
+        $scope.showRead = bookService.showRead(book);
+        $scope.showHarvestedPdf = bookService.showHarvestedPdf(book);
 
         $scope.canDeleteBook =
           authService.isLoggedIn() &&
