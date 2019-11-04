@@ -727,17 +727,39 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         // For now, we want to show epub and bloom digital artifacts where show isn't populated.
         // That is so we can maintain status quo until show gets populated for every book.
         this.showEpub = function (book) {
-            return this.isHarvested(book) && (!book.show || book.show.epub);
+            return this.showArtifact(book, "epub");
         };
         this.showBloomReader = function (book) {
-            return this.isHarvested(book) && (!book.show || book.show.bloomReader);
+            return this.showArtifact(book, "bloomReader");
         };
         this.showRead = function (book) {
-            return this.isHarvested(book) && (!book.show || book.show.readOnline);
+            return this.showArtifact(book, "readOnline");
         };
         this.showHarvestedPdf = function (book) {
-            return this.isHarvested(book) && book.show && book.show.pdf;
+            return this.showArtifact(book, "pdf");
         };
+
+        this.showArtifact = function (book, artifact) {
+            if (!this.isHarvested(book)) {
+                return false;
+            }
+            if (book.show === undefined || book.show[artifact] === undefined) {
+                return true;    // default to showing the book if not told otherwise
+            }
+            if (book.show[artifact].user === undefined) {
+                if (book.show[artifact].librarian === undefined) {
+                    if (book.show[artifact].harvester === undefined) {
+                        return true;    // default to showing the book if not told otherwise
+                    } else {
+                        return book.show[artifact].harvester;
+                    }
+                } else {
+                    return book.show[artifact].librarian;
+                }
+            } else {
+                return book.show[artifact].user;
+            }
+         };
 
         // we get a URL for the contents of the book and return the one for the PDF preview.
         // input url is .../BookName/
