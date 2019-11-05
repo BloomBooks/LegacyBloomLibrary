@@ -724,20 +724,55 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return book && book.harvestState === "Done";
         };
 
-        // For now, we want to show epub and bloom digital artifacts where show isn't populated.
-        // That is so we can maintain status quo until show gets populated for every book.
         this.showEpub = function (book) {
-            return this.isHarvested(book) && (!book.show || book.show.epub);
+            return this.showArtifact(book, "epub");
         };
         this.showBloomReader = function (book) {
-            return this.isHarvested(book) && (!book.show || book.show.bloomReader);
+            return this.showArtifact(book, "bloomReader");
         };
         this.showRead = function (book) {
-            return this.isHarvested(book) && (!book.show || book.show.readOnline);
+            return this.showArtifact(book, "readOnline");
         };
         this.showHarvestedPdf = function (book) {
-            return this.isHarvested(book) && book.show && book.show.pdf;
+            // Until show gets populated for all books, treat an unpopulated show the same as we did before show existed.
+            // In this case, that means we assume no harvested PDF exists.
+            if (!book.show) {
+                return false;
+            }
+            return this.showArtifact(book, "pdf");
         };
+
+        this.showArtifact = function (book, artifact) {
+            // If the artifact hasn't been harvested (and thus doesn't exist), the icon for it
+            // shouldn't be shown.
+            if (!this.isHarvested(book)) {
+                return false;
+            }
+            // For now, we want to show epub and bloom digital artifacts where show isn't populated.
+            // That is so we can maintain status quo until show gets populated for every book.
+            if (book.show === undefined) {
+                return true;
+            }
+            // If book.show exists, but the specific artifact field is undefined, we assume that
+            // artifact does not exist and thus should not be displayed.
+            if (book.show[artifact] === undefined) {
+                return false;
+            }
+            if (book.show[artifact].user === undefined) {
+                if (book.show[artifact].librarian === undefined) {
+                    if (book.show[artifact].harvester === undefined) {
+                        // this shouldn't happen, but just in case, show the artifact by default
+                        return true;
+                    } else {
+                        return book.show[artifact].harvester;
+                    }
+                } else {
+                    return book.show[artifact].librarian;
+                }
+            } else {
+                return book.show[artifact].user;
+            }
+         };
 
         // we get a URL for the contents of the book and return the one for the PDF preview.
         // input url is .../BookName/
