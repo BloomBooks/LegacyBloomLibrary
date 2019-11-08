@@ -317,15 +317,21 @@ function setupHarvestPanel(bookService, authService) {
     authService.isLoggedIn() &&
     authService.userName().toLowerCase() ===
       book.uploader.username.toLowerCase();
-  var harvestPanel = React.createElement(
-    "h1",
-    {
-      bookId: bookService.bookId,
-      currentUserIsUploader: currentUserIsUploader,
-      currentUserIsAdmin: authService.isUserAdministrator()
-    },
-    "React Harvest Panel Goes Here: "
-  );
+  // var harvestPanel = React.createElement(
+  //   "h1",
+  //   {
+  //     bookId: bookService.bookId,
+  //     currentUserIsUploader: currentUserIsUploader,
+  //     currentUserIsAdmin: authService.isUserAdministrator()
+  //   },
+  //   "React Harvest Panel Goes Here: "
+  // );
 
-  ReactDOM.render(harvestPanel, document.getElementById("harvestPanel"));
+  // ReactDOM.render(harvestPanel, document.getElementById("harvestPanel"));
+
+  connectHarvestArtifactUserControl(document.getElementById("harvestPanel"), {
+    bookId: bookService.bookId,
+    currentUserIsUploader: currentUserIsUploader,
+    currentUserIsAdmin: authService.isUserAdministrator()
+  });
 }
