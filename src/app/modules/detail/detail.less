@@ -72,7 +72,7 @@
   }
 }
 
-.detail {
+.detail .main {
   .detailCol2 {
     width: calc(~"100% - " (@image-width + @image-right-margin));
     display: inline-block;
@@ -154,7 +154,7 @@ i.abuseIcon {
   background-size: @icon-button-size @icon-button-size; // so it scales the image rather than clipping
 }
 
-.detail {
+.detail .main {
   a.read {
     width: 100%;
     @media (min-width: @phoneMinWidth) {
@@ -310,4 +310,23 @@ i.abuseIcon {
 // temporary way of showing that a book is in the (one, Featured) bookshelf.
 i.inBookshelf {
   background-color: green;
+}
+
+// The harvest panel is pulled in from BloomLibrary2 as a react component.
+// A few of the styles don't work well in this context and need to be adjusted.
+#harvestPanel {
+  margin-top: 20px;
+  .MuiInputBase-root {
+    font-size: 1em //must override 1rem which is too small in bloomlibrary.org
+  }
+  .MuiFormHelperText-root {
+    font-size: 0.75em //must override 0.75rem which is too small in bloomlibrary.org
+  }
+  .MuiButton-root {
+    font-size: 0.875em //must override 0.875rem which is too small in bloomlibrary.org
+  }
+}
+// The select box menu is actually added to the dom outside #harvestPanel...
+.MuiPopover-root .MuiMenuItem-root {
+  font-size: 1em //must override 1rem which is too small in bloomlibrary.org
 }
