@@ -89,6 +89,7 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			restangularConfigurer.setDefaultHeaders(headers);
 		};
 
+		var sessionTokenKey = 'X-Parse-Session-Token';
 		factory = {
 
 			userName: function () { return userNameX; },
@@ -102,7 +103,6 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 			config: function () { return restangularConfig; },
 
 			setSession: function (sessionToken) {
-				var sessionTokenKey = 'X-Parse-Session-Token';
 				if (sessionToken) {
 					headers[sessionTokenKey] = sessionToken;
 					isLoggedIn = true;
@@ -111,6 +111,9 @@ angular.module('BloomLibraryApp.services', ['restangular'])
 					delete headers[sessionTokenKey];
 					isLoggedIn = false;
 				}
+            },
+			getSession: function() {
+				return headers[sessionTokenKey];
 			},
 
 			login: function (username, password, successCallback, errorCallback) {

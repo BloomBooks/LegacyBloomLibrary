@@ -134,7 +134,6 @@
     "bookService",
     "bookCountService",
     "bookSizeService",
-    "sharedService",
     "tagService",
     "pageService",
     "$modal",
@@ -147,13 +146,16 @@
       bookService,
       bookCountService,
       bookSizeService,
-      sharedService,
       tagService,
       pageService,
       $modal,
       $window
     ) {
-      setupHarvestPanel(bookService, authService);
+
+      $scope.isCurrentUserBookUploader = function(book, authService) {
+        return authService.isLoggedIn() &&
+        (authService.userName().toLowerCase() == book.uploader.username.toLowerCase());
+      };
 
       // A fairly crude way of testing for IOS, where a click on a button that has a tooltip just
       // shows the tooltip, to the dismay of anyone expecting the button to work.
@@ -195,11 +197,20 @@
         $scope.showRead = bookService.showRead(book);
         $scope.showHarvestedPdf = bookService.showHarvestedPdf(book);
 
-        $scope.canDeleteBook =
-          authService.isLoggedIn() &&
-          (authService.userName().toLowerCase() ==
-            book.uploader.username.toLowerCase() ||
-            authService.isUserAdministrator());
+        var isCurrentUserBookUploader = $scope.isCurrentUserBookUploader(book, authService);
+        $scope.canDeleteBook =  isCurrentUserBookUploader || authService.isUserAdministrator();
+
+        if ($scope.canDeleteBook) {
+          setupHarvestPanel(
+            {
+              bookId: $stateParams.bookId,
+              currentSession: authService.getSession(),
+              currentUserIsUploader: isCurrentUserBookUploader,
+              currentUserIsAdmin: authService.isUserAdministrator()
+            }
+          );
+        }
+
         $scope.downloadSize = 0; // hidden until we set a value
         //Get related books
         bookService
@@ -312,26 +323,9 @@
   ]);
 })(); // end wrap-everything function
 
-function setupHarvestPanel(bookService, authService) {
-  var currentUserIsUploader =
-    authService.isLoggedIn() &&
-    authService.userName().toLowerCase() ===
-      book.uploader.username.toLowerCase();
-  // var harvestPanel = React.createElement(
-  //   "h1",
-  //   {
-  //     bookId: bookService.bookId,
-  //     currentUserIsUploader: currentUserIsUploader,
-  //     currentUserIsAdmin: authService.isUserAdministrator()
-  //   },
-  //   "React Harvest Panel Goes Here: "
-  // );
-
-  // ReactDOM.render(harvestPanel, document.getElementById("harvestPanel"));
-
-  connectHarvestArtifactUserControl(document.getElementById("harvestPanel"), {
-    bookId: bookService.bookId,
-    currentUserIsUploader: currentUserIsUploader,
-    currentUserIsAdmin: authService.isUserAdministrator()
-  });
+function setupHarvestPanel(props) {
+  window.NextBloomLibrary.connectHarvestArtifactUserControl(
+    document.getElementById("harvestPanel"),
+    props
+  );
 }
