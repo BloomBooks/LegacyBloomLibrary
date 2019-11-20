@@ -11,3 +11,4 @@ upload/*.dll
 
 vendor
 *.orig
+/src/assets/externalComponents/HarvesterArtifactUserControlBundle.js

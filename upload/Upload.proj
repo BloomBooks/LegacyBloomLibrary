@@ -45,12 +45,21 @@
       IsPublicRead="true" />
   </Target>
 
-  <Target Name="BookshelfAssets" DependsOnTargets="RestoreBuildTasks">
+  <Target Name="Assets_Bookshelf" DependsOnTargets="RestoreBuildTasks">
     <S3BuildPublisher
       CredentialStoreProfileName ="$(ProfileName)"
       SourceFolder="../bin/assets/bookshelves"
       DestinationBucket="$(Bucket)"
       DestinationFolder="assets/bookshelves"
+      IsPublicRead="true" />
+  </Target>
+
+  <Target Name="Assets_ExternalComponents" DependsOnTargets="RestoreBuildTasks">
+    <S3BuildPublisher
+      CredentialStoreProfileName ="$(ProfileName)"
+      SourceFolder="../bin/assets/externalComponents"
+      DestinationBucket="$(Bucket)"
+      DestinationFolder="assets/externalComponents"
       IsPublicRead="true" />
   </Target>
 
@@ -76,7 +85,7 @@
       ContentEncoding="gzip"/>
   </Target>
 
-  <Target Name="Upload" DependsOnTargets="Root;Assets;BookshelfAssets;Svg;MainJs"></Target>
+  <Target Name="Upload" DependsOnTargets="Root;Assets;Assets_Bookshelf;Assets_ExternalComponents;Svg;MainJs"></Target>
 
   <Target Name="UploadBloomReaderApk" DependsOnTargets="RestoreBuildTasks">
     <Copy
