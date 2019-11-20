@@ -134,7 +134,6 @@
     "bookService",
     "bookCountService",
     "bookSizeService",
-    "sharedService",
     "tagService",
     "pageService",
     "$modal",
@@ -147,23 +146,30 @@
       bookService,
       bookCountService,
       bookSizeService,
-      sharedService,
       tagService,
       pageService,
       $modal,
       $window
     ) {
+
+      $scope.isCurrentUserBookUploader = function(book, authService) {
+        return authService.isLoggedIn() &&
+        (authService.userName().toLowerCase() == book.uploader.username.toLowerCase());
+      };
+
       // A fairly crude way of testing for IOS, where a click on a button that has a tooltip just
       // shows the tooltip, to the dismay of anyone expecting the button to work.
       $scope.showTooltips =
         !navigator.platform || !/iPad|iPhone|iPod/.test(navigator.platform);
-      $scope.canDeleteBook = false; // until we get the book and may make it true
+      $scope.canModifyBook = false; // until we get the book and may make it true
       $scope.location = window.location.href; // make available to embed in mailto: links
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
         tagService.hideSystemTags(book);
         $scope.book = book;
-        pageService.setTitle(_localize("{bookTitle} - Details", { bookTitle: book.title }));
+        pageService.setTitle(
+          _localize("{bookTitle} - Details", { bookTitle: book.title })
+        );
 
         for (var i = 0; i < $scope.book.langPointers.length; i++) {
           var l = $scope.book.langPointers[i];
@@ -191,11 +197,28 @@
         $scope.showRead = bookService.showRead(book);
         $scope.showHarvestedPdf = bookService.showHarvestedPdf(book);
 
-        $scope.canDeleteBook =
-          authService.isLoggedIn() &&
-          (authService.userName().toLowerCase() ==
-            book.uploader.username.toLowerCase() ||
-            authService.isUserAdministrator());
+        var isCurrentUserBookUploader = $scope.isCurrentUserBookUploader(book, authService);
+        $scope.canModifyBook =  isCurrentUserBookUploader || authService.isUserAdministrator();
+
+        if ($scope.canModifyBook) {
+          setupHarvestPanel(
+            {
+              bookId: $stateParams.bookId,
+              currentSession: authService.getSession(),
+              currentUserIsUploader: isCurrentUserBookUploader,
+              currentUserIsAdmin: authService.isUserAdministrator(),
+              onChange: function() {
+                // When the user updates which artifacts should be displayed,
+                // we need to update the actual artifact download buttons in the
+                // main (upper) part of the book detail page.
+                // Unfortunately, the only way I know of to update them
+                // from this context is to refresh the whole page.
+                $state.reload();
+              }
+            }
+          );
+        }
+
         $scope.downloadSize = 0; // hidden until we set a value
         //Get related books
         bookService
@@ -307,3 +330,10 @@
     }
   ]);
 })(); // end wrap-everything function
+
+function setupHarvestPanel(props) {
+  window.NextBloomLibrary.connectHarvestArtifactUserControl(
+    document.getElementById("harvestPanel"),
+    props
+  );
+}
