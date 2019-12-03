@@ -48,7 +48,7 @@
       // shows the tooltip, to the dismay of anyone expecting the button to work.
       $scope.showTooltips =
         !navigator.platform || !/iPad|iPhone|iPod/.test(navigator.platform);
-      $scope.canDeleteBook = false; // until we get the book and may make it true
+      $scope.canModifyBook = false; // until we get the book and may make it true
       $scope.location = window.location.href; // make available to embed in mailto: links
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
