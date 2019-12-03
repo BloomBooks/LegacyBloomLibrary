@@ -332,6 +332,7 @@
 })(); // end wrap-everything function
 
 function setupHarvestPanel(props) {
+  document.getElementById("harvestPanelWrapper").classList.remove("hidden");
   window.NextBloomLibrary.connectHarvestArtifactUserControl(
     document.getElementById("harvestPanel"),
     props

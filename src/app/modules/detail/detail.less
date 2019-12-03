@@ -312,21 +312,40 @@ i.inBookshelf {
   background-color: green;
 }
 
-// The harvest panel is pulled in from BloomLibrary2 as a react component.
-// A few of the styles don't work well in this context and need to be adjusted.
-#harvestPanel {
-  margin-top: 20px;
-  .MuiInputBase-root {
-    font-size: 1em //must override 1rem which is too small in bloomlibrary.org
+#harvestPanelWrapper {
+  & .hidden {
+    display: none;
   }
-  .MuiFormHelperText-root {
-    font-size: 0.75em //must override 0.75rem which is too small in bloomlibrary.org
-  }
-  .MuiButton-root {
-    font-size: 0.875em //must override 0.875rem which is too small in bloomlibrary.org
+
+  padding: 30px;
+  padding-top: 20px;
+
+  background-color: @lightGray;
+
+  // Match the bootstrap "modal" feel
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+
+  // The harvest panel is pulled in from BloomLibrary2 as a react component.
+  // A few of the styles don't work well in this context and need to be adjusted.
+  #harvestPanel {
+
+    .MuiBox-root {
+      background-color: white;
+    }
+
+    .MuiInputBase-root {
+      font-size: 1em //must override 1rem which is too small in bloomlibrary.org
+    }
+    .MuiFormHelperText-root {
+      font-size: 0.75em //must override 0.75rem which is too small in bloomlibrary.org
+    }
+    .MuiButton-root {
+      font-size: 0.875em //must override 0.875rem which is too small in bloomlibrary.org
+    }
   }
 }
-// The select box menu is actually added to the dom outside #harvestPanel...
+// The select box menu is actually added to the dom outside #harvestPanelWrapper...
 .MuiPopover-root .MuiMenuItem-root {
   font-size: 1em //must override 1rem which is too small in bloomlibrary.org
 }
