@@ -46,6 +46,9 @@ div.container.not-centered
                                     a.clear.right(href="" ng-click="filterLanguage('','')") Clear
                     h2 Features
                     ul.features
+                        li.talkingBook.feature
+                            input(id="feature_talking_book" type="checkbox" ng-click="toggleFeature('talkingBook')" ng-checked="{{isActiveFeature('talkingBook')}}")
+                            label(for="feature_talking_book" ng-class="{activeFilter: isActiveFeature('talkingBook')}") Talking Book
                         li.blind.feature
                             input(id="feature_blind" type="checkbox" ng-click="toggleFeature('blind')" ng-checked="{{isActiveFeature('blind')}}")
                             label(for="feature_blind" ng-class="{activeFilter: isActiveFeature('blind')}") Accessible to the Blind
