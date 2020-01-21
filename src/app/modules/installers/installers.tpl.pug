@@ -36,17 +36,16 @@ mixin betaVersionNotes
 			iframe.download-version-frame(src='https://bloomlibrary.org/channels/DownloadPointers_Release.htm', frameborder='0', scrolling='no', title="installer for current Release version")
 			+currentVersionNotes
 			p
-			iframe.download-version-frame(src='https://bloomlibrary.org/channels/DownloadPointers_REACH.htm', frameborder='0', scrolling='no', title="installer for REACH")
-			.versionNotes
-				| Global Reading Network / Enabling Writers REACH projects should use this installer.
-				| Requires Windows 7 SP1, 8, 8.1, or 10 and
-				+link('https://www.microsoft.com/en-us/download/details.aspx?id=30653') .NET 4.5
-				| . Administrators can install into Program Files via --allUsers argument (also supports --silent).
-			p
 
 			iframe.download-version-frame(src='https://bloomlibrary.org/channels/DownloadPointers_Beta.htm', frameborder='0', scrolling='no', title="installer for Beta version")
 			+betaVersionNotes
-				p Can be installed alongside the Release version, for testing purposes.
+				p The latest features ready for real-world testing. Can be installed alongside the Release version.
+			p
+			iframe.download-version-frame(src='https://bloomlibrary.org/channels/DownloadPointers_CS.htm', frameborder='0', scrolling='no', title="installer for REACH")
+			.versionNotes
+				| Use this installer if the normal Bloom does not render your complex script correctly. Some languages (e.g. Northern Thai) require the newer 
+				+link-followed-by-space('https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home') Graphite
+				| font rendering engine that is available in this version of Bloom. This version of Bloom might have some speed or memory use issues.
 			p
 
 			iframe.download-version-frame(src='https://bloomlibrary.org/channels/DownloadPointers_Vista.htm', frameborder='0', scrolling='no', title="installer for Vista")
@@ -132,10 +131,4 @@ mixin betaVersionNotes
 				| or
 				+link('https://tiny.cc/bloomSDVideos') Low-resolution videos (smaller files)
 				| .
-
-			h2 Talking Books
-			p
-				| Bloom has the ability to record sound and then use those recordings to create a "Talking Book" e-book. However, Bloom versions earlier than 4.1 need a program called "LAME for Audacity" in order to create the mp3 files that the e-book will use. Setting it up is easy. First download and run
-				+link('https://lame.buanzo.org/#lamewindl') 'Lame_v3.99 for Windows.exe'
-				| . Next, restart Bloom.
 
