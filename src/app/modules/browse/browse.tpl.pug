@@ -52,6 +52,12 @@ div.container.not-centered
                         li.signLanguage.feature
                             input(id="feature_signLanguage" type="checkbox" ng-click="toggleFeature('signLanguage')" ng-checked="{{isActiveFeature('signLanguage')}}")
                             label(for="feature_signLanguage" ng-class="{activeFilter: isActiveFeature('signLanguage')}") Includes Sign Language Videos
+                        //- li.motion.feature
+                        //-     input(id="feature_motion" type="checkbox" ng-click="toggleFeature('motion')" ng-checked="{{isActiveFeature('motion')}}")
+                        //-     label(for="feature_motion" ng-class="{activeFilter: isActiveFeature('motion')}") Motion Book
+                        li.talkingBook.feature
+                            input(id="feature_talking_book" type="checkbox" ng-click="toggleFeature('talkingBook')" ng-checked="{{isActiveFeature('talkingBook')}}")
+                            label(for="feature_talking_book" ng-class="{activeFilter: isActiveFeature('talkingBook')}") Talking Book
                     ul(ng-repeat="category in tagCategories")
                         li(ng-show="tags[category.id].top.length")
                             h2 {{category.displayName}}
