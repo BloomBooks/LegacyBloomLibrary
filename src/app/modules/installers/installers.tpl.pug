@@ -43,7 +43,7 @@ mixin betaVersionNotes
 			p
 			iframe.download-version-frame(src='https://bloomlibrary.org/channels/DownloadPointers_CS.htm', frameborder='0', scrolling='no', title="installer for REACH")
 			.versionNotes
-				| Use this installer if the normal Bloom does not render your complex script correctly. Some languages (e.g. Northern Thai) require the newer 
+				| Use this installer if the normal Bloom does not render your complex script correctly. Some languages (e.g. Northern Thai) require the newer
 				+link-followed-by-space('https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home') Graphite
 				| font rendering engine that is available in this version of Bloom. This version of Bloom might have some speed or memory use issues.
 			p
@@ -78,6 +78,11 @@ mixin betaVersionNotes
 					| .
 				= ' '
 				span.notranslate {{bloomReaderVersion | addVersionLabel}}
+			p Android 4.4 users, use
+				span.notranslate
+					+link('https://s3.amazonaws.com/bloomlibrary.org/bloomReader/apks/release/1.3/BloomReader1.3.apk') Bloom Reader 1.3.10
+				| .
+
 
 			h2 The Art of Reading
 			p
