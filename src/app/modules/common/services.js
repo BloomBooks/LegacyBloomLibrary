@@ -875,21 +875,6 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return leadin.substring(slashBeforeBookName + 3); // includes leading slash (%2f)
         };
 	} ])
-    .service('downloadHistoryService', ['Restangular', '$http', 'authService', function(restangular, $http, authService) {
-        this.logDownload = function(bookId) {
-            $http.get('http://icanhazip.com').success(function(ip) {
-                console.log(ip);
-
-                var username = authService.userName();
-
-                var newEntry = {bookId: bookId, userIp: ip, userName: username};
-
-                var downloadHistory = restangular.withConfig(authService.config()).all('classes/downloadHistory');
-
-                downloadHistory.post(newEntry);
-            });
-        };
-    }])
     .service('languageService', ['$rootScope', '$q', '$filter', 'errorHandlerService', function($rootScope, $q, $filter, errorHandlerService) {
         var languageList; // Used to cache the list
 
