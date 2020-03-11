@@ -358,6 +358,7 @@
             var newShelf = jQuery.extend({}, shelfList[indexOfChildShelf]);
             newShelf.displayName = newShelf.englishName = prefix;
             newShelf.isChild = false;
+            newShelf.orgName = undefined;
             // Make the parent shelf have a key that is the first part of the child key,
             // up to and INCLUDING the slash. The slash triggers behavior in services.js
             // MakeQuery() to retrive all books belonging to shelves which start with this key.
@@ -365,7 +366,7 @@
             if (index > 0) {
               newShelf.key = newShelf.key.substring(0, index + 1);
             }
-            shelfList.splice(i + 1, 0, newShelf);
+            shelfList.splice(indexOfChildShelf, 0, newShelf);
             return true;
           }
 
@@ -376,7 +377,8 @@
           // - we make sure it has an appropriate parent whose displayName is the
           // part of the name before the slash.
           function handleIndent(shelfList) {
-            for (var i = 0; i < shelfList.length; i++) {
+            var shelfCount = shelfList.length;
+            for (var i = 0; i < shelfCount; i++) {
               var shelf = shelfList[i];
               shelf.displayName = shelf.englishName;
               shelf.isChild = false;
@@ -388,6 +390,7 @@
                 setOrganizationNameIfAvailable(shelf);
                 if (insertParentShelf(shelfList, i, prefix)) {
                   i++;
+                  shelfCount++;
                 }
               }
             }
