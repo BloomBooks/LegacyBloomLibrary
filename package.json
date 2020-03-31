@@ -16,6 +16,7 @@
     "chrome": "chrome http://localhost:3000/ --disable-web-security --disable-gpu --user-data-dir=%temp%/chromeTemp",
     "build": "yarn grunt build",
     "watch": "yarn grunt watch",
+    "start": "yarn serve",
     "serve": "yarn lite-server",
     "//About-postinstall": "This was added by 'bower-away', the tool that helped retire bower. It creates it in order to reconnect all the things that are still pointing at the old 'vendor' directory, stuff that has been moved to node_modules",
     "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'vendor', 'junction') } catch (e) { }\""
