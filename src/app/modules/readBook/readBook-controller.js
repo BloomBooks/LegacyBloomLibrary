@@ -6,7 +6,7 @@
     .module("BloomLibraryApp.readBook", ["ui.router", "restangular"])
     .config(function config($stateProvider) {
       $stateProvider.state("readBook", {
-        url: "/readBook/:bookId",
+        url: "/readBook/:bookId?bookLang",
         views: {
           "@": {
             templateUrl: "modules/readBook/readBook.tpl.html",
@@ -50,6 +50,7 @@
         !navigator.platform || !/iPad|iPhone|iPod/.test(navigator.platform);
       $scope.canModifyBook = false; // until we get the book and may make it true
       $scope.location = window.location.href; // make available to embed in mailto: links
+
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
         tagService.hideSystemTags(book);
@@ -72,6 +73,12 @@
           ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm"
           : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
 
+        var bookLang = $stateParams.bookLang;
+        var langParam;
+        if (bookLang) {
+          langParam = "&lang=" + bookLang;
+        }
+
         // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
         // bloomPlayerUrl = "http://localhost:3000/bloomplayer-for-developing.htm";
         return (
@@ -79,7 +86,8 @@
           "?url=" +
           harvesterBaseUrl +
           "bloomdigital%2findex.htm" +
-          "&showBackButton=true"
+          "&showBackButton=true" +
+          langParam
         );
       }
 
