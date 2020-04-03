@@ -87,23 +87,24 @@
           harvesterBaseUrl +
           "bloomdigital%2findex.htm" +
           "&showBackButton=true" +
-          langParam
+          "&useOriginalPageSize=true" +
+          (langParam || "")
         );
       }
 
       function messageListener(data) {
-            // We can get a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
-            // isn't json encoded.
-            // The message that we want to ignore is not a string.
-            if (!data.data || typeof data.data !== "string") {
-              return;
-            }
-            var message = JSON.parse(data.data);
-            var messageType = message.messageType;
-            if (messageType === "backButtonClicked") {
-              window.removeEventListener("message", messageListener);
-              // $state.go() just keeps adding more history, which I find unappealing.
-              window.history.back();
+        // We can get a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
+        // isn't json encoded.
+        // The message that we want to ignore is not a string.
+        if (!data.data || typeof data.data !== "string") {
+          return;
+        }
+        var message = JSON.parse(data.data);
+        var messageType = message.messageType;
+        if (messageType === "backButtonClicked") {
+          window.removeEventListener("message", messageListener);
+          // $state.go() just keeps adding more history, which I find unappealing.
+          window.history.back();
               //$state.go("browse.detail", {bookId: $scope.book.objectId});
             }
       }
