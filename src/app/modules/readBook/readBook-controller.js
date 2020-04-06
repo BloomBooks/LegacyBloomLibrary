@@ -53,7 +53,7 @@
 
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
-        tagService.hideSystemTags(book);
+        tagService.cleanUpTagDisplay(book);
         $scope.book = book;
         var url = getReadUrl(book);
         $scope.readUrl = $sce.trustAsResourceUrl(url);

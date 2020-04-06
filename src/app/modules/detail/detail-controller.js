@@ -165,7 +165,7 @@
       $scope.location = window.location.href; // make available to embed in mailto: links
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
-        tagService.hideSystemTags(book);
+        tagService.cleanUpTagDisplay(book);
         $scope.book = book;
         pageService.setTitle(
           _localize("{bookTitle} - Details", { bookTitle: book.title })

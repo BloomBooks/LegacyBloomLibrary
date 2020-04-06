@@ -1011,8 +1011,13 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
         };
 
-        this.isSystemTag = function(tag) {
-            var regex = new RegExp('^system:');
+        this.shouldHideTag = function(tag) {
+            var regex = new RegExp('^system:|^computedLevel:');
+            return regex.test(tag);
+        };
+
+        this.isTooSimpleLevelTag = function(tag) {
+            var regex = new RegExp('^level:\\d');
             return regex.test(tag);
         };
 
@@ -1020,12 +1025,15 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return tag.indexOf("topic:") === 0 || tag.indexOf(":") < 0;
         };
 
-        this.hideSystemTags = function(book) {
+        this.cleanUpTagDisplay = function(book) {
             if(book.tags) {
                 for (var i = book.tags.length-1; i >= 0; i--) {
                     var tag = book.tags[i];
-                    if (this.isSystemTag(tag)) {
+                    if (this.shouldHideTag(tag)) {
                         book.tags.splice(i, 1);
+                    }
+                    if (this.isTooSimpleLevelTag(tag)) {
+                        book.tags[i] = "level:Level " + tag.substring("level:".length);
                     }
                 }
             }
