@@ -6,7 +6,7 @@
     .module("BloomLibraryApp.readBook", ["ui.router", "restangular"])
     .config(function config($stateProvider) {
       $stateProvider.state("readBook", {
-        url: "/readBook/:bookId",
+        url: "/readBook/:bookId?bookLang",
         views: {
           "@": {
             templateUrl: "modules/readBook/readBook.tpl.html",
@@ -50,6 +50,7 @@
         !navigator.platform || !/iPad|iPhone|iPod/.test(navigator.platform);
       $scope.canModifyBook = false; // until we get the book and may make it true
       $scope.location = window.location.href; // make available to embed in mailto: links
+
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
         tagService.hideSystemTags(book);
@@ -72,6 +73,12 @@
           ? "https://bloomlibrary.org/bloom-player/bloomplayer.htm"
           : "https://dev.bloomlibrary.org/bloom-player/bloomplayer.htm";
 
+        var bookLang = $stateParams.bookLang;
+        var langParam;
+        if (bookLang) {
+          langParam = "&lang=" + bookLang;
+        }
+
         // use this if you are are working on bloom-player and are using the bloom-player npm script tobloomlibrary
         // bloomPlayerUrl = "http://localhost:3000/bloomplayer-for-developing.htm";
         return (
@@ -79,23 +86,25 @@
           "?url=" +
           harvesterBaseUrl +
           "bloomdigital%2findex.htm" +
-          "&showBackButton=true"
+          "&showBackButton=true" +
+          "&useOriginalPageSize=true" +
+          (langParam || "")
         );
       }
 
       function messageListener(data) {
-            // We can get a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
-            // isn't json encoded.
-            // The message that we want to ignore is not a string.
-            if (!data.data || typeof data.data !== "string") {
-              return;
-            }
-            var message = JSON.parse(data.data);
-            var messageType = message.messageType;
-            if (messageType === "backButtonClicked") {
-              window.removeEventListener("message", messageListener);
-              // $state.go() just keeps adding more history, which I find unappealing.
-              window.history.back();
+        // We can get a message here from bloom-player {landscape, canRotate } that we aren't using yet, and which
+        // isn't json encoded.
+        // The message that we want to ignore is not a string.
+        if (!data.data || typeof data.data !== "string") {
+          return;
+        }
+        var message = JSON.parse(data.data);
+        var messageType = message.messageType;
+        if (messageType === "backButtonClicked") {
+          window.removeEventListener("message", messageListener);
+          // $state.go() just keeps adding more history, which I find unappealing.
+          window.history.back();
               //$state.go("browse.detail", {bookId: $scope.book.objectId});
             }
       }
