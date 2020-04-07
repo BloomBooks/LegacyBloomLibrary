@@ -259,32 +259,33 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.getBookshelves = function() {
             defer = $q.defer(); // used to implement angularjs-style promise
 
-            var Bookshelf = Parse.Object.extend("bookshelf");
-            var query = new Parse.Query(Bookshelf);
+            var query = new Parse.Query(Parse.Object.extend("bookshelf"));
             query.ascending("englishName");
-            query.limit(1000); // we want all the bookshelves there are, but this is the most parse will give us.
+            query.limit(10000); // We want all; 100 is the default.
 
             // query.find returns a parse.com promise, but it is not quite the same api as
             // as an angularjs promise. Instead, translate its find and error functions using the
             // angularjs promise.
             query.find({
-                success: function (results) {
-                    var bookshelves = new Array(results.length);
-                    for (i = 0; i < results.length; i++) {
-                        bookshelves[i] = results[i].toJSON();
+              success: function(bookshelfResults) {
+                $rootScope.cachedAndLocalizedBookshelves = bookshelfResults.reduce(
+                  function(filtered, bookshelfResult) {
+                    var bookshelf = bookshelfResult.toJSON();
+                    if (bookshelf.showInLegacyLibrary) {
+                      bookshelf.englishName = _localize(bookshelf.englishName);
+                      filtered.push(bookshelf);
                     }
+                    return filtered;
+                  },
+                  []
+                );
 
-                    $rootScope.cachedAndLocalizedBookshelves = bookshelves.map(function(bookshelf) {
-                        bookshelf.englishName = _localize(bookshelf.englishName);
-                        return bookshelf;
-                    });
-
-                    defer.resolve();
-                },
-                error: function (error) {
-                    errorHandlerService.handleParseError('getBookshelves', error);
-                    defer.reject(error);
-                }
+                defer.resolve();
+              },
+              error: function(error) {
+                errorHandlerService.handleParseError("getBookshelves", error);
+                defer.reject(error);
+              }
             });
 
             return defer.promise;
