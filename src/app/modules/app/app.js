@@ -486,7 +486,7 @@
             }
 
             //Only add tag to list if not a system tag
-            if (!tagService.isSystemTag(tagNames[iTag])) {
+            if (tagService.tagIsWhitelisted(tagNames[iTag])) {
               //If we have more room in the top list, add to top list; otherwise, add to other list
               if ($scope.tags[cat].top.length < numberOfTopTags) {
                 $scope.tags[cat].top.push(makeTagObject(tagNames[iTag]));

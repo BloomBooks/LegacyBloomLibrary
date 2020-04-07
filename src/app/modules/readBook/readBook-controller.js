@@ -15,32 +15,20 @@
         },
         title: "Read a book"
       });
-    })
-    .filter("getDisplayName", [
-      "tagService",
-      function(tagService) {
-        return function(input) {
-          return tagService.getDisplayName(input);
-        };
-      }
-    ]);
+    });
 
   angular.module("BloomLibraryApp.readBook").controller("ReadBookCtrl", [
     "$scope",
-    "$state",
     "$stateParams",
     "bookService",
     "sharedService",
-    "tagService",
     "pageService",
     "$sce",
     function(
       $scope,
-      $state,
       $stateParams,
       bookService,
       sharedService,
-      tagService,
       pageService,
       $sce
     ) {
@@ -53,7 +41,6 @@
 
       //get the book for which we're going to show the details
       bookService.getBookById($stateParams.bookId).then(function(book) {
-        tagService.hideSystemTags(book);
         $scope.book = book;
         var url = getReadUrl(book);
         $scope.readUrl = $sce.trustAsResourceUrl(url);

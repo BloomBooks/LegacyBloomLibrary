@@ -259,32 +259,33 @@ angular.module('BloomLibraryApp.services', ['restangular'])
         this.getBookshelves = function() {
             defer = $q.defer(); // used to implement angularjs-style promise
 
-            var Bookshelf = Parse.Object.extend("bookshelf");
-            var query = new Parse.Query(Bookshelf);
+            var query = new Parse.Query(Parse.Object.extend("bookshelf"));
             query.ascending("englishName");
-            query.limit(1000); // we want all the bookshelves there are, but this is the most parse will give us.
+            query.limit(10000); // We want all; 100 is the default.
 
             // query.find returns a parse.com promise, but it is not quite the same api as
             // as an angularjs promise. Instead, translate its find and error functions using the
             // angularjs promise.
             query.find({
-                success: function (results) {
-                    var bookshelves = new Array(results.length);
-                    for (i = 0; i < results.length; i++) {
-                        bookshelves[i] = results[i].toJSON();
+              success: function(bookshelfResults) {
+                $rootScope.cachedAndLocalizedBookshelves = bookshelfResults.reduce(
+                  function(filtered, bookshelfResult) {
+                    var bookshelf = bookshelfResult.toJSON();
+                    if (bookshelf.showInLegacyLibrary) {
+                      bookshelf.englishName = _localize(bookshelf.englishName);
+                      filtered.push(bookshelf);
                     }
+                    return filtered;
+                  },
+                  []
+                );
 
-                    $rootScope.cachedAndLocalizedBookshelves = bookshelves.map(function(bookshelf) {
-                        bookshelf.englishName = _localize(bookshelf.englishName);
-                        return bookshelf;
-                    });
-
-                    defer.resolve();
-                },
-                error: function (error) {
-                    errorHandlerService.handleParseError('getBookshelves', error);
-                    defer.reject(error);
-                }
+                defer.resolve();
+              },
+              error: function(error) {
+                errorHandlerService.handleParseError("getBookshelves", error);
+                defer.reject(error);
+              }
             });
 
             return defer.promise;
@@ -1011,8 +1012,19 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
         };
 
-        this.isSystemTag = function(tag) {
-            var regex = new RegExp('^system:');
+        this.tagIsWhitelisted = function(tag) {
+            var whitelist = ['topic', 'bookshelf', 'region', 'level'];
+            var splits = tag.split(":");
+            if (splits.length < 2) {
+                // We had topics at one time with no 'topic:'. I think they are
+                // all gone now, but being safe...
+                return true;
+            }
+            return whitelist.includes(splits[0]);
+        };
+
+        this.isNumberOnlyLevelTag = function(tag) {
+            var regex = /^level:\d+$/;
             return regex.test(tag);
         };
 
@@ -1020,12 +1032,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return tag.indexOf("topic:") === 0 || tag.indexOf(":") < 0;
         };
 
-        this.hideSystemTags = function(book) {
+        this.cleanUpTags = function(book) {
             if(book.tags) {
                 for (var i = book.tags.length-1; i >= 0; i--) {
                     var tag = book.tags[i];
-                    if (this.isSystemTag(tag)) {
+                    if (!this.tagIsWhitelisted(tag)) {
                         book.tags.splice(i, 1);
+                    }
+                    // We need to enhance the display of some level tags to be "Level 1" instead of "1", for example.
+                    if (this.isNumberOnlyLevelTag(tag)) {
+                        book.tags[i] = "level:Level " + tag.substring("level:".length);
                     }
                 }
             }
