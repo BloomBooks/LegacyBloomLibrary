@@ -1011,8 +1011,19 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             }
         };
 
-        this.isSystemTag = function(tag) {
-            var regex = new RegExp('^system:');
+        this.tagIsWhitelisted = function(tag) {
+            var whitelist = ['topic', 'bookshelf', 'region', 'level'];
+            var splits = tag.split(":");
+            if (splits.length < 2) {
+                // We had topics at one time with no 'topic:'. I think they are
+                // all gone now, but being safe...
+                return true;
+            }
+            return whitelist.includes(splits[0]);
+        };
+
+        this.isNumberOnlyLevelTag = function(tag) {
+            var regex = /^level:\d+$/;
             return regex.test(tag);
         };
 
@@ -1020,12 +1031,16 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             return tag.indexOf("topic:") === 0 || tag.indexOf(":") < 0;
         };
 
-        this.hideSystemTags = function(book) {
+        this.cleanUpTags = function(book) {
             if(book.tags) {
                 for (var i = book.tags.length-1; i >= 0; i--) {
                     var tag = book.tags[i];
-                    if (this.isSystemTag(tag)) {
+                    if (!this.tagIsWhitelisted(tag)) {
                         book.tags.splice(i, 1);
+                    }
+                    // We need to enhance the display of some level tags to be "Level 1" instead of "1", for example.
+                    if (this.isNumberOnlyLevelTag(tag)) {
+                        book.tags[i] = "level:Level " + tag.substring("level:".length);
                     }
                 }
             }

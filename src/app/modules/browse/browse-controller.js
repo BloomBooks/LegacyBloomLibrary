@@ -326,7 +326,7 @@
             //Remove system tags
             for (var iBook = 0; iBook < result.length; iBook++) {
               var book = result[iBook];
-              tagService.hideSystemTags(book);
+              tagService.cleanUpTags(book);
             }
             $scope.visibleBooks = result;
           });
