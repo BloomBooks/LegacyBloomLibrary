@@ -1,4 +1,4 @@
-(function() {
+(function () {
   // to wrap use strict
   "use strict";
 
@@ -18,14 +18,18 @@
     });
 
   angular.module("BloomLibraryApp.readBook").controller("ReadBookCtrl", [
+    "$rootScope",
     "$scope",
+    "$state",
     "$stateParams",
     "bookService",
     "sharedService",
     "pageService",
     "$sce",
-    function(
+    function (
+      $rootScope,
       $scope,
+      $state,
       $stateParams,
       bookService,
       sharedService,
@@ -40,12 +44,14 @@
       $scope.location = window.location.href; // make available to embed in mailto: links
 
       //get the book for which we're going to show the details
-      bookService.getBookById($stateParams.bookId).then(function(book) {
+      bookService.getBookById($stateParams.bookId).then(function (book) {
         $scope.book = book;
         var url = getReadUrl(book);
         $scope.readUrl = $sce.trustAsResourceUrl(url);
 
-        pageService.setTitle(_localize("{bookTitle} - Read", { bookTitle: book.title }));
+        pageService.setTitle(
+          _localize("{bookTitle} - Read", { bookTitle: book.title })
+        );
       });
 
       // Listen for messages from the player
@@ -90,10 +96,15 @@
         var messageType = message.messageType;
         if (messageType === "backButtonClicked") {
           window.removeEventListener("message", messageListener);
-          // $state.go() just keeps adding more history, which I find unappealing.
-          window.history.back();
-              //$state.go("browse.detail", {bookId: $scope.book.objectId});
-            }
+
+          if ($rootScope.navigatedToReadFromDetail) {
+            window.history.back();
+          } else {
+            // The user has navigated to this read page directly.
+            // We always want bloom-player's back button to navigate to the detail page.
+            $state.go("browse.detail", { bookId: $scope.book.objectId });
+          }
+        }
       }
     }
   ]);
