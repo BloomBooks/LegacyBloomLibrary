@@ -127,6 +127,7 @@
   };
 
   angular.module("BloomLibraryApp.detail").controller("DetailCtrl", [
+    "$rootScope",
     "$scope",
     "authService",
     "$state",
@@ -139,6 +140,7 @@
     "$modal",
     "$window",
     function(
+      $rootScope,
       $scope,
       authService,
       $state,
@@ -326,6 +328,16 @@
             }
           }
         });
+      };
+
+      $scope.goToRead = function() {
+        // We use this function to navigate instead of a direct link so we
+        // can add an item to the rootScope to let us know we are navigating
+        // to the read page from the detail page (rather than a direct url).
+        // That way, we can properly handle bloom-player's back button.
+        // See more in readBook-controller.js.
+        $rootScope.navigatedToReadFromDetail = true;
+        $state.go("readBook", {bookId: $stateParams.bookId});
       };
     }
   ]);
