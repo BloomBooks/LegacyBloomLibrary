@@ -80,6 +80,7 @@
           harvesterBaseUrl +
           "bloomdigital%2findex.htm" +
           "&showBackButton=true" +
+          "&centerVertically=false" +
           "&useOriginalPageSize=true" +
           (langParam || "")
         );
