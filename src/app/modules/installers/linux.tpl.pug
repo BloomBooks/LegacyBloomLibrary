@@ -6,31 +6,31 @@ mixin link(href)
 
 .staticPage
 	H2 Getting Bloom on Linux
-	P Bloom 4.2 is available for Ubuntu Trusty, Xenial, and Bionic.  It can also be installed on Wasta 14, Wasta 16, and Wasta 18. You are welcome to try other versions of Linux but we cannot promise to support them.  Support for Ubuntu Trusty and Wasta 14 is scheduled to end in early 2019.
+	P Bloom 4.7 is available for Ubuntu Xenial (16.04), Bionic (18.04), and Focal (20.04).  It can also be installed on Wasta 16, Wasta 18, and Wasta 20. You are welcome to try other versions of Linux but we cannot promise to support them.   Bloom 4.7 is the last version of Bloom supported in Ubuntu Xenial and Wasta 14 because those versions of Linux reach their end-of-life in early 2021.
 
 	H3 Step 1: Try to install the Bloom Desktop program
 	pre
-		| sudo apt-get install bloom-desktop
-	P If this succeeds, you can skip to step 4 below (you are already a user of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
+		| sudo apt install bloom-desktop
+	P If this succeeds, you can skip to step 4 below (you are already a user of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt cannot locate the package, then the following steps are needed.
 	H3 Step 2: Add the SIL repository to your system
 	P See
-		+link('http://packages.sil.org/') Instructions to install SIL software
+		+link('https://packages.sil.org/') Enable access to SIL software and fonts in Ubuntu
 		| for alternative directions on how to add the SIL repository to your system.
-	H4 (for trusty or wasta 14):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty main"
-	pre sudo apt-get update
 	H4 (for xenial or wasta 16):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial main"
-	pre sudo apt-get update
+	pre wget -qO - https://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb https://packages.sil.org/ubuntu xenial main"
+	pre sudo apt update
 	H4 (for bionic or wasta 18):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu bionic main"
-	pre sudo apt-get update
+	pre wget -qO - https://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb https://packages.sil.org/ubuntu bionic main"
+	pre sudo apt update
+	H4 (for focal or wasta 20):
+	pre wget -qO - https://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb https://packages.sil.org/ubuntu focal main"
+	pre sudo apt update
 	H3 Step 3: Install the  Bloom Desktop program
 	pre
-		| sudo apt-get install bloom-desktop
+		| sudo apt install bloom-desktop
 	H3 Step 4: Copy the desktop launcher to your local area
 	pre cp -i /usr/share/applications/bloom.desktop ~/Desktop
 	pre chmod +x ~/Desktop/bloom.desktop
@@ -44,58 +44,40 @@ mixin link(href)
 
 	P Once Bloom has been installed, updates will be downloaded and installed the same way your system is already installing updates to other software.
 
-	H2 Note to current users of SIL software (January 2017)
-	P For security reasons, the SIL repository is getting a new
-		strong
-			|  public key
-		|  in January 2017.  Although the developers are making an effort to make this seamless for current users, it is possible that attempts to update or install software from the SIL repository may fail due to a mismatched key after January 1, 2017.  If that happens, the solution is simply to run the first command given above for adding the SIL repository to your system.  This will add the new repository public key to your system.  For convenience, this command is repeated here.
-	pre
-		| wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-
 	H2 Getting Bloom Beta Releases on Linux
 	P A
 		strong
 			|  beta release
-		|  of Bloom may be available for Ubuntu Trusty, Xenial, and Bionic.  If available, it can also be installed on Wasta 14, Wasta 16, and Wasta 18.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  As with Windows, a current release of Bloom (bloom-desktop) can coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one does not affect the other.
+		|  of Bloom should be available for Ubuntu Bionic and Focal.  If available, it can also be installed on Wasta 18 and Wasta 20.  Again, you are welcome to try other versions of Linux but we cannot promise to support them.  As with Windows, a current release of Bloom (bloom-desktop) can coexist with a beta release of Bloom (bloom-desktop-beta) on Linux: installing one does not affect the other.
 
 	H3 Step 1: Try to install the beta release of the Bloom Desktop program
 	pre
-		| sudo apt-get install bloom-desktop-beta
-	P If this succeeds, you can skip to step 5 below (and you are living as a constant beta tester of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt-get cannot locate the package, then the following steps are needed.
+		| sudo apt install bloom-desktop-beta
+	P If this succeeds, you can skip to step 5 below (and you are living as a constant beta tester of SIL software).  If this fails because of authorization issues or a missing sudo program, you need to consult with the local Linux administrator.  If this fails because apt cannot locate the package, then the following steps are needed.
 	H3 Step 2: Add the SIL experimental repository to your system
 	P See
-		+link('http://packages.sil.org/') Install Beta SIL software
+		+link('https://packages.sil.org/') Beta software
 		| for alternative directions on how to add the experimental repository to your system.
 	P The first command (which adds the security key for the SIL repositories) may be unnecessary if you already use SIL software.
-	H4 (for trusty or wasta 14):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu trusty-experimental main"
-	pre sudo apt-get update
-	H4 (for xenial or wasta 16):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu xenial-experimental main"
-	pre sudo apt-get update
 	H4 (for bionic or wasta 18):
-	pre wget -qO - http://packages.sil.org/sil.gpg | sudo apt-key add -
-	pre sudo add-apt-repository "deb http://packages.sil.org/ubuntu bionic-experimental main"
-	pre sudo apt-get update
+	pre wget -qO - https://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb https://packages.sil.org/ubuntu bionic-experimental main"
+	pre sudo apt update
+	H4 (for focal or wasta 20):
+	pre wget -qO - https://packages.sil.org/sil.gpg | sudo apt-key add -
+	pre sudo add-apt-repository "deb https://packages.sil.org/ubuntu focal-experimental main"
+	pre sudo apt update
 	H3 Step 3: Install the beta release of the  Bloom Desktop program
 	pre
-		| sudo apt-get install bloom-desktop-beta
+		| sudo apt install bloom-desktop-beta
 	H3 Step 4: Remove the experimental repository from your system for safety
 	P Note that removing the experimental repository reference will prevent the beta version of Bloom from being updated.  So you have a trade-off to consider.  Do you want to always have the latest beta release of Bloom at the risk of getting other beta software that you don't want?  Or do you want to prevent surprises at the cost of going through the process of adding and removing the experimental repository reference every time a new beta release of Bloom is announced?
-	H4 (for trusty)
-	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu trusty-experimental main"
-	pre sudo apt-get update
-	H4 (for wasta 14)
-	pre synaptic
-	P Using the graphical user interface, open the Settings / Repository dialog, then find and remove any entries in "Additional repositories" that include trusty-experimental in the fine print.
-	H4 (for xenial or wasta 16)
-	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu xenial-experimental main"
-	pre sudo apt-get update
 	H4 (for bionic or wasta 18)
-	pre sudo add-apt-repository --remove "deb http://packages.sil.org/ubuntu bionic-experimental main"
-	pre sudo apt-get update
+	pre sudo add-apt-repository --remove "deb https://packages.sil.org/ubuntu bionic-experimental main"
+	pre sudo apt update
+	H4 (for focal or wasta 20)
+	pre sudo add-apt-repository --remove "deb https://packages.sil.org/ubuntu focal-experimental main"
+	pre sudo apt update
 	H3 Step 5: Copy the desktop launcher to your local area
 	pre cp -i /usr/share/applications/bloom-beta.desktop ~/Desktop
 	pre chmod +x ~/Desktop/bloom-beta.desktop
