@@ -1177,11 +1177,12 @@ escodegen@~0.0.15:
 
 "esprima@https://github.com/ariya/esprima/tarball/master":
   version "4.0.0-dev"
-  resolved "https://github.com/ariya/esprima/tarball/master#13f0b747c1a749d6075b837b648c42b41b35ce44"
+  resolved "https://github.com/ariya/esprima/tarball/master#e0e9a73b677b435446991e7a94009d75e086b6c6"
 
 "esprima@~ 1.0.2", esprima@~1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-1.0.4.tgz#9f557e08fc3b4d26ece9dd34f8fbf476b62585ad"
+  integrity sha1-n1V+CPw7TSbs6d00+Pv0drYlha0=
 
 estraverse@~1.3.0:
   version "1.3.2"
