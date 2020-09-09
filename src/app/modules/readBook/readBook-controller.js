@@ -10,10 +10,10 @@
         views: {
           "@": {
             templateUrl: "modules/readBook/readBook.tpl.html",
-            controller: "ReadBookCtrl"
-          }
+            controller: "ReadBookCtrl",
+          },
         },
-        title: "Read a book"
+        title: "Read a book",
       });
     });
 
@@ -82,6 +82,8 @@
           "&showBackButton=true" +
           "&centerVertically=false" +
           "&useOriginalPageSize=true" +
+          "&independent=false" +
+          "&host=legacy-bloomlibrary" +
           (langParam || "")
         );
       }
@@ -107,6 +109,6 @@
           }
         }
       }
-    }
+    },
   ]);
 })(); // end wrap-everything function
