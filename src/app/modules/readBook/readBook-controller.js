@@ -10,10 +10,10 @@
         views: {
           "@": {
             templateUrl: "modules/readBook/readBook.tpl.html",
-            controller: "ReadBookCtrl",
-          },
+            controller: "ReadBookCtrl"
+          }
         },
-        title: "Read a book",
+        title: "Read a book"
       });
     });
 
@@ -109,6 +109,6 @@
           }
         }
       }
-    },
+    }
   ]);
 })(); // end wrap-everything function
