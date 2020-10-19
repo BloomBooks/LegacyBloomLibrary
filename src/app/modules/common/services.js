@@ -858,10 +858,12 @@ angular.module('BloomLibraryApp.services', ['restangular'])
             var bookName = getBookNameFromUrl(book.baseUrl);
 
             if (bookName) {
+                // See https://issues.bloomlibrary.org/youtrack/issue/BL-9150.
+                bookName = bookName.replace("(", " ").replace(")", " ").trim();
                 if (fileType === "bloomd") {
                     return harvesterBaseUrl + bookName + "." + fileType;
-            }
-            return harvesterBaseUrl + fileType + "/" + bookName + "." + fileType;
+                }
+                return harvesterBaseUrl + fileType + "/" + bookName + "." + fileType;
             }
             return null;
         };
