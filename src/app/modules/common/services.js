@@ -549,18 +549,20 @@ angular.module('BloomLibraryApp.services', ['restangular'])
                         query.descending(sortBy);
                     }
                 }
+
+                // Apparently starting in Mongo 4.4, if you include '$score' when not using it, that creates an error. See BL-9492.
+                // Previously, we just had this as common code outside this if/else, including '$score'.
+                // If you modify this list, see if the one in the else below needs to be modified.
+                query.select("title", "tags", "baseUrl", "langPointers", "uploader");
             } else {
                 // If the user provides a search string, we use the fullText search capability of mongoDB.
                 // We want to sort by the score which that search provides.
                 query.ascending('$score');
-            }
 
-            // To make sort by score (above) work, we have to 'select' the $score. But select limits the columns we get
-            // back, so we have to list out all the ones we need. Previously, we were just returning the whole
-            // book record, but since I had to figure out the ones we need anyway, I figured we might as well only get
-            // the columns we need for both paths through the if above.
-            // NOTE: This path is not used by the datagrid or we would need to add more.
-            query.select('$score', 'title', 'tags', 'baseUrl', 'langPointers', 'uploader');
+                // To make sort by score work, we have to 'select' the $score.
+                // If you modify this list, see if the one in the if above needs to be modified.
+                query.select("$score", "title", "tags", "baseUrl", "langPointers", "uploader");
+            }
 
 			// query.find returns a parse.com promise, but it is not quite the same api as
 			// as an angularjs promise. Instead, translate its find and error functions using the
